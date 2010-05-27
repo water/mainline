@@ -27,11 +27,9 @@ class ApplicationController < ActionController::Base
   before_filter :public_and_logged_in
   before_filter :require_current_eula
   
-  include SslRequirement # Need to be included after the above
+  # include SslRequirement # Need to be included after the above
 
   after_filter :mark_flash_status
-
-  filter_parameter_logging :password, :password_confirmation
 
   layout :pick_layout_based_on_site
   
