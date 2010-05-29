@@ -1,5 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
+require "shoulda"
+require "factory_girl"
 require 'rails/test_help'
 
 begin
