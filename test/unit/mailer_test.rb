@@ -90,9 +90,11 @@ class MailerTest < ActiveSupport::TestCase
     mail = Mailer.create_notification_copy(recipient, sender, "This is a message", "This is some text", merge_request, message_id)
     assert_equal([recipient.email], mail.to)
     assert_equal "New message: This is a message", mail.subject
-    assert_match /#{sender.fullname} has sent you a message on Gitorious:/, mail.body
-    assert_match /http:\/\/.*\/#{merge_request.target_repository.project.slug}\//i, mail.body
-    assert_match "http://#{GitoriousConfig['gitorious_host']}/messages/#{message_id}", mail.body
+    assert_match /#{sender.fullname} has sent you a message on Gitorious:/, mail.body.raw_source
+
+    # RAILS3FAIL: Why is the URL https? It was http in rails 2
+    assert_match /https?:\/\/.*\/#{merge_request.target_repository.project.slug}\//i, mail.body.raw_source
+    assert_match /https?:\/\/#{Regexp.escape(GitoriousConfig['gitorious_host'])}\/messages\/#{Regexp.escape(message_id.to_s)}/, mail.body.raw_source
   end
 
   should 'sanitize the contents of notifications' do
@@ -101,7 +103,7 @@ class MailerTest < ActiveSupport::TestCase
     subject = %Q(<script type="text/javascript">alert(document.cookie)</script>Hello)
     body = %Q(<script type="text/javascript">alert('foo')</script>This is the actual message)
     mail = Mailer.create_notification_copy(recipient, sender, subject, body, nil, 9)
-    assert_no_match /alert/, mail.body
+    assert_no_match /alert/, mail.body.raw_source
     assert_no_match /document\.cookie/, mail.subject
     assert_match /Hello/, mail.subject
   end

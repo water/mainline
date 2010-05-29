@@ -23,7 +23,7 @@ Hello <%= @recipient %>
 <%= @sender.to_s %> has sent you a message on Gitorious:
 ----------------------------------------------------
 
-<%= @body.to_s %>
+<%= @contents.to_s %>
 
 <% if @notifiable_url -%>
 <%= @notifiable_url %>

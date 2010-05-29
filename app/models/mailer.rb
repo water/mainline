@@ -24,7 +24,7 @@
 class Mailer < ActionMailer::Base
   include ActionView::Helpers::SanitizeHelper
   extend ActionView::Helpers::SanitizeHelper::ClassMethods
-  include ActionController::UrlWriter
+
   def signup_notification(user)
     setup_email(user)
     @subject    += I18n.t "mailer.subject"
@@ -50,7 +50,8 @@ class Mailer < ActionMailer::Base
         :id => message_id,
         :host => GitoriousConfig['gitorious_host']
       })
-    @body[:body]      = sanitize(body)
+
+    @body[:contents]      = sanitize(body)
     if '1.9'.respond_to?(:force_encoding)
       @body[:recipient] = recipient.title.to_s.force_encoding("utf-8")
       @body[:sender]    = sender.title.to_s.force_encoding("utf-8")
