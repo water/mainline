@@ -18,6 +18,7 @@ gem "rdiscount", "1.3.1.1"
 gem "stomp", "1.1"
 gem "mime-types", :require => "mime/types"
 gem "diff-lcs", :require => "diff/lcs"
+gem "oauth"
 
 # group :development do
 #   gem "mongrel", :git => "http://github.com/engineyard/mongrel.git"
