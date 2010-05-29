@@ -592,7 +592,7 @@ class Repository < ActiveRecord::Base
     end
     self.send("#{field}=", value)
     valid?
-    if !errors.on(field)
+    if !errors[field]
       @updated_fields << field
     end
   end
