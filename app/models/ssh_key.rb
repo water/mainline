@@ -38,8 +38,9 @@ class SshKey < ActiveRecord::Base
   def self.human_name
     I18n.t("activerecord.models.ssh_key")
   end
-  
-  def validate
+
+  validate :keyfile_format
+  def keyfile_format
     if self.to_keyfile_format !~ SSH_KEY_FORMAT
       errors.add(:key, I18n.t("ssh_key.key_format_validation_message"))
     end

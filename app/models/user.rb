@@ -212,7 +212,8 @@ class User < ActiveRecord::Base
       })
   end
 
-  def validate
+  validate :openid_identity_url
+  def openid_identity_url
     if !not_openid?
       begin
         OpenIdAuthentication.normalize_identifier(self.identity_url)
