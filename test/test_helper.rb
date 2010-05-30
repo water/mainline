@@ -2,6 +2,8 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require "shoulda"
 require "factory_girl"
+Factory.definition_file_paths = [ Rails.root.join('test', 'factories') ]
+Factory.find_definitions
 require 'rails/test_help'
 
 begin
