@@ -195,12 +195,25 @@ class MergeRequestTest < ActiveSupport::TestCase
   end
 
   should 'know if a specific commit has been merged or not' do
-    repo = mock("Git repo")
-    git = mock("Git backend")
+    repo = stub("Git repo")
+    git = stub("Git backend")
+    gitm = stub("Git method")
+    repo.stubs(:id).returns(1)
     repo.stubs(:git).returns(git)
-    @merge_request.stubs(:target_repository).return(repo)
-    git.expects(:cherry).with({}, @merge_request.target_branch, 'ff0').returns('')
-    git.expects(:cherry).with({}, @merge_request.target_branch, 'ffc').returns('+ bbacd')
+    git.expects(:git).twice.returns(gitm)
+    gitm.expects(:cherry).with({}, @merge_request.target_branch, 'ff0').returns('')
+    gitm.expects(:cherry).with({}, @merge_request.target_branch, 'ffc').returns('+ bbacd')
+    @merge_request.stubs(:target_repository).returns(repo)
+
+    # Stubbing with yields makes us lose the return value of the block. Stubbing
+    # it first makes it return to normal after this test.
+    Rails.cache.stubs(:fetch)
+    class << Rails.cache
+      def fetch(*args)
+        yield
+      end
+    end
+
     assert !@merge_request.commit_merged?('ffc')
     assert @merge_request.commit_merged?('ff0')
   end
