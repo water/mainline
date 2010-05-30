@@ -36,7 +36,7 @@ end
 gem "mysql"
 
 group :test do
-  gem "mocha"
+  gem "mocha", :require => false
   # Required manaully in the test_helper, see http://github.com/thoughtbot/factory_girl/commit/feac7298352a83fef0717d8beadd2eda9aabfe56
   gem "factory_girl", :git => "http://github.com/thoughtbot/factory_girl.git", :branch => "rails3", :require => false
   # Same goes for shoulda
