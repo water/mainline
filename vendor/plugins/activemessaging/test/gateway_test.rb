@@ -1,4 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
+require 'rubygems'
+require 'mocha'
 
 class InitializeFilter
   
@@ -56,6 +58,7 @@ class GatewayTest < Test::Unit::TestCase
   end
 
   def setup
+    ActiveMessaging::StoredMessage.delete_all
   end
 
   def teardown
@@ -77,7 +80,7 @@ class GatewayTest < Test::Unit::TestCase
     assert filter_obj
     assert filter_obj.is_a?(InitializeFilter)
     assert_equal filter_obj.options, {:direction=>:incoming, :name=>'test2'}
-
+  
     filter_obj = ActiveMessaging::Gateway.create_filter(:'gateway_test/class_filter', {:direction=>:incoming, :name=>'test2'})
     assert filter_obj
     assert filter_obj.is_a?(Class)
@@ -150,7 +153,7 @@ class GatewayTest < Test::Unit::TestCase
       ActiveMessaging::Gateway.publish :hello_world, '', self.class, headers={}, timeout=10
     end
   end
-
+  
   def test_acknowledge_message
     ActiveMessaging::Gateway.destination :hello_world, '/queue/helloWorld'
     ActiveMessaging::Gateway.subscribe_to :hello_world, TestProcessor, headers={}
@@ -160,7 +163,7 @@ class GatewayTest < Test::Unit::TestCase
     ActiveMessaging::Gateway.acknowledge_message sub, msg
     assert_equal msg, ActiveMessaging::Gateway.connection.received_messages.first
   end
-
+  
   def test_abort_message
     ActiveMessaging::Gateway.destination :hello_world, '/queue/helloWorld'
     ActiveMessaging::Gateway.subscribe_to :hello_world, TestRetryProcessor, headers={}
@@ -170,7 +173,7 @@ class GatewayTest < Test::Unit::TestCase
     ActiveMessaging::Gateway.dispatch(msg)
     assert_equal msg, ActiveMessaging::Gateway.connection.unreceived_messages.first
   end
-
+  
   def test_receive
     ActiveMessaging::Gateway.destination :hello_world, '/queue/helloWorld'
     ActiveMessaging::Gateway.publish :hello_world, "test_publish body", self.class, headers={}, timeout=10
@@ -185,6 +188,30 @@ class GatewayTest < Test::Unit::TestCase
     assert_equal size, ActiveMessaging::Gateway.named_destinations.size
   end
 
+  def test_publish_should_store_a_message_when_delivery_failed
+    ActiveMessaging::Gateway.store_and_forward_to :test
+    ActiveMessaging::Gateway.destination :hello_world, '/queue/helloWorld'
+    ActiveMessaging::Gateway.expects(:connection).raises(Timeout::Error, "timed out")
+    ActiveMessaging::Gateway.publish :hello_world, "test_publish body", self.class, headers={}, timeout=10
+    assert_equal 1, ActiveMessaging::StoredMessage.find_all_by_destination('hello_world').size
+  end
+  
+  def test_stored_message_should_store_a_valid_message
+    ActiveMessaging::Gateway.store_and_forward_to :test
+    ActiveMessaging::Gateway.destination :hello_world, '/queue/helloWorld'
+    ActiveMessaging::Gateway.expects(:connection).raises(Timeout::Error, "timed out")
+    ActiveMessaging::Gateway.publish :hello_world, "test_publish body", self.class, {:keep_it => "real"}, timeout=10
+    message = ActiveMessaging::StoredMessage.find(:first)
+    assert_equal 'test_publish body', message.message
+    assert_equal 'real', message.headers[:keep_it]
+    assert_equal self.class, message.publisher
+  end
+
+  def test_fetch_the_database_connection_from_the_broker
+    ActiveMessaging::Gateway.store_and_forward_to :test
+    assert ActiveMessaging::Gateway.use_store_and_forward
+  end
+  
   ## figure out how to test these better - start in a thread perhaps?
   # def test_start
   # end

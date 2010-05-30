@@ -1,5 +1,5 @@
 require 'rubygems'
-require_gem 'coverage'
+gem 'coverage'
 
 require 'test/unit'
 

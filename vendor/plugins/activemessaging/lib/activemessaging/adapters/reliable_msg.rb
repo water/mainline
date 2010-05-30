@@ -18,9 +18,6 @@ module ActiveMessaging
 
       THREAD_OLD_TXS = :a13g_reliable_msg_old_txs
 
-      QUEUE_PARAMS = [:expires,:delivery,:priority,:max_deliveries,:drb_uri,:tx_timeout,:connect_count]
-      TOPIC_PARAMS = [:expires,:drb_uri,:tx_timeout,:connect_count]
-
       class Connection
         include ActiveMessaging::Adapter
 
@@ -82,8 +79,7 @@ module ActiveMessaging
           dd = /^\/(queue|topic)\/(.*)$/.match(destination_name)
           rm_class = dd[1].titleize
           message_headers.delete("id")
-          dest_headers = message_headers.reject {|k,v| rm_class == 'Queue' ? !QUEUE_PARAMS.include?(k) : !TOPIC_PARAMS.include?(k)}
-          rm_dest = "ReliableMsg::#{rm_class}".constantize.new(dd[2], dest_headers)
+          rm_dest = "ReliableMsg::#{rm_class}".constantize.new(dd[2], message_headers)
           destinations[destination_name] = rm_dest
         end
 
@@ -132,27 +128,15 @@ module ActiveMessaging
 
         # called after a message is successfully received and processed
         def received message, headers={}
-          begin
-            message.transaction[:qm].commit(message.transaction[:tid]) 
-          rescue Object=>ex
-            puts "received failed: #{ex.message}"
-          ensure
-            Thread.current[::ReliableMsg::Client::THREAD_CURRENT_TX] = nil
-          end
-          
+          message.transaction[:qm].commit(message.transaction[:tid]) 
+          Thread.current[::ReliableMsg::Client::THREAD_CURRENT_TX] = nil
         end
         
         # called after a message is successfully received and processed
         def unreceive message, headers={}
-          begin
-            message.transaction[:qm].abort(message.transaction[:tid])
-          rescue Object=>ex
-            puts "unreceive failed: #{ex.message}"
-          ensure
-            Thread.current[::ReliableMsg::Client::THREAD_CURRENT_TX] = nil
-          end
+          message.transaction[:qm].abort(message.transaction[:tid])
+          Thread.current[::ReliableMsg::Client::THREAD_CURRENT_TX] = nil
         end
-
       end
       
       class Subscription

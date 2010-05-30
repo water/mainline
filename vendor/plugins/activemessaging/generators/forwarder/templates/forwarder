@@ -3,14 +3,14 @@ require 'rubygems'
 require 'daemons'
 
 APP_ROOT = File.expand_path(File.dirname(__FILE__) + '/..')
-script_file = File.join(File.expand_path(APP_ROOT),'vendor','plugins','activemessaging','poller.rb')
+script_file = File.join(File.expand_path(APP_ROOT),'vendor','plugins','activemessaging','forwarding_poller.rb')
 tmp_dir = File.join(File.expand_path(APP_ROOT), 'tmp')
 
 options = {
-  :app_name   => "poller",
+  :app_name   => "forwarding_poller",
   :dir_mode   => :normal,
   :dir        => tmp_dir,
-  :multiple   => true,
+  :multiple   => false,
   :ontop      => false,
   :mode       => :load,
   :backtrace  => true,
@@ -18,4 +18,4 @@ options = {
   :log_output => true
 }
 
-Daemons.run(script_file,options)
+Daemons.run(script_file, options)

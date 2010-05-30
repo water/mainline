@@ -1,0 +1,5 @@
+Description:
+  Generates both a migration and a runner script for an ActiveMessaging Forwarder, both are required to use store & forward support in ActiveMessaging.
+  
+Examples:
+  script/generate forwarder

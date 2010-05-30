@@ -3,7 +3,7 @@ require 'yaml'
 module ActiveMessaging
 
   class Gateway
-    cattr_accessor :adapters, :subscriptions, :named_destinations, :filters, :processor_groups, :connections
+    cattr_accessor :adapters, :subscriptions, :named_destinations, :filters, :processor_groups, :connections, :use_store_and_forward
     @@adapters = {}
     @@subscriptions = {}
     @@named_destinations = {}
@@ -21,7 +21,7 @@ module ActiveMessaging
 
       # Starts up an message listener to start polling for messages on each configured connection, and dispatching processing
       def start
-
+        puts "start"
         # subscribe - creating connections along the way
         subscribe
 
@@ -286,26 +286,30 @@ module ActiveMessaging
       def publish destination_name, body, publisher=nil, headers={}, timeout=10
         raise "You cannot have a nil or empty destination name." if destination_name.nil?
         raise "You cannot have a nil or empty message body." if (body.nil? || body.empty?)
-        
         real_destination = find_destination(destination_name)
+        begin
+          deliver_message destination_name, body, publisher, headers, timeout
+        rescue Timeout::Error, DRb::DRbConnError, Errno::ECONNREFUSED
+          ActiveMessaging.logger.error "Couldn't transmit message #{body} to destination #{destination_name} via broker #{real_destination.broker_name}"
+          ActiveMessaging::StoredMessage.store!(destination_name, body, headers, publisher) if self.use_store_and_forward
+        end
+      end
+
+      def deliver_message destination, message, publisher = nil, headers = {}, timeout = 1
+        real_destination = find_destination(destination)
         details = {
-          :publisher => publisher, 
+          :publisher => publisher,
           :destination => real_destination,
           :direction => :outgoing
         }
-        message = OpenStruct.new(:body => body, :headers => headers.reverse_merge(real_destination.publish_headers))
-        begin
-          Timeout.timeout timeout do
-            execute_filter_chain(:outgoing, message, details) do |message|
-              connection(real_destination.broker_name).send real_destination.value, message.body, message.headers
-            end
+        message = OpenStruct.new(:body => message, :headers => headers.reverse_merge(real_destination.publish_headers))
+        Timeout.timeout timeout do
+          execute_filter_chain(:outgoing, message, details) do |message|
+            connection(real_destination.broker_name).send real_destination.value, message.body, message.headers
           end
-        rescue Timeout::Error=>toe
-          ActiveMessaging.logger.error("Timed out trying to send the message #{message} to destination #{destination_name} via broker #{real_destination.broker_name}")
-          raise toe
         end
       end
-      
+
       def receive destination_name, receiver=nil, subscribe_headers={}, timeout=10
         raise "You cannot have a nil or empty destination name." if destination_name.nil?
         conn = nil
@@ -356,8 +360,12 @@ module ActiveMessaging
         @@current_processor_group
       end
       
+      def ensure_broker_config
+        @broker_yml = YAML.load_file(File.join(RAILS_ROOT, 'config', 'broker.yml')) if @broker_yml.nil?
+      end
+      
       def load_connection_configuration(label='default')
-        @broker_yml = YAML::load(ERB.new(IO.read(File.join(RAILS_ROOT, 'config', 'broker.yml'))).result) if @broker_yml.nil?
+        ensure_broker_config
         if label == 'default'
           config = @broker_yml[RAILS_ENV].symbolize_keys
         else
@@ -368,6 +376,11 @@ module ActiveMessaging
         return config
       end
       
+      def store_and_forward_to(options)
+        require 'activemessaging/stored_message'
+        ActiveMessaging::StoredMessage.establish_connection options
+        self.use_store_and_forward = options
+      end
     end
 
   end
