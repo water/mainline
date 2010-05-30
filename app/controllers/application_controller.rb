@@ -58,6 +58,12 @@ class ApplicationController < ActionController::Base
   end
   
   protected
+
+  # RAILS3FAIL
+  def self.ssl_required(*args)
+  end
+  
+
     # Sets the before_filters needed to be able to render in a Site specific
     # context. +options+ is the options for the before_filters
     def self.renders_in_site_specific_context(options = {})
