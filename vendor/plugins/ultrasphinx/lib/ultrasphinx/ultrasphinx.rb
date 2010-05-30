@@ -100,11 +100,13 @@ module Ultrasphinx
       puts msg[0..0].upcase + msg[1..-1]
     else
       msg = "** ultrasphinx: #{msg}"
-      if defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER
-        RAILS_DEFAULT_LOGGER.warn msg
-      else
-        STDERR.puts msg
-      end
+      # RAILS3FAIL
+      # if defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER
+      #   RAILS_DEFAULT_LOGGER.warn msg
+      # else
+      #   STDERR.puts msg
+      # end
+      STDERR.puts msg
     end        
     nil # Explicitly return nil
   end

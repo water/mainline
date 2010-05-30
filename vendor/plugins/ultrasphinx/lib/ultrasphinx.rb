@@ -19,7 +19,8 @@ require 'ultrasphinx/is_indexed'
 
 if (ActiveRecord::Base.connection rescue nil) # XXX Not sure why this needed to be wrapped.
   require 'ultrasphinx/configure'
-  require 'ultrasphinx/autoload'
+  # RAILS3FAIL
+  # require 'ultrasphinx/autoload'
   require 'ultrasphinx/fields'
 
   require 'ultrasphinx/search/internals'
