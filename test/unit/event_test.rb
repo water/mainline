@@ -30,6 +30,8 @@ class EventTest < ActiveSupport::TestCase
     @project = @repository.project
   end
 
+  subject { @event }
+
   def new_event(opts={})
     c = Event.new({
       :target => repositories(:johans),

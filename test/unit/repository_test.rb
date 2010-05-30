@@ -35,6 +35,8 @@ class RepositoryTest < ActiveSupport::TestCase
     FileUtils.mkdir_p(@repository.full_repository_path, :mode => 0755)
   end
 
+  subject { @repository }
+
   should_validate_presence_of :user_id, :name, :owner_id
   should_validate_uniqueness_of :hashed_path
   should_validate_uniqueness_of :name, :scoped_to => :project_id, :case_sensitive => false

@@ -35,6 +35,8 @@ class MergeRequestTest < ActiveSupport::TestCase
     assert @merge_request.pending_acceptance_of_terms?
   end
 
+  subject { @merge_request }
+
   should_validate_presence_of :user, :source_repository, :target_repository
   should_validate_presence_of :summary, :sequence_number
 

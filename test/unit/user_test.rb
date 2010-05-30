@@ -25,6 +25,8 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new
   end
 
+  subject { @user }
+
   should "create a valid user" do
     assert_difference("User.count") do
       user = create_user
