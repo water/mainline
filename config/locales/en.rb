@@ -92,7 +92,7 @@
       :membership_destroyed => "Membership deleted",
     },
     :application_helper => {
-      :notice_for => lambda { |class_name| "This #{class_name} is being created,<br /> it will be ready pretty soon&hellip;"},
+      :notice_for => "This %{class_name} is being created,<br /> it will be ready pretty soon&hellip;",
       :event_status_add_project_repository => "created repository",
       :event_status_created => "created project",
       :event_status_deleted => "deleted project",
