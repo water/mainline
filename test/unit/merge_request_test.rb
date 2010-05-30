@@ -664,7 +664,7 @@ class MergeRequestTest < ActiveSupport::TestCase
     end
 
     should 'build an event with only the new state' do
-      @merge_request.write_attribute(:status_tag, nil)
+      @merge_request.instance_eval { write_attribute(:status_tag, nil) }
       @merge_request.with_user(users(:johan)) do
         @merge_request.status_tag = "Closed"
         @merge_request.create_status_change_event("Setting this to closed")
