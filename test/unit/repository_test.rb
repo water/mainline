@@ -591,16 +591,19 @@ class RepositoryTest < ActiveSupport::TestCase
     repo.committerships.create_with_permissions!({
         :committer => users(:johan)
       }, Committership::CAN_COMMIT)
+    repo.committerships.reload
     assert_equal [users(:johan).login], repo.committers.map(&:login)
 
     repo.committerships.create_with_permissions!({
         :committer => groups(:team_thunderbird)
       }, Committership::CAN_COMMIT)
     exp_users = groups(:team_thunderbird).members.unshift(users(:johan))
+    repo.committerships.reload
     assert_equal exp_users.map(&:login), repo.committers.map(&:login)
 
     groups(:team_thunderbird).add_member(users(:moe), Role.admin)
     repo.reload
+    repo.committerships.reload
     assert repo.committers.include?(users(:moe))
   end
 
@@ -730,6 +733,7 @@ class RepositoryTest < ActiveSupport::TestCase
       @repo.committerships.create_with_permissions!({
           :committer => users(:moe)
         }, Committership::CAN_REVIEW)
+      @repo.committerships.reload
       assert @repo.reviewers.map(&:login).include?(users(:moe).login)
     end
 
