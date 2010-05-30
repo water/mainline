@@ -205,14 +205,7 @@ class MergeRequestTest < ActiveSupport::TestCase
     gitm.expects(:cherry).with({}, @merge_request.target_branch, 'ffc').returns('+ bbacd')
     @merge_request.stubs(:target_repository).returns(repo)
 
-    # Stubbing with yields makes us lose the return value of the block. Stubbing
-    # it first makes it return to normal after this test.
-    Rails.cache.stubs(:fetch)
-    class << Rails.cache
-      def fetch(*args)
-        yield
-      end
-    end
+    rails_cache_passthrough
 
     assert !@merge_request.commit_merged?('ffc')
     assert @merge_request.commit_merged?('ff0')

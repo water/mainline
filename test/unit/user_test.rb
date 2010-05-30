@@ -363,7 +363,7 @@ class UserTest < ActiveSupport::TestCase
 
       should "return that user's avatar when the user has an avatar" do
         @user.update_attribute(:avatar_file_name, 'foo.png')
-        Rails.cache.clear
+        rails_cache_passthrough
         assert_equal @user.avatar.url(:thumb), User.find_avatar_for_email(@user.email, :thumb)
       end
 

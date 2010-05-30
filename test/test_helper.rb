@@ -90,6 +90,18 @@ class ActiveSupport::TestCase
       end
     end
   end
+
+  # Makes Rails.cache yield always.
+  # Rails.cache.stubs(:fetch).yields won't do. That will not make the block
+  # return what it originally returned.
+  def rails_cache_passthrough
+    Rails.cache.stubs(:fetch)
+    class << Rails.cache
+      def fetch(*args)
+        yield
+      end
+    end
+  end
 end
 
 class ActiveMessaging::Adapters::Test::Connection
