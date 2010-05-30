@@ -24,8 +24,7 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 
   def find_message_with_queue_and_regexp(queue_name, regexp)
-    # RAILS3FAIL: Investigate if commenting out this is safe.
-    # ActiveMessaging::Gateway.connection.clear_messages
+    ActiveMessaging::Gateway.connection.clear_messages
     yield
     msg = ActiveMessaging::Gateway.connection.find_message(queue_name, regexp)
     assert_not_nil msg, "Message #{regexp.source} in #{queue_name} was not found"
@@ -90,5 +89,12 @@ class ActiveSupport::TestCase
         assert_equal [*options[:only]].flatten.map(&:to_s).sort, filter.options[:only].sort
       end
     end
+  end
+end
+
+class ActiveMessaging::Adapters::Test::Connection
+  # For easier testing.
+  def clear_messages
+    destinations.each {|d| d.messages.clear }
   end
 end
