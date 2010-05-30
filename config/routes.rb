@@ -20,6 +20,9 @@
 Gitorious::Application.routes.draw do |map|
   root :to => "site#index"
 
+  # RAILS3FAIL: Temp route to make test/unit/lib/ssh_client_test.rb
+  match ":project_id/:id/writable_by" => "repositories#writable_by"
+
   # RAILS3FAIL: Apply magics here
   resources :projects do
     resources :repositories do

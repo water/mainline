@@ -64,24 +64,16 @@ class SSHClientTest < ActiveSupport::TestCase
     assert_equal "johan", client.user_name
   end
   
-  def make_request(path)
-    request = ActionController::TestRequest.new
-    request.request_uri = path
-    request
-  end
-  
-  
   should 'ask for the real path' do
     client = Gitorious::SSH::Client.new(@strainer, "johan")
     exp_path = "/foo/bar/writable_by?username=johan"
     assert_equal exp_path, client.writable_by_query_path
 
-    request = make_request(client.writable_by_query_path)
-    assert_equal RepositoriesController, ActionController::Routing::Routes.recognize(request)
-    assert_equal "writable_by", request.symbolized_path_parameters[:action]
-    assert_equal "repositories", request.symbolized_path_parameters[:controller]
-    assert_equal "foo", request.symbolized_path_parameters[:project_id]
-    assert_equal "bar", request.symbolized_path_parameters[:id]
+    params = Gitorious::Application.routes.recognize_path(exp_path)
+    assert_equal "writable_by", params[:action]
+    assert_equal "repositories", params[:controller]
+    assert_equal "foo", params[:project_id]
+    assert_equal "bar", params[:id]
   end
   
   should 'return the correct authentication URL' do
