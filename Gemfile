@@ -21,6 +21,7 @@ gem "diff-lcs", :require => "diff/lcs"
 gem "oauth"
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git", :branch => "rails3"
 gem "state_machine"
+gem "riddle" # For the ultrasphinx plugin
 
 # group :development do
 #   gem "mongrel", :git => "http://github.com/engineyard/mongrel.git"

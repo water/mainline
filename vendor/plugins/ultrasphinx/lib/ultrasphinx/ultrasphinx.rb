@@ -67,48 +67,32 @@ module Ultrasphinx
       'group_concat' => "CAST(GROUP_CONCAT(DISTINCT ? ? SEPARATOR ' ') AS CHAR)",
       'delta' => "DATE_SUB(NOW(), INTERVAL ? SECOND)",      
       'hash' => "CAST(CRC32(?) AS unsigned)",
-      'range_cast' => "?",
-      'stored_procedures' => {}
+      'range_cast' => "?"
     },
     'postgresql' => {
       'group_concat' => "GROUP_CONCAT(?)",
       'delta' => "(NOW() - '? SECOND'::interval)",
       'range_cast' => "cast(coalesce(?,1) AS integer)",
-      'hash' => "CRC32(?)",
-      'stored_procedures' => Hash[*(
-        ['hex_to_int', 'group_concat', 'concat_ws', 'unix_timestamp', 'crc32'].map do |name|
-          [name, load_stored_procedure(name)]
-        end.flatten
-        )
-      ]
+      'hash' => "CRC32(?)"
     }      
   }
+  SQL_FUNCTIONS['jdbcmysql'] = SQL_FUNCTIONS['mysql']
   
   DEFAULTS = {
     'mysql' => %(
-type = mysql
-sql_query_pre = SET SESSION group_concat_max_len = 65535
-sql_query_pre = SET NAMES utf8
-  ), 
+      type = mysql
+      sql_query_pre = SET SESSION group_concat_max_len = 65535
+      sql_query_pre = SET NAMES utf8
+    ), 
     'postgresql' => %(
-type = pgsql
-sql_query_pre = ) + SQL_FUNCTIONS['postgresql']['stored_procedures'].values.join(' ') + %(
-  )
-}
+      type = pgsql
+      sql_query_pre =
+    )
+  }
+  DEFAULTS['jdbcmysql'] = DEFAULTS['mysql']
     
   ADAPTER = ActiveRecord::Base.connection.instance_variable_get("@config")[:adapter] rescue 'mysql'
-  
-  # Create language plpgsql
-  if ADAPTER == "postgresql"
-    ActiveRecord::Base.connection.execute("CREATE LANGUAGE plpgsql;") rescue nil
-  end
-  
-  # Install the stored procedures.
-  # XXX This shouldn't be done at every index, say the Postgres people.
-  SQL_FUNCTIONS[ADAPTER]['stored_procedures'].each do |key, value|
-    ActiveRecord::Base.connection.execute(value)
-  end
-  
+    
   # Warn-mode logger. Also called from rake tasks.  
   def self.say msg
     # XXX Method name is stupid.
@@ -116,7 +100,7 @@ sql_query_pre = ) + SQL_FUNCTIONS['postgresql']['stored_procedures'].values.join
       puts msg[0..0].upcase + msg[1..-1]
     else
       msg = "** ultrasphinx: #{msg}"
-      if defined? RAILS_DEFAULT_LOGGER
+      if defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER
         RAILS_DEFAULT_LOGGER.warn msg
       else
         STDERR.puts msg
@@ -128,7 +112,7 @@ sql_query_pre = ) + SQL_FUNCTIONS['postgresql']['stored_procedures'].values.join
   # Debug-mode logger.  
   def self.log msg
     # XXX Method name is stupid.
-    if defined? RAILS_DEFAULT_LOGGER
+    if defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER
       RAILS_DEFAULT_LOGGER.debug msg
     else
       STDERR.puts msg
@@ -145,12 +129,20 @@ sql_query_pre = ) + SQL_FUNCTIONS['postgresql']['stored_procedures'].values.join
     section = contents[/^#{heading.gsub('/', '__')}\s*?\{(.*?)\}/m, 1]
     
     if section
+      # Strip comments and leading/trailing whitespace
+      section.gsub!(/^\s*(.*?)\s*(?:#.*)?$/, '\1')
+
       # Convert to a hash
-      options = section.split("\n").map do |line|
-        line =~ /\s*(.*?)\s*=\s*([^\#]*)/
-        $1 ? [$1, $2.strip] : []
-      end      
-      Hash[*options.flatten] 
+      returning({}) do |options|
+        lines = section.split(/\n+/)
+        while line = lines.shift
+          if line =~ /(.*?)\s*=\s*(.*)/
+            key, value = $1, [$2]
+            value << (line = lines.shift) while line =~ /\\$/
+            options[key] = value.join("\n    ")
+          end
+        end
+      end
     else
       # XXX Is it safe to raise here?
       Ultrasphinx.say "warning; heading #{heading} not found in #{path}; it may be corrupted. "
@@ -204,22 +196,6 @@ sql_query_pre = ) + SQL_FUNCTIONS['postgresql']['stored_procedures'].values.join
   STOPWORDS_PATH = "#{Ultrasphinx::INDEX_SETTINGS['path']}/#{DICTIONARY}-stopwords.txt"
 
   MODEL_CONFIGURATION = {}     
-
-  # Complain if the database names go out of sync.
-  def self.verify_database_name
-    if File.exist? CONF_PATH
-      begin
-        if options_for(
-          "source #{MODEL_CONFIGURATION.keys.first.tableize}_#{MAIN_INDEX}", 
-          CONF_PATH
-        )['sql_db'] != ActiveRecord::Base.connection.instance_variable_get("@config")[:database]
-          say "warning; configured database name is out-of-date"
-          say "please run 'rake ultrasphinx:configure'"
-        end 
-      rescue Object
-      end
-    end
-  end
   
   # See if a delta index was defined.
   def self.delta_index_present?

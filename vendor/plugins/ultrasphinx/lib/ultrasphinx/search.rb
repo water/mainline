@@ -42,7 +42,10 @@ The hash lets you customize internal aspects of the search.
 <tt>:weights</tt>:: A hash. Text-field names and associated query weighting. The default weight for every field is 1.0. Example: <tt>:weights => {'title' => 2.0}</tt>
 <tt>:filters</tt>:: A hash. Names of numeric or date fields and associated values. You can use a single value, an array of values, or a range. (See the bottom of the ActiveRecord::Base page for an example.)
 <tt>:facets</tt>:: An array of fields for grouping/faceting. You can access the returned facet values and their result counts with the <tt>facets</tt> method.
+<tt>:location</tt>:: A hash. Specify the names of your latititude and longitude attributes as declared in your is_indexed calls. To sort the results by distance, set <tt>:sort_mode => 'extended'</tt> and <tt>:sort_by => 'distance asc'.</tt>
 <tt>:indexes</tt>:: An array of indexes to search. Currently only <tt>Ultrasphinx::MAIN_INDEX</tt> and <tt>Ultrasphinx::DELTA_INDEX</tt> are available. Defaults to both; changing this is rarely needed.
+
+== Query Defaults
 
 Note that you can set up your own query defaults in <tt>environment.rb</tt>: 
   
@@ -53,6 +56,34 @@ Note that you can set up your own query defaults in <tt>environment.rb</tt>:
   })
 
 = Advanced features
+
+== Geographic distance
+
+If you pass a <tt>:location</tt> Hash, distance from the location in meters will be available in your result records via the <tt>distance</tt> accessor:
+
+  @search = Ultrasphinx::Search.new(:class_names => 'Point', 
+            :query => 'pizza',
+            :sort_mode => 'extended',
+            :sort_by => 'distance',
+            :location => {
+              :lat => 40.3,
+              :long => -73.6
+            })
+            
+   @search.run.first.distance #=> 1402.4
+
+Note that Sphinx expects lat/long to be indexed as radians. If you have degrees in your database, do the conversion in the <tt>is_indexed</tt> as so:
+  
+    is_indexed 'fields' => [
+        'name', 
+        'description',
+        {:field => 'lat', :function_sql => "RADIANS(?)"}, 
+        {:field => 'lng', :function_sql => "RADIANS(?)"}
+      ]
+
+Then, set <tt>Ultrasphinx::Search.client_options[:location][:units] = 'degrees'</tt>.
+
+The MySQL <tt>:double</tt> column type is recommended for storing location data. For Postgres, use <tt>:float</tt.
 
 == Interlock integration
   
@@ -108,7 +139,12 @@ Note that your database is never changed by anything Ultrasphinx does.
       :weights => {},
       :class_names => [],
       :filters => {},
-      :facets => []
+      :facets => [],
+      :location => HashWithIndifferentAccess.new({
+        :lat_attribute_name  => 'lat',
+        :long_attribute_name => 'lng',
+        :units => 'radians'
+      })
     })
     
     cattr_accessor :excerpting_options
@@ -239,6 +275,9 @@ Note that your database is never changed by anything Ultrasphinx does.
       require_run    
       (total_entries / per_page.to_f).ceil
     end
+
+    # add alias for total_pages as expected by latest will_paginate
+    alias total_pages page_count
             
     # Returns the previous page number.
     def previous_page 
@@ -262,12 +301,19 @@ Note that your database is never changed by anything Ultrasphinx does.
       opts = Hash[HashWithIndifferentAccess.new(opts._deep_dup._coerce_basic_types)]
       unless self.class.query_defaults.instance_of? Hash
         self.class.query_defaults = Hash[self.class.query_defaults]
+        self.class.query_defaults['location'] = Hash[self.class.query_defaults['location']]
+        
         self.class.client_options = Hash[self.class.client_options]
         self.class.excerpting_options = Hash[self.class.excerpting_options]
         self.class.excerpting_options['content_methods'].map! {|ary| ary.map {|m| m.to_s}}
       end    
+
+      # We need an annoying deep merge on the :location parameter
+      opts['location'].reverse_merge!(self.class.query_defaults['location']) if opts['location']
+
+      # Merge the rest of the defaults      
+      @options = self.class.query_defaults.merge(opts)
       
-      @options = self.class.query_defaults.merge(opts)            
       @options['query'] = @options['query'].to_s
       @options['class_names'] = Array(@options['class_names'])
       @options['facets'] = Array(@options['facets'])
@@ -342,7 +388,7 @@ Note that your database is never changed by anything Ultrasphinx does.
       # Fetch the actual field contents
       docs = results_with_content_methods.map do |result, methods|
         methods.map do |method| 
-          method and strip_bogus_characters(result.send(method)) or ""
+          method and strip_bogus_characters(result.send(method).to_s) or ""
         end
       end.flatten
       

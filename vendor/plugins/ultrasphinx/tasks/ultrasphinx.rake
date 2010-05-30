@@ -1,11 +1,16 @@
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 
 ENV['RAILS_ENV'] ||= "development"
+
+module Ultrasphinx
+end
 
 namespace :ultrasphinx do  
 
   task :_environment => [:environment] do
     # We can't just chain :environment because we want to make 
     # sure it's set only for known Sphinx tasks
+    require 'ultrasphinx'
     Ultrasphinx.with_rake = true
   end
   
@@ -48,7 +53,7 @@ namespace :ultrasphinx do
     task :start => [:_environment] do
       FileUtils.mkdir_p File.dirname(Ultrasphinx::DAEMON_SETTINGS["log"]) rescue nil
       raise Ultrasphinx::DaemonError, "Already running" if ultrasphinx_daemon_running?
-      system "searchd --config '#{Ultrasphinx::CONF_PATH}'"
+      system "searchd --config #{Ultrasphinx::CONF_PATH}"
       sleep(4) # give daemon a chance to write the pid file
       if ultrasphinx_daemon_running?
         say "started successfully"
@@ -108,7 +113,9 @@ namespace :ultrasphinx do
         end
       end
       say "writing #{words.size} words"
-      File.open(tmpfile, 'w').write(words.join("\n"))
+      File.open(tmpfile, 'w') do |f|
+        f.write(words.join("\n"))
+      end
       say "loading dictionary '#{Ultrasphinx::DICTIONARY}' into aspell"
       system("aspell --lang=en create master #{Ultrasphinx::DICTIONARY}.rws < #{tmpfile}")
     end
@@ -139,7 +146,7 @@ def ultrasphinx_daemon_pid
 end
 
 def ultrasphinx_daemon_running?
-  if ultrasphinx_daemon_pid and `ps #{ultrasphinx_daemon_pid} | wc`.to_i > 1 
+  if ultrasphinx_daemon_pid and `ps -p#{ultrasphinx_daemon_pid} | wc`.to_i > 1 
     true
   else
     # Remove bogus lockfiles.
@@ -152,7 +159,7 @@ def ultrasphinx_index(index)
   rotate = ultrasphinx_daemon_running?
   ultrasphinx_create_index_path
   
-  cmd = "indexer --config '#{Ultrasphinx::CONF_PATH}'"
+  cmd = "indexer --config #{Ultrasphinx::CONF_PATH}"
   cmd << " #{ENV['OPTS']} " if ENV['OPTS']
   cmd << " --rotate" if rotate
   cmd << " #{index}"
@@ -171,7 +178,7 @@ def ultrasphinx_merge
     raise "#{index} index is missing" unless File.exist? "#{Ultrasphinx::INDEX_SETTINGS['path']}/sphinx_index_#{index}.spa"
   end
   
-  cmd = "indexer --config '#{Ultrasphinx::CONF_PATH}'"
+  cmd = "indexer --config #{Ultrasphinx::CONF_PATH}"
   cmd << " #{ENV['OPTS']} " if ENV['OPTS']
   cmd << " --rotate" if rotate
   cmd << " --merge #{indexes.join(' ')}"

@@ -2,6 +2,9 @@
 module Ultrasphinx
   class Search
     module Internals
+    
+      INFINITY = 1/0.0
+    
       include Associations
 
       # These methods are kept stateless to ease debugging
@@ -11,6 +14,8 @@ module Ultrasphinx
       def build_request_with_options opts
       
         request = Riddle::Client.new
+        
+        # Basic options
         request.instance_eval do          
           @server = Ultrasphinx::CLIENT_SETTINGS['server_host']
           @port = Ultrasphinx::CLIENT_SETTINGS['server_port']          
@@ -20,8 +25,32 @@ module Ultrasphinx
           @max_matches = [@offset + @limit + Ultrasphinx::Search.client_options['max_matches_offset'], MAX_MATCHES].min
         end
           
+        # Geosearch location
+        loc = opts['location']
+        loc.stringify_keys!
+        lat, long = loc['lat'], loc['long']
+        if lat and long
+          # Convert degrees to radians, if requested
+          if loc['units'] == 'degrees'
+            lat = degrees_to_radians(lat)
+            long = degrees_to_radians(long)
+          end
+          # Set the location/anchor point
+          request.set_anchor(loc['lat_attribute_name'], lat, loc['long_attribute_name'], long)
+        end
+                  
         # Sorting
         sort_by = opts['sort_by']
+        if options['location']
+          case sort_by
+            when "distance asc", "distance" then sort_by = "@geodist asc"
+            when "distance desc" then sort_by = "@geodist desc"
+          end
+        end
+        
+        # Use the additional sortable column if it is a text type
+        sort_by += "_sortable" if Fields.instance.types[sort_by] == "text"
+        
         unless sort_by.blank?
           if opts['sort_mode'].to_s == 'relevance'
             # If you're sorting by a field you don't want 'relevance' order
@@ -62,21 +91,35 @@ module Ultrasphinx
         end          
 
         # Extract raw filters 
-        # XXX We should coerce based on the Field values, not on the class
+        # XXX This is poorly done. We should coerce based on the Field types, not the value class.
+        # That would also allow us to move numeric filters from the query string into the hash.
         Array(opts['filters']).each do |field, value|          
-          field = field.to_s
-          type = Fields.instance.types[field]
-          unless type
-            raise UsageError, "field #{field.inspect} is invalid"
-          end
+
+          field = field.to_s          
+          type = Fields.instance.types[field]             
           
+          # Special derived attribute
+          if field == 'distance' and options['location']
+            field, type = '@geodist', 'float'
+          end
+
+          raise UsageError, "field #{field.inspect} is invalid" unless type
+          
+          exclude = false
+          
+          # check for exclude flag attached to filter
+          if value.is_a?(Hash)
+            exclude = value[:exclude]
+            value = value[:value]
+          end
+
           begin
             case value
               when Integer, Float, BigDecimal, NilClass, Array
                 # XXX Hack to force floats to be floats
                 value = value.to_f if type == 'float'
                 # Just bomb the filter in there
-                request.filters << Riddle::Client::Filter.new(field, Array(value), false)
+                request.filters << Riddle::Client::Filter.new(field, Array(value), exclude)
               when Range
                 # Make sure ranges point in the right direction
                 min, max = [value.begin, value.end].map {|x| x._to_numeric }
@@ -84,7 +127,7 @@ module Ultrasphinx
                 min, max = max, min if min > max
                 # XXX Hack to force floats to be floats
                 min, max = min.to_f, max.to_f if type == 'float'
-                request.filters << Riddle::Client::Filter.new(field, min..max, false)
+                request.filters << Riddle::Client::Filter.new(field, min..max, exclude)
               when String
                 # XXX Hack to move text filters into the query
                 opts['parsed_query'] << " @#{field} #{value}"
@@ -92,7 +135,7 @@ module Ultrasphinx
                 raise NoMethodError
             end
           rescue NoMethodError => e
-            raise UsageError, "filter value #{value.inspect} for field #{field.inspect} is invalid"
+            raise UsageError, "Filter value #{value.inspect} for field #{field.inspect} is invalid"
           end
         end
         
@@ -208,12 +251,19 @@ module Ultrasphinx
                 (configuration['association_sql'] or "LEFT OUTER JOIN #{association_model.table_name} AS #{table_alias} ON #{table_alias}.#{klass.to_s.downcase}_id = #{klass.table_name}.#{association_model.primary_key}")
               ]
             when 'concatenate'
-              # Wait for someone to complain before worrying about this
-              raise "Concatenation text facets have not been implemented"
+              raise "Concatenation text facets have only been implemented for when :association_sql is defined" if configuration['association_sql'].blank?
+              
+              table_alias = configuration['table_alias']
+              
+              [ "#{table_alias}.#{configuration['field']}",
+                configuration['association_sql']
+              ]
           end
           
-          klass.connection.execute("SELECT #{field_string} AS value, #{SQL_FUNCTIONS[ADAPTER]['hash']._interpolate(field_string)} AS hash FROM #{klass.table_name} #{join_string} GROUP BY value").each do |value, hash|
-            FACET_CACHE[facet][hash.to_i] = value
+          query = "SELECT #{field_string} AS value, #{SQL_FUNCTIONS[ADAPTER]['hash']._interpolate(field_string)} AS hash FROM #{klass.table_name} #{join_string} GROUP BY value"
+          
+          klass.connection.execute(query).each do |hash|
+            FACET_CACHE[facet][hash[1].to_i] = hash[0]
           end                            
           klass
         end
@@ -226,13 +276,16 @@ module Ultrasphinx
             
       # Inverse-modulus map the Sphinx ids to the table-specific ids
       def convert_sphinx_ids(sphinx_ids)    
-        number_of_models = IDS_TO_MODELS.size
+        
+        number_of_models = IDS_TO_MODELS.size        
+        raise ConfigurationError, "No model mappings were found. Your #{RAILS_ENV}.conf file is corrupted, or your application container needs to be restarted." if number_of_models == 0
+        
         sphinx_ids.sort_by do |item| 
           item[:index]
         end.map do |item|
           class_name = IDS_TO_MODELS[item[:doc] % number_of_models]
           raise DaemonError, "Impossible Sphinx document id #{item[:doc]} in query result" unless class_name
-          [class_name, item[:doc] / number_of_models]
+          [class_name, (item[:doc] / number_of_models).to_i]
         end
       end
 
@@ -254,7 +307,7 @@ module Ultrasphinx
             end or
               # XXX This default is kind of buried, but I'm not sure why you would need it to be 
               # configurable, since you can use ['finder_methods'].
-              "find_all_by_id"
+              "find_all_by_#{klass.primary_key}"
             )
 
           records = klass.send(finder, ids_hash[class_name])
@@ -286,6 +339,16 @@ module Ultrasphinx
             end
           end
         end
+
+        # Add an accessor for distance, if requested
+        if self.options['location']['lat'] and self.options['location']['long']
+          results.each_with_index do |result, index|
+            if result
+              distance = (response[:matches][index][:attributes]['@geodist'] or INFINITY)
+              result.instance_variable_get('@attributes')['distance'] = distance
+            end
+          end
+        end
         
         results.compact!
         
@@ -299,14 +362,10 @@ module Ultrasphinx
       
       def perform_action_with_retries
         tries = 0
+        exceptions = [NoMethodError, Riddle::VersionError, Riddle::ResponseError, Errno::ECONNREFUSED, Errno::ECONNRESET,  Errno::EPIPE]
         begin
           yield
-        rescue NoMethodError,
-            Riddle::VersionError,
-            Riddle::ResponseError,
-            Errno::ECONNREFUSED, 
-            Errno::ECONNRESET, 
-            Errno::EPIPE => e
+        rescue *exceptions => e
           tries += 1
           if tries <= Ultrasphinx::Search.client_options['max_retries']
             say "restarting query (#{tries} attempts already) (#{e})"            
@@ -314,7 +373,9 @@ module Ultrasphinx
             retry
           else
             say "query failed"
-            raise DaemonError, e.to_s
+            # Clear the rescue list, retry one last time, and let the error fail up the stack
+            exceptions = []
+            retry
           end
         end
       end
@@ -329,6 +390,10 @@ module Ultrasphinx
         # Also removes apostrophes in the middle of words so that they don't get split in two.
         s.gsub(/(^|\s)(AND|OR|NOT|\@\w+)(\s|$)/i, "").gsub(/(\w)\'(\w)/, '\1\2')
       end 
+      
+      def degrees_to_radians(value)
+        Math::PI * value / 180.0
+      end
     
     end
   end  

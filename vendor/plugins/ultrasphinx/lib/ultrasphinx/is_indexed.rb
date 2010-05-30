@@ -195,17 +195,18 @@ If the associations weren't just <tt>has_many</tt> and <tt>belongs_to</tt>, you 
       opts['fields'].map! do |entry|
         if entry.is_a? Hash
           entry._stringify_all!('sortable', 'facet')
-          entry.assert_valid_keys ['field', 'as', 'facet', 'function_sql', 'sortable']
+          entry.assert_valid_keys ['field', 'as', 'facet', 'function_sql', 'sortable', 'table_alias']
           entry
         else
-          entry.to_s
+          # Single strings
+          {'field' => entry.to_s}
         end
       end
       
       opts['concatenate'].each do |entry|
         entry._stringify_all!('fields', 'sortable', 'facet')
       
-        entry.assert_valid_keys ['class_name', 'association_name', 'conditions', 'field', 'as', 'fields', 'association_sql', 'facet', 'function_sql', 'sortable', 'order']
+        entry.assert_valid_keys ['class_name', 'association_name', 'conditions', 'field', 'as', 'fields', 'association_sql', 'facet', 'function_sql', 'sortable', 'order', 'table_alias']
         raise Ultrasphinx::ConfigurationError, "You can't mix regular concat and group concats" if entry['fields'] and (entry['field'] or entry['class_name'] or entry['association_name'])
         raise Ultrasphinx::ConfigurationError, "Concatenations must specify an :as key" unless entry['as']
         raise Ultrasphinx::ConfigurationError, "Group concatenations must not have multiple fields" if entry['field'].is_a? Array
@@ -217,9 +218,9 @@ If the associations weren't just <tt>has_many</tt> and <tt>belongs_to</tt>, you 
       
       opts['include'].each do |entry|
         entry._stringify_all!('sortable', 'facet')
-        entry.assert_valid_keys ['class_name', 'association_name', 'field', 'as', 'association_sql', 'facet', 'function_sql', 'sortable']
+        entry.assert_valid_keys ['class_name', 'association_name', 'field', 'as', 'association_sql', 'facet', 'function_sql', 'sortable', 'table_alias', 'dont_group_by']
       end
-            
+                  
       Ultrasphinx::MODEL_CONFIGURATION[self.name] = opts
     end
   end
