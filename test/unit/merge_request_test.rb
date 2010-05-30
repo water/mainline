@@ -198,7 +198,7 @@ class MergeRequestTest < ActiveSupport::TestCase
     repo = mock("Git repo")
     git = mock("Git backend")
     repo.stubs(:git).returns(git)
-    @merge_request.target_repository.stubs(:git).returns(repo)
+    @merge_request.stubs(:target_repository).return(repo)
     git.expects(:cherry).with({}, @merge_request.target_branch, 'ff0').returns('')
     git.expects(:cherry).with({}, @merge_request.target_branch, 'ffc').returns('+ bbacd')
     assert !@merge_request.commit_merged?('ffc')
