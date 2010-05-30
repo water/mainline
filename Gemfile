@@ -19,6 +19,7 @@ gem "stomp", "1.1"
 gem "mime-types", :require => "mime/types"
 gem "diff-lcs", :require => "diff/lcs"
 gem "oauth"
+gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git", :branch => "rails3"
 
 # group :development do
 #   gem "mongrel", :git => "http://github.com/engineyard/mongrel.git"
