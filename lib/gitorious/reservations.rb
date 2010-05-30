@@ -28,14 +28,13 @@ module Gitorious
         @reserved_root_names ||= unaccounted_root_names + Dir[File.join(RAILS_ROOT, "public", "*")].map{|f| File.basename(f) }
       end
 
-      def controller_names_plural
-        return @controller_names_plural unless @controller_names_plural.blank?
-        @controller_names_plural = ActionController::Routing.possible_controllers.map{|s| s.split("/").first }
-      end
-
       def controller_names
         return @controller_names unless @controller_names.blank?
-        @controller_names = controller_names_plural + controller_names_plural.map{|s| s.singularize }
+        @controller_names = Gitorious::Application.routes.routes.map {|r| r.path[/\/([^\/]+)\//, 1] }
+        @controller_names.uniq!
+        @controller_names.compact!
+        @controller_names.delete_if {|c| c =~ /^:/ }
+        @controller_names
       end
 
       def projects_member_actions
