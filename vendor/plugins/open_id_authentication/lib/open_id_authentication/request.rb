@@ -5,6 +5,8 @@ module OpenIdAuthentication
     end
 
     def request_method_with_openid
+      parameters = self.parameters.dup
+      @env.delete("action_dispatch.request.parameters")
       if !parameters[:_method].blank? && parameters[:open_id_complete] == '1'
         parameters[:_method].to_sym
       else
