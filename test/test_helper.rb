@@ -63,7 +63,9 @@ class ActiveSupport::TestCase
   end
   def self.should_render_in_global_context(options = {})
     should "Render in global context for actions" do
-      filter = @controller.class.filter_chain.find(:require_global_site_context)
+      filter = @controller.class._process_action_callbacks.find {|c|
+        c.raw_filter == :require_global_site_context
+      }
       assert_not_nil filter, ":require_global_site_context before_filter not set"
       unless options[:except].blank?
         assert_not_nil filter.options[:except], "no :except specified in controller"
@@ -78,7 +80,9 @@ class ActiveSupport::TestCase
   
   def self.should_render_in_site_specific_context(options = {})
     should "Render in site specific context for actions" do
-      filter = @controller.class.filter_chain.find(:redirect_to_current_site_subdomain)
+      filter = @controller.class._process_action_callbacks.find {|c|
+        c.raw_filter == :redirect_to_current_site_subdomain
+      }
       assert_not_nil filter, ":redirect_to_current_site_subdomain before_filter not set"
       unless options[:except].blank?
         assert_not_nil filter.options[:except], "no :except specified in controller"
