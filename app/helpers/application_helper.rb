@@ -361,7 +361,7 @@ module ApplicationHelper
   end
 
   def current_site
-    @controller.current_site
+    controller.current_site
   end
 
   def new_polymorphic_comment_path(parent, comment)
