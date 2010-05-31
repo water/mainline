@@ -33,4 +33,6 @@ Gitorious::Application.configure do
   ActionMailer::Base.default_url_options[:protocol] = 'https'
   ActionMailer::Base.default_url_options[:host] =
     YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["gitorious_host"]
+
+  ActiveSupport::Deprecation.silenced = true
 end
