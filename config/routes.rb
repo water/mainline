@@ -18,16 +18,30 @@
 #++
 
 Gitorious::Application.routes.draw do |map|
+  extend Gitorious::RepositoryRoutes
+
   root :to => "site#index"
 
-  # RAILS3FAIL: Temp route to make test/unit/lib/ssh_client_test.rb
-  match ":project_id/:id/writable_by" => "repositories#writable_by"
+  resources :events do
+    get :commits, :on => :member
+  end
 
-  # RAILS3FAIL: Apply magics here
-  resources :projects do
-    resources :repositories do
-      resources :merge_requests
+  resource :search
+
+  resources :teams, :as => "groups" do
+    delete :avatar, :on => :member
+
+    repositories
+    resources :projects do
+      repositories
     end
+    resources :memberships do
+      get :auto_complete_for_user_login, :on => :collection
+    end
+  end
+
+  resources :projects do
+    repositories
   end
 
   resources :messages do
@@ -64,16 +78,24 @@ Gitorious::Application.routes.draw do |map|
       get :watchlist
     end
 
-    resources :keys
-    resources :aliases do
-      get :confirm, :on => :member
-    end
-    resource :license
 
-    # RAILS3FAIL: Apply magics here
-    resources :repositories
-    resources :projects
+    # RAILS3FAIL: constraints makes functional tests go haywire (no such route bladi bla)
+    # scope :constraints => {:user_id => /#{User::USERNAME_FORMAT}/i} do
+    scope do
+      resources :keys
+      resources :aliases do
+        get :confirm, :on => :member
+      end
+      resource :license
+
+      repositories
+      resources :projects do
+        repositories
+      end
+    end
   end
+
+  resource :sessions
   match "/login" => "sessions#new"
   match "/logout" => "sessions#destroy"
 
@@ -82,6 +104,18 @@ Gitorious::Application.routes.draw do |map|
   match "/about" => "site#about", :as => :about
   match "/about/faq" => "site#about", :as => :faq
   match "/contact" => "site#contact", :as => :contact
+
+  namespace :admin do
+    resources :user do
+      member do
+        put :suspend
+        put :unsuspend
+        put :reset_password
+      end
+    end
+    # admin.resource :oauth_settings, :path_prefix => "/admin/projects/:project_id"
+    # resource :oauth_settings
+  end
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
