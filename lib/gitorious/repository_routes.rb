@@ -26,10 +26,17 @@ module Gitorious
           match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
           match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
           match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
+        end
 
-          match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
-          match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
-          match "blobs/*branch_and_path" => "blobs#show", :as => :blob
+        # Manually routing some member routes to use :repository_id instead
+        # of the default :id. Part legacy, part convenience.
+        # This mimics what `member do end` does.
+        with_scope_level :member do
+          scope ":repository_id", :name_prefix => parent_resource.member_name, :as => "" do
+            match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
+            match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
+            match "blobs/*branch_and_path" => "blobs#show", :as => :blob
+          end
         end
 
         resources :merge_requests do
