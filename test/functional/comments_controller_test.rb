@@ -98,7 +98,7 @@ class CommentsControllerTest < ActionController::TestCase
   context 'preview' do
     should 'render a preview of the comment' do
       login_as :johan
-      post :preview, :project_id => @project.slug, :repository_id => @repository.name, :comment => {:body => 'Foo'}
+      post :preview, :project_id => @project.slug, :repository_id => @repository.name, :comment => {:body => 'Foo'}, :format => "js"
       assert_response :success
       assert_template("comments/preview")
     end

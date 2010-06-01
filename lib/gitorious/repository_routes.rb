@@ -11,9 +11,6 @@ module Gitorious
           get :committers
           get :search_clones
 
-          match "comments/commit/:sha" => "comments#commit", :as => :commit_comment, :via => :get
-          match "comments/preview" => "comments#preview", :as => :comments_preview
-
           # #   repo.formatted_commits_feed "commits/*branch/feed.:format",
           # #       :controller => "commits", :action => "feed", :conditions => {:feed => :get}
           match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
@@ -33,11 +30,17 @@ module Gitorious
         # This mimics what `member do end` does.
         with_scope_level :member do
           scope ":repository_id", :name_prefix => parent_resource.member_name, :as => "" do
+            match "comments/commit/:sha" => "comments#commit", :as => :commit_comment, :via => :get
+            match "comments/preview" => "comments#preview", :as => :comments_preview
+
+
             match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
             match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
             match "blobs/*branch_and_path" => "blobs#show", :as => :blob
           end
         end
+
+        resources :comments
 
         resources :merge_requests do
           member do

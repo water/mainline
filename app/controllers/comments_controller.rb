@@ -109,7 +109,7 @@ class CommentsController < ApplicationController
         render :json => {
           "file-diff" => @file_diff,
           "comment" => render_to_string(:partial => @comment)
-        }, :status => :created
+        }, :status => :created, :content_type => "application/json"
       end
     end
   end
