@@ -61,6 +61,7 @@ class ActiveSupport::TestCase
     not_message = should_be_included ? "" : " not"
     "Expected collection (#{collection.count} items) #{not_message} to include #{object.class.name}"
   end
+
   def self.should_render_in_global_context(options = {})
     should "Render in global context for actions" do
       filter = @controller.class._process_action_callbacks.find {|c|
@@ -112,5 +113,22 @@ class ActiveMessaging::Adapters::Test::Connection
   # For easier testing.
   def clear_messages
     destinations.each {|d| d.messages.clear }
+  end
+end
+
+class ActionController::TestCase
+  include AuthenticatedTestHelper
+  def self.without_ssl_context
+    yield
+  end
+
+  def self.with_ssl_context
+    yield
+  end
+
+  def self.should_redirect_to_ssl
+    should 'redirect to ssl' do
+      assert_redirected_to "https://" + @request.host + @request.request_uri
+    end
   end
 end
