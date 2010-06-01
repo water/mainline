@@ -165,8 +165,11 @@ class CommittershipsControllerTest < ActionController::TestCase
       get :edit, :project_id => @project.to_param, :repository_id => @repository.to_param,
         :id => @committership.to_param
     end
+
     should_respond_with :success
-    should_assign_to(:committership, :equals =>  @committership)
+    should "assign committership" do
+      assert_equal @committership, assigns(:committership)
+    end
     should_render_template "edit"
   end
 
@@ -180,7 +183,10 @@ class CommittershipsControllerTest < ActionController::TestCase
         :id => @committership.to_param, :permissions => ["review"]
     end
     should_respond_with :redirect
-    should_assign_to(:committership, :equals => @committership)
+
+    should "assign committership" do
+       assert_equal @committership, assigns(:committership)
+    end
 
     should "update the permission" do
       assert_equal [:review], @committership.reload.permission_list
