@@ -10,11 +10,27 @@ module Gitorious
           get :confirm_delete
           get :committers
           get :search_clones
-        end
 
-        # RAILS3FAIL: Match doesn't work inside resource blocks
-        # match "comments/commit/:sha" => "comments#commit", :as => :commit_comment, :via => :get
-        # match "comments/preview" => "comments#preview", :as => :comments_preview
+          match "comments/commit/:sha" => "comments#commit", :as => :commit_comment, :via => :get
+          match "comments/preview" => "comments#preview", :as => :comments_preview
+
+          # #   repo.formatted_commits_feed "commits/*branch/feed.:format",
+          # #       :controller => "commits", :action => "feed", :conditions => {:feed => :get}
+          match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
+
+          match "commits" => "commits#index", :as => :commits
+          match "commits/*branch" => "commits#index", :as => :commits_in_ref
+          match "commit/:id(.:format)" => "commits#show", :as => :commit
+          match "trees" => "trees#index", :as => :trees
+          match "trees/*branch_and_path" => "trees#show", :as => :tree
+          match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
+          match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
+          match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
+
+          match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
+          match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
+          match "blobs/*branch_and_path" => "blobs#show", :as => :blob
+        end
 
         resources :merge_requests do
           member do
@@ -46,22 +62,6 @@ module Gitorious
             get :auto_complete_for_user_login
           end
         end
-
-        # # #   repo.formatted_commits_feed "commits/*branch/feed.:format",
-        # # #       :controller => "commits", :action => "feed", :conditions => {:feed => :get}
-        # match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
-
-        # match "commits" => "commits#index", :as => :commits
-        # match "commits/*branch" => "commits#index", :as => :commits_in_ref
-        # match "commit/:id(.:format)" => "commits#show", :as => :commit
-        # match "trees" => "trees#index", :as => :trees
-        # match "trees/*branch_and_path" => "trees#show", :as => :tree
-        # match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
-        # match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
-        # match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
-        # match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
-        # match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
-        # match "blobs/*branch_and_path" => "blobs#show", :as => :blob
       end
     end
   end
