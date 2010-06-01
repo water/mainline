@@ -91,13 +91,16 @@ class BlobsController < ApplicationController
     expires_in 30.minutes
     respond_to do |wants|
       wants.html
-      wants.json {render :json =>
-        @commits.map{|c|{
+      wants.json { render :json =>
+        @commits.map{|c| 
+          {
             :author => c.author.name,
             :sha => c.id,
             :message => c.short_message,
-            :committed_date => c.committed_date}
-        }.to_json}
+            :committed_date => c.committed_date
+          }
+        } 
+      }
     end
   end
   
