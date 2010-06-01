@@ -196,15 +196,17 @@ class CommittershipsControllerTest < ActionController::TestCase
   context "autocompletion" do
     setup do
       @user = users(:johan)
+      @project = projects(:johans)
+      @repository = repositories(:johans)
     end
 
     should "find a group by name" do
-      post :auto_complete_for_group_name, :q => "thunder", :format => "js"
+      post :auto_complete_for_group_name, :q => "thunder", :format => "js", :project_id => @project.to_param, :repository_id => @repository.to_param
       assert_equal [groups(:team_thunderbird)], assigns(:groups)
     end
 
     should "finds user by login" do
-      post :auto_complete_for_user_login, :q => "joha", :format => "js"
+      post :auto_complete_for_user_login, :q => "joha", :format => "js", :project_id => @project.to_param, :repository_id => @repository.to_param
       assert_equal [@user], assigns(:users)
       #assert_template "memberships/auto_complete_for_user_login.js.erb"
     end
@@ -212,14 +214,14 @@ class CommittershipsControllerTest < ActionController::TestCase
     should "find a user by email" do
       @user.email = "dr_awesome@example.com"
       @user.save!
-      post :auto_complete_for_user_login, :q => @user.email[0..4], :format => "js"
+      post :auto_complete_for_user_login, :q => @user.email[0..4], :format => "js", :project_id => @project.to_param, :repository_id => @repository.to_param
       assert_equal [@user], assigns(:users)
       #assert_template "memberships/auto_complete_for_user_login.js.erb"
     end
 
     should "not display emails if user has opted not to have it displayed" do
       @user.update_attribute(:public_email, false)
-      post :auto_complete_for_user_login, :q => @user.email[0..4], :format => "js"
+      post :auto_complete_for_user_login, :q => @user.email[0..4], :format => "js", :project_id => @project.to_param, :repository_id => @repository.to_param
       assert_equal [@user], assigns(:users)
       # assert_template "memberships/auto_complete_for_user_login.js.erb"
       assert_no_match(/email/, @response.body)
