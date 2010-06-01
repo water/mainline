@@ -5,4 +5,4 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 Mime::Type.register "text/plain", :diff
-Mime::Type.register "text/plain", :patc
+Mime::Type.register "text/plain", :patch
