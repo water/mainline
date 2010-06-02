@@ -28,21 +28,7 @@ Gitorious::Application.routes.draw do |map|
 
   resource :search
 
-  resources :teams, :as => "groups" do
-    delete :avatar, :on => :member
-
-    repositories
-    resources :projects do
-      repositories
-    end
-    resources :memberships do
-      get :auto_complete_for_user_login, :on => :collection
-    end
-  end
-
-  resources :projects do
-    repositories
-  end
+  resources :favorites
 
   resources :messages do
     member do
@@ -62,38 +48,8 @@ Gitorious::Application.routes.draw do |map|
   match "users/pending_activation" => "users#pending_activation"
   match "users/reset_password/:token" => "users#reset_password", :as => "reset_password"
 
-  resources :users do
-    collection do
-      get :forgot_password
-      post :forgot_password_create
-      get :openid_build
-      post :openid_create
-    end
-
-    member do
-      get :feed
-      get :password
-      put :update_password
-      delete :avatar
-      get :watchlist
-    end
-
-
-    # RAILS3FAIL: constraints makes functional tests go haywire (no such route bladi bla)
-    # scope :constraints => {:user_id => /#{User::USERNAME_FORMAT}/i} do
-    scope do
-      resources :keys
-      resources :aliases do
-        get :confirm, :on => :member
-      end
-      resource :license
-
-      repositories
-      resources :projects do
-        repositories
-      end
-    end
-  end
+  match "/merge_request_landing_page" => "merge_requests#oauth_return"
+  match "/merge_requests/:id" => "merge_requests#direct_access"
 
   resource :sessions
   match "/login" => "sessions#new"
@@ -116,6 +72,63 @@ Gitorious::Application.routes.draw do |map|
     # admin.resource :oauth_settings, :path_prefix => "/admin/projects/:project_id"
     # resource :oauth_settings
   end
+
+
+
+  resources_without_collection :users, "~" do
+    member do
+      get :feed
+      get :password
+      put :update_password
+      delete :avatar
+      get :watchlist
+    end
+
+    # RAILS3FAIL: constraints makes functional tests go haywire (no such route bladi bla)
+    # scope :constraints => {:user_id => /#{User::USERNAME_FORMAT}/i} do
+    scope do
+      resources :keys
+      resources :aliases do
+        get :confirm, :on => :member
+      end
+      resource :license
+
+      repositories
+
+      resources_without_collection :projects do
+        repositories
+      end
+    end
+  end
+  resources :users, :only => [:new, :create] do
+    collection do
+      get :forgot_password
+      post :forgot_password_create
+      get :openid_build
+      post :openid_create
+    end
+  end
+
+  resources_without_collection :groups, "+" do
+    delete :avatar, :on => :member
+
+    resources :memberships do
+      get :auto_complete_for_user_login, :on => :collection
+    end
+
+    repositories
+
+    resources_without_collection :projects do
+      repositories
+    end
+  end
+  resources :groups, :only => [:index, :new, :create]
+
+
+  resources_without_collection :projects do
+    repositories
+  end
+  resources :projects, :only => [:index, :new, :create]
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.

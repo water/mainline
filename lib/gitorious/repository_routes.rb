@@ -1,7 +1,43 @@
 module Gitorious
   module RepositoryRoutes
-    def repositories(options = {})
-      resources :repositories, options do
+    class Resource < ActionDispatch::Routing::Mapper::Resource
+      attr_accessor :prefix
+      def id_segment
+        prefix.to_s + super
+      end
+    end
+
+    def resources_without_collection(name, prefix = nil, options = {}, &block)
+      if @scope[:scope_level] == :resources
+        nested do
+          resources_without_collection(name, nil, options, &block)
+        end
+        return
+      end
+
+      resource = Gitorious::RepositoryRoutes::Resource.new(name, options)
+      resource.prefix = prefix
+
+      scope(:controller => resource.controller) do
+        with_scope_level(:resources, resource) do
+          yield if block_given?
+
+          with_scope_level(:member) do
+            scope("#{prefix}:id") do
+              scope(resource.options) do
+                get :show
+                put :update
+                delete :destroy
+                get :edit, :as => resource.singular
+              end
+            end
+          end
+        end
+      end
+    end
+
+    def repositories
+      resources_without_collection :repositories do
         member do
           get :clone
           post :create_clone
@@ -11,13 +47,6 @@ module Gitorious
           get :committers
           get :search_clones
 
-          # #   repo.formatted_commits_feed "commits/*branch/feed.:format",
-          # #       :controller => "commits", :action => "feed", :conditions => {:feed => :get}
-          match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
-
-          match "commits" => "commits#index", :as => :commits
-          match "commits/*branch" => "commits#index", :as => :commits_in_ref
-          match "commit/:id(.:format)" => "commits#show", :as => :commit
           match "trees" => "trees#index", :as => :trees
           match "trees/*branch_and_path" => "trees#show", :as => :tree
           match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
@@ -25,13 +54,19 @@ module Gitorious
           match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
         end
 
-        # Manually routing some member routes to use :repository_id instead
-        # of the default :id. Part legacy, part convenience.
-        # This mimics what `member do end` does.
+        # Make some of these member-ish routes act as if they were on a
+        # nested controller, causing :repository_id instead of :id.
         with_scope_level :member do
           scope ":repository_id", :name_prefix => parent_resource.member_name, :as => "" do
             match "comments/commit/:sha" => "comments#commit", :as => :commit_comment, :via => :get
             match "comments/preview" => "comments#preview", :as => :comments_preview
+
+            # #   repo.formatted_commits_feed "commits/*branch/feed.:format",
+            # #       :controller => "commits", :action => "feed", :conditions => {:feed => :get}
+            match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
+            match "commits" => "commits#index", :as => :commits
+            match "commits/*branch" => "commits#index", :as => :commits_in_ref
+            match "commit/:id(.:format)" => "commits#show", :as => :commit
 
 
             match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
