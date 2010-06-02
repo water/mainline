@@ -23,6 +23,7 @@ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git", :branch =>
 gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "builder"
+gem "will_paginate", :git => "http://github.com/mislav/will_paginate.git", :branch => "rails3"
 
 # group :development do
 #   gem "mongrel", :git => "http://github.com/engineyard/mongrel.git"
