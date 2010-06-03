@@ -27,6 +27,7 @@ class MessagesControllerTest < ActionController::TestCase
     context "SSL" do
       setup do
         login_as :moe
+        @message = messages(:johans_message_to_moe)
       end
       
       context "GET :index" do
@@ -38,11 +39,11 @@ class MessagesControllerTest < ActionController::TestCase
         should_redirect_to_ssl
       end
       context "GET :read" do
-        setup { get :read }
+        setup { get :read, :id => @message.to_param }
         should_redirect_to_ssl
       end
       context "GET :show" do
-        setup { get :show }
+        setup { get :show, :id => @message.to_param }
         should_redirect_to_ssl
       end
       context "POST :create" do
@@ -50,7 +51,7 @@ class MessagesControllerTest < ActionController::TestCase
         should_redirect_to_ssl
       end
       context "POST :reply" do
-        setup { get :reply }
+        setup { get :reply, :id => @message.to_param }
         should_redirect_to_ssl
       end
       context "POST auto_complete_for_message_recipients" do
@@ -138,6 +139,7 @@ class MessagesControllerTest < ActionController::TestCase
   context 'Trying to peek at other peoples messages' do
     setup do
       login_as :mike
+      @message = messages(:johans_message_to_moe)
       get :show, :id => @message.to_param
     end
     

@@ -25,6 +25,7 @@ class KeysControllerTest < ActionController::TestCase
   
   def setup
     @user = users(:johan)
+    @key = ssh_keys(:johan)
     @request.env["HTTPS"] = "on"
     SshKey.any_instance.stubs(:valid_key_using_ssh_keygen?).returns(true)
   end
@@ -33,35 +34,35 @@ class KeysControllerTest < ActionController::TestCase
     context "GET :index" do
       setup do
         login_as :johan
-        get :index
+        get :index, :user_id => @user.to_param
       end
       should_redirect_to_ssl
     end    
     context "GET :new" do
       setup do
         login_as :johan
-        get :new
+        get :new, :user_id => @user.to_param
       end
       should_redirect_to_ssl
     end    
     context "POST :create" do
       setup do
         login_as :johan
-        post :create
+        post :create, :user_id => @user.to_param
       end
       should_redirect_to_ssl
     end
     context "GET :show" do
       setup do
         login_as :johan
-        get :show
+        get :show, :user_id => @user.to_param, :id => @key.to_param
       end
       should_redirect_to_ssl
     end
     context "DELETE :destroy" do
       setup do 
         login_as :johan
-        delete :destroy
+        delete :destroy, :user_id => @user.to_param, :id => @key.to_param
       end
       should_redirect_to_ssl
     end
@@ -134,7 +135,7 @@ class KeysControllerTest < ActionController::TestCase
   
     should " require login" do
       session[:user_id] = nil
-      get :new
+      get :new, :user_id => @user.to_param
       assert_redirected_to (new_sessions_path)
     end
     
@@ -180,7 +181,7 @@ end
   
     should " require login" do
       session[:user_id] = nil
-      post :create, :ssh_key => {:key => valid_key}
+      post :create, :ssh_key => {:key => valid_key}, :user_id => @user.to_param
       assert_redirected_to(new_sessions_path)
     end
     
