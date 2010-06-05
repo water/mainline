@@ -17,6 +17,7 @@
 #++
 class MessagesController < ApplicationController
   before_filter :login_required
+  before_filter :ssl_required
   renders_in_global_context
   
   def index
@@ -119,10 +120,4 @@ class MessagesController < ApplicationController
     render :text => @users.map{|u| u.login }.join("\n")
     #render :layout => false
   end
-  
-  protected
-    def ssl_required?
-      # Always required.
-      true
-    end
 end

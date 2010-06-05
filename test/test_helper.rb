@@ -118,12 +118,19 @@ end
 
 class ActionController::TestCase
   include AuthenticatedTestHelper
+
   def self.without_ssl_context
-    yield
+    context "without ssl" do
+      setup { @request.env.delete("HTTPS") }
+      context("") { yield }
+    end
   end
 
   def self.with_ssl_context
-    yield
+    context "without ssl" do
+      setup { @request.env["HTTPS"] = "on" }
+      context("") { yield }
+    end
   end
 
   def self.should_redirect_to_ssl

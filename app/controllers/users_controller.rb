@@ -35,8 +35,7 @@ class UsersController < ApplicationController
   before_filter :require_public_user, :only => :show
 
   renders_in_global_context
-  ssl_required :new, :create, :edit, :update, :password, :forgot_password_create,
-                :forgot_password, :update_password, :reset_password, :avatar
+  before_filter :ssl_required, :only => [:new, :create, :edit, :update, :password, :forgot_password_create, :forgot_password, :update_password, :reset_password, :avatar]
   layout :decide_layout
   # render new.rhtml
   def new

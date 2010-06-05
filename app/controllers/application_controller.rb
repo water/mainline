@@ -27,8 +27,6 @@ class ApplicationController < ActionController::Base
   before_filter :public_and_logged_in
   before_filter :require_current_eula
   
-  # include SslRequirement # Need to be included after the above
-
   after_filter :mark_flash_status
 
   layout :pick_layout_based_on_site
@@ -60,7 +58,12 @@ class ApplicationController < ActionController::Base
   protected
 
   # RAILS3FAIL
-  def self.ssl_required(*args)
+  def ssl_required
+    return if Rails.env.development?
+    unless request.ssl?
+      redirect_to "https://" + request.host + request.request_uri
+      flash.keep
+    end
   end
   
 
