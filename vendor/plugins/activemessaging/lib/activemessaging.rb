@@ -25,7 +25,7 @@ module ActiveMessaging
   # DEPRECATED, so I understand, but I'm using it nicely below.
   def self.load_extensions
     require 'logger'
-    require 'activemessaging/support'
+    # require 'activemessaging/support'
     require 'activemessaging/gateway'
     require 'activemessaging/adapter'
     require 'activemessaging/message_sender'
