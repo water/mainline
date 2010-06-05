@@ -18,7 +18,9 @@ Gitorious::Application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   # ActionMailer::Base.default_url_options[:protocol] = 'https'
-  ActionMailer::Base.default_url_options[:host] = YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["gitorious_host"]
+  config.action_mailer.default_url_options = {
+    :host => YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["gitorious_host"]
+  }
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :test
   # ExceptionNotifier.exception_recipients = YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))["exception_notification_emails"]

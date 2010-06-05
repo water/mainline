@@ -30,9 +30,10 @@ Gitorious::Application.configure do
   # like if you have constraints or database-specific column types
   # config.active_record.schema_format = :sql
 
-  ActionMailer::Base.default_url_options[:protocol] = 'https'
-  ActionMailer::Base.default_url_options[:host] =
-    YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["gitorious_host"]
+  config.action_mailer.default_url_options = {
+    :protocol => "https",
+    :host => YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["gitorious_host"]
+  }
 
   ActiveSupport::Deprecation.silenced = true
 end

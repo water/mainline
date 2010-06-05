@@ -50,8 +50,9 @@ Gitorious::Application.configure do
   # config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :sendmail
 
-  ActionMailer::Base.default_url_options[:host] =
-    YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["gitorious_host"]
+  config.action_mailer.default_url_options = {
+    :host => YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["gitorious_host"]
+  }
   # ActionMailer::Base.default_url_options[:protocol] = 'https'
   # Disable delivery errors, bad email addresses will be ignored
   config.after_initialize do
