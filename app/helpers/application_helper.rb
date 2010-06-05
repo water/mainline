@@ -39,9 +39,9 @@ module ApplicationHelper
     out = %Q{<div id="#{options.delete(:id)}" style="#{options.delete(:style)}"
                   class="help-box #{style} #{icon} round-5">
                <div class="icon #{icon}"></div>}
-    out << capture(&block)
+    out << with_output_buffer(&block)
     out << "</div>"
-    concat(out)
+    out.html_safe
   end
 
   def pull_box(title, options = {}, &block)
@@ -49,9 +49,9 @@ module ApplicationHelper
     out = %Q{<div class="pull-box-container #{css_class}">}
     out << %Q{<div class="pull-box-header"><h3>#{title}</h3></div>} if title
     out << %Q{<div class="pull-box-content">}
-    out << capture(&block)
+    out << with_output_buffer(&block)
     out << "</div></div>"
-    concat(out)
+    out.html_safe
   end
 
   def dialog_box(title, options = {}, &block)
@@ -59,9 +59,9 @@ module ApplicationHelper
     out = %Q{<div class="dialog-box #{css_class}">}
     out << %Q{<h3 class="round-top-5 dialog-box-header">#{title}</h3>} if title
     out << %Q{<div class="dialog-box-content">}
-    out << capture(&block)
+    out << with_output_buffer(&block)
     out << "</div></div>"
-    concat(out)
+    out.html_safe
   end
 
   def markdown(text, options = [:smart])
@@ -223,7 +223,7 @@ module ApplicationHelper
   def flashes
     flash.map do |type, content|
       content_tag(:div, content_tag(:p, content), :class => "flash_message #{type}")
-    end.join("\n")
+    end.join("\n").html_safe
   end
 
   def commit_graph_tag(repository, ref = "master")
