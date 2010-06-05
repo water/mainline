@@ -252,10 +252,6 @@ module ApplicationHelper
     end
   end
 
-  def sidebar_content?
-    !@content_for_sidebar.blank?
-  end
-
   def render_readme(repository)
     possibilities = []
     repository.git.git.ls_tree({:name_only => true}, "master").each do |line|
