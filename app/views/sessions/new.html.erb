@@ -34,7 +34,7 @@
 				<div id="regular_login_fields">
 					<ul>
 						<li>
-							 <label for="email"><%= t("views.sessions.label").call(self) %></label>
+							 <label for="email"><%= t("views.sessions.label") %></label>
 							<%= text_field_tag 'email', params[:email] %>
 						</li>
 						<li>
@@ -55,7 +55,7 @@
 				<div id="openid_login_fields" class="login_hidden">	
 					<ul>
 						<li>
-							<label for="openid"><%= t("views.sessions.openid").call(self) %></label>
+							<label for="openid"><%= t("views.sessions.openid") %></label>
 							<%= text_field_tag 'openid_url', params[:openid_url] -%>
 						</li>
 						<li>

@@ -318,9 +318,9 @@
       },
       :sessions => {
         :login => "Login",
-        :label => lambda { |this| "Email"},
+        :label => "Email",
         :passwd => "Password",
-        :openid => lambda { |this| "OpenID"},
+        :openid => "OpenID",
         :remember => "Remember me",
         :submit => 'Log in',
         :register => "Register",
