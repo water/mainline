@@ -54,7 +54,7 @@ class SshKey < ActiveRecord::Base
     key.gsub(/(.{1,#{cols}})/, "\\1\n").strip
   end
   
-  def to_key
+  def to_ssh_key
     %Q{### START KEY #{self.id || "nil"} ###\n} +
     %Q{command="gitorious #{user.login}",no-port-forwarding,} +
     %Q{no-X11-forwarding,no-agent-forwarding,no-pty #{to_keyfile_format}} +
@@ -79,7 +79,7 @@ class SshKey < ActiveRecord::Base
   def publish_creation_message
     options = ({:target_class => self.class.name, 
       :command => "add_to_authorized_keys", 
-      :arguments => [self.to_key], 
+      :arguments => [self.to_ssh_key], 
       :target_id => self.id,
       :identifier => "ssh_key_#{id}"})
     publish :ssh_key_generation, options.to_json
@@ -89,7 +89,7 @@ class SshKey < ActiveRecord::Base
     options = ({
       :target_class => self.class.name, 
       :command => "delete_from_authorized_keys", 
-      :arguments => [self.to_key],
+      :arguments => [self.to_ssh_key],
       :identifier => "ssh_key_#{id}"})
     publish :ssh_key_generation, options.to_json
   end
