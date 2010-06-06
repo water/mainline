@@ -25,7 +25,7 @@
     <% if current_user.received_messages.unread_count > 0 -%>
       <%= link_to current_user.received_messages.unread_count, messages_path -%>
     <% else -%>
-      <%= link_to "<span>#{current_user.received_messages.unread_count}</span>", messages_path -%>
+      <%= link_to content_tag(:span, current_user.received_messages.unread_count), messages_path -%>
     <% end -%>
   </li>
   <li class="secondary subtle"><%= link_to t("views.layout.logout"), logout_path -%></li>
