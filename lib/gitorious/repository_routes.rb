@@ -1,43 +1,50 @@
 module Gitorious
   module RepositoryRoutes
-    class Resource < ActionDispatch::Routing::Mapper::Resource
+    class CustomPrefixResource < ActionDispatch::Routing::Mapper::Resource
       attr_accessor :prefix
-      def id_segment
-        prefix.to_s + super
+
+      def member_scope
+        ["#{prefix}:id", options]
+      end
+
+      def nested_path
+        "#{prefix}:#{singular}_id"
       end
     end
 
-    def resources_without_collection(name, prefix = nil, options = {}, &block)
+    def resources_with_custom_prefix(name, prefix = nil, options = {}, &block)
       if @scope[:scope_level] == :resources
         nested do
-          resources_without_collection(name, nil, options, &block)
+          resources_with_custom_prefix(name, nil, options, &block)
         end
         return
       end
 
-      resource = Gitorious::RepositoryRoutes::Resource.new(name, options)
+      resource = CustomPrefixResource.new(name, options)
       resource.prefix = prefix
+      resource_scope(resource) do
+        yield if block_given?
 
-      scope(:controller => resource.controller) do
-        with_scope_level(:resources, resource) do
-          yield if block_given?
+        collection_scope do
+          get  :index if parent_resource.actions.include?(:index)
+          post :create if parent_resource.actions.include?(:create)
+        end
 
-          with_scope_level(:member) do
-            scope("#{prefix}:id") do
-              scope(resource.options) do
-                get :show
-                put :update
-                delete :destroy
-                get :edit, :as => resource.singular
-              end
-            end
-          end
+        new_scope do
+          get :new
+        end if parent_resource.actions.include?(:new)
+
+        member_scope do
+          get    :show if parent_resource.actions.include?(:show)
+          put    :update if parent_resource.actions.include?(:update)
+          delete :destroy if parent_resource.actions.include?(:destroy)
+          get    :edit if parent_resource.actions.include?(:edit)
         end
       end
     end
 
     def repositories
-      resources_without_collection :repositories do
+      resources_with_custom_prefix :repositories do
         member do
           get :clone
           post :create_clone
