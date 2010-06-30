@@ -135,23 +135,23 @@ EOS
       %Q{command="gitorious #{users(:johan).login}",no-port-forwarding,} +
       %Q{no-X11-forwarding,no-agent-forwarding,no-pty #{ssh_key.to_keyfile_format}} +
       %Q{\n### END KEY #{ssh_key.id} ###\n}
-    assert_equal exp_key, ssh_key.to_key
+    assert_equal exp_key, ssh_key.to_ssh_key
   end
   
   should "adds itself to the authorized keys file" do
     ssh_key_file_mock = mock("SshKeyFile mock")
     ssh_key = new_key
     ssh_key_file_mock.expects(:new).returns(ssh_key_file_mock)
-    ssh_key_file_mock.expects(:add_key).with(ssh_key.to_key).returns(true)
-    SshKey.add_to_authorized_keys(ssh_key.to_key, ssh_key_file_mock)
+    ssh_key_file_mock.expects(:add_key).with(ssh_key.to_ssh_key).returns(true)
+    SshKey.add_to_authorized_keys(ssh_key.to_ssh_key, ssh_key_file_mock)
   end
   
   should "removes itself to the authorized keys file" do
     ssh_key_file_mock = mock("SshKeyFile mock")
     ssh_key = new_key
     ssh_key_file_mock.expects(:new).returns(ssh_key_file_mock)
-    ssh_key_file_mock.expects(:delete_key).with(ssh_key.to_key).returns(true)
-    SshKey.delete_from_authorized_keys(ssh_key.to_key, ssh_key_file_mock)
+    ssh_key_file_mock.expects(:delete_key).with(ssh_key.to_ssh_key).returns(true)
+    SshKey.delete_from_authorized_keys(ssh_key.to_ssh_key, ssh_key_file_mock)
   end
   
   def key_with_content(algo = nil, key = nil, comment = nil)
@@ -207,14 +207,14 @@ EOS
       }
       message = message_created_in_queue('/queue/GitoriousSshKeys', /ssh_key_#{ssh_key.id}/) {p.call}
       assert_equal 'add_to_authorized_keys', message['command']
-      assert_equal [ssh_key.to_key], message['arguments']
+      assert_equal [ssh_key.to_ssh_key], message['arguments']
       assert_equal ssh_key.id, message['target_id']
     end
   
     should 'sends a message on destroy' do
       ssh_key = new_key
       ssh_key.save!
-      keydata = ssh_key.to_key.dup
+      keydata = ssh_key.to_ssh_key.dup
       p = proc{
         ssh_key.destroy
       }

@@ -28,7 +28,7 @@ class SshKeyFileTest < ActiveSupport::TestCase
   def setup
     FileUtils.cp(File.join(fixture_path, "authorized_keys"), fixture_key_path)    
     @keyfile = SshKeyFile.new(fixture_key_path)
-    @keydata = ssh_keys(:johan).to_key
+    @keydata = ssh_keys(:johan).to_ssh_key
   end
   
   def teardown
