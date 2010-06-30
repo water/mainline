@@ -163,7 +163,7 @@
         :blog => "Blog",
       },
       :site => {
-        :pay_off => lambda {|gitorious_repo_path, read_more_path|
+        :pay_off => lambda {|key, gitorious_repo_path, read_more_path|
           %{Gitorious provides free <a href="#{gitorious_repo_path}">open source</a> infrastructure for open source projects that use Git. <a href="#{read_more_path}">Read more &raquo;</a>}
         },
         :login_box_header => "Already registered?",
@@ -171,7 +171,7 @@
         :description => "<strong>Gitorious</strong> is a great way of collaborating on distributed open source projects",
         :for_projects => "For Projects",
         :for_contributors => "For Contributors",
-        :creating_account => lambda { |this, path|
+        :creating_account => lambda { |key, this, path|
           this.link_to("Creating a user account", path) +
           " allows you to create your own project or participate in the development of any project." },
         :newest_projects => "Latest projects",
@@ -224,7 +224,7 @@
         :send_new_passwd => 'Send me a new password',
         :openid_build_title => 'Complete your registration',
         :openid_build_description => 'You need enter the following details:',
-        :create_title => lambda { |this, path| "Create new user or " +
+        :create_title => lambda { |key, this, path| "Create new user or " +
           this.link_to( "login directly with your OpenID", path ) },
         :create_description => "Creating a user account allows you to create your own project or participate in the development of any project.",
         :wants_email_notifications => 'Send email notifications?',
@@ -283,9 +283,9 @@
         :show => "Blob contents",
         :history => "Blob history",
         :heading => "History for %{ref}:%{path}",
-        :too_big => lambda { |this, path| "This file is too big to be rendered within reasonable time, " +
+        :too_big => lambda { |key, this, path| "This file is too big to be rendered within reasonable time, " +
           this.link_to("try viewing the raw data", path) },
-        :message => lambda { |this, path|
+        :message => lambda { |key, this, path|
           "This blob appears to be binary data, if you like you can " +
           this.link_to("download the raw data", path) + " (right click, save as)"
         },
@@ -313,7 +313,7 @@
         :parent_sha1 => "Parent SHA1",
         :page_title => "Commit in %{repo} in %{title}",
         :title => "Commit %{commit}",
-        :message => lambda { |this, path| "This is the initial commit in this repository, " +
+        :message => lambda { |key, this, path| "This is the initial commit in this repository, " +
           this.link_to( "browse the initial tree state", path ) + "." },
       },
       :sessions => {
@@ -408,7 +408,7 @@
         :current_committers => "Committers",
         :remove => "Remove",
         :clone_breadcrumb => "Clone Repository",
-        :create_title => lambda { |this, clone, project|
+        :create_title => lambda { |key, this, clone, project|
           "Create a clone of #{this.link_to(this.send(:h, clone.name), this.send(:project_repository_path, project, clone) )} <small>in #{this.link_to this.send(:h, project.title), this.send(:project_path, project)}</small>"
         },
         :edit_group => "Edit/show team members",
@@ -583,7 +583,7 @@
     },
     :date => {
       :formats => {
-        :long_ordinal => lambda { |date| "%B #{date.day.ordinalize}, %Y" },
+        :long_ordinal => lambda { |key, date| "%B #{date.day.ordinalize}, %Y" },
         :default => "%Y-%m-%d",
         :short => "%e %b",
         :long => "%B %e, %Y",
@@ -597,7 +597,7 @@
     },
     :time => {
       :formats => {
-        :long_ordinal => lambda { |time| "%B #{time.day.ordinalize}, %Y %H:%M" },
+        :long_ordinal => lambda { |key, time| "%B #{time.day.ordinalize}, %Y %H:%M" },
         :default => "%a %b %d %H:%M:%S %Z %Y",
         :time => "%H:%M",
         :short => "%d %b %H:%M",
