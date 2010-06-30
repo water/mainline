@@ -11,7 +11,7 @@ class GitoriousFormBuilder < ActionView::Helpers::FormBuilder
       result << content_tag(:p, options[:hint], :class => "hint")
     end
     result << "</div>"
-    result.join("\n")
+    result.join("\n").html_safe
   end
   
   private
@@ -24,6 +24,6 @@ class GitoriousFormBuilder < ActionView::Helpers::FormBuilder
       result << select("#{field}_id", admin_groups.map{|g| [g.name, g.id] }, 
                         {}, :id => "#{object_name}_#{field}_id_group_select")
     end
-    result    
+    result.html_safe
   end
 end
