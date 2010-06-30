@@ -19,7 +19,7 @@ gem "stomp", "1.1"
 gem "mime-types", :require => "mime/types"
 gem "diff-lcs", :require => "diff/lcs"
 gem "oauth"
-gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git", :branch => "rails3"
+gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "builder"
