@@ -1,0 +1,164 @@
+GIT
+  remote: git://github.com/bmaddy/shoulda.git
+  revision: 46e70f6ef56b67b7712e23673a1beb63215f8dd5
+  branch: rails3
+  specs:
+    shoulda (2.10.3)
+
+GIT
+  remote: git://github.com/thoughtbot/paperclip.git
+  revision: bc6ed16bc8abe3c983dca54556a662ddae8ac252
+  specs:
+    paperclip (2.5.0)
+      activerecord (>= 2.3.0)
+      activesupport (>= 2.3.2)
+      cocaine (>= 0.0.2)
+      mime-types
+
+GIT
+  remote: http://github.com/thoughtbot/factory_girl.git
+  revision: ea89aad60a5f5a6131d8177c153719d96bafd766
+  specs:
+    factory_girl (2.5.0)
+      activesupport
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    actionmailer (3.1.0)
+      actionpack (= 3.1.0)
+      mail (~> 2.3.0)
+    actionpack (3.1.0)
+      activemodel (= 3.1.0)
+      activesupport (= 3.1.0)
+      builder (~> 3.0.0)
+      erubis (~> 2.7.0)
+      i18n (~> 0.6)
+      rack (~> 1.3.2)
+      rack-cache (~> 1.0.3)
+      rack-mount (~> 0.8.2)
+      rack-test (~> 0.6.1)
+      sprockets (~> 2.0.0)
+    activemodel (3.1.0)
+      activesupport (= 3.1.0)
+      bcrypt-ruby (~> 3.0.0)
+      builder (~> 3.0.0)
+      i18n (~> 0.6)
+    activerecord (3.1.0)
+      activemodel (= 3.1.0)
+      activesupport (= 3.1.0)
+      arel (~> 2.2.1)
+      tzinfo (~> 0.3.29)
+    activeresource (3.1.0)
+      activemodel (= 3.1.0)
+      activesupport (= 3.1.0)
+    activesupport (3.1.0)
+      multi_json (~> 1.0)
+    allison (2.0.3)
+    arel (2.2.1)
+    bcrypt-ruby (3.0.1)
+    builder (3.0.0)
+    chronic (0.6.6)
+    cocaine (0.2.1)
+    daemons (1.1.6)
+    diff-lcs (1.1.3)
+    echoe (4.6.3)
+      allison (>= 2.0.3)
+      gemcutter (>= 0.7.0)
+      rake (>= 0.9.2)
+      rdoc (>= 3.6.1)
+      rubyforge (>= 2.0.4)
+    erubis (2.7.0)
+    gemcutter (0.7.1)
+    geoip (1.1.2)
+    hike (1.2.1)
+    hoe (2.13.0)
+      rake (~> 0.8)
+    i18n (0.6.0)
+    json (1.6.5)
+    json_pure (1.6.5)
+    mail (2.3.0)
+      i18n (>= 0.4.0)
+      mime-types (~> 1.16)
+      treetop (~> 1.4.8)
+    metaclass (0.0.1)
+    mime-types (1.17.2)
+    mocha (0.10.3)
+      metaclass (~> 0.0.1)
+    multi_json (1.0.4)
+    mysql (2.8.1)
+    oauth (0.4.5)
+    polyglot (0.3.3)
+    rack (1.3.6)
+    rack-cache (1.0.3)
+      rack (>= 0.4)
+    rack-mount (0.8.3)
+      rack (>= 1.0.0)
+    rack-ssl (1.3.2)
+      rack
+    rack-test (0.6.1)
+      rack (>= 1.0)
+    rails (3.1.0)
+      actionmailer (= 3.1.0)
+      actionpack (= 3.1.0)
+      activerecord (= 3.1.0)
+      activeresource (= 3.1.0)
+      activesupport (= 3.1.0)
+      bundler (~> 1.0)
+      railties (= 3.1.0)
+    railties (3.1.0)
+      actionpack (= 3.1.0)
+      activesupport (= 3.1.0)
+      rack-ssl (~> 1.3.2)
+      rake (>= 0.8.7)
+      rdoc (~> 3.4)
+      thor (~> 0.14.6)
+    rake (0.9.2.2)
+    rdiscount (1.3.1.1)
+    rdoc (3.12)
+      json (~> 1.4)
+    riddle (1.5.1)
+    ruby-openid (2.1.8)
+    ruby-yadis (0.3.4)
+    rubyforge (2.0.4)
+      json_pure (>= 1.1.7)
+    sprockets (2.0.3)
+      hike (~> 1.2)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
+    state_machine (1.1.2)
+    stomp (1.1)
+    thor (0.14.6)
+    tilt (1.3.3)
+    treetop (1.4.10)
+      polyglot
+      polyglot (>= 0.3.1)
+    tzinfo (0.3.31)
+    will_paginate (3.0.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  builder
+  chronic
+  daemons
+  diff-lcs
+  echoe
+  factory_girl!
+  geoip
+  hoe
+  mime-types
+  mocha
+  mysql
+  oauth
+  paperclip!
+  rails (= 3.1.0)
+  rdiscount (= 1.3.1.1)
+  riddle
+  ruby-openid
+  ruby-yadis
+  shoulda!
+  state_machine
+  stomp (= 1.1)
+  will_paginate
