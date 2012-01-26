@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/Shopify/ultrasphinx.git
+  revision: b48019584e669f5e106bb19ccb4ce7cd46b9b15d
+  specs:
+    ultrasphinx (1.11)
+      chronic
+
+GIT
   remote: git://github.com/bmaddy/shoulda.git
   revision: 46e70f6ef56b67b7712e23673a1beb63215f8dd5
   branch: rails3
@@ -28,12 +35,6 @@ GIT
   specs:
     factory_girl (2.5.0)
       activesupport
-
-PATH
-  remote: /Users/linus/Documents/Projekt/ultrasphinx
-  specs:
-    ultrasphinx (1.11)
-      chronic
 
 GEM
   remote: http://rubygems.org/
