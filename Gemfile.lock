@@ -6,6 +6,13 @@ GIT
     shoulda (2.10.3)
 
 GIT
+  remote: git://github.com/smartinez87/exception_notification.git
+  revision: 8d081676092f888da4ab48b5ab8b19bd5ca28d87
+  specs:
+    exception_notification (2.5.2)
+      actionmailer (>= 3.0.4)
+
+GIT
   remote: git://github.com/thoughtbot/paperclip.git
   revision: bc6ed16bc8abe3c983dca54556a662ddae8ac252
   specs:
@@ -69,7 +76,6 @@ GEM
       rdoc (>= 3.6.1)
       rubyforge (>= 2.0.4)
     erubis (2.7.0)
-    exception_notification (1.0.20090728)
     gemcutter (0.7.1)
     geoip (1.1.2)
     hike (1.2.1)
@@ -147,7 +153,7 @@ DEPENDENCIES
   daemons
   diff-lcs
   echoe
-  exception_notification
+  exception_notification!
   factory_girl!
   geoip
   hoe
