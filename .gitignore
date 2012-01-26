@@ -3,10 +3,7 @@
 coverage/*
 public/cache/*
 public/images/graphs/*
-config/database.yml
-config/gitorious.yml
 config/ultrasphinx/*.conf
-config/broker.yml
 db/*.sqlite3
 .autotest
 db/sphinx/*
