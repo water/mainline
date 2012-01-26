@@ -87,6 +87,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.0.4)
     mysql (2.8.1)
+    mysql2 (0.3.11)
     oauth (0.4.5)
     polyglot (0.3.3)
     rack (1.3.6)
@@ -151,6 +152,7 @@ DEPENDENCIES
   mime-types
   mocha
   mysql
+  mysql2 (~> 0.3.7)
   oauth
   paperclip!
   rails (= 3.1.0)
