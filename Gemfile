@@ -26,7 +26,7 @@ gem "riddle" # For the ultrasphinx plugin
 gem "builder"
 gem "will_paginate"
 gem "rdoc"
-gem "ultrasphinx"
+gem "ultrasphinx", git: "git://github.com/tribalvibes/ultrasphinx.git"
 gem "exception_notification", git: "git://github.com/smartinez87/exception_notification.git"
 # group :development do
 #   gem "mongrel", :git => "http://github.com/engineyard/mongrel.git"
