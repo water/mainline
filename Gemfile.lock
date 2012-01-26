@@ -69,6 +69,7 @@ GEM
       rdoc (>= 3.6.1)
       rubyforge (>= 2.0.4)
     erubis (2.7.0)
+    exception_notification (1.0.20090728)
     gemcutter (0.7.1)
     geoip (1.1.2)
     hike (1.2.1)
@@ -146,6 +147,7 @@ DEPENDENCIES
   daemons
   diff-lcs
   echoe
+  exception_notification
   factory_girl!
   geoip
   hoe
