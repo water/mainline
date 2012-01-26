@@ -23,18 +23,17 @@ GIT
       mime-types
 
 GIT
-  remote: git://github.com/tribalvibes/ultrasphinx.git
-  revision: 2c01039e8ceb386691e338d7baac3f989f975f41
-  specs:
-    ultrasphinx (1.11)
-      chronic
-
-GIT
   remote: http://github.com/thoughtbot/factory_girl.git
   revision: ea89aad60a5f5a6131d8177c153719d96bafd766
   specs:
     factory_girl (2.5.0)
       activesupport
+
+PATH
+  remote: /Users/linus/Documents/Projekt/ultrasphinx
+  specs:
+    ultrasphinx (1.11)
+      chronic
 
 GEM
   remote: http://rubygems.org/
