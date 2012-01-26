@@ -2,7 +2,7 @@
 #
 # Sphinx/Ultrasphinx user-configurable options.
 #
-# Copy this file to RAILS_ROOT/config/ultrasphinx. You can use individual 
+# Copy this file to Rails.root/config/ultrasphinx. You can use individual 
 # namespaces if you want (e.g. development.base, production.base, 
 # test.base). Note that ERb is also allowed.
 #
@@ -18,7 +18,7 @@
 # .conf files. Do not symlink the .conf file to the .base file; it's wrong.
 #
 
-<% path = "#{RAILS_ROOT}/db/sphinx/" %>
+<% path = "#{Rails.root}/db/sphinx/" %>
 
 # Indexing options
 indexer

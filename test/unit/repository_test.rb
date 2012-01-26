@@ -205,7 +205,7 @@ class RepositoryTest < ActiveSupport::TestCase
   should " create the hooks" do
     hooks = "/path/to/hooks"
     path = "/path/to/repository"
-    base_path = "#{RAILS_ROOT}/data/hooks"
+    base_path = "#{Rails.root}/data/hooks"
 
     File.expects(:join).in_sequence.with(GitoriousConfig["repository_base_path"], ".hooks").returns(hooks)
 

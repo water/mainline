@@ -278,7 +278,7 @@ module Ultrasphinx
       def convert_sphinx_ids(sphinx_ids)    
         
         number_of_models = IDS_TO_MODELS.size        
-        raise ConfigurationError, "No model mappings were found. Your #{RAILS_ENV}.conf file is corrupted, or your application container needs to be restarted." if number_of_models == 0
+        raise ConfigurationError, "No model mappings were found. Your #{Rails.env}.conf file is corrupted, or your application container needs to be restarted." if number_of_models == 0
         
         sphinx_ids.sort_by do |item| 
           item[:index]

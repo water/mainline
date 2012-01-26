@@ -4,6 +4,6 @@ app_root = File.join(current_dir, "../../")
 
 print "=> Syncing Gitorious... "
 $stdout.flush
-ENV["RAILS_ENV"] ||= "production"
+ENV["Rails.env"] ||= "production"
 require File.join(app_root,"/config/environment")
 

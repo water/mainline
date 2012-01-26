@@ -7,7 +7,7 @@ require 'socket'
 require 'fcntl'
 require "optparse"
 
-ENV["RAILS_ENV"] ||= "production"
+ENV["Rails.env"] ||= "production"
 require File.dirname(__FILE__)+'/../config/environment'
 
 Rails.configuration.log_level = :info # Disable debug
@@ -123,7 +123,7 @@ module Git
           if ip_family == "AF_INET6"
             repository.cloned_from(ip)
           else
-            geoip = GeoIP.new(File.join(RAILS_ROOT, "data", "GeoIP.dat"))
+            geoip = GeoIP.new(File.join(Rails.root, "data", "GeoIP.dat"))
             localization = geoip.country(ip)
             geoip.close
             repository.cloned_from(ip, localization[3], localization[5], 'git')
@@ -263,8 +263,8 @@ end
 options = {
   :port => 9418,
   :host => "0.0.0.0",
-  :logfile => File.join(RAILS_ROOT, "log", "git-daemon.log"),
-  :pidfile => File.join(RAILS_ROOT, "log", "git-daemon.pid"),
+  :logfile => File.join(Rails.root, "log", "git-daemon.log"),
+  :pidfile => File.join(Rails.root, "log", "git-daemon.pid"),
   :daemonize => false,
   :reuseaddr => true,
   :disable_geoip => false,
@@ -306,7 +306,7 @@ OptionParser.new do |opts|
     exit
   end
   
-  # opts.on("-e", "--environment", "RAILS_ENV to use") do |o|
+  # opts.on("-e", "--environment", "Rails.env to use") do |o|
   #   options[:port] = o
   # end
 end.parse!

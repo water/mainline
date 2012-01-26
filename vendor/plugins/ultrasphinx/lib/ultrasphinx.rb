@@ -3,7 +3,7 @@ require 'fileutils'
 require 'chronic'
 require 'singleton'
 
-if defined? RAILS_ENV and RAILS_ENV == "development"
+if defined? Rails.env and Rails.env == "development"
   if ENV['USER'] == 'eweaver'
     require 'ruby-debug'
     Debugger.start

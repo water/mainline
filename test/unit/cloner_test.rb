@@ -23,7 +23,7 @@ require 'geoip'
 class ClonerTest < ActiveSupport::TestCase
 
   def setup
-    @geoip = GeoIP.new(File.join(RAILS_ROOT, "data", "GeoIP.dat"))
+    @geoip = GeoIP.new(File.join(Rails.root, "data", "GeoIP.dat"))
     @cloner = Cloner.new
   end
 

@@ -210,9 +210,9 @@ cp config/gitorious.sample.yml config/gitorious.yml
 7.4 Final Website Setup
 
 cd /var/www/gitorious
-rake db:create RAILS_ENV=production
-rake db:migrate RAILS_ENV=production
-rake ultrasphinx:bootstrap RAILS_ENV=production
+rake db:create Rails.env=production
+rake db:migrate Rails.env=production
+rake ultrasphinx:bootstrap Rails.env=production
 
 7.5 Setup CronJobs
 
@@ -221,7 +221,7 @@ rake ultrasphinx:bootstrap RAILS_ENV=production
 - copy and paste the following 2 lines:
 
 */2 * * * * /opt/ruby-enterprise/bin/ruby /var/www/gitorious/script/task_performer
-* */1 * * * cd /var/www/gitorious && /opt/ruby-enterprise/bin/rake ultrasphinx:index RAILS_ENV=production
+* */1 * * * cd /var/www/gitorious && /opt/ruby-enterprise/bin/rake ultrasphinx:index Rails.env=production
 
 8.1 [UNKNOWN] Append to /home/git/.bash_profile
 

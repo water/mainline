@@ -89,7 +89,7 @@ class TraceProcessor < ActiveMessaging::Processor
 
   def create_image
     File.open(DOT_FILE, "w") {|f| f.puts @@dot.to_s }
-    output_file = RAILS_ROOT + "/public/trace.png"
+    output_file = Rails.root + "/public/trace.png"
     `dot -Tpng -o #{output_file} #{DOT_FILE}`
   end
 

@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 
-ENV['RAILS_ENV'] ||= "development"
+ENV['Rails.env'] ||= "development"
 
 module Ultrasphinx
 end

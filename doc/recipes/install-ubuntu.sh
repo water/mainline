@@ -161,13 +161,13 @@ su - git -c "echo 'export RUBY_HOME=/opt/ruby-enterprise' >> ~/.bash_profile"
 su - git -c "echo 'export GEM_HOME=\$RUBY_HOME/lib/ruby/gems/1.8/gems' >> ~/.bash_profile"
 su - git -c "echo 'export PATH=\$RUBY_HOME/bin:\$PATH' >> ~/.bash_profile"
 
-su - git -c "cd /var/www/gitorious && rake db:create RAILS_ENV=production"
-su - git -c "cd /var/www/gitorious && rake db:migrate RAILS_ENV=production"
-su - git -c "cd /var/www/gitorious && rake ultrasphinx:bootstrap RAILS_ENV=production"
+su - git -c "cd /var/www/gitorious && rake db:create Rails.env=production"
+su - git -c "cd /var/www/gitorious && rake db:migrate Rails.env=production"
+su - git -c "cd /var/www/gitorious && rake ultrasphinx:bootstrap Rails.env=production"
 
 rm ~/tmp/crontab && touch ~/tmp/crontab
 echo "*/2 * * * * /opt/ruby-enterprise/bin/ruby /var/www/gitorious/script/task_performer" >> ~/tmp/crontab
-echo "* */1 * * * cd /var/www/gitorious && /opt/ruby-enterprise/bin/rake ultrasphinx:index RAILS_ENV=production" >> ~/tmp/crontab
+echo "* */1 * * * cd /var/www/gitorious && /opt/ruby-enterprise/bin/rake ultrasphinx:index Rails.env=production" >> ~/tmp/crontab
 mv ~/tmp/crontab /home/git
 chown git:git /home/git/crontab
 su - git -c "crontab -u git /home/git/crontab"

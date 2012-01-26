@@ -1,7 +1,7 @@
 
 class InstallUltrasphinxStoredProcedures < ActiveRecord::Migration
   def self.up
-    Dir.chdir("#{RAILS_ROOT}/vendor/plugins/ultrasphinx/lib/ultrasphinx/postgresql") do
+    Dir.chdir("#{Rails.root}/vendor/plugins/ultrasphinx/lib/ultrasphinx/postgresql") do
       # Create the plpgsql language
       execute "CREATE LANGUAGE plpgsql" rescue nil
       # Create the rest of the functions

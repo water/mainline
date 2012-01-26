@@ -8,7 +8,7 @@ module Ultrasphinx
       # Force all the indexed models to load and register in the MODEL_CONFIGURATION hash.
       def load_constants
   
-        Dir.chdir "#{RAILS_ROOT}/app/models/" do
+        Dir.chdir "#{Rails.root}/app/models/" do
           Dir["**/*.rb"].each do |filename|
             open(filename) do |file| 
               begin
@@ -22,7 +22,7 @@ module Ultrasphinx
                 end
               rescue Object => e
                 say "warning: critical autoload error on #{filename}; try referencing \"#{filename.camelize}\" directly in the console"
-                say e.backtrace.join("\n") if RAILS_ENV == "development"
+                say e.backtrace.join("\n") if Rails.env == "development"
               end
             end 
           end
@@ -38,7 +38,7 @@ module Ultrasphinx
 
         load_constants
               
-        say "rebuilding configurations for #{RAILS_ENV} environment" 
+        say "rebuilding configurations for #{Rails.env} environment" 
         # stable sort classes by name rather than rely on hash order
         model_list = MODEL_CONFIGURATION.keys.sort
         say "available models are #{model_list.to_sentence}"

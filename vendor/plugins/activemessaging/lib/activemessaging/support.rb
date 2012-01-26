@@ -1,5 +1,5 @@
 # # experimenting with adding processors to the load paths, doesn't seem to work
-# Dependencies.load_paths += ["#{RAILS_ROOT}/app/processors"]
+# Dependencies.load_paths += ["#{Rails.root}/app/processors"]
 
 require 'dispatcher' unless defined?(::Dispatcher)
 ::Dispatcher.class_eval do

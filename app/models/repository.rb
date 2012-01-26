@@ -251,11 +251,11 @@ class Repository < ActiveRecord::Base
   end
 
   def self.git_backend
-    RAILS_ENV == "test" ? MockGitBackend : GitBackend
+    Rails.env == "test" ? MockGitBackend : GitBackend
   end
 
   def git_backend
-    RAILS_ENV == "test" ? MockGitBackend : GitBackend
+    Rails.env == "test" ? MockGitBackend : GitBackend
   end
 
   def to_param
@@ -776,7 +776,7 @@ class Repository < ActiveRecord::Base
   def self.create_hooks(path)
     hooks = File.join(GitoriousConfig["repository_base_path"], ".hooks")
     Dir.chdir(path) do
-      hooks_base_path = File.expand_path("#{RAILS_ROOT}/data/hooks")
+      hooks_base_path = File.expand_path("#{Rails.root}/data/hooks")
 
       if not File.symlink?(hooks)
         if not File.exist?(hooks)

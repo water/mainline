@@ -9,10 +9,10 @@
 # pidfile: /var/www/gitorious/db/sphinx/log/searchd.pid
  
 RETVAL=0
-START_CMD="cd /var/www/gitorious/ && rake ultrasphinx:daemon:start RAILS_ENV=production"
-STOP_CMD="cd /var/www/gitorious/ && rake ultrasphinx:daemon:stop RAILS_ENV=production"
-RESTART_CMD="cd /var/www/gitorious/ && rake ultrasphinx:daemon:restart RAILS_ENV=production"
-STATUS_CMD="cd /var/www/gitorious/ && rake ultrasphinx:daemon:status RAILS_ENV=production"
+START_CMD="cd /var/www/gitorious/ && rake ultrasphinx:daemon:start Rails.env=production"
+STOP_CMD="cd /var/www/gitorious/ && rake ultrasphinx:daemon:stop Rails.env=production"
+RESTART_CMD="cd /var/www/gitorious/ && rake ultrasphinx:daemon:restart Rails.env=production"
+STATUS_CMD="cd /var/www/gitorious/ && rake ultrasphinx:daemon:status Rails.env=production"
 LOCK_FILE=/var/lock/git-ultrasphinx
 PID_FILE=/var/www/gitorious/db/sphinx/log/searchd.pid
  

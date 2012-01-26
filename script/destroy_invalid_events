@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-ENV["RAILS_ENV"] ||= "production"
+ENV["Rails.env"] ||= "production"
 require File.dirname(__FILE__)+'/../config/environment'
 
 Event.find(:all).each do |event|

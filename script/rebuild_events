@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -KU
 
 ENV["PATH"] = "/usr/local/bin/:/opt/local/bin:#{ENV["PATH"]}"
-ENV["RAILS_ENV"] ||= "production"
+ENV["Rails.env"] ||= "production"
 
 require File.dirname(__FILE__) + "/../config/environment"
 

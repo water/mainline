@@ -178,7 +178,7 @@ that the code is working as intended.
 There is at the time being one gem that's required to run the tests, so start
 out with
 
-  [sudo] rake gems:install RAILS_ENV=test
+  [sudo] rake gems:install Rails.env=test
   
 to make sure the test specific gems are installed. Then run the entire test
 suite:
@@ -227,9 +227,9 @@ information about how to set this up.
 Get Sphinx going
 ================
 
-    $ env RAILS_ENV=production rake ultrasphinx:configure
-    $ env RAILS_ENV=production rake ultrasphinx:index
-    $ env RAILS_ENV=production rake ultrasphinx:daemon:start
+    $ env Rails.env=production rake ultrasphinx:configure
+    $ env Rails.env=production rake ultrasphinx:index
+    $ env Rails.env=production rake ultrasphinx:daemon:start
     
 This sequence of commands will configure, index the database and start the
 sphinx daemon

@@ -19,11 +19,11 @@ class ApplicationProcessor < ActiveMessaging::Processor
   
   def ActiveMessaging.logger
     @@logger ||= begin
-      io = RAILS_ENV == "development" ? STDOUT : File.join(RAILS_ROOT, "log", "message_processing.log")
+      io = Rails.env == "development" ? STDOUT : File.join(Rails.root, "log", "message_processing.log")
       logger = ActiveSupport::BufferedLogger.new(io)
       #logger.level = ActiveSupport::BufferedLogger.const_get(Rails.configuration.log_level.to_s.upcase)
       logger.level = ActiveSupport::BufferedLogger::INFO
-      if RAILS_ENV == "production"
+      if Rails.env == "production"
         logger.auto_flushing = true
       end
       logger

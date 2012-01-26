@@ -5,6 +5,6 @@ require File.expand_path('../config/application', __FILE__)
 
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
+require "rdoc/task"
 
-Rails::Application.load_tasks
+Gitorious::Application.load_tasks

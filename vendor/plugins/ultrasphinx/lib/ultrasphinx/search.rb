@@ -327,7 +327,7 @@ Note that your database is never changed by anything Ultrasphinx does.
       @results, @subtotals, @facets, @response = [], {}, {}, {}
         
       extra_keys = @options.keys - (self.class.query_defaults.keys + INTERNAL_KEYS)
-      log "discarded invalid keys: #{extra_keys * ', '}" if extra_keys.any? and RAILS_ENV != "test" 
+      log "discarded invalid keys: #{extra_keys * ', '}" if extra_keys.any? and Rails.env != "test" 
     end
     
     # Run the search, filling results with an array of ActiveRecord objects. Set the parameter to false 

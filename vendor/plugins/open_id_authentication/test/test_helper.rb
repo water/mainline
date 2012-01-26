@@ -13,5 +13,5 @@ require 'mocha'
 gem 'ruby-openid'
 require 'openid'
 
-RAILS_ROOT = File.dirname(__FILE__) unless defined? RAILS_ROOT
+Rails.root = File.dirname(__FILE__) unless defined? Rails.root
 require File.dirname(__FILE__) + "/../lib/open_id_authentication"

@@ -1,4 +1,4 @@
-ENV["RAILS_ENV"] = "test"
+ENV["Rails.env"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require "shoulda"
 require "factory_girl"
@@ -36,7 +36,7 @@ class ActiveSupport::TestCase
   end
   
   def grit_test_repo(name)
-    File.join(RAILS_ROOT, "vendor/grit/test", name )
+    File.join(Rails.root, "vendor/grit/test", name )
   end
   
   def assert_incremented_by(obj, meth, value)

@@ -1,10 +1,10 @@
 #!/bin/sh
 
 JRUBY_CMD=`which jruby`
-RAILS_ROOT="$(dirname $0)/.."
-POLLER_RB="$RAILS_ROOT/vendor/plugins/activemessaging/poller.rb"
-OUT="$RAILS_ROOT/tmp/poller.output"
-PID_FILE="$RAILS_ROOT/tmp/poller0.pid"
+Rails.root="$(dirname $0)/.."
+POLLER_RB="$Rails.root/vendor/plugins/activemessaging/poller.rb"
+OUT="$Rails.root/tmp/poller.output"
+PID_FILE="$Rails.root/tmp/poller0.pid"
 
 if [ -z "$JRUBY_CMD" ] ; then
 	echo "Could not find jruby on your path."

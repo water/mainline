@@ -34,7 +34,7 @@ module ActiveMessaging
     require 'activemessaging/trace_filter'
 
     # load all under the adapters dir 
-    Dir[RAILS_ROOT.to_s + '/vendor/plugins/activemessaging/lib/activemessaging/adapters/*.rb'].each{|a| 
+    Dir[Rails.root.to_s + '/vendor/plugins/activemessaging/lib/activemessaging/adapters/*.rb'].each{|a| 
       begin
         adapter_name = File.basename(a, ".rb")
         require 'activemessaging/adapters/' + adapter_name
@@ -45,7 +45,7 @@ module ActiveMessaging
   end
 
   def self.load_config
-    path = File.expand_path("#{RAILS_ROOT.to_s}/config/messaging.rb")
+    path = File.expand_path("#{Rails.root.to_s}/config/messaging.rb")
     begin
       load path
     rescue MissingSourceFile
@@ -57,12 +57,12 @@ module ActiveMessaging
 
   def self.load_processors(first=true)
     #Load the parent processor.rb, then all child processor classes
-    load RAILS_ROOT.to_s + '/vendor/plugins/activemessaging/lib/activemessaging/message_sender.rb' unless defined?(ActiveMessaging::MessageSender)
-    load RAILS_ROOT.to_s + '/vendor/plugins/activemessaging/lib/activemessaging/processor.rb' unless defined?(ActiveMessaging::Processor)
-    load RAILS_ROOT.to_s + '/vendor/plugins/activemessaging/lib/activemessaging/filter.rb' unless defined?(ActiveMessaging::Filter)
-    logger.debug "ActiveMessaging: Loading #{RAILS_ROOT.to_s + '/app/processors/application.rb'}" if first
-    load RAILS_ROOT.to_s + '/app/processors/application.rb' if File.exist?("#{RAILS_ROOT.to_s}/app/processors/application.rb")
-    Dir[RAILS_ROOT.to_s + '/app/processors/*.rb'].each do |f|
+    load Rails.root.to_s + '/vendor/plugins/activemessaging/lib/activemessaging/message_sender.rb' unless defined?(ActiveMessaging::MessageSender)
+    load Rails.root.to_s + '/vendor/plugins/activemessaging/lib/activemessaging/processor.rb' unless defined?(ActiveMessaging::Processor)
+    load Rails.root.to_s + '/vendor/plugins/activemessaging/lib/activemessaging/filter.rb' unless defined?(ActiveMessaging::Filter)
+    logger.debug "ActiveMessaging: Loading #{Rails.root.to_s + '/app/processors/application.rb'}" if first
+    load Rails.root.to_s + '/app/processors/application.rb' if File.exist?("#{Rails.root.to_s}/app/processors/application.rb")
+    Dir[Rails.root.to_s + '/app/processors/*.rb'].each do |f|
       unless f.match(/\/application.rb/)
         logger.debug "ActiveMessaging: Loading #{f}" if first
         load f

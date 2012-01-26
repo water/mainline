@@ -13,9 +13,9 @@ end
 
 #$DEBUG=true
 
-RAILS_ENV = ENV['RAILS_ENV'] ||= 'production'
+Rails.env = ENV['Rails.env'] ||= 'production'
 
-GitoriousConfig = YAML::load_file(conf_file)[RAILS_ENV]
+GitoriousConfig = YAML::load_file(conf_file)[Rails.env]
 
 ENV["PATH"] = "/usr/local/bin/:/opt/local/bin:#{ENV["PATH"]}"
 

@@ -65,7 +65,7 @@ class BlobsHelperTest < ActionView::TestCase
     end
     
     should "know that binary aren't textual" do
-      assert !textual?(blob_with_name("foo.png", File.read(File.join(RAILS_ROOT, "public/images/rails.png"))))
+      assert !textual?(blob_with_name("foo.png", File.read(File.join(Rails.root, "public/images/rails.png"))))
       assert !textual?(blob_with_name("foo.gif", "GIF89a\v\x00\r\x00\xD5!\x00\xBD"))
       assert !textual?(blob_with_name("foo.exe", "rabuf\06si\000ezodniw"))
       assert !textual?(blob_with_name("foo", "a"*1024 + "\000"))

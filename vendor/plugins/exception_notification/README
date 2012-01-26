@@ -70,7 +70,7 @@ access to the following variables:
 * @exception: the exception that was raised
 * @host: the name of the host that made the request
 * @backtrace: a sanitized version of the exception's backtrace
-* @rails_root: a sanitized version of RAILS_ROOT
+* @rails_root: a sanitized version of Rails.root
 * @data: a hash of optional data values that were passed to the notifier
 * @sections: the array of sections to include in the email
 
