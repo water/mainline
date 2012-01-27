@@ -1,6 +1,15 @@
 # Gitorious soon Water
 
-## Installation
+## Setup
+
+### Preperation
+
+Install and start ...
+
+1. [activemq](http://activemq.apache.org/), used for internal messaging.
+2. `mysql`, pg will be used later in the development process.
+
+### Installation
 
 1. Clone project using `git clone git@github.com:water/mainline.git water`
 2. Navigate to folder and add your database credentials under `config/database.yml` section `development`
@@ -14,10 +23,6 @@
 ## Current status
 
 Does not crash when using rails 3.0.10.
-
-## Todo
-
-1. Remove Ultrasphinx, it's not needed in Water
 
 ## Strange things
 
