@@ -126,7 +126,7 @@ class Project < ActiveRecord::Base
   def self.per_page() 20 end
 
   def self.top_tags(limit = 10)
-    tag_counts(:limit => limit, :order => "count desc")
+    #tag_counts(:limit => limit, :order => "count desc")
   end
 
   # Returns the projects limited by +limit+ who has the most activity within

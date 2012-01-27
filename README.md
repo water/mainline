@@ -16,3 +16,7 @@ Does not crash when using rails 3.0.10.
 ## Todo
 
 1. Remove Ultrasphinx, it's not needed in Water
+
+## Strange things
+
+- Project.top_tags
