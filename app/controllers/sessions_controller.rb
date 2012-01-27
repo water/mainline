@@ -31,16 +31,10 @@ class SessionsController < ApplicationController
   before_filter :ssl_required, :only => [:new, :create, :destroy]
   layout "second_generation/application"
   
-  # render new.rhtml
-  def new
-  end
+  def new; end
 
   def create
-    if using_open_id?
-      open_id_authentication(params[:openid_url])
-    else
-      password_authentication(params[:email], params[:password])
-    end
+    password_authentication(params[:email], params[:password])
   end
 
   def destroy
@@ -83,7 +77,7 @@ class SessionsController < ApplicationController
   end
 
   def password_authentication(email, password)
-    self.current_user = User.authenticate(email, password)
+    self.current_user = User.authenticate(email, password)    
     if logged_in?
       successful_login
     else
