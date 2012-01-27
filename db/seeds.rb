@@ -1,7 +1,15 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Mayor.create(:name => 'Daley', :city => cities.first)
+require "colorize"
+
+attributes = {
+  login: "the-dude", 
+  email: "admin@popfizzle.com", 
+  password: "abc123", 
+  password_confirmation: "abc123", 
+  terms_of_use: "1",
+  activated_at: Time.now,
+  is_admin: true
+}
+
+User.create(attributes)
+
+puts attributes.to_yaml.green
