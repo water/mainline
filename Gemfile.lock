@@ -91,7 +91,7 @@ GEM
     mocha (0.10.3)
       metaclass (~> 0.0.1)
     mysql (2.8.1)
-    mysql2 (0.2.10)
+    mysql2 (0.2.12)
     oauth (0.4.5)
     polyglot (0.3.3)
     rack (1.2.5)
@@ -147,7 +147,7 @@ DEPENDENCIES
   mime-types
   mocha
   mysql
-  mysql2 (= 0.2.10)
+  mysql2 (= 0.2.12)
   oauth
   paperclip!
   rails (= 3.0.10)
