@@ -29,6 +29,7 @@ gem "builder"
 
 group :development do
   gem "hirb"
+  gem "ruby-debug19"
 end
 
 group :test do
