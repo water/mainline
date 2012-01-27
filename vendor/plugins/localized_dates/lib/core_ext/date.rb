@@ -14,8 +14,10 @@
   alias_method :to_s, :to_formatted_s
 end
 
-::Date.const_set('DATE_FORMATS', {
-  :db           => "%Y-%m-%d",
-  :number       => "%Y%m%d",
-  :rfc822       => "%e %b %Y"
-})
+unless defined?(DATE_FORMATS)
+  ::Date.const_set('DATE_FORMATS', {
+    :db           => "%Y-%m-%d",
+    :number       => "%Y%m%d",
+    :rfc822       => "%e %b %Y"
+  })
+end
