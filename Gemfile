@@ -4,12 +4,11 @@ gem "rails", "3.0.10"
 gem "chronic"
 gem "geoip"
 gem "hoe", :require => false
-#gem "echoe", :require => false
+gem "echoe", :require => false
 gem "ruby-yadis", :require => "yadis"
 gem "rdiscount", "1.3.1.1"
 gem "mime-types", :require => "mime/types"
 gem "diff-lcs", :require => "diff/lcs"
-gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
@@ -26,6 +25,7 @@ gem "mysql"
 # View
 gem "will_paginate"
 gem "builder"
+gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 
 # Background
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
