@@ -30,6 +30,7 @@ gem "builder"
 group :development do
   gem "hirb"
   gem "ruby-debug19"
+  gem "colorize"
 end
 
 group :test do

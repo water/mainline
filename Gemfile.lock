@@ -65,6 +65,7 @@ GEM
     builder (2.1.2)
     chronic (0.6.6)
     cocaine (0.2.1)
+    colorize (0.5.8)
     columnize (0.3.6)
     daemons (1.1.6)
     diff-lcs (1.1.3)
@@ -154,6 +155,7 @@ PLATFORMS
 DEPENDENCIES
   builder
   chronic
+  colorize
   daemons
   diff-lcs
   echoe
