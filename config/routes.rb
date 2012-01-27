@@ -122,6 +122,10 @@ Gitorious::Application.routes.draw do |map|
     end
   end
 
+  resources :groups
+  resources :projects
+  resources :users
+  
   resources_with_custom_prefix :projects do
     repositories
   end
