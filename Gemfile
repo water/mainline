@@ -24,7 +24,7 @@ gem "exception_notification", git: "git://github.com/smartinez87/exception_notif
 gem "mysql"
 
 # View
-gem "will_paginate", "2.3.15"
+gem "will_paginate"
 gem "builder"
 
 group :development do

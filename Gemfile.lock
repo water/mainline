@@ -178,4 +178,4 @@ DEPENDENCIES
   shoulda!
   state_machine
   stomp (= 1.1)
-  will_paginate (= 2.3.15)
+  will_paginate
