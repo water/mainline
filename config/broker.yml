@@ -9,10 +9,10 @@ development:
     # Stomp Adapter Properties #
     ############################
     adapter: stomp
-    deadLetterQueue: '/destination/GitoriousDeadLetter'
+    deadLetterQueue: '/queue/GitoriousDeadLetter'
 
     ## properties below are all defaults for this adapter
-    ogin: ""
+    login: ""
     passcode: ""
     host: localhost
     port: 8161
