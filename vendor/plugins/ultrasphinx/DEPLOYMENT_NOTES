@@ -5,7 +5,7 @@ Please note that the generated <tt>.conf</tt> file in <tt>config/ultrasphinx</tt
 
 You will want to keep your generated <tt>production.conf</tt> in your repository. You can get a <tt>production.conf</tt> by running:
 
-  Rails.env=production rake ultrasphinx:configure
+  RAILS_ENV=production rake ultrasphinx:configure
     
 If you don't have local read access to the production database, you'll need to write a post-deploy task to generate the configuration server-side. It is important that every checkout of the app has a copy of <tt>production.conf</tt>. It is not enough to only have it on the server where the search daemon is running--Rails uses it too.
 
@@ -15,11 +15,11 @@ You will <b>not</b> want to keep the generated <tt>development.conf</tt> in the 
 
 It's easy to keep the search daemon and the indexer running in a production environment. Cronjobs are the best way:
 
-  */6 * * * * bash -c 'cd /path/to/production/current/; Rails.env=production \
+  */6 * * * * bash -c 'cd /path/to/production/current/; RAILS_ENV=production \
     rake ultrasphinx:index:delta >> /log/ultrasphinx-index.log 2>&1'
-  1 4 * * * bash -c 'cd /path/to/production/current/; Rails.env=production \
+  1 4 * * * bash -c 'cd /path/to/production/current/; RAILS_ENV=production \
     rake ultrasphinx:index:main >> /log/ultrasphinx-index.log 2>&1'
-  */3 * * * * bash -c 'cd /path/to/production/current/; Rails.env=production \
+  */3 * * * * bash -c 'cd /path/to/production/current/; RAILS_ENV=production \
     rake ultrasphinx:daemon:start >> /log/ultrasphinx-daemon.log 2>&1'
 
 The first line reindexes the delta index every 10 minutes. The second line reindexes the main index once a day at 4am. The third line will try to restart the search daemon every three minutes. If it's already running, nothing happens. 

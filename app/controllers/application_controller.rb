@@ -22,7 +22,7 @@
 
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
-  include ExceptionNotifiable
+  #include ExceptionNotifiable
   
   before_filter :public_and_logged_in
   before_filter :require_current_eula

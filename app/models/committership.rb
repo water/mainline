@@ -47,11 +47,11 @@ class Committership < ActiveRecord::Base
   after_destroy :add_removed_committer_event
   before_destroy :nullify_messages
 
-  named_scope :groups, :conditions => { :committer_type => "Group" }
-  named_scope :users,  :conditions => { :committer_type => "User" }
-  named_scope :reviewers, :conditions => ["(permissions & ?)", CAN_REVIEW]
-  named_scope :committers, :conditions => ["(permissions & ?)", CAN_COMMIT]
-  named_scope :admins, :conditions => ["(permissions & ?)", CAN_ADMIN]
+  scope :groups, :conditions => { :committer_type => "Group" }
+  scope :users,  :conditions => { :committer_type => "User" }
+  scope :reviewers, :conditions => ["(permissions & ?)", CAN_REVIEW]
+  scope :committers, :conditions => ["(permissions & ?)", CAN_COMMIT]
+  scope :admins, :conditions => ["(permissions & ?)", CAN_ADMIN]
 
   def self.create_for_owner!(an_owner)
     cs = new({:committer => an_owner})

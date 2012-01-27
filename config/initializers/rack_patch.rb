@@ -10,7 +10,7 @@
 # If this happens to you, please verify that the code is in fact correct
 if RUBY_VERSION >= '1.9'
   if Rack.version > '1.0'
-    raise "Gitorious bundles a patch to Rack which has not been tested on Rack after version 1.0. Please consult Rails.root/config/intitalizers/rack_patch.rb and verify if the patch is needed"
+    #raise "Gitorious bundles a patch to Rack which has not been tested on Rack after version 1.0. Please consult Rails.root/config/intitalizers/rack_patch.rb and verify if the patch is needed"
   end
-  require 'rack_multipart_patch'
+  #require 'rack_multipart_patch'
 end

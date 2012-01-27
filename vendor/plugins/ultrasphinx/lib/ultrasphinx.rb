@@ -3,7 +3,7 @@ require 'fileutils'
 require 'chronic'
 require 'singleton'
 
-if defined? Rails.env and Rails.env == "development"
+if defined? Rails.env and Rails.env.development?
   if ENV['USER'] == 'eweaver'
     require 'ruby-debug'
     Debugger.start
@@ -19,8 +19,7 @@ require 'ultrasphinx/is_indexed'
 
 if (ActiveRecord::Base.connection rescue nil) # XXX Not sure why this needed to be wrapped.
   require 'ultrasphinx/configure'
-  # RAILS3FAIL
-  # require 'ultrasphinx/autoload'
+  require 'ultrasphinx/autoload'
   require 'ultrasphinx/fields'
 
   require 'ultrasphinx/search/internals'
@@ -34,4 +33,3 @@ if (ActiveRecord::Base.connection rescue nil) # XXX Not sure why this needed to 
   
   require 'ultrasphinx/spell'
 end
-

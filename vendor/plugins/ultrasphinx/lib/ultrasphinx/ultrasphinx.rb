@@ -64,7 +64,7 @@ module Ultrasphinx
 
   SQL_FUNCTIONS = {
     'mysql' => {
-      'group_concat' => "CAST(GROUP_CONCAT(DISTINCT ? ? SEPARATOR ' ') AS CHAR)",
+      'group_concat' => "GROUP_CONCAT(DISTINCT ? ? SEPARATOR ' ')",
       'delta' => "DATE_SUB(NOW(), INTERVAL ? SECOND)",      
       'hash' => "CAST(CRC32(?) AS unsigned)",
       'range_cast' => "?"
@@ -100,13 +100,11 @@ module Ultrasphinx
       puts msg[0..0].upcase + msg[1..-1]
     else
       msg = "** ultrasphinx: #{msg}"
-      # RAILS3FAIL
-      # if defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER
-      #   RAILS_DEFAULT_LOGGER.warn msg
-      # else
-      #   STDERR.puts msg
-      # end
-      STDERR.puts msg
+      if defined?(Rails) && Rails.logger
+        Rails.logger.warn msg
+      else
+        STDERR.puts msg
+      end
     end        
     nil # Explicitly return nil
   end
@@ -114,8 +112,8 @@ module Ultrasphinx
   # Debug-mode logger.  
   def self.log msg
     # XXX Method name is stupid.
-    if defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER
-      RAILS_DEFAULT_LOGGER.debug msg
+    if defined?(Rails) && Rails.logger
+      Rails.logger.debug msg
     else
       STDERR.puts msg
     end
@@ -135,7 +133,7 @@ module Ultrasphinx
       section.gsub!(/^\s*(.*?)\s*(?:#.*)?$/, '\1')
 
       # Convert to a hash
-      returning({}) do |options|
+      {}.tap do |options|
         lines = section.split(/\n+/)
         while line = lines.shift
           if line =~ /(.*?)\s*=\s*(.*)/

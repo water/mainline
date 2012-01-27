@@ -22,7 +22,7 @@ module Ultrasphinx
                 end
               rescue Object => e
                 say "warning: critical autoload error on #{filename}; try referencing \"#{filename.camelize}\" directly in the console"
-                say e.backtrace.join("\n") if Rails.env == "development"
+                say e.backtrace.join("\n") if Rails.env.development?
               end
             end 
           end
@@ -310,6 +310,10 @@ module Ultrasphinx
             source_string = "#{entry['table_alias']}.#{entry['field']}"
             order_string = ("ORDER BY #{entry['order']}" if entry['order'])
             # We are using the field in an aggregate, so we don't want to add it to group_bys
+            if entry['multi']
+              source_string = SQL_FUNCTIONS[ADAPTER]['hash']._interpolate(source_string)
+            end
+            
             source_string = SQL_FUNCTIONS[ADAPTER]['group_concat']._interpolate(source_string, order_string)
             use_distinct = true
             

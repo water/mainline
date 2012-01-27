@@ -56,8 +56,8 @@ Gitorious::Application.configure do
   # ActionMailer::Base.default_url_options[:protocol] = 'https'
   # Disable delivery errors, bad email addresses will be ignored
   config.after_initialize do
-    ExceptionNotifier.exception_recipients = YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["exception_notification_emails"]
-    ExceptionNotifier.class_eval do
-      ExceptionNotifier.template_root = "#{Rails.root}/vendor/plugins/exception_notification/lib/../views"
-    end
+    #ExceptionNotifier.exception_recipients = YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["exception_notification_emails"]
+    #ExceptionNotifier.class_eval do
+      #ExceptionNotifier.template_root = "#{Rails.root}/vendor/plugins/exception_notification/lib/../views"
+    #end
 end

@@ -13,6 +13,7 @@ This is a special singleton configuration class that stores the index field conf
     
     TYPE_MAP = {
       'string' => 'text', 
+      'multi' => 'multi', 
       'text' => 'text', 
       'integer' => 'integer', 
       'date' => 'date', 
@@ -57,13 +58,15 @@ This is a special singleton configuration class that stores the index field conf
         @groups << case new_type
           when 'integer'
             "sql_attr_uint = #{field}"
+          when 'multi'
+            "sql_attr_multi = uint #{field} from field"
           when 'float'
             "sql_attr_float = #{field}"
           when 'bool'
             "sql_attr_bool = #{field}"
           when 'date'
             "sql_attr_timestamp = #{field}"
-          when 'text' 
+          when 'text'
             "sql_attr_str2ordinal = #{field}" if string_sortable
         end
       end
@@ -85,7 +88,7 @@ This is a special singleton configuration class that stores the index field conf
       case types[field]
         when 'text'
           "''"
-        when 'integer', 'float', 'bool'
+        when 'integer', 'float', 'bool', 'multi'
           "0"
         when 'date'
           "18000" # Midnight on 1/1/1970
@@ -135,7 +138,11 @@ This is a special singleton configuration class that stores the index field conf
           # Regular concats are CHAR, group_concats are BLOB and need to be cast to CHAR
           options['concatenate'].to_a.each do |entry|
             extract_table_alias!(entry, klass)
-            save_and_verify_type(entry['as'], 'text', nil, klass) 
+            if entry['multi']
+              save_and_verify_type(entry['as'], 'multi', nil, klass) 
+            else
+              save_and_verify_type(entry['as'], 'text', nil, klass) 
+            end
             install_duplicate_fields!(entry, klass)
           end          
           

@@ -320,14 +320,14 @@ Note that your database is never changed by anything Ultrasphinx does.
       @options['indexes'] = Array(@options['indexes']).join(" ")
             
       raise UsageError, "Weights must be a Hash" unless @options['weights'].is_a? Hash
-      raise UsageError, "Filters must be a Hash" unless @options['filters'].is_a? Hash
+      # raise UsageError, "Filters must be a Hash" unless @options['filters'].is_a? Hash
       
       @options['parsed_query'] = parse(query)
   
       @results, @subtotals, @facets, @response = [], {}, {}, {}
         
       extra_keys = @options.keys - (self.class.query_defaults.keys + INTERNAL_KEYS)
-      log "discarded invalid keys: #{extra_keys * ', '}" if extra_keys.any? and Rails.env != "test" 
+      log "discarded invalid keys: #{extra_keys * ', '}" if extra_keys.any? and !Rails.env.test?
     end
     
     # Run the search, filling results with an array of ActiveRecord objects. Set the parameter to false 

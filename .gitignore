@@ -23,3 +23,5 @@ public/javascripts/sites/*
 public/system/avatars
 public/system/group_avatars
 .bundle/config
+data.sql
+data.tsv

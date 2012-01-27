@@ -25,21 +25,21 @@ module Gitorious
       resource_scope(resource) do
         yield if block_given?
 
-        collection_scope do
-          get  :index if parent_resource.actions.include?(:index)
-          post :create if parent_resource.actions.include?(:create)
-        end
+        #collection_scope do
+        #  get  :index if parent_resource.actions.include?(:index)
+        #  post :create if parent_resource.actions.include?(:create)
+        #end
 
-        new_scope do
-          get :new
-        end if parent_resource.actions.include?(:new)
-
-        member_scope do
-          get    :show if parent_resource.actions.include?(:show)
-          put    :update if parent_resource.actions.include?(:update)
-          delete :destroy if parent_resource.actions.include?(:destroy)
-          get    :edit if parent_resource.actions.include?(:edit)
-        end
+        # new_scope do
+        #   get :new
+        # end if parent_resource.actions.include?(:new)
+        # 
+        # member_scope do
+        #   get    :show if parent_resource.actions.include?(:show)
+        #   put    :update if parent_resource.actions.include?(:update)
+        #   delete :destroy if parent_resource.actions.include?(:destroy)
+        #   get    :edit if parent_resource.actions.include?(:edit)
+        # end
       end
     end
 
