@@ -4,7 +4,7 @@ gem "rails", "3.0.10"
 gem "chronic"
 gem "geoip"
 gem "hoe", :require => false
-gem "echoe", :require => false
+#gem "echoe", :require => false
 gem "ruby-yadis", :require => "yadis"
 gem "rdiscount", "1.3.1.1"
 gem "mime-types", :require => "mime/types"
@@ -13,7 +13,7 @@ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
-gem "exception_notification", git: "git://github.com/smartinez87/exception_notification.git"
+gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
 
 # Authentication
 gem "rack-openid"
@@ -28,13 +28,13 @@ gem "will_paginate"
 gem "builder"
 
 # Background
-gem "activemessaging", git: "git://github.com/kookster/activemessaging.git"
+gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "stomp", "1.1"
 gem "daemons", :require => false
 
 group :development do
   gem "hirb"
-  gem "ruby-debug19"
+  #gem "ruby-debug19"
   gem "colorize"
   gem "foreman"
 end
