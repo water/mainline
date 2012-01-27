@@ -9,7 +9,6 @@ gem "echoe", :require => false
 gem "ruby-yadis", :require => "yadis"
 gem "ruby-openid", :require => "openid"
 gem "rdiscount", "1.3.1.1"
-gem "stomp", "1.1"
 gem "mime-types", :require => "mime/types"
 gem "diff-lcs", :require => "diff/lcs"
 gem "oauth"
@@ -26,6 +25,10 @@ gem "mysql"
 # View
 gem "will_paginate"
 gem "builder"
+
+# Background
+gem "activemessaging", git: "git://github.com/kookster/activemessaging.git"
+gem "stomp", "1.1"
 
 group :development do
   gem "hirb"
