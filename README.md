@@ -22,3 +22,4 @@ Does not crash when using rails 3.0.10.
 ## Strange things
 
 - Project.top_tags
+- SshKey#publish_deletion_message

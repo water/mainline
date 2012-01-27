@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
+require File.expand_path("../../config/environment", __FILE__)
+
 if RUBY_VERSION < '1.9'
   $KCODE = 'u'
 else
@@ -20,7 +22,7 @@ options = {
   :dir_mode   => :normal,
   :dir        => tmp_dir,
   :multiple   => true,
-  :ontop      => false,
+  :ontop      => true,
   :mode       => :load,
   :backtrace  => true,
   :monitor    => false,

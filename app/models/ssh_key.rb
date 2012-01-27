@@ -20,6 +20,7 @@
 #++
 
 require "tempfile"
+require 'drb'
 
 class SshKey < ActiveRecord::Base
   include ActiveMessaging::MessageSender
