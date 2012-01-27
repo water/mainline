@@ -34,7 +34,7 @@ gem "daemons", :require => false
 
 group :development do
   gem "hirb"
-  #gem "ruby-debug19"
+  gem "ruby-debug19"
   gem "colorize"
   gem "foreman"
 end
