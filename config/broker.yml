@@ -9,13 +9,13 @@ development:
     # Stomp Adapter Properties #
     ############################
     adapter: stomp
-    deadLetterQueue: '/queue/GitoriousDeadLetter'
+    deadLetterQueue: '/destination/GitoriousDeadLetter'
 
     ## properties below are all defaults for this adapter
-    # login: ""
-    # passcode: ""
-    # host: localhost
-    # port: 61613
+    ogin: ""
+    passcode: ""
+    host: localhost
+    port: 8161
     # reliable: true
     # reconnectDelay: 5
     
