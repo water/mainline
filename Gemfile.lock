@@ -14,9 +14,9 @@ GIT
 
 GIT
   remote: git://github.com/thoughtbot/paperclip.git
-  revision: bc6ed16bc8abe3c983dca54556a662ddae8ac252
+  revision: 373748427078593365805b793c50985eb80d8f9d
   specs:
-    paperclip (2.5.0)
+    paperclip (2.5.1)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
@@ -146,7 +146,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.31)
-    will_paginate (2.3.15)
+    will_paginate (3.0.2)
 
 PLATFORMS
   ruby
