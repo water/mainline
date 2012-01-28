@@ -5,10 +5,10 @@
 ### Preperation
 
 1. Make sure you run ruby 1.9.2 using `ruby -v`, otherwise [install it](http://railscasts.com/episodes/310-getting-started-with-rails).
-2. Install [activemq](http://activemq.apache.org/), used for internal messaging.
+2. Install [beanstalkd](http://kr.github.com/beanstalkd/), used for internal messaging.
 3. Install and start `mysql`, pg will be used later in the development process.
 4. Install [foreman](http://railscasts.com/episodes/281-foreman) using `gem install foreman`
-5. Start the [poller](https://github.com/water/mainline/blob/master/script/poller) and `activemq` daemon by running `foreman start`
+5. Start the [poller](https://github.com/water/mainline/blob/master/script/poller) and `beanstalkd` daemon by running `foreman start`
 
 ### Installation
 
