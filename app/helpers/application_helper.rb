@@ -113,7 +113,7 @@ module ApplicationHelper
     if object.respond_to?(:ready?) && object.ready?
       yield
     else
-      concat(build_notice_for(object, options))
+      concat(build_notice_for(object, options).html_safe)
     end
   end
 
