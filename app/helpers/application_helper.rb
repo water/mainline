@@ -353,7 +353,7 @@ module ApplicationHelper
 
   def markdown_hint
     t("views.common.format_using_markdown",
-      :markdown => %(<a href="http://daringfireball.net/projects/markdown/">Markdown</a>))
+      :markdown => %(<a href="http://daringfireball.net/projects/markdown/">Markdown</a>)).html_safe
   end
 
   def current_site
