@@ -24,3 +24,19 @@
 
 - Project.top_tags
 - SshKey#publish_deletion_message
+
+## Tests
+
+### Run
+
+`bundle exec rake test`
+
+### Status current master branch
+
+- 829 tests, 1488 assertions, 6 failures, 114 errors, 0 skips
+
+### Status original master branch
+
+- 1059 tests, 2110 assertions, 0 failures, 0 errors
+- 975 tests, 1994 assertions, 0 failures, 0 errors
+- 7 tests, 34 assertions, 0 failures, 0 errors
