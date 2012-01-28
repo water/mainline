@@ -25,7 +25,7 @@
 <p class="important_message">
   <%= t("views.projects.delete_message") %>
   
-  <% form_for @project, :html => {:method => :delete} do |f| -%>
+  <%= form_for @project, :html => {:method => :delete} do |f| -%>
     <%= f.submit(t("views.projects.delete_btn")) -%>
   <% end -%>
 </p>

@@ -53,7 +53,7 @@
       </ul>
         <% if (message.sender != current_user) and message.replies_enabled? -%>
           <div class="reply" style="display:none" id="<%= dom_id(message,"reply_to") %>">
-            <% form_for(message.build_reply, :url => reply_message_path(message)) do |f| %>
+            <%= form_for(message.build_reply, :url => reply_message_path(message)) do |f| %>
               <p>
                 <%= f.label :subject, t("views.messages.subject") %><br/>
                 <%= f.text_field :subject %>

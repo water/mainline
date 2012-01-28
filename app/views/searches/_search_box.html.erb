@@ -23,7 +23,7 @@
 <% hide_tips ||= false -%>
 
 <div class="search_bar">
-<% form_for :search, :url => search_path(:only_path => false,
+<%= form_for :search, :url => search_path(:only_path => false,
     :host => GitoriousConfig["gitorious_host"], :protocol => "http"),
     :html => { :method => "get" } do |f| -%>
 <p>

@@ -20,7 +20,7 @@
 <div id="inline_comment_form" class="<%= commentable_type -%>">
 <h2>Add your comment</h2>
 <% if logged_in? -%>
-<% form_for(comment, :url => url) do |f| -%>
+<%= form_for(comment, :url => url) do |f| -%>
 <p><em id="description"></em></p>
 <p class="flash_message error" style="display:none"></p>
 <p>

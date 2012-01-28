@@ -22,7 +22,7 @@
 <h2 class="content-header"><%= t("views.groups.update_team") -%></h2>
 
 <%= error_messages_for :group -%>
-<% form_for @group, :html => {:multipart => true} do |f| -%>
+<%= form_for @group, :html => {:multipart => true} do |f| -%>
 <fieldset>
   <li>
     <%= f.label :description, t('views.groups.description') -%>
@@ -55,6 +55,6 @@
   <% end -%>
 <% end -%>
 
-<% form_for(@group, :url => avatar_group_path,
+<%= form_for(@group, :url => avatar_group_path,
   :html => {:id => "delete_avatar", :method => :delete}) do |f| -%>
 <% end -%>

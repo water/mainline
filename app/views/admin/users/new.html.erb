@@ -18,6 +18,6 @@
 %>
 <h2 class="content-header">Create a new user </h2>
 <%= error_messages_for :user %>
-<% form_for :user, :url => admin_users_path do |f| -%>
+<%= form_for :user, :url => admin_users_path do |f| -%>
   <%= render :partial => 'admin/users/form', :locals => { :f => f } %>
 <% end -%>

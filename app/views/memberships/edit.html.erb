@@ -20,7 +20,7 @@
 <%= breadcrumbs_from(@membership) -%>
 
 <%= error_messages_for :group, :membership -%>
-<% form_for [@group, @membership] do |f| -%>
+<%= form_for [@group, @membership] do |f| -%>
 <fieldset>
   <li>
     <%= f.label :role, t("views.memberships.role") -%>

@@ -22,7 +22,7 @@
 <h2 class="content-header">Edit collaborator permissions</h2>
 
 <%= error_messages_for :committership -%>
-<% form_for [@owner, @repository, @committership] do |f| -%>
+<%= form_for [@owner, @repository, @committership] do |f| -%>
 
 	<ul class="form">
 		<fieldset>

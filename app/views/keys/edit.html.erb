@@ -26,7 +26,7 @@
 
 <%= error_messages_for :ssh_key -%>
 
-<% form_for @ssh_key, :url => user_key_path(@ssh_key) do |f| -%>
+<%= form_for @ssh_key, :url => user_key_path(@ssh_key) do |f| -%>
   <p>
     <%= f.label :key, t(:key, :scope => "activerecord.attributes.keys") -%><br />
     <%= f.text_area :key, :class => "text medium" -%>

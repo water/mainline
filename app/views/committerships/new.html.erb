@@ -48,7 +48,7 @@
 </h1>
 
 <%= error_messages_for :committership -%>
-<% form_for [@owner, @repository, @committership] do |f| -%>
+<%= form_for [@owner, @repository, @committership] do |f| -%>
   <ul class="tab_menu inline_tabs">
     <li class="selected"  id="add_user_tab">
       <a href="#add_user" id="add_user_link"><%= t("views.collaborators.add_user") -%></a>

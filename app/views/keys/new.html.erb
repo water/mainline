@@ -25,7 +25,7 @@
 <h2 class="content-header"><%= t("views.keys.add_title") %></h2>
 
 <%= error_messages_for :ssh_key -%>
-<% form_for @ssh_key, :url => user_keys_path() do |f| -%>
+<%= form_for @ssh_key, :url => user_keys_path() do |f| -%>
   <p>
     <%= f.label :key, t("views.keys.your_public_key") -%><br />
     <small class="hint"><%= t("views.keys.hint") %></small><br />

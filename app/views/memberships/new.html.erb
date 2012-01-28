@@ -30,7 +30,7 @@ $(document).ready(function() {
 <h2 class="content-header"><%= t("views.memberships.new_title", :group_memberships => link_to(h(@group.name), [@group, :memberships])) -%></h2>
 
 <%= error_messages_for :group, :membership -%>
-<% form_for [@group, @membership] do |f| -%>
+<%= form_for [@group, @membership] do |f| -%>
 <fieldset>
   <li>
     <%= f.label :login, t("views.users.username") -%>

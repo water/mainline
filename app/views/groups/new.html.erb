@@ -20,7 +20,7 @@
 <h2 class="content-header"><%= t("views.groups.create_team") -%></h2>
 
 <%= error_messages_for :group -%>
-<% form_for @group, :html => {:multipart => true} do |f| -%>
+<%= form_for @group, :html => {:multipart => true} do |f| -%>
 <fieldset>
   <li>
     <%= f.label :name, t("views.groups.team_name") -%>

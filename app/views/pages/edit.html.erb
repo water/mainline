@@ -34,7 +34,7 @@
 <% end -%>
 
 
-<% form_for [@project, @page] do |f| -%>
+<%= form_for [@project, @page] do |f| -%>
   <p class="hint">
     <%= t("views.common.markdown_format_with_help") -%>
     <a href="#markdown-help" onclick="$('.markdown_help')[0].toggle();return false">Markdown</a>. 
