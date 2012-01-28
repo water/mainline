@@ -13,6 +13,12 @@ GIT
       activesupport (>= 1.0.0)
 
 GIT
+  remote: git://github.com/morellon/stomp.git
+  revision: 4c2acaf5b4ac743b473834bcd716a0864d0fc93b
+  specs:
+    stomp (1.2.0)
+
+GIT
   remote: git://github.com/smartinez87/exception_notification.git
   revision: 8d081676092f888da4ab48b5ab8b19bd5ca28d87
   specs:
@@ -151,7 +157,6 @@ GEM
     rubyforge (2.0.4)
       json_pure (>= 1.1.7)
     state_machine (1.1.2)
-    stomp (1.1)
     term-ansicolor (1.0.7)
     thor (0.14.6)
     treetop (1.4.10)
@@ -192,5 +197,5 @@ DEPENDENCIES
   ruby-yadis
   shoulda!
   state_machine
-  stomp (= 1.1)
+  stomp!
   will_paginate
