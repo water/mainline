@@ -49,7 +49,7 @@ module Gitorious
           get :clone
           post :create_clone
           get :writable_by
-          get :config
+          get :configure
           get :confirm_delete
           get :committers
           get :search_clones
