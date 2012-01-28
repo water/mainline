@@ -1,3 +1,4 @@
+require "time"
 ::DateTime.class_eval do
   def to_formatted_s(format = :default)
     formats = ::Time::DATE_FORMATS
