@@ -40,3 +40,7 @@
 - 1059 tests, 2110 assertions, 0 failures, 0 errors
 - 975 tests, 1994 assertions, 0 failures, 0 errors
 - 7 tests, 34 assertions, 0 failures, 0 errors
+
+## Rails 2.x depreciations
+
+Run `rake rails:upgrade:check` to list things that isn't migrated from rails `2.x` to `3.x`.
