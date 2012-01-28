@@ -1,8 +1,8 @@
-# Gitorious soon Water
+# Water
 
 ## Setup
 
-### Preperation
+### Preparation
 
 1. Make sure you run ruby 1.9.2 using `ruby -v`, otherwise [install it](http://railscasts.com/episodes/310-getting-started-with-rails).
 2. Install [beanstalkd](http://kr.github.com/beanstalkd/), used for internal messaging.
@@ -19,10 +19,6 @@
 5. Start rails server `rails s --debugger`
 6. Navigate to [localhost:3000](http://localhost:3000)
 7. Login using the green stuff from before.
-
-## Current status
-
-Does not crash when using rails 3.0.10.
 
 ## Strange things
 
