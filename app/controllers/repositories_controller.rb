@@ -22,15 +22,15 @@
 
 class RepositoriesController < ApplicationController
   before_filter :login_required,
-    :except => [:index, :show, :writable_by, :config, :search_clones]
+    :except => [:index, :show, :writable_by, :configure, :search_clones]
   before_filter :find_repository_owner
   before_filter :require_owner_adminship, :only => [:new, :create]
   before_filter :find_and_require_repository_adminship,
     :only => [:edit, :update, :confirm_delete, :destroy]
   before_filter :require_user_has_ssh_keys, :only => [:clone, :create_clone]
   before_filter :only_projects_can_add_new_repositories, :only => [:new, :create]
-  skip_before_filter :public_and_logged_in, :only => [:writable_by, :config]
-  renders_in_site_specific_context :except => [:writable_by, :config]
+  skip_before_filter :public_and_logged_in, :only => [:writable_by, :configure]
+  renders_in_site_specific_context :except => [:writable_by, :configure]
 
   def index
     if term = params[:filter]
@@ -203,13 +203,24 @@ class RepositoriesController < ApplicationController
   end
 
 
-  def config
+  def configure
     @repository = @owner.repositories.find_by_name_in_project!(params[:id],
       @containing_project)
     config_data = "real_path:#{@repository.real_gitdir}\n"
     config_data << "force_pushing_denied:"
     config_data << (@repository.deny_force_pushing? ? 'true' : 'false')
     render :text => config_data
+  end
+  
+  def config
+    # A controller method can't be called #config as of Rails 3.0
+    # The new name is #configure, take a look at
+    # the method above in this controller
+    # https://rails.lighthouseapp.com/projects/8994/tickets/5342-rails-300rc-does-not-allow-config-instance-variable-in-controllers
+    unless params[:action] == "config"
+      raise "This route is deprecated by Linus Oleander, give him a poke"
+    end
+    super
   end
 
   def confirm_delete
