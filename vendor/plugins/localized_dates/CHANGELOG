@@ -1,3 +1,6 @@
+[15 September 2010]
+* Moved tasks to lib folder to avoid rails 3 deprication warnings
+
 [2 October 2008]
 * Update initialization to work with latest change to Rails I18n. (Aslak Hellesøy)
 * Update localized_dates.rb to use Rails.logger instead of puts. (Andreas Korth)

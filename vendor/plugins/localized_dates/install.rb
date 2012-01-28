@@ -1,6 +1,6 @@
 require 'fileutils'
 
-locales_dir = File.join(RAILS_ROOT, 'config', 'locales')
+locales_dir = File.join(Rails.root, 'config', 'locales')
 Dir.mkdir(locales_dir) unless File.directory?(locales_dir)
 
 locales_template_dir = File.join(File.dirname(__FILE__), 'lib', 'templates', 'locales')

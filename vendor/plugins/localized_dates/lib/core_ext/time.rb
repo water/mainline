@@ -14,8 +14,24 @@
   alias_method :to_s, :to_formatted_s
 end
 
-::Time.const_set('DATE_FORMATS', {
+class Object
+  def def_if_not_defined(const, value)
+    mod = self.is_a?(Module) ? self : self.class
+    mod.const_set(const, value) unless mod.const_defined?(const)
+  end
+
+  def redef_without_warning(const, value)
+    mod = self.is_a?(Module) ? self : self.class
+    if defined?(const.constantize) and mod.const_defined?(const)
+      mod.send(:remove_const, const)
+    else
+      mod.const_set(const, value)
+    end
+  end
+end
+
+::Time.redef_without_warning :DATE_FORMATS, {
   :db           => "%Y-%m-%d %H:%M:%S",
   :number       => "%Y%m%d%H%M%S",
   :rfc822       => "%a, %d %b %Y %H:%M:%S %z"
-})
+}
