@@ -39,7 +39,7 @@ module BreadcrumbsHelper
   # Renders breadcrumbs starting from +root+
   def breadcrumbs_from(root)
     content_for(:breadcrumbs) do
-      render_breadcrumb_starting_from(root)
+      render_breadcrumb_starting_from(root).html_safe
     end
   end
 
