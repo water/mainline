@@ -217,7 +217,7 @@ class RepositoriesController < ApplicationController
     # The new name is #configure, take a look at
     # the method above in this controller
     # https://rails.lighthouseapp.com/projects/8994/tickets/5342-rails-300rc-does-not-allow-config-instance-variable-in-controllers
-    unless params[:action] == "config"
+    if params[:action] == "config"
       raise "This route is deprecated by Linus Oleander, give him a poke"
     end
     super
