@@ -29,8 +29,8 @@ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 
 # Background
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
-gem "stomp", git: "git://github.com/morellon/stomp.git" #, "1.1"
 gem "daemons", :require => false
+gem "beanstalk-client"
 
 group :development do
   gem "hirb"

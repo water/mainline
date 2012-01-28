@@ -13,12 +13,6 @@ GIT
       activesupport (>= 1.0.0)
 
 GIT
-  remote: git://github.com/morellon/stomp.git
-  revision: 4c2acaf5b4ac743b473834bcd716a0864d0fc93b
-  specs:
-    stomp (1.2.0)
-
-GIT
   remote: git://github.com/smartinez87/exception_notification.git
   revision: 8d081676092f888da4ab48b5ab8b19bd5ca28d87
   specs:
@@ -75,6 +69,7 @@ GEM
     allison (2.0.3)
     archive-tar-minitar (0.5.2)
     arel (2.0.10)
+    beanstalk-client (1.1.1)
     builder (2.1.2)
     chronic (0.6.6)
     cocaine (0.2.1)
@@ -170,6 +165,7 @@ PLATFORMS
 
 DEPENDENCIES
   activemessaging!
+  beanstalk-client
   builder
   chronic
   colorize
@@ -197,5 +193,4 @@ DEPENDENCIES
   ruby-yadis
   shoulda!
   state_machine
-  stomp!
   will_paginate
