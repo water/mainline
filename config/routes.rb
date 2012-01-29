@@ -123,12 +123,23 @@ Gitorious::Application.routes.draw do |map|
     end
   end
 
-  resources :groups
+  resources :groups do
+    resources :projects do
+      resources :repositories
+    end
+  end
+  
+  resources :groups do
+    resources :repositories
+  end
+  
   resources :projects do
     resources :repositories
   end
   
-  resources :users
+  resources :users do
+    resources :repositories
+  end
   
   resources_with_custom_prefix :projects do
     repositories
