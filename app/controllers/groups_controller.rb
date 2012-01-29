@@ -22,21 +22,18 @@ class GroupsController < ApplicationController
   renders_in_global_context
   
   def index
-    @groups = Group.paginate(:all, :page => params[:page])
+    @groups = Group.page(params[:page])
   end
   
   def show
-    @group = Group.find_by_name!(params[:id], 
-              :include => [:members, :projects, :repositories, :committerships])
-    @events = Event.top.paginate(:all, 
-      :page => params[:page],
-      :conditions => ["events.user_id in (:user_ids) and events.project_id in (:project_ids)", {
-        :user_ids => @group.members.map{|u| u.id },
-        :project_ids => @group.all_related_project_ids,
-      }], 
-      :order => "events.created_at desc", 
-      :include => [:user, :project])
-    @memberships = @group.memberships.find(:all, :include => [:user, :role])
+    @group = Group.includes(:members, :projects, :repositories, :committerships).find_by_name!(params[:id]) 
+    @events = Event.top.
+      page(params[:page]).
+      where("events.user_id in (?) and events.project_id in (?)", @group.members.map{|u| u.id }, @group.all_related_project_ids).
+      order("events.created_at desc").
+      includes(:user, :project)
+      
+    @memberships = @group.memberships.includes(:user, :role).all
   end
   
   def new
@@ -92,9 +89,9 @@ class GroupsController < ApplicationController
   end
   
   def auto_complete_for_project_slug
-    @projects = Project.find(:all, 
-      :conditions => ['LOWER(slug) LIKE ?', "%#{params[:project][:slug].downcase}%"],
-      :limit => 10)
+    @projects = Project.
+      where("LOWER(slug) LIKE ?", "%#{params[:project][:slug].downcase}%").
+      limit(10)
     render :layout => false
   end
 
