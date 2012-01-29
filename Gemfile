@@ -18,6 +18,7 @@ gem "exception_notification", :git => "git://github.com/smartinez87/exception_no
 gem "rack-openid"
 gem "ruby-openid", "2.1.8", :require => "openid"
 gem "oauth", "0.4.4"
+gem "oauth2"
 
 # Database
 gem "mysql"
