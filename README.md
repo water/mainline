@@ -83,6 +83,7 @@ You can run a particular test file using `bundle exec ruby test/the_file_in_ques
   - favourite
   - feed_item
   - git_backend
+  - group
 
 ## Rails 2.x depreciations
 
