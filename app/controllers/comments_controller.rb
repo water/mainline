@@ -28,7 +28,7 @@ class CommentsController < ApplicationController
   renders_in_site_specific_context
   
   def index
-    @comments = @repository.comments.find(:all, :include => :user)
+    @comments = @repository.comments.includes(:user)
     @merge_request_count = @repository.merge_requests.count_open
     @atom_auto_discovery_url = project_repository_comments_path(@project, @repository,
       :format => :atom)
@@ -95,7 +95,7 @@ class CommentsController < ApplicationController
         case @target
         when Repository
           commit = @target.git.commit(@comment.sha1)
-          @comments = @target.comments.find_all_by_sha1(@comment.sha1, :include => :user)
+          @comments = @target.comments.includes(:user).find_all_by_sha1(@comment.sha1)
           @diffs = commit.parents.empty? ? [] : commit.diffs.select { |diff|
             diff.a_path == @comment.path
           }
