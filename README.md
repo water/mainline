@@ -84,3 +84,27 @@ You can run a particular test file using `bundle exec ruby test/the_file_in_ques
 ## Rails 2.x depreciations
 
 Run `rake rails:upgrade:check` to list things that isn't migrated from rails `2.x` to `3.x`.
+
+## Tips and tricks
+
+### Ruby 1.9 syntax
+
+Use the new hash syntax whenever possible.  
+
+Old syntax
+
+``` ruby
+hash = {
+  :a => 1,
+  :b => 2
+}
+```
+
+New syntax
+
+``` ruby
+hash = {
+  a: 1,
+  b: 2
+}
+```
