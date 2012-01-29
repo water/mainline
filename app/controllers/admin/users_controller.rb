@@ -21,8 +21,8 @@ class Admin::UsersController < ApplicationController
   before_filter :require_site_admin
   
   def index
-    @users = User.paginate(:all, :order => 'suspended_at, login', 
-                            :page => params[:page])
+    @users = User.order("suspended_at, login").page(params[:page])
+    
     respond_to do |wants|
       wants.html
     end
