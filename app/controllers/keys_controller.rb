@@ -42,7 +42,7 @@ class KeysController < ApplicationController
   
   def create
     @ssh_key = current_user.ssh_keys.new
-    @ssh_key.key = params[:ssh_key][:key]
+    @ssh_key.key = params[:ssh_key].try(:[], :key)
     @root = Breadcrumb::NewKey.new(current_user)
     
     respond_to do |format|
