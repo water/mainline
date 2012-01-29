@@ -13,7 +13,7 @@
 
 1. Clone project using `git clone git@github.com:water/mainline.git water`
 2. Checkout the master branch. `git checkout master`
-3. Navigate to folder and add your database credentials under `config/database.yml` section `development`
+3. Navigate to the `config` folder, create a file called `database.yml` with the your user credentials. [Example credentials](https://gist.github.com/a5cf8cb41bc6643e0d84)
 4. Install all dependencies using `bundle install`
 5. Create db, migrate db and create a user `bundle exec rake db:create db:migrate db:seed`. User credentials are printed in green.
 6. Start rails server `rails s --debugger`
