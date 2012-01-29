@@ -12,13 +12,14 @@
 ### Installation
 
 1. Clone project using `git clone git@github.com:water/mainline.git water`
-2. Navigate to folder and add your database credentials under `config/database.yml` section `development`
-3. Install all dependencies using `bundle install`
-4. Create db, migrate db and create a user `bundle exec rake db:create db:migrate db:seed`. User credentials are printed in green.
-5. Start rails server `rails s --debugger`
-6. Navigate to [localhost:3000](http://localhost:3000)
-7. Login using the green stuff from before.
-8. Start [poller](https://github.com/water/mainline/blob/master/script/poller) and the `beanstalkd` daemon by running `foreman start`
+2. Checkout the master branch. `git checkout master`
+3. Navigate to folder and add your database credentials under `config/database.yml` section `development`
+4. Install all dependencies using `bundle install`
+5. Create db, migrate db and create a user `bundle exec rake db:create db:migrate db:seed`. User credentials are printed in green.
+6. Start rails server `rails s --debugger`
+7. Navigate to [localhost:3000](http://localhost:3000)
+8. Login using the green stuff from before.
+9. Start [poller](https://github.com/water/mainline/blob/master/script/poller) and the `beanstalkd` daemon by running `foreman start`
 
 ## Strange things
 
