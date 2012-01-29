@@ -114,6 +114,8 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.0.4)
     multipart-post (1.1.4)
+    mynyml-redgreen (0.7.1)
+      term-ansicolor (>= 1.0.4)
     mysql (2.8.1)
     oauth (0.4.4)
     oauth2 (0.5.2)
@@ -193,6 +195,7 @@ DEPENDENCIES
   hoe
   mime-types
   mocha
+  mynyml-redgreen
   mysql
   oauth (= 0.4.4)
   oauth2
