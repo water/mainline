@@ -84,6 +84,7 @@ You can run a particular test file using `bundle exec ruby test/the_file_in_ques
   - feed_item
   - git_backend
   - group
+  - hook
 
 ## Rails 2.x depreciations
 
