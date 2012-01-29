@@ -49,6 +49,7 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
 
 - Project.top_tags
 - SshKey#publish_deletion_message
+- ActionController::TestCase.should_redirect_to_ssl
 
 ## Tests
 
