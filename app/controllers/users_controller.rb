@@ -45,11 +45,13 @@ class UsersController < ApplicationController
     @projects = @user.projects.find(:all,
       :include => [:tags, { :repositories => :project }])
     @repositories = @user.commit_repositories
-    @events = @user.events.excluding_commits.paginate(
-      :page => params[:page], :order => "events.created_at desc",
-      :include => [:user, :project])
+    @events = @user.events.excluding_commits.
+      page(params[:page]).
+      includes(:user, :project).
+      order("events.created_at desc")
+      
     @messages = @user.messages_in_inbox(3) if @user == current_user
-    @favorites = @user.favorites.all(:include => :watchable)
+    @favorites = @user.favorites.includes(:watchable)
 
     @atom_auto_discovery_url = feed_user_path(@user, :format => :atom)
     @atom_auto_discovery_title = "Public activity feed"
@@ -62,8 +64,11 @@ class UsersController < ApplicationController
 
   def feed
     @user = User.find_by_login!(params[:id])
-    @events = @user.events.find(:all, :order => "events.created_at desc",
-      :include => [:user, :project], :limit => 30)
+    @events = @user.events.
+      order("events.created_at desc").
+      includes(:user, :project).
+      limit(10)
+          
     respond_to do |format|
       format.html { redirect_to user_path(@user) }
       format.atom { }

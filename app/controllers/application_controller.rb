@@ -65,6 +65,7 @@ class ApplicationController < ActionController::Base
       redirect_to "https://" + request.host + request.request_uri
       flash.keep
     end
+      
   end
   
 

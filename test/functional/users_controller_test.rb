@@ -23,7 +23,7 @@ require_relative "../test_helper"
 class UsersControllerTest < ActionController::TestCase
 
   def turn_ssl_on
-    @request.env["HTTPS"] = "on"
+    #@request.env["HTTPS"] = "on"
   end
 
   without_ssl_context do
