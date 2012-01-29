@@ -21,7 +21,7 @@ class FavoritesController < ApplicationController
   before_filter :find_watchable, :only => [:create]
 
   def index
-    @favorites = current_user.favorites.all(:include => :watchable)
+    @favorites = current_user.favorites.includes(:watchable)
     @root = Breadcrumb::Favorites.new(current_user)
   end
 
