@@ -8,7 +8,6 @@
 2. Install [beanstalkd](http://kr.github.com/beanstalkd/), used for internal messaging.
 3. Install and start `mysql`, pg will be used later in the development process.
 4. Install [foreman](http://railscasts.com/episodes/281-foreman) using `gem install foreman`
-5. Start the [poller](https://github.com/water/mainline/blob/master/script/poller) and `beanstalkd` daemon by running `foreman start`
 
 ### Installation
 
@@ -19,6 +18,7 @@
 5. Start rails server `rails s --debugger`
 6. Navigate to [localhost:3000](http://localhost:3000)
 7. Login using the green stuff from before.
+8. Start [poller](https://github.com/water/mainline/blob/master/script/poller) and the `beanstalkd` daemon by running `foreman start`
 
 ## Strange things
 
