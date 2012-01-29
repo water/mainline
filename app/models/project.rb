@@ -66,8 +66,7 @@ class Project < ActiveRecord::Base
   NAME_FORMAT = /[a-z0-9_\-]+/.freeze
   validates_presence_of :title, :user_id, :slug, :description, :owner_id
   validates_uniqueness_of :slug, :case_sensitive => false
-  validates_format_of :slug, :with => /^#{NAME_FORMAT}$/i,
-    :message => I18n.t( "project.format_slug_validation")
+  validates_format_of :slug, :with => /^#{NAME_FORMAT}$/i, :message => "Something went wrong"
   validates_exclusion_of :slug, :in => Gitorious::Reservations.project_names
   validates_format_of :home_url, :with => URL_FORMAT_RE,
     :if => proc{|record| !record.home_url.blank? },
