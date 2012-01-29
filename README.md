@@ -87,6 +87,7 @@ You can run a particular test file using `bundle exec ruby test/the_file_in_ques
   - hook
   - mailer
   - membership
+  - merge_request_status
 
 ## Rails 2.x depreciations
 
