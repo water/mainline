@@ -70,11 +70,7 @@ Gitorious::Application.routes.draw do |map|
         put :reset_password
       end
     end
-    # admin.resource :oauth_settings, :path_prefix => "/admin/projects/:project_id"
-    # resource :oauth_settings
   end
-
-
 
   resources_with_custom_prefix :users, "~" do
     member do
@@ -92,8 +88,6 @@ Gitorious::Application.routes.draw do |map|
       post :openid_create
     end
 
-    # RAILS3FAIL: constraints makes functional tests go haywire (no such route bladi bla)
-    # scope :constraints => {:user_id => /#{User::USERNAME_FORMAT}/i} do
     scope do
       resources :keys
       resources :aliases do
@@ -129,12 +123,12 @@ Gitorious::Application.routes.draw do |map|
     end
   end
 
- # project_repository_commits_in_ref_path  
   resources :groups do
     resources :repositories
   end
   
   resources :projects do
+    resources :pages
     resources :repositories do
       match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
       match "commits/*branch" => "commits#index", :as => :commits_in_ref
@@ -152,8 +146,4 @@ Gitorious::Application.routes.draw do |map|
   resources_with_custom_prefix :projects do
     repositories
   end
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id(.:format)))'
 end
