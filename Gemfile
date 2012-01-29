@@ -40,6 +40,8 @@ group :development do
 end
 
 group :test do
+  gem "spork-testunit"
+  gem "spork", "~> 1.0rc"
   gem "mocha", :require => false
   gem "factory_girl", :git => "http://github.com/thoughtbot/factory_girl.git", :require => false
   gem "shoulda", :git => "git://github.com/bmaddy/shoulda.git", :branch => "rails3", :require => false
