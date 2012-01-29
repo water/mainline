@@ -61,8 +61,9 @@ Gitorious::Application.routes.draw do |map|
   match "/about/faq" => "site#about", :as => :faq
   match "/contact" => "site#contact", :as => :contact
 
+
   namespace :admin do
-    resources :user do
+    resources :users do
       member do
         put :suspend
         put :unsuspend
@@ -126,6 +127,7 @@ Gitorious::Application.routes.draw do |map|
   resources :projects do
     resources :repositories
   end
+  
   resources :users
   
   resources_with_custom_prefix :projects do

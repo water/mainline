@@ -6,7 +6,7 @@ Factory.definition_file_paths = [ Rails.root.join('test', 'factories') ]
 Factory.find_definitions
 require 'rails/test_help'
 
-require "fixtures/oauth_test_consumer"
+require_relative "fixtures/oauth_test_consumer"
 
 begin
   require "redgreen"
