@@ -17,9 +17,9 @@
 4. Install all dependencies using `bundle install`
 5. Create db, migrate db and create a user `bundle exec rake db:create db:migrate db:seed`. User credentials are printed in green.
 6. Start rails server `rails s --debugger`
-7. Navigate to [localhost:3000](http://localhost:3000)
-8. Login using the green stuff from before.
-9. Start [poller](https://github.com/water/mainline/blob/master/script/poller) and the `beanstalkd` daemon by running `foreman start`
+7. Start [poller](https://github.com/water/mainline/blob/master/script/poller) and the `beanstalkd` daemon by running `foreman start`
+8. Navigate to [localhost:3000](http://localhost:3000)
+9. Login using the green stuff from before.
 
 ## Strange things
 
