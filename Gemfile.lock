@@ -21,9 +21,9 @@ GIT
 
 GIT
   remote: git://github.com/thoughtbot/paperclip.git
-  revision: 373748427078593365805b793c50985eb80d8f9d
+  revision: 1cb40e352eaa0f42560021c32705933f4d4eb46a
   specs:
-    paperclip (2.5.1)
+    paperclip (2.5.2)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
@@ -151,7 +151,7 @@ GEM
       archive-tar-minitar (>= 0.5.2)
     rubyforge (2.0.4)
       json_pure (>= 1.1.7)
-    spork (0.9.0)
+    spork (1.0.0rc1)
     spork-testunit (0.0.7)
       spork (>= 0.6.0)
     state_machine (1.1.2)
@@ -195,7 +195,7 @@ DEPENDENCIES
   ruby-openid
   ruby-yadis
   shoulda!
-  spork
+  spork (~> 1.0rc)
   spork-testunit
   state_machine
   will_paginate
