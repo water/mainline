@@ -18,7 +18,7 @@
 
 require 'tmpdir'
 
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class GitBackendTest < ActiveSupport::TestCase
 

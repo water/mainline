@@ -17,7 +17,7 @@
 #++
 
 
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class MembershipTest < ActiveSupport::TestCase
   should "have valid associations" do

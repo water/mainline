@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 require 'activemessaging/test_helper'
 require File.dirname(__FILE__) + '/../../app/processors/application'
 
