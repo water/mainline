@@ -78,6 +78,7 @@ You can run a particular test file using `bundle exec ruby test/the_file_in_ques
   - cloner
   - comment
   - committership
+  - email
 
 ## Rails 2.x depreciations
 
