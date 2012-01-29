@@ -22,7 +22,7 @@ class MembershipsController < ApplicationController
   renders_in_global_context
   
   def index
-    @memberships = @group.memberships.paginate(:all, :page => params[:page])
+    @memberships = @group.memberships.page(params[:page])
     @root = Breadcrumb::Memberships.new(@group)
   end
   
@@ -81,11 +81,10 @@ class MembershipsController < ApplicationController
   end
   
   def auto_complete_for_user_login
-    @users = User.find(:all, 
-      :conditions => [ 'LOWER(login) LIKE ?', '%' + params[:q].downcase + '%' ],
-      :limit => 10)
+    @users = User.
+      where("LOWER(login) LIKE ?", "%#{params[:q].downcase}%").
+      limit(10)
     render :text => @users.map{|u| u.login }.join("\n")
-    #render :layout => false
   end
   
   
