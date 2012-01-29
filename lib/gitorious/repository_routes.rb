@@ -55,7 +55,6 @@ module Gitorious
           get :search_clones
 
           match "trees" => "trees#index", :as => :trees
-          match "trees/*branch_and_path" => "trees#show", :as => :tree
           match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
           match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
           match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
@@ -72,13 +71,6 @@ module Gitorious
             # #       :controller => "commits", :action => "feed", :conditions => {:feed => :get}
             match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
             match "commits" => "commits#index", :as => :commits
-            match "commits/*branch" => "commits#index", :as => :commits_in_ref
-            match "commit/:id(.:format)" => "commits#show", :as => :commit
-
-
-            match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
-            match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
-            match "blobs/*branch_and_path" => "blobs#show", :as => :blob
           end
         end
 

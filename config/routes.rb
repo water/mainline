@@ -128,13 +128,21 @@ Gitorious::Application.routes.draw do |map|
       resources :repositories
     end
   end
-  
+
+ # project_repository_commits_in_ref_path  
   resources :groups do
     resources :repositories
   end
   
   resources :projects do
-    resources :repositories
+    resources :repositories do
+      match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
+      match "commits/*branch" => "commits#index", :as => :commits_in_ref
+      match "trees/*branch_and_path" => "trees#show", :as => :tree
+      match "blobs/*branch_and_path" => "blobs#show", :as => :blob
+      match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
+      match "commit/:id(.:format)" => "commits#show", :as => :commit
+    end
   end
   
   resources :users do
