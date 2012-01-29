@@ -43,7 +43,8 @@ class AliasesController < ApplicationController
   end
   
   def confirm
-    email = current_user.email_aliases.with_aasm_state(:pending).first(:conditions => {:confirmation_code => params[:id]})
+    email = current_user.email_aliases.with_aasm_state(:pending).where("confirmation_code = ?", params[:id]).
+      first
     if email
       email.confirm!
       flash[:success] = "#{email.address} is now confirmed as belonging to you"
