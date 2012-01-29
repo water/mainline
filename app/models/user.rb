@@ -121,13 +121,16 @@ class User < ActiveRecord::Base
   end
 
   # Top level messages, excluding message threads that have been archived by me
-  def messages_in_inbox(limit=100)
-    Message.find_by_sql(["SELECT * from messages
-        WHERE ((sender_id != :user AND archived_by_recipient = :no AND recipient_id = :user)
-        OR (has_unread_replies = :yes AND archived_by_recipient = :no AND sender_id = :user))
-        AND in_reply_to_id IS NULL
-        ORDER BY last_activity_at DESC LIMIT :limit",
-                         {:user => self.id, :yes => true, :no => false, :limit => limit}])
+  def messages_in_inbox(limit = 100, page = nil)
+    sql = %w{
+      SELECT * from messages
+      WHERE ((sender_id != %s AND archived_by_recipient = %s AND recipient_id = %s)
+      OR (has_unread_replies = %s AND archived_by_recipient = %s AND sender_id = %s))
+      AND in_reply_to_id IS NULL
+      ORDER BY last_activity_at DESC
+    }.join(" ") % [id, false, id, true, false, id]
+    
+    User.paginate_by_sql(sql, page: page, per_page: limit)
   end
 
   has_many :sent_messages, :class_name => "Message",

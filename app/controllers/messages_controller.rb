@@ -21,7 +21,7 @@ class MessagesController < ApplicationController
   renders_in_global_context
   
   def index
-    @messages = current_user.messages_in_inbox.paginate(:page => params[:page])
+    @messages = current_user.messages_in_inbox(100, params[:page])
     @root = Breadcrumb::ReceivedMessages.new(current_user)
     respond_to do |wants|
       wants.html
@@ -30,13 +30,16 @@ class MessagesController < ApplicationController
   end
   
   def all
-    @messages = current_user.top_level_messages.paginate(:page => params[:page])
+    @messages = current_user.top_level_messages.page(params[:page])
     @root = Breadcrumb::AllMessages.new(current_user)
   end
   
   def sent
-    @messages = current_user.sent_messages.paginate(:all,
-      :page => params[:page])
+    @messages = current_user.
+      sent_messages.
+      page(params[:page]).
+      all
+      
     @root = Breadcrumb::SentMessages.new(current_user)
   end
   
@@ -81,11 +84,15 @@ class MessagesController < ApplicationController
   
 
   def create
-    thread_options = params[:message].merge({
-      :recipients => params[:message][:recipients], 
-      :sender => current_user
-    })
-    @messages = MessageThread.new(thread_options)
+    require "colorize"
+    
+    puts params.inspect.red
+    
+    @messages = MessageThread.new(params[:message].merge({
+      recipients: (params[:message] || {})[:recipients], 
+      sender: current_user
+    }))
+    
     if @messages.save
       flash[:notice] =  "#{@messages.title} sent"
       redirect_to :action => :index
@@ -114,10 +121,10 @@ class MessagesController < ApplicationController
   end
   
   def auto_complete_for_message_recipients
-    @users = User.find(:all, 
-      :conditions => [ 'LOWER(login) LIKE ?', '%' + params[:q].downcase + '%' ],
-      :limit => 10).reject{|u|u == current_user}
-    render :text => @users.map{|u| u.login }.join("\n")
-    #render :layout => false
+    @users = User.
+      where("LOWER(users.login) LIKE ?", "%#{params[:q].to_s.downcase}%").
+      where("users.id != ?", current_user.id).
+      limit(10)
+    render :text => @users.map(&:login).join("\n")
   end
 end
