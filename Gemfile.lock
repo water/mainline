@@ -111,6 +111,7 @@ GEM
       treetop (~> 1.4.8)
     metaclass (0.0.1)
     mime-types (1.17.2)
+    minitest (2.11.0)
     mocha (0.10.3)
       metaclass (~> 0.0.1)
     multi_json (1.0.4)
@@ -195,6 +196,7 @@ DEPENDENCIES
   hirb
   hoe
   mime-types
+  minitest
   mocha
   mysql
   oauth (= 0.4.4)
