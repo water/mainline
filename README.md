@@ -27,9 +27,14 @@
 
 ## Tests
 
-### Run
+### Run all specs
 
 `bundle exec rake test`
+
+### Run a specific file
+
+All tests are located in the `test` directory.  
+You can run a particular test file using `bundle exec ruby test/the_file_in_question.rb`
 
 ### Status current master branch
 
