@@ -108,7 +108,7 @@ GEM
     mocha (0.10.3)
       metaclass (~> 0.0.1)
     mysql (2.8.1)
-    oauth (0.4.5)
+    oauth (0.4.4)
     polyglot (0.3.3)
     rack (1.2.5)
     rack-mount (0.6.14)
@@ -184,7 +184,7 @@ DEPENDENCIES
   mime-types
   mocha
   mysql
-  oauth
+  oauth (= 0.4.4)
   paperclip!
   rack-openid
   rails (= 3.0.10)
@@ -192,7 +192,7 @@ DEPENDENCIES
   rdoc
   riddle
   ruby-debug19
-  ruby-openid
+  ruby-openid (= 2.1.8)
   ruby-yadis
   shoulda!
   spork (~> 1.0rc)
