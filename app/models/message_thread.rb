@@ -19,11 +19,11 @@ class MessageThread
   attr_reader :recipients, :sender
   include Enumerable
 
-  def initialize(options)
+  def initialize(options = {})
     @subject    = options[:subject]
     @body       = options[:body]
     @sender     = options[:sender]
-    @recipients = extract_recipients(options[:recipients])
+    @recipients = options[:recipients] ? extract_recipients(options[:recipients]) : []
     RAILS_DEFAULT_LOGGER.debug("MessageThread for #{@recipients.join(',')}")
   end
   

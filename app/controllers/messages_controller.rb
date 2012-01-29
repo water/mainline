@@ -30,7 +30,7 @@ class MessagesController < ApplicationController
   end
   
   def all
-    @messages = current_user.top_level_messages.page(params[:page])
+    @messages = current_user.top_level_messages(params[:page])
     @root = Breadcrumb::AllMessages.new(current_user)
   end
   
@@ -83,13 +83,11 @@ class MessagesController < ApplicationController
   end
   
 
-  def create
-    require "colorize"
-    
-    puts params.inspect.red
+  def create    
+    params[:message] ||= {}
     
     @messages = MessageThread.new(params[:message].merge({
-      recipients: (params[:message] || {})[:recipients], 
+      recipients: params[:message][:recipients], 
       sender: current_user
     }))
     

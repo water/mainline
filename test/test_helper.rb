@@ -1,3 +1,5 @@
+require "colorize"
+#abort "RAILS_ENV should match test".red unless ENV["RAILS_ENV"] == "test"
 ENV["Rails.env"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require "shoulda"

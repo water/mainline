@@ -16,11 +16,13 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #++
 require_relative "../test_helper"
+require "colorize"
 
 class MessagesControllerTest < ActionController::TestCase
   
   def setup
     @request.env["HTTPS"] = "on"
+    @controller = MessagesController.new
   end
   
   without_ssl_context do

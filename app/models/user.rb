@@ -112,25 +112,32 @@ class User < ActiveRecord::Base
     :path => ":rails_root/public#{avatar_local_path}"
 
   # Top level messages either from or to me
-  def top_level_messages
-    Message.find_by_sql(["SELECT * FROM messages
+  def top_level_messages(page = 1)
+    Message.paginate_by_sql([
+      "SELECT * FROM messages
       WHERE (has_unread_replies=? AND sender_id=?)
       OR recipient_id=?
       AND in_reply_to_id IS NULL
-      ORDER BY last_activity_at DESC", true,self, self])
+      ORDER BY last_activity_at DESC", true, self, self], page: page)
   end
 
   # Top level messages, excluding message threads that have been archived by me
-  def messages_in_inbox(limit = 100, page = nil)
-    sql = %w{
-      SELECT * from messages
-      WHERE ((sender_id != %s AND archived_by_recipient = %s AND recipient_id = %s)
-      OR (has_unread_replies = %s AND archived_by_recipient = %s AND sender_id = %s))
-      AND in_reply_to_id IS NULL
-      ORDER BY last_activity_at DESC
-    }.join(" ") % [id, false, id, true, false, id]
+  def messages_in_inbox(per_page = 100, page = nil)    
+    options = {
+      user: id, 
+      yes: true, 
+      no: false
+    }
     
-    User.paginate_by_sql(sql, page: page, per_page: limit)
+    Message.paginate_by_sql(["SELECT * from messages
+      WHERE ((sender_id != :user AND archived_by_recipient = :no AND recipient_id = :user)
+      OR (has_unread_replies = :yes AND archived_by_recipient = :no AND sender_id = :user))
+      AND in_reply_to_id IS NULL
+      ORDER BY last_activity_at DESC", options], {
+        per_page: per_page,
+        page: page
+      }
+    )
   end
 
   has_many :sent_messages, :class_name => "Message",
