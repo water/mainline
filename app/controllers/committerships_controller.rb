@@ -94,10 +94,9 @@ class CommittershipsController < ApplicationController
   end
 
   def auto_complete_for_user_login
-    @users = User.find(:all,
-      :conditions => [ 'lower(login) like :name or lower(email) like :name',
-                      {:name => '%' + params[:q].downcase + '%'} ],
-      :limit => 10)
+    @users = User.
+      where("lower(users.login) like ? or lower(users.email) like ?", *["%#{params[:q].downcase}%"]*2).
+      limit(10)
     render :text => @users.map{|u| u.login }.join("\n")
     #render "/memberships/auto_complete_for_user_login", :layout => false
   end
