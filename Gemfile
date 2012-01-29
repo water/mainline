@@ -42,7 +42,8 @@ end
 
 group :test do
   gem "spork-testunit"
-  gem "mynyml-redgreen"
+  gem "term-ansicolor"
+  gem "turn"
   gem "spork", "~> 1.0rc"
   gem "mocha", :require => false
   gem "factory_girl", :git => "http://github.com/thoughtbot/factory_girl.git", :require => false
