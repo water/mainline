@@ -53,14 +53,9 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
 
 ## Tests
 
-### Run all specs
-
-`bundle exec rake test`
-
-### Run a specific file
-
-All tests are located in the `test` directory.  
-You can run a particular test file using `bundle exec ruby test/the_file_in_question.rb`
+1. Start the DRb server ([spork](http://railscasts.com/episodes/285-spork)) by running `foreman start` or `bundle exec spork`.
+2. Wait until it says *Spork is ready and listening on 8988!*, which takes about ~20 sec.
+3. Run a file, `testdrb -Itest test/the_file_in_question.rb`.
 
 ### Status current master branch
 

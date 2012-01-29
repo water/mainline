@@ -1,13 +1,15 @@
-ENV["Rails.env"] = "test"
-require File.expand_path('../../config/environment', __FILE__)
-require "colorize"
-require "shoulda"
 require "spork"
-require "factory_girl"
-require 'rails/test_help'
-require_relative "fixtures/oauth_test_consumer"
 
 Spork.prefork do
+  ENV["Rails.env"] = "test"
+  require File.expand_path('../../config/environment', __FILE__)
+  require "colorize"
+  require "shoulda"
+  require "factory_girl"
+  require 'rails/test_help'
+  require 'turn'
+  require_relative "fixtures/oauth_test_consumer"
+  
   class ActiveSupport::TestCase
     # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
     #
@@ -137,6 +139,5 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  Factory.definition_file_paths = [ Rails.root.join('test', 'factories') ]
-  Factory.find_definitions
+  # FactoryGirl.reload <= Makes tests about 30% slower
 end
