@@ -71,6 +71,13 @@ You can run a particular test file using `bundle exec ruby test/the_file_in_ques
 - 975 tests, 1994 assertions, 0 failures, 0 errors
 - 7 tests, 34 assertions, 0 failures, 0 errors
 
+## What's tested?
+
+- models
+  - archived_event
+  - cloner
+  - comment
+
 ## Rails 2.x depreciations
 
 Run `rake rails:upgrade:check` to list things that isn't migrated from rails `2.x` to `3.x`.
