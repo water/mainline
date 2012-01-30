@@ -125,46 +125,11 @@ Gitorious::Application.routes.draw do |map|
   resources :groups do
     resources :repositories
   end
-  
-  # match "/projects/:project_id/repositories" => "repositories#index"
-  
-  # match "/:project_id/repositories/new" => "repositories#new"
-  # match "/:project_id/repositories" => "repositories#index"
-  # match "/:project_id/repositories/edit" => "repositories#edit"
-  # match "/:project_id/repositories" => "repositories#update"
-  
-  
-  #match "/:id/edit" => "projects#edit"
-  #match "/:id(/:format)" => "projects#show"
-  #match "/projects/update" => "projects#update"
-  
+    
   scope "/:project_id" do
     resources :repositories
   end
-  
- # 
- # The recognized options <{"controller"=>"projects",
- #  "action"=>"show",
- #  "id"=>"johans-project",
- #  "format"=>"repositories"}> did not match <{"controller"=>"repositories",
- #  "action"=>"index",
- #  "project_id"=>"johans-project"}>, difference: <{"controller"=>"repositories",
- #  "action"=>"index",
- #  "project_id"=>"johans-project",
- #  "id"=>"johans-project",
- #  "format"=>"repositories"}>.
- #  
 
-  # 
-  #       The recognized options <{"action"=>"show", "controller"=>"projects", "id"=>"projects", "format"=>"xml"}> 
-  #       
-  #       
-  #       did not match <{"controller"=>"projects", "action"=>"index", "format"=>"xml"}>, 
-  #       
-  #       
-  #       
-  #       difference: <{"action"=>"index", "id"=>"projects"}>.
-  # 
   resources :projects do
     member do
       get :clones
@@ -199,42 +164,9 @@ Gitorious::Application.routes.draw do |map|
     end
   end
   
-  resources :projects, path: ""
+  resources :projects, path: "/"
   
   resources :users do
     resources :repositories
   end
-  
-  #resources_with_custom_prefix :projects do
-  #  repositories
-  #end
-         
-#The recognized options <{"controller"=>"projects", "action"=>"show", "project_id"=>"johans-project"}> 
-#did not match <{"controller"=>"projects", "action"=>"show", "id"=>"johans-project"}>, 
-
-#difference: <{"id"=>"johans-project", "pro
-          
-          
-                  #The recognized options <{"controller"=>"repositories", "action"=>"new", "id"=>"johans-project"}> did not match 
-                  #<{"controller"=>"repositories", "action"=>"new", "project_id"=>"johans-project"}>, difference: <{"project_id"=>"johans-project", "id"=>"johans-project"}>.
-                  
-                  
-#                  The recognized options <{"controller"=>"repositories", "action"=>"index", "id"=>"johans-project"}> did not match <{"controller"=>"repositories",
- #                          "action"=>"index",
-  #                         "project_id"=>"johans-project"}>, difference: <{"project_id"=>"johans-project", "id"=>"johans-project"}>.
-  
-  
-#The recognized options <{"controller"=>"projects",
-#   "action"=>"show",
-#   "id"=>"johans-project",
-#   "format"=>"repositories"}> did not match <{"controller"=>"repositories",
-#   "action"=>"index",
-#   "project_id"=>"johans-project"}>, difference: <{"controller"=>"repositories",
-#   "action"=>"index",
-#   "project_id"=>"johans-project",
-#   "id"=>"johans-project",
-#   "format"=>"repositories"}>.
-#                  
-
-  #match "/:id(/:format)" => "projects#show"  
 end
