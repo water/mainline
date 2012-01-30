@@ -84,6 +84,7 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - mailer
   - membership
   - merge_request_status
+  - user
 - controllers
   - admin/users
   - messages
