@@ -155,8 +155,16 @@ Gitorious::Application.routes.draw do |map|
  #  "format"=>"repositories"}>.
  #  
 
- # resources :projects, 
-  
+  # 
+  #       The recognized options <{"action"=>"show", "controller"=>"projects", "id"=>"projects", "format"=>"xml"}> 
+  #       
+  #       
+  #       did not match <{"controller"=>"projects", "action"=>"index", "format"=>"xml"}>, 
+  #       
+  #       
+  #       
+  #       difference: <{"action"=>"index", "id"=>"projects"}>.
+  # 
   resources :projects do
     member do
       get :clones
@@ -191,13 +199,15 @@ Gitorious::Application.routes.draw do |map|
     end
   end
   
+  resources :projects, path: ""
+  
   resources :users do
     resources :repositories
   end
   
-  resources_with_custom_prefix :projects do
-    repositories
-  end
+  #resources_with_custom_prefix :projects do
+  #  repositories
+  #end
          
 #The recognized options <{"controller"=>"projects", "action"=>"show", "project_id"=>"johans-project"}> 
 #did not match <{"controller"=>"projects", "action"=>"show", "id"=>"johans-project"}>, 
