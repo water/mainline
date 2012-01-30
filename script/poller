@@ -1,32 +1,16 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-#require File.expand_path("../../config/environment", __FILE__)
+Encoding.default_internal = Encoding::UTF_8
+Encoding.default_external = Encoding::UTF_8
 
-if RUBY_VERSION < '1.9'
-  $KCODE = 'u'
-else
-  Encoding.default_internal = Encoding::UTF_8
-  Encoding.default_external = Encoding::UTF_8
-end
+require File.expand_path("../../config/environment", __FILE__)
 
-require 'rubygems' if RUBY_VERSION < '1.9'
-require 'daemons'
+require "activemessaging"
 
-APP_ROOT = File.expand_path(File.dirname(__FILE__) + '/..')
-script_file = File.join(File.expand_path(APP_ROOT),'vendor','plugins','activemessaging','poller.rb')
-tmp_dir = File.join(File.expand_path(APP_ROOT), 'tmp/pids')
+# Make sure stdout and stderr write out without delay for using with daemon like scripts
+STDOUT.sync = true; STDOUT.flush
+STDERR.sync = true; STDERR.flush
 
-options = {
-  :app_name   => "poller",
-  :dir_mode   => :normal,
-  :dir        => tmp_dir,
-  :multiple   => true,
-  :ontop      => true,
-  :mode       => :load,
-  :backtrace  => true,
-  :monitor    => false,
-  :log_output => true
-}
-
-Daemons.run(script_file,options)
+# Start it up!
+ActiveMessaging::start
