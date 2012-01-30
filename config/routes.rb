@@ -129,7 +129,7 @@ Gitorious::Application.routes.draw do |map|
   scope "/:project_id" do
     resources :repositories
   end
-
+  
   resources :projects do
     member do
       get :clones
@@ -144,8 +144,7 @@ Gitorious::Application.routes.draw do |map|
       get :committers
       get :search_clones  
     end
-    
-    resources :pages
+    resources :pages, :merge_requests
     resources :repositories do
       match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
       match "commits/*branch" => "commits#index", :as => :commits_in_ref
