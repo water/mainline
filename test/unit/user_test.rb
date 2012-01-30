@@ -174,24 +174,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal key, u.reload.password_key
   end
 
-  should "normalize identity urls" do
-    u = users(:johan)
-    u.identity_url = "http://johan.someprovider.com"
-    assert u.valid?
-    assert_equal "http://johan.someprovider.com/", u.identity_url
-
-    u.identity_url = "http://johan.someprovider.com/me"
-    assert u.valid?
-    assert_equal "http://johan.someprovider.com/me", u.identity_url
-  end
-
-  should "catch invalid identity_url" do
-    u = users(:johan)
-    u.identity_url = "€&/()"
-    assert !u.valid?
-    assert_not_nil u.errors.on(:identity_url), u.errors.on(:identity_url)
-  end
-
   should "return that the user already has a password" do
     u = users(:johan)
     assert !u.is_openid_only?
