@@ -18,7 +18,7 @@ Core web application written in Rails 3
 3. Navigate to the `config` folder, create a file called `database.yml` with the your mysql credentials. [Example credentials](https://gist.github.com/a5cf8cb41bc6643e0d84)
 4. Install all dependencies using `bundle install`
 5. Create db, migrate db and create a user `bundle exec rake db:create db:migrate db:seed`. User credentials are printed in green.
-6. Start rails server `rails s --debugger`
+6. Start rails server `rails s`
 7. Start [poller](https://github.com/water/mainline/blob/master/script/poller) and the `beanstalkd` daemon by running `foreman start`
 8. Navigate to [localhost:3000](http://localhost:3000)
 9. Login using the green stuff from before.
