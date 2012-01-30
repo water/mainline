@@ -24,4 +24,6 @@ Gitorious::Application.configure do
   config.action_mailer.delivery_method = :test
   
   config.active_support.deprecation = :log
+  
+  config.logger = Logger.new(STDOUT)
 end

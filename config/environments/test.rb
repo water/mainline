@@ -36,4 +36,5 @@ Gitorious::Application.configure do
   }
 
   ActiveSupport::Deprecation.silenced = true
+  config.logger = Logger.new(STDOUT)
 end
