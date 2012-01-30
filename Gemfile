@@ -46,8 +46,8 @@ group :test do
   gem "turn"
   gem "factory_girl_rails"
   gem "minitest"
-  gem "spork-rails"
-  gem "mocha", :require => false
+  gem "spork-rails", require: false, git: "git://github.com/sporkrb/spork-rails.git"
+  gem "mocha", require: false
   gem "factory_girl", :git => "http://github.com/thoughtbot/factory_girl.git", :require => false
   gem "shoulda", :git => "git://github.com/bmaddy/shoulda.git", :branch => "rails3", :require => false
 end
