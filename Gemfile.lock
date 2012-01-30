@@ -20,14 +20,6 @@ GIT
       actionmailer (>= 3.0.4)
 
 GIT
-  remote: git://github.com/sporkrb/spork-rails.git
-  revision: 6fe7043476fa048aa98ccd9fadc49270e18bc4fc
-  specs:
-    spork-rails (3.2.0)
-      rails (>= 3.0.0, < 3.3.0)
-      spork (>= 1.0rc0)
-
-GIT
   remote: git://github.com/thoughtbot/paperclip.git
   revision: 1cb40e352eaa0f42560021c32705933f4d4eb46a
   specs:
@@ -174,7 +166,7 @@ GEM
       archive-tar-minitar (>= 0.5.2)
     rubyforge (2.0.4)
       json_pure (>= 1.1.7)
-    spork (1.0.0rc1)
+    spork (0.9.0)
     spork-testunit (0.0.7)
       spork (>= 0.6.0)
     state_machine (1.1.2)
@@ -223,7 +215,7 @@ DEPENDENCIES
   ruby-openid (= 2.1.8)
   ruby-yadis
   shoulda!
-  spork-rails!
+  spork (= 0.9.0)
   spork-testunit
   state_machine
   term-ansicolor
