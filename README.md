@@ -1,6 +1,6 @@
 # Water
 
-Web core application written in Rails 3
+Core web application written in Rails 3
 
 ## Setup
 
