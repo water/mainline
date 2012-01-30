@@ -6,13 +6,6 @@ GIT
     shoulda (2.10.3)
 
 GIT
-  remote: git://github.com/kookster/activemessaging.git
-  revision: 1c9e1ce5e7cc70e47937562bcc403557d70e6c30
-  specs:
-    activemessaging (0.9.0)
-      activesupport (>= 1.0.0)
-
-GIT
   remote: git://github.com/smartinez87/exception_notification.git
   revision: 8d081676092f888da4ab48b5ab8b19bd5ca28d87
   specs:
@@ -31,7 +24,7 @@ GIT
 
 GIT
   remote: http://github.com/thoughtbot/factory_girl.git
-  revision: ea89aad60a5f5a6131d8177c153719d96bafd766
+  revision: 850116da11077c56cacb065924eaa655a517c09c
   specs:
     factory_girl (2.5.0)
       activesupport
@@ -53,6 +46,8 @@ GEM
       rack-mount (~> 0.6.14)
       rack-test (~> 0.5.7)
       tzinfo (~> 0.3.23)
+    activemessaging (0.9.0)
+      activesupport (>= 1.0.0)
     activemodel (3.0.10)
       activesupport (= 3.0.10)
       builder (~> 2.1.2)
@@ -68,7 +63,7 @@ GEM
     activesupport (3.0.10)
     addressable (2.2.6)
     allison (2.0.3)
-    ansi (1.4.1)
+    ansi (1.4.2)
     archive-tar-minitar (0.5.2)
     arel (2.0.10)
     beanstalk-client (1.1.1)
@@ -94,7 +89,7 @@ GEM
       addressable (~> 2.2)
       multipart-post (~> 1.1)
       rack (~> 1.1)
-    foreman (0.36.1)
+    foreman (0.37.2)
       term-ansicolor (~> 1.0.7)
       thor (>= 0.13.6)
     gemcutter (0.7.1)
@@ -184,7 +179,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activemessaging!
+  activemessaging
   beanstalk-client
   builder
   chronic
