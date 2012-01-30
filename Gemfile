@@ -29,7 +29,7 @@ gem "builder"
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 
 # Background
-gem "activemessaging"#, :git => "git://github.com/kookster/activemessaging.git"
+gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
 

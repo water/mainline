@@ -6,6 +6,13 @@ GIT
     shoulda (2.10.3)
 
 GIT
+  remote: git://github.com/kookster/activemessaging.git
+  revision: 1c9e1ce5e7cc70e47937562bcc403557d70e6c30
+  specs:
+    activemessaging (0.9.0)
+      activesupport (>= 1.0.0)
+
+GIT
   remote: git://github.com/smartinez87/exception_notification.git
   revision: 8d081676092f888da4ab48b5ab8b19bd5ca28d87
   specs:
@@ -46,8 +53,6 @@ GEM
       rack-mount (~> 0.6.14)
       rack-test (~> 0.5.7)
       tzinfo (~> 0.3.23)
-    activemessaging (0.9.0)
-      activesupport (>= 1.0.0)
     activemodel (3.0.10)
       activesupport (= 3.0.10)
       builder (~> 2.1.2)
@@ -179,7 +184,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activemessaging
+  activemessaging!
   beanstalk-client
   builder
   chronic
