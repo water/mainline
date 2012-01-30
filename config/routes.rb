@@ -43,7 +43,7 @@ Gitorious::Application.routes.draw do |map|
       get :all
     end
   end
-
+    
   match "users/activate/:activation_code" => "users#activate"
   match "users/pending_activation" => "users#pending_activation"
   match "users/reset_password/:token" => "users#reset_password", :as => "reset_password"
@@ -128,6 +128,20 @@ Gitorious::Application.routes.draw do |map|
   end
   
   resources :projects do
+    member do
+      get :clones
+      put :preview
+      get :edit_slug
+      get :confirm_delete
+
+      get :clone
+      post :create_clone
+      get :writable_by
+      get :configure
+      get :committers
+      get :search_clones  
+    end
+    
     resources :pages
     resources :repositories do
       match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
@@ -136,6 +150,14 @@ Gitorious::Application.routes.draw do |map|
       match "blobs/*branch_and_path" => "blobs#show", :as => :blob
       match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
       match "commit/:id(.:format)" => "commits#show", :as => :commit
+      
+      match "comments/commit/:sha" => "comments#commit", :as => :commit_comment, :via => :get
+      match "comments/preview" => "comments#preview", :as => :comments_preview
+      match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
+      match "commits" => "commits#index", :as => :commits
+      
+      match "trees" => "trees#index", :as => :trees
+      match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
     end
   end
   
@@ -143,7 +165,16 @@ Gitorious::Application.routes.draw do |map|
     resources :repositories
   end
   
+  # project_repository_commits_path
+  
   resources_with_custom_prefix :projects do
     repositories
   end
+  
+  match "/:project_id/repositories/new" => "repositories#new"
+  match "/:project_id/repositories/" => "repositories#index"
+  match "/:project_id/edit" => "projects#edit"
+  match "/:project_id(/:format)" => "projects#show"
+  
+  match "/projects/update" => "projects#update"
 end

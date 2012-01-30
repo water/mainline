@@ -51,8 +51,7 @@ class ProjectsController < ApplicationController
 
   def category
     tags = params[:id].to_s.gsub(/,\ ?/, " ")
-    @projects = Project.paginate_by_tag(tags, :order => 'created_at desc',
-                  :page => params[:page])
+    @projects = Project.paginate_by_tag(tags, :order => 'created_at desc', :page => params[:page])
     @atom_auto_discovery_url = projects_category_path(params[:id], :format => :atom)
     respond_to do |format|
       format.html do
@@ -67,8 +66,11 @@ class ProjectsController < ApplicationController
   def show
     @owner = @project
     @root = @project
-    @events = @project.events.top.paginate(:all, :page => params[:page],
-      :order => "created_at desc", :include => [:user, :project])
+    @events = @project.events.top.
+      page(params[:page]).
+      order("created_at desc").
+      includes(:user, :project)
+      
     @group_clones = @project.recently_updated_group_repository_clones
     @user_clones = @project.recently_updated_user_repository_clones
     @atom_auto_discovery_url = project_path(@project, :format => :atom)
