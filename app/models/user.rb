@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
 
   before_save :encrypt_password
   before_create :make_activation_code
-  before_validation :lint_identity_url, :downcase_login
+  before_validation :downcase_login
   after_save :expire_avatar_email_caches_if_avatar_was_changed
   after_destroy :expire_avatar_email_caches
 
@@ -197,40 +197,25 @@ class User < ActiveRecord::Base
   end
 
   def self.most_active(limit = 10, cutoff = 3)
-    Rails.cache.fetch("users:most_active_pushers:#{limit}:#{cutoff}",
-        :expires_in => 1.hour) do
-      find(:all, :select => "users.*, events.action, count(events.id) as event_count",
-        :joins => :events, :group => "users.id", :order => "event_count desc",
-        :conditions => ["events.action = ? and events.created_at > ?",
-                        Action::COMMIT, cutoff.days.ago],
-        :limit => limit)
+    Rails.cache.fetch("users:most_active_pushers:#{limit}:#{cutoff}", expires_in: 1.hour) do
+      User.select("users.*, events.action, count(events.id) as event_count").
+        joins(:events).
+        group("users.id").
+        order("event_count desc").
+        where("events.action = ? and events.created_at > ?", Action::COMMIT, cutoff.days.ago).
+        limit(limit)
     end
   end
 
   # A Hash of repository => count of mergerequests active in the
   # repositories that the user is a reviewer in
   def review_repositories_with_open_merge_request_count
-    mr_repository_ids = self.committerships.reviewers.find(:all,
-      :select => "repository_id").map{|c| c.repository_id }
-    Repository.find(:all, {
-        :select => "repositories.*, count(merge_requests.id) as open_merge_request_count",
-        :conditions => ["repositories.id in (?) and merge_requests.status = ?",
-                        mr_repository_ids, MergeRequest::STATUS_OPEN],
-        :group => "repositories.id",
-        :joins => :merge_requests,
-        :limit => 5
-      })
-  end
-
-  validate :openid_identity_url
-  def openid_identity_url
-    if !not_openid?
-      begin
-        OpenIdAuthentication.normalize_identifier(self.identity_url)
-      rescue OpenIdAuthentication::InvalidOpenId => e
-        errors.add(:identity_url, I18n.t( "user.invalid_url" ))
-      end
-    end
+    mr_repository_ids = self.committerships.reviewers.select("repository_id").map(&:repository_id)
+    Repository.select("repositories.*, count(merge_requests.id) as open_merge_request_count").
+      where("repositories.id in (?) and merge_requests.status = ?", mr_repository_ids, MergeRequest::STATUS_OPEN).
+      group("repositories.id").
+      joins(:merge_requests).
+      limit(5)
   end
 
   # Activates the user in the database.
@@ -389,11 +374,8 @@ class User < ActiveRecord::Base
   end
 
   def paginated_events_in_watchlist(pagination_options = {})
-    watched = feed_items.paginate({
-        :order => "created_at desc",
-        :total_entries => FeedItem.per_page+(FeedItem.per_page+1)
-      }.merge(pagination_options))
-
+    watched = feed_items.order("created_at desc").
+      page(pagination_options[:page])
     total = (watched.length < watched.per_page ? watched.length : watched.total_entries)
     items = WillPaginate::Collection.new(watched.current_page, watched.per_page, total)
     items.replace(Event.find(watched.map(&:event_id), {:order => "created_at desc"}))
@@ -408,24 +390,13 @@ class User < ActiveRecord::Base
     end
 
     def password_required?
-      not_openid? && (crypted_password.blank? || !password.blank?)
-    end
-
-    def not_openid?
-      identity_url.blank?
+      crypted_password.blank? || !password.blank?
     end
 
     def make_activation_code
       self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
     end
-
-    def lint_identity_url
-      return if not_openid?
-      self.identity_url = OpenIdAuthentication.normalize_identifier(self.identity_url)
-    rescue OpenIdAuthentication::InvalidOpenId
-      # validate will catch it instead
-    end
-
+    
     def downcase_login
       login.downcase! if login
     end
