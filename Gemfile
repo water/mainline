@@ -44,6 +44,7 @@ group :test do
   gem "spork-testunit"
   gem "term-ansicolor"
   gem "turn"
+  gem "factory_girl_rails"
   gem "minitest"
   gem "spork", "~> 1.0rc"
   gem "mocha", :require => false
