@@ -8,7 +8,8 @@ Spork.prefork do
   require "factory_girl"
   require 'rails/test_help'
   require 'turn'
-  require_relative "fixtures/oauth_test_consumer"
+  require "factory_girl_rails"
+  require_relative "fixtures/oauth_test_consumer"  
   
   class ActiveSupport::TestCase
     # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
