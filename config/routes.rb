@@ -143,11 +143,13 @@ Gitorious::Application.routes.draw do |map|
       get :committers
       get :search_clones  
       delete :destroy
+      put :update
     end
     
     collection do
       get :confirm_delete
       delete :destroy
+      put :update
     end
     
     resources :pages
