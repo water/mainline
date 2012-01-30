@@ -189,8 +189,8 @@ class ApplicationController < ActionController::Base
     end
     
     def render_throttled_record
-      render :partial => "/shared/throttled_record",
-        :layout => "application", :status => 412 # precondition failed
+      render partial: "/shared/throttled_record",
+        layout: "application.html.erb", status: 412 # precondition failed
       return false
     end
     

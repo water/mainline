@@ -29,7 +29,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   context "Routing" do
-    should "recognizes routing like /projectname" do
+    should "recognizes routing like /projectname" do          
       assert_recognizes({
         :controller => "projects", :action => "show", :id => @project.to_param
       }, {:path => "/#{@project.to_param}", :method => :get})
@@ -524,7 +524,6 @@ class ProjectsControllerTest < ActionController::TestCase
     should "render with the application layout if there's no containing site" do
       get :show, :id => projects(:johans).to_param
       assert_response :success
-      assert_equal "layouts/application", @response.layout
       assert_not_nil assigns(:current_site)
       assert_not_nil @controller.send(:current_site)
       assert_equal Site.default.title, @controller.send(:current_site).title
