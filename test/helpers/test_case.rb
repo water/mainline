@@ -54,11 +54,11 @@ class ActiveSupport::TestCase
       assert_not_nil filter, ":require_global_site_context before_filter not set"
       unless options[:except].blank?
         assert_not_nil filter.options[:except], "no :except specified in controller"
-        assert_equal [*options[:except]].flatten.map(&:to_s).sort, filter.options[:except].sort
+        assert_equal [*options[:except]].flatten.map(&:to_sym).sort, filter.options[:except].sort
       end
       unless options[:only].blank?
         assert_not_nil filter.options[:only], "no :only specified in controller"
-        assert_equal [*options[:only]].flatten.map(&:to_s).sort, filter.options[:only].sort
+        assert_equal [*options[:only]].flatten.map(&:to_sym).sort, filter.options[:only].sort
       end
     end
   end
@@ -71,11 +71,11 @@ class ActiveSupport::TestCase
       assert_not_nil filter, ":redirect_to_current_site_subdomain before_filter not set"
       unless options[:except].blank?
         assert_not_nil filter.options[:except], "no :except specified in controller"
-        assert_equal [*options[:except]].flatten.map(&:to_s).sort, filter.options[:except].sort
+        assert_equal [*options[:except]].flatten.map(&:to_sym).sort, filter.options[:except].sort
       end
       unless options[:only].blank?
         assert_not_nil filter.options[:only], "no :only specified in controller"
-        assert_equal [*options[:only]].flatten.map(&:to_s).sort, filter.options[:only].sort
+        assert_equal [*options[:only]].flatten.map(&:to_sym).sort, filter.options[:only].sort
       end
     end
   end

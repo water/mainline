@@ -21,6 +21,7 @@ Gitorious::Application.routes.draw do |map|
   extend Gitorious::RepositoryRoutes
 
   root :to => "site#index"
+    
   resources :events do
     get :commits, :on => :member
   end
@@ -129,7 +130,7 @@ Gitorious::Application.routes.draw do |map|
   scope "/:project_id" do
     resources :repositories
   end
-  
+    
   resources :projects do
     member do
       get :clones
@@ -144,6 +145,7 @@ Gitorious::Application.routes.draw do |map|
       get :search_clones  
       delete :destroy
       put :update
+      get :edit
     end
     
     collection do
@@ -151,6 +153,7 @@ Gitorious::Application.routes.draw do |map|
       delete :destroy
       put :update
     end
+    
     
     resources :pages
     resources :repositories do
@@ -172,7 +175,7 @@ Gitorious::Application.routes.draw do |map|
     end
   end
   
-  resources :projects, path: "/"
+  resources :projects, path: ""
   
   resources :users do
     resources :repositories
