@@ -135,16 +135,22 @@ Gitorious::Application.routes.draw do |map|
       get :clones
       put :preview
       get :edit_slug
-      get :confirm_delete
-
+      put :update
       get :clone
       post :create_clone
       get :writable_by
       get :configure
       get :committers
       get :search_clones  
+      delete :destroy
     end
-    resources :pages, :merge_requests
+    
+    collection do
+      get :confirm_delete
+      delete :destroy
+    end
+    
+    resources :pages
     resources :repositories do
       match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
       match "commits/*branch" => "commits#index", :as => :commits_in_ref
@@ -160,6 +166,7 @@ Gitorious::Application.routes.draw do |map|
       
       match "trees" => "trees#index", :as => :trees
       match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
+      resources :merge_requests
     end
   end
   
