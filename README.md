@@ -8,7 +8,7 @@ Web core application written in Rails 3
 
 1. Make sure you run ruby 1.9.2 or above using `ruby -v`, otherwise [install it](http://railscasts.com/episodes/310-getting-started-with-rails).
 2. Install [beanstalkd](http://kr.github.com/beanstalkd/), used for internal messaging.
-3. Install and start `mysql`, pg will be used later in the development process.
+3. Install and start `mysql`, pg will be used later in the development process. See below for instructions.
 4. Install [foreman](http://railscasts.com/episodes/281-foreman) using `gem install foreman`
 
 ### Installation
