@@ -205,9 +205,16 @@ Gitorious::Application.routes.draw do |map|
       match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
       match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
       match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
-    end
+      
+      resources :committerships do
+        collection do
+          get :auto_complete_for_user_login
+          get :auto_complete_for_group_name
+        end
+      end
+    end    
   end
-          
+ 
   resources :projects, path: ""
           
   resources :users do
