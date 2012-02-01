@@ -36,5 +36,6 @@ Gitorious::Application.configure do
   }
 
   ActiveSupport::Deprecation.silenced = true
-  config.logger = Logger.new(STDOUT)
+  
+  config.logger = config.logger = Logger.new(Rails.root.join("log/test.log"), 50, 10**6)
 end
