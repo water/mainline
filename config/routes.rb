@@ -171,12 +171,15 @@ Gitorious::Application.routes.draw do |map|
       
       match "trees" => "trees#index", :as => :trees
       match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
-      resources :merge_requests
+      resources :comments
+      resources :merge_requests do
+        resources :comments
+      end
     end
   end
   
   resources :projects, path: ""
-  
+          
   resources :users do
     resources :repositories
   end
