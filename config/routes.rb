@@ -19,7 +19,7 @@
 
 Gitorious::Application.routes.draw do |map|
   extend Gitorious::RepositoryRoutes
-
+  
   root :to => "site#index"
     
   resources :events do
@@ -126,9 +126,19 @@ Gitorious::Application.routes.draw do |map|
   resources :groups do
     resources :repositories
   end
-    
-  scope "/:project_id" do
-    resources :repositories
+  
+  scope "/:user_id", constraints: { user_id: /~.+[^\/]/} do
+    scope ":project_id" do
+      scope ":repository_id" do
+        match "commit/:id(.:format)" => "commits#show"
+      end
+    end
+  end
+  
+  scope "/:project_id", constraints: { project_id: /.+?[^\/]/ } do
+    scope ":repository_id" do
+      match "commit/:id(.:format)" => "commits#show"
+    end
   end
     
   resources :projects do
@@ -172,12 +182,32 @@ Gitorious::Application.routes.draw do |map|
       match "trees" => "trees#index", :as => :trees
       match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
       resources :comments
+      resources :commits do
+        member do
+          get :feed
+        end
+      end
       resources :merge_requests do
         resources :comments
       end
+      
+      member do
+        get :clone
+        post :create_clone
+        get :writable_by
+        get :configure
+        get :confirm_delete
+        get :committers
+        get :search_clones
+      end
+
+      match "trees" => "trees#index", :as => :trees
+      match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
+      match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
+      match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
     end
   end
-  
+          
   resources :projects, path: ""
           
   resources :users do
