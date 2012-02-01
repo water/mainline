@@ -66,16 +66,7 @@ class BlobsControllerTest < ActionController::TestCase
         assert_equal @git, assigns(:git)
         assert_equal blob_mock, assigns(:blob)
         assert_equal "max-age=600, private", @response.headers['Cache-Control']
-      end 
-    
-      should "redirects to HEAD if provided sha was not found (backwards compat)" do
-        @git.expects(:commit).with("a"*40).returns(nil)
-        @git.expects(:heads).returns(mock("head", :name => "master"))
-        get :show, {:project_id => @project.slug, 
-            :repository_id => @repository.name, :branch_and_path => ["a"*40, "foo.rb"]}
-      
-        assert_redirected_to (project_repository_blob_path(@project, @repository, ["HEAD", "foo.rb"]))
-      end   
+      end
     end
   
     context "#raw" do
