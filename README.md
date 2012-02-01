@@ -120,3 +120,11 @@ hash = {
   b: 2
 }
 ```
+
+## Should be removed
+
+- maybe
+  - archived_event
+    
+- models
+  - merge_requests
