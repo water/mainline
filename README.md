@@ -92,6 +92,7 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - admin/users
   - messages
   - projects
+  - aliases
 
 ## Rails 2.x depreciations
 
