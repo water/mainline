@@ -96,6 +96,7 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - repository
   - role
   - site
+  - ssh_key_file
   
 - controllers
   - admin/users
