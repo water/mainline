@@ -21,7 +21,7 @@ Gitorious::Application.routes.draw do |map|
   extend Gitorious::RepositoryRoutes
   
   root :to => "site#index"
-  
+    
   scope "/+:group_id" do
     resources :memberships
   end
@@ -168,8 +168,12 @@ Gitorious::Application.routes.draw do |map|
       put :update
     end
     
+    resources :pages do
+      member do
+        get :preview
+      end
+    end
     
-    resources :pages
     resources :repositories do
       match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
       match "commits/*branch" => "commits#index", :as => :commits_in_ref
@@ -223,5 +227,5 @@ Gitorious::Application.routes.draw do |map|
           
   resources :users do
     resources :repositories
-  end
+  end  
 end
