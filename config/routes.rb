@@ -125,17 +125,14 @@ Gitorious::Application.routes.draw do |map|
       resources :repositories
     end
   end
-
+     
   resources :groups do
-    resources :repositories
-  end
-  
-  scope "/:user_id", constraints: { user_id: /~.+[^\/]/} do
-    scope ":project_id" do
-      scope ":repository_id" do
-        match "commit/:id(.:format)" => "commits#show"
+    resources :projects do
+      resources :repositories do
+        resources :commits, :trees
       end
     end
+    resources :repositories
   end
   
   scope "/:project_id", constraints: { project_id: /.+?[^\/]/ } do    
@@ -143,7 +140,15 @@ Gitorious::Application.routes.draw do |map|
       match "commit/:id(.:format)" => "commits#show"
     end
   end
-      
+    
+  scope "/:user_id" do
+    scope ":project_id" do
+      scope ":repository_id" do
+        match "commit/:id(.:format)" => "commits#show"
+      end
+    end
+  end
+   
   resources :projects do
     member do
       get :clones
@@ -207,6 +212,10 @@ Gitorious::Application.routes.draw do |map|
         get :committers
         get :search_clones
       end
+      
+      collection do
+        get :config
+      end      
 
       match "trees" => "trees#index", :as => :trees
       match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
@@ -225,6 +234,9 @@ Gitorious::Application.routes.draw do |map|
   resources :projects, path: ""
           
   resources :users do
+    resources :projects do
+      resources :repositories
+    end
     resources :repositories
   end  
 end
