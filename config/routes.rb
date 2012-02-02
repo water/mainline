@@ -47,6 +47,20 @@ Gitorious::Application.routes.draw do |map|
       get :all
     end
   end
+  
+  resources :users do
+    collection do
+      put :update
+      get :reset_password
+      get :forgot_password
+      get :edit
+    end
+    
+    resources :projects do
+      resources :repositories
+    end
+    resources :repositories
+  end
     
   match "users/activate/:activation_code" => "users#activate"
   match "users/pending_activation" => "users#pending_activation"
@@ -240,13 +254,6 @@ Gitorious::Application.routes.draw do |map|
   end
   
   resources :projects, path: ""
-          
-  resources :users do
-    resources :projects do
-      resources :repositories
-    end
-    resources :repositories
-  end
             
   match "/site/dashboard" => "site#dashboard"
 end
