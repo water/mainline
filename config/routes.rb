@@ -228,9 +228,9 @@ Gitorious::Application.routes.draw do |map|
           get :auto_complete_for_group_name
         end
       end
-    end    
+    end
   end
- 
+  
   resources :projects, path: ""
           
   resources :users do
@@ -238,5 +238,7 @@ Gitorious::Application.routes.draw do |map|
       resources :repositories
     end
     resources :repositories
-  end  
+  end
+  
+  match "/site/dashboard" => "site#dashboard"
 end

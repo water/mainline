@@ -83,7 +83,6 @@ class SiteControllerTest < ActionController::TestCase
         alter_gitorious_config("is_gitorious_dot_org", true) do
           get :index
           assert_response :success
-          assert_equal "layouts/second_generation/application", @response.layout
         end
       end
     end
@@ -91,7 +90,7 @@ class SiteControllerTest < ActionController::TestCase
 
   context "#index, with a non-default site" do
     setup do
-      paths = ActionController::Base.view_paths
+      paths = ActionController::Base.view_paths.dup
       paths << File.join(Rails.root, "test", "fixtures", "views")
       ActionController::Base.view_paths = paths
       @site = sites(:qt)
