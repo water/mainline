@@ -17,7 +17,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #++
 
-Gitorious::Application.routes.draw do |map|
+Gitorious::Application.routes.draw do
   extend Gitorious::RepositoryRoutes
   
   root :to => "site#index"
