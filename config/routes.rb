@@ -65,7 +65,6 @@ Gitorious::Application.routes.draw do |map|
   match "/about/faq" => "site#about", :as => :faq
   match "/contact" => "site#contact", :as => :contact
 
-
   namespace :admin do
     resources :users do
       member do
@@ -139,12 +138,12 @@ Gitorious::Application.routes.draw do |map|
     end
   end
   
-  scope "/:project_id", constraints: { project_id: /.+?[^\/]/ } do
-    scope ":repository_id" do
+  scope "/:project_id", constraints: { project_id: /.+?[^\/]/ } do    
+    resources :repositories do
       match "commit/:id(.:format)" => "commits#show"
     end
   end
-    
+      
   resources :projects do
     member do
       get :clones
