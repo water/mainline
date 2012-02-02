@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  GivenCourse: 
+  Assistant: 
+  can_change_deadline: false
+
+two:
+  GivenCourse: 
+  Assistant: 
+  can_change_deadline: false
