@@ -202,6 +202,8 @@ class MessageTest < ActiveSupport::TestCase
         @message.recipient = @email_lover
         @message.save
       }
+      # No support for {clear_messages} and {find_message} in beanstalkd
+      # Se issue # 10
       message = find_message_with_queue_and_regexp('/queue/GitoriousEmailNotifications', /email_delivery/) {p.call}
       assert_equal(@privacy_lover.id, message['sender_id'])
       assert_equal(@email_lover.id, message['recipient_id'])

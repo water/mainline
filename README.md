@@ -88,6 +88,9 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - membership
   - merge_request_status
   - user
+  - merge_request_version
+  - message
+  
 - controllers
   - admin/users
   - messages
@@ -110,7 +113,7 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - sessions
   - site
   - trees
-  
+
 ## Rails 2.x depreciations
 
 Run `rake rails:upgrade:check` to list things that isn't migrated from rails `2.x` to `3.x`.
@@ -146,3 +149,4 @@ hash = {
     
 - models
   - merge_requests
+  - merge_request_version
