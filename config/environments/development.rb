@@ -26,4 +26,5 @@ Gitorious::Application.configure do
   config.active_support.deprecation = :log
   
   config.logger = config.logger = Logger.new(Rails.root.join("log/test.log"), 50, 10**6)
+  config.active_support.deprecation = :stderr 
 end
