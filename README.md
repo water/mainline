@@ -106,7 +106,9 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - messages
   - pages
   - projects
-
+  - searches
+  - sessions
+  
 ## Rails 2.x depreciations
 
 Run `rake rails:upgrade:check` to list things that isn't migrated from rails `2.x` to `3.x`.

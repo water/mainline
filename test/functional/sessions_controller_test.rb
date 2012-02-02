@@ -19,9 +19,7 @@
 
 require_relative "../test_helper"
 
-class SessionsControllerTest < ActionController::TestCase
-  include OpenIdAuthentication
-  
+class SessionsControllerTest < ActionController::TestCase  
   def auth_token(token)
     CGI::Cookie.new('name' => 'auth_token', 'value' => token)
   end
@@ -57,30 +55,7 @@ class SessionsControllerTest < ActionController::TestCase
     assert_not_nil session[:user_id]
     assert_response :redirect
   end
- 
-  should "login with openid and redirect to new user page" do
-    identity_url = "http://patcito.myopenid.com"
-    @controller.stubs(:using_open_id?).returns(true)
-    @controller.stubs(:successful?).returns(false)
-    @controller.stubs(:authenticate_with_open_id).yields(
-      Result[:successful], 
-      identity_url, 
-      registration = {
-        'nickname' => "patcito",
-        'email' => "patcito@gmail.com",
-        'fullname' => 'Patrick Aljord'
-      }
-    )
-    post :create, :openid_url => identity_url
-    assert_nil session[:user_id]
-    assert_equal identity_url, session[:openid_url]
-    assert_equal 'patcito', session[:openid_nickname]
-    assert_equal 'patcito@gmail.com', session[:openid_email]
-    assert_equal 'Patrick Aljord', session[:openid_fullname]
-    assert_response :redirect
-    assert_redirected_to :controller => 'users', :action => 'openid_build'
-  end
-   
+    
   should " fail login and not redirect" do
     @controller.stubs(:using_open_id?).returns(false)
     post :create, :email => 'johan@johansorensen.com', :password => 'bad password'
