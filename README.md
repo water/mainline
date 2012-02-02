@@ -90,6 +90,7 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - user
   - merge_request_version
   - message
+  - message_thread
   
 - controllers
   - admin/users
