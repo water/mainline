@@ -41,6 +41,7 @@ group :development do
 end
 
 group :test do
+  gem "database_cleaner"
   gem "spork-testunit"
   gem "term-ansicolor"
   gem "turn"
