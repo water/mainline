@@ -21,7 +21,11 @@ Gitorious::Application.routes.draw do |map|
   extend Gitorious::RepositoryRoutes
   
   root :to => "site#index"
-    
+  
+  scope "/+:group_id" do
+    resources :memberships
+  end
+  
   resources :events do
     get :commits, :on => :member
   end
@@ -116,7 +120,7 @@ Gitorious::Application.routes.draw do |map|
       repositories
     end
   end
-
+    
   resources :groups do
     resources :projects do
       resources :repositories

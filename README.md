@@ -99,6 +99,10 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - committerships
   - events
   - favorites
+  - groups
+  - keys
+  - licenses
+  - memberships
 
 ## Rails 2.x depreciations
 
