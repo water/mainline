@@ -127,6 +127,18 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
 - performance
   - browsing
   
+- processors
+  - merge_request_git_backend
+  - merge_request
+  - merge_request_version
+  - message_forwarding
+  - push_event
+  - repository_archiving
+  - repository_creation
+  - repository_creation
+  - ssh_key
+  - web_hook
+  
 ## Rails 2.x depreciations
 
 Run `rake rails:upgrade:check` to list things that isn't migrated from rails `2.x` to `3.x`.
