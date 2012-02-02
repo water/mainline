@@ -138,6 +138,8 @@ Gitorious::Application.routes.draw do |map|
   scope "/:project_id", constraints: { project_id: /.+?[^\/]/ } do    
     resources :repositories do
       match "commit/:id(.:format)" => "commits#show"
+      #match "trees" => "trees#index", :as => :trees
+      #match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree      
     end
   end
     
@@ -177,7 +179,6 @@ Gitorious::Application.routes.draw do |map|
         get :preview
       end
     end
-    
     resources :repositories do
       match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
       match "commits/*branch" => "commits#index", :as => :commits_in_ref
@@ -194,6 +195,13 @@ Gitorious::Application.routes.draw do |map|
       match "trees" => "trees#index", :as => :trees
       match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
       resources :comments
+      
+      resources :trees do
+        collection do
+          get :archive
+        end
+      end
+      
       resources :commits do
         member do
           get :feed
@@ -239,6 +247,6 @@ Gitorious::Application.routes.draw do |map|
     end
     resources :repositories
   end
-  
+            
   match "/site/dashboard" => "site#dashboard"
 end
