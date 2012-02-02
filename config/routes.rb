@@ -17,11 +17,15 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #++
 
-Gitorious::Application.routes.draw do |map|
+Gitorious::Application.routes.draw do
   extend Gitorious::RepositoryRoutes
-
+  
   root :to => "site#index"
     
+  scope "/+:group_id" do
+    resources :memberships
+  end
+  
   resources :events do
     get :commits, :on => :member
   end
@@ -43,6 +47,20 @@ Gitorious::Application.routes.draw do |map|
       get :all
     end
   end
+  
+  resources :users do
+    collection do
+      put :update
+      get :reset_password
+      get :forgot_password
+      get :edit
+    end
+    
+    resources :projects do
+      resources :repositories
+    end
+    resources :repositories
+  end
     
   match "users/activate/:activation_code" => "users#activate"
   match "users/pending_activation" => "users#pending_activation"
@@ -60,7 +78,6 @@ Gitorious::Application.routes.draw do |map|
   match "/about" => "site#about", :as => :about
   match "/about/faq" => "site#about", :as => :faq
   match "/contact" => "site#contact", :as => :contact
-
 
   namespace :admin do
     resources :users do
@@ -116,21 +133,38 @@ Gitorious::Application.routes.draw do |map|
       repositories
     end
   end
-
+    
   resources :groups do
     resources :projects do
       resources :repositories
     end
   end
-
+     
   resources :groups do
+    resources :projects do
+      resources :repositories do
+        resources :commits, :trees
+      end
+    end
     resources :repositories
   end
-    
-  scope "/:project_id" do
-    resources :repositories
+  
+  scope "/:project_id", constraints: { project_id: /.+?[^\/]/ } do    
+    resources :repositories do
+      match "commit/:id(.:format)" => "commits#show"
+      #match "trees" => "trees#index", :as => :trees
+      #match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree      
+    end
   end
     
+  scope "/:user_id" do
+    scope ":project_id" do
+      scope ":repository_id" do
+        match "commit/:id(.:format)" => "commits#show"
+      end
+    end
+  end
+   
   resources :projects do
     member do
       get :clones
@@ -154,8 +188,11 @@ Gitorious::Application.routes.draw do |map|
       put :update
     end
     
-    
-    resources :pages
+    resources :pages do
+      member do
+        get :preview
+      end
+    end
     resources :repositories do
       match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
       match "commits/*branch" => "commits#index", :as => :commits_in_ref
@@ -171,13 +208,52 @@ Gitorious::Application.routes.draw do |map|
       
       match "trees" => "trees#index", :as => :trees
       match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
-      resources :merge_requests
+      resources :comments
+      
+      resources :trees do
+        collection do
+          get :archive
+        end
+      end
+      
+      resources :commits do
+        member do
+          get :feed
+        end
+      end
+      resources :merge_requests do
+        resources :comments
+      end
+      
+      member do
+        get :clone
+        post :create_clone
+        get :writable_by
+        get :configure
+        get :confirm_delete
+        get :committers
+        get :search_clones
+      end
+      
+      collection do
+        get :config
+      end      
+
+      match "trees" => "trees#index", :as => :trees
+      match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
+      match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
+      match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
+      
+      resources :committerships do
+        collection do
+          get :auto_complete_for_user_login
+          get :auto_complete_for_group_name
+        end
+      end
     end
   end
   
   resources :projects, path: ""
-  
-  resources :users do
-    resources :repositories
-  end
+            
+  match "/site/dashboard" => "site#dashboard"
 end

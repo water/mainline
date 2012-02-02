@@ -48,6 +48,7 @@ class TreesController < ApplicationController
   end
   
   def archive
+    
     @git = @repository.git
     # FIXME: update route when we've fixed rails bug #1939
     @ref = desplat_path(params[:branch])
@@ -93,7 +94,7 @@ class TreesController < ApplicationController
   end
   
   protected
-    def set_xsendfile_headers(real_path, user_path, content_type = "application/x-gzip")
+    def set_xsendfile_headers(real_path, user_path, content_type = "application/x-gzip; charset=utf-8")
       response.headers["X-Sendfile"] = File.join(GitoriousConfig["archive_cache_dir"], real_path)
       response.headers["Content-Type"] = content_type
       user_path = user_path.gsub("/", "_")

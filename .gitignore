@@ -25,3 +25,4 @@ public/system/group_avatars
 .bundle/config
 data.sql
 data.tsv
+log/*

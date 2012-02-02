@@ -35,7 +35,7 @@ Core web application written in Rails 3
 Make sure you use the correct version of mysql in the path below. `5.5.14` is used in the example.
 
 1. `brew install mysql`
-2. `bundle config build.mysql --with-mysql-config=/usr/local/Cellar/mysql/5.5.14/bin/mysql_config`
+2. `bundle config build.mysql2 --with-mysql-config=/usr/local/Cellar/mysql/5.5.14/bin/mysql_config`
 3. `gem install mysql2 -- --with-mysql-config=/usr/local/Cellar/mysql/5.5.14/bin/mysql_config`
 
 ### Install beanstalkd
@@ -62,7 +62,14 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
 
 ### Status current master branch
 
-- 829 tests, 1488 assertions, 6 failures, 114 errors, 0 skips
+pass: 485,  fail: 25,  error: 62
+total: 572 tests with 1230 assertions in 95.842623 seconds
+
+pass: 2,  fail: 2,  error: 1
+total: 5 tests with 14 assertions in 3.637961 seconds
+
+pass: 805,  fail: 2,  error: 20
+total: 827 tests with 1750 assertions in 50.656294 seconds
 
 ### Status original master branch
 
@@ -88,11 +95,64 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - membership
   - merge_request_status
   - user
+  - merge_request_version
+  - message
+  - message_thread
+  - page
+  - project
+  - repository
+  - role
+  - site
+  - ssh_key_file
+  - ssh_key
+  - status_tag
+  - user
+  
 - controllers
   - admin/users
   - messages
   - projects
-
+  - aliases
+  - blobs
+  - comments
+  - commits
+  - committerships
+  - events
+  - favorites
+  - groups
+  - keys
+  - licenses
+  - memberships
+  - messages
+  - pages
+  - projects
+  - searches
+  - sessions
+  - site
+  - trees
+  
+- performance
+  - browsing
+  
+- processors
+  - merge_request_git_backend
+  - merge_request
+  - merge_request_version
+  - message_forwarding
+  - push_event
+  - repository_archiving
+  - repository_creation
+  - repository_creation
+  - ssh_key
+  - web_hook
+ 
+- lib
+  - breadcrumb
+  - comment_callback
+  - markup_renderer
+  - pre_receive_guard
+  
+  
 ## Rails 2.x depreciations
 
 Run `rake rails:upgrade:check` to list things that isn't migrated from rails `2.x` to `3.x`.
@@ -120,3 +180,12 @@ hash = {
   b: 2
 }
 ```
+
+## Should be removed
+
+- maybe
+  - archived_event
+    
+- models
+  - merge_requests
+  - merge_request_version

@@ -22,6 +22,12 @@
 class CommitsController < ApplicationController
   before_filter :find_project_and_repository
   before_filter :check_repository_for_commits
+  before_filter do
+    if params[:user_id] =~ /^~/
+      params[:user_id] = params[:user_id].gsub(/^~/, "")
+    end
+  end
+  
   renders_in_site_specific_context
   
   def index

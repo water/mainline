@@ -203,7 +203,8 @@ class User < ActiveRecord::Base
         group("users.id").
         order("event_count desc").
         where("events.action = ? and events.created_at > ?", Action::COMMIT, cutoff.days.ago).
-        limit(limit)
+        limit(limit).
+        all
     end
   end
 
