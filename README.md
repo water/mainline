@@ -35,7 +35,7 @@ Core web application written in Rails 3
 Make sure you use the correct version of mysql in the path below. `5.5.14` is used in the example.
 
 1. `brew install mysql`
-2. `bundle config build.mysql --with-mysql-config=/usr/local/Cellar/mysql/5.5.14/bin/mysql_config`
+2. `bundle config build.mysql2 --with-mysql-config=/usr/local/Cellar/mysql/5.5.14/bin/mysql_config`
 3. `gem install mysql2 -- --with-mysql-config=/usr/local/Cellar/mysql/5.5.14/bin/mysql_config`
 
 ### Install beanstalkd
