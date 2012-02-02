@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  commit_hash: MyString
+  LabHasGroup: 
+
+two:
+  commit_hash: MyString
+  LabHasGroup: 
