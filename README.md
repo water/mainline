@@ -62,7 +62,14 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
 
 ### Status current master branch
 
-- 829 tests, 1488 assertions, 6 failures, 114 errors, 0 skips
+pass: 485,  fail: 25,  error: 62
+total: 572 tests with 1230 assertions in 95.842623 seconds
+
+pass: 2,  fail: 2,  error: 1
+total: 5 tests with 14 assertions in 3.637961 seconds
+
+pass: 805,  fail: 2,  error: 20
+total: 827 tests with 1750 assertions in 50.656294 seconds
 
 ### Status original master branch
 
@@ -138,6 +145,13 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
   - repository_creation
   - ssh_key
   - web_hook
+ 
+- lib
+  - breadcrumb
+  - comment_callback
+  - markup_renderer
+  - pre_receive_guard
+  
   
 ## Rails 2.x depreciations
 
