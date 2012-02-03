@@ -47,8 +47,17 @@ group :test do
   gem "turn"
   gem "factory_girl_rails"
   gem "minitest"
-  gem "spork", "0.9.0"#require: false, git: "git://github.com/sporkrb/spork-rails.git"
+  gem "spork", "0.9.0"
   gem "mocha", require: false
   gem "factory_girl", :git => "http://github.com/thoughtbot/factory_girl.git", :require => false
   gem "shoulda", :git => "git://github.com/bmaddy/shoulda.git", :branch => "rails3", :require => false
+  
+  gem "factory_girl_rails"
+  gem "rspec"
+  gem "capybara"
+  gem "launchy"
+  gem "selenium"
+  gem "rspec-rails"
+  gem "guard-spork"
+  gem "database_cleaner"
 end
