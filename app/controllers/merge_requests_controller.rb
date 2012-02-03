@@ -40,8 +40,8 @@ class MergeRequestsController < ApplicationController
     @root = Breadcrumb::MergeRequests.new(@repository)
     @open_merge_requests = @repository.merge_requests.
       from_filter(params[:status]).
-      per(params[:page]).
-      per(params[:per_page] || 50).
+      page(params[:page]).
+      per_page(params[:per_page] || 50).
       order("created_at desc")
 
     @status_tags = @repository.merge_request_status_tags

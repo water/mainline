@@ -408,18 +408,18 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def terms_accepted
-    validate_through_oauth do
-      confirmed_by_user
-      callback_response = access_token.post(target_repository.project.oauth_path_prefix,
-        oauth_signoff_parameters)
-
-      if Net::HTTPAccepted === callback_response
-        self.contribution_notice = callback_response.body
-      end
-
-      contribution_agreement_version = callback_response['X-Contribution-Agreement-Version']
-      update_attributes(:contribution_agreement_version => contribution_agreement_version)
-    end
+   # validate_through_oauth do
+   #   confirmed_by_user
+   #   callback_response = access_token.post(target_repository.project.oauth_path_prefix,
+   #     oauth_signoff_parameters)
+   # 
+   #   if Net::HTTPAccepted === callback_response
+   #     self.contribution_notice = callback_response.body
+   #   end
+   # 
+   #   contribution_agreement_version = callback_response['X-Contribution-Agreement-Version']
+   #   update_attributes(:contribution_agreement_version => contribution_agreement_version)
+   # end
   end
 
   # If the contribution agreement site wants to remind the user of the
@@ -457,15 +457,6 @@ class MergeRequest < ActiveRecord::Base
     yield if valid_oauth_credentials?
   end
 
-
-  def access_token
-    @access_token ||= oauth_consumer.build_access_token(oauth_token, oauth_secret)
-  end
-
-  def oauth_consumer
-    target_repository.project.oauth_consumer
-  end
-
   def ending_commit_exists?
     !source_repository.git.commit(ending_commit).nil?
   end
@@ -495,11 +486,6 @@ class MergeRequest < ActiveRecord::Base
   def update_from_push!
     push_new_branch_to_tracking_repo
     save
-  end
-
-  def valid_oauth_credentials?
-    response = access_token.get("/")
-    return Net::HTTPSuccess === response
   end
 
   def nullify_messages

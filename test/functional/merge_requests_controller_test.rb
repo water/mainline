@@ -207,8 +207,7 @@ class MergeRequestsControllerTest < ActionController::TestCase
 		
 		should "is successful" do
 			login_as :johan
-			get :new, :project_id => @project.to_param, 
-				:repository_id => @source_repository.to_param
+			get :new, :project_id => @project.to_param, :repository_id => @source_repository.to_param
 			assert_response :success
 		end
 		
@@ -244,8 +243,7 @@ class MergeRequestsControllerTest < ActionController::TestCase
       clone.merge_requests_enabled = false
       assert clone.save
       login_as :johan
-      get :new, :project_id => @project.to_param,
-        :repository_id => @source_repository.to_param
+      get :new, :project_id => @project.to_param, :repository_id => @source_repository.to_param
       assert !assigns(:repositories).include?(clone)
     end
 		
@@ -395,8 +393,7 @@ class MergeRequestsControllerTest < ActionController::TestCase
   end
 
   def do_edit_get
-    get :edit, :project_id => @project.to_param, :repository_id => @target_repository.to_param,
-      :id => @merge_request.to_param
+    get :edit, :project_id => @project.to_param, :repository_id => @target_repository.to_param, :id => @merge_request.to_param
   end
 	
 	context "#edit (GET)" do		

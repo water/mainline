@@ -21,6 +21,16 @@ Gitorious::Application.routes.draw do
   extend Gitorious::RepositoryRoutes
   
   root :to => "site#index"
+  
+  resources :merge_requests
+  
+  resources :merge_requests do
+    member do
+      get :version
+      get :commit_status
+      get :terms_accepted
+    end
+  end
     
   scope "/+:group_id" do
     resources :memberships
@@ -193,6 +203,11 @@ Gitorious::Application.routes.draw do
         get :preview
       end
     end
+    
+    resources :merge_requests do
+      resources :merge_request_version
+    end
+    
     resources :repositories do
       match "blobs/raw/*branch_and_path" => "blobs#raw", :as => :raw_blob
       match "commits/*branch" => "commits#index", :as => :commits_in_ref
@@ -214,6 +229,15 @@ Gitorious::Application.routes.draw do
         collection do
           get :archive
         end
+      end
+            
+      resources :merge_requests do
+        
+        # {:project_id=>"johans-project", :repository_id=>"johansprojectrepos", :merge_request=>{:target_repository_id=>1}, :controller=>"merge_requests", :action=>"target_branches"}
+        collection do
+          get :target_branches
+        end
+        resources :merge_request_version
       end
       
       resources :commits do
@@ -256,4 +280,20 @@ Gitorious::Application.routes.draw do
   resources :projects, path: ""
             
   match "/site/dashboard" => "site#dashboard"
+    
+  resources :commit_lists do
+    resources :projects do
+      resources :repositories do
+        resources :merge_requests
+      end
+    end
+  end
+  
+  resources :versions do
+    resources :projects do
+      resources :repositories do
+        resources :merge_requests
+      end
+    end
+  end  
 end
