@@ -58,7 +58,7 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
 
 1. Start the DRb server ([spork](http://railscasts.com/episodes/285-spork)) by running `foreman start` or `bundle exec spork`.
 2. Wait until it says *Spork is ready and listening on 8988!*, which takes about ~20 sec.
-3. Run a file, `testdrb -Itest test/the_file_in_question.rb`.
+3. Run a file, `rspec spec/my_spec.rb`.
 
 ### Status current master branch
 
