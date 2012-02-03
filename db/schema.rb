@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100316124803) do
+ActiveRecord::Schema.define(:version => 20120202213410) do
 
   create_table "archived_events", :force => true do |t|
     t.integer  "user_id"
@@ -77,6 +77,18 @@ ActiveRecord::Schema.define(:version => 20100316124803) do
   add_index "committerships", ["committer_id"], :name => "index_permissions_on_user_id"
   add_index "committerships", ["repository_id"], :name => "index_committerships_on_repository_id"
   add_index "committerships", ["repository_id"], :name => "index_permissions_on_repository_id"
+
+  create_table "course_codes", :force => true do |t|
+    t.string   "code"
+    t.integer  "Course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "courses", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "emails", :force => true do |t|
     t.integer  "user_id"
@@ -399,11 +411,19 @@ ActiveRecord::Schema.define(:version => 20100316124803) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.boolean  "default_favorite_notifications",               :default => false
+    t.string   "ssn"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["password_key"], :name => "index_users_on_password_key"
   add_index "users", ["ssh_key_id"], :name => "index_users_on_ssh_key_id"
+
+  create_table "whens", :force => true do |t|
+    t.integer  "year"
+    t.integer  "study_period"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

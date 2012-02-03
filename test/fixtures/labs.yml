@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  number: 1
+  lab_commit_id: 1
+  GivenCourse: 
+  LabDescription: 
+
+two:
+  number: 1
+  lab_commit_id: 1
+  GivenCourse: 
+  LabDescription: 
