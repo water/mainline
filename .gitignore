@@ -1,5 +1,5 @@
-*/.DS_Store
-.DS_Store
+# rails
+###################
 coverage/*
 public/cache/*
 public/images/graphs/*
@@ -26,3 +26,47 @@ public/system/group_avatars
 data.sql
 data.tsv
 log/*
+
+# backup files
+###################
+*.swp
+*.swo
+*.bak
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.vi
+*~
+*.sass-cache
+
+# non-source files
+###################
+*.hi
+*.o
+*.pdf
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+# OS or Editor folders
+###################
+.DS_Store
+Icon?
+Thumbs.db
+ehthumbs.db
+nbproject
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+*.sublime-project
+*.sublime-workspace
