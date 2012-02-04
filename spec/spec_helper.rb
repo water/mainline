@@ -14,7 +14,6 @@ Spork.prefork do
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
   RSpec.configure do |config|
-    config.fixture_path = "#{::Rails.root}/spec/fixtures"
     config.use_transactional_fixtures = false
     config.before(:suite) { DatabaseCleaner.strategy = :truncation }
     config.before(:each) { DatabaseCleaner.start }
@@ -26,5 +25,5 @@ end
 
 Spork.each_run do
   FactoryGirl.factories.clear 
-  FactoryGirl.find_definitions
+  # FactoryGirl.find_definitions
 end
