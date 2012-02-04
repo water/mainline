@@ -278,9 +278,9 @@ Gitorious::Application.routes.draw do
   end
   
   resources :projects, path: ""
-            
+  
   match "/site/dashboard" => "site#dashboard"
-    
+  
   resources :commit_lists do
     resources :projects do
       resources :repositories do
@@ -295,5 +295,5 @@ Gitorious::Application.routes.draw do
         resources :merge_requests
       end
     end
-  end  
+  end
 end

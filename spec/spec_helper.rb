@@ -1,4 +1,6 @@
+require "spork"
 require "spork/ext/ruby-debug"
+require "factory_girl_rails"
 ENV["RAILS_ENV"] ||= "test"
 abort("RAILS_ENV != test") unless ENV["RAILS_ENV"] == "test"
 
@@ -6,7 +8,6 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
   require "rspec/rails"
   require "rspec/autorun"
-  require "./spec/helpers/helper_methods"
   require "capybara/rails"
   require "database_cleaner"
   
