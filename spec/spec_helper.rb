@@ -1,5 +1,5 @@
 require "spork"
-require "spork/ext/ruby-debug"
+# require "spork/ext/ruby-debug"
 require "factory_girl_rails"
 ENV["RAILS_ENV"] ||= "test"
 abort("RAILS_ENV != test") unless ENV["RAILS_ENV"] == "test"
@@ -10,6 +10,8 @@ Spork.prefork do
   require "rspec/autorun"
   require "capybara/rails"
   require "database_cleaner"
+  
+  FactoryGirl.find_definitions
   
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
@@ -25,5 +27,4 @@ end
 
 Spork.each_run do
   FactoryGirl.factories.clear 
-  # FactoryGirl.find_definitions
 end
