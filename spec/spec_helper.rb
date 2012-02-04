@@ -1,6 +1,8 @@
 require "spork"
-# require "spork/ext/ruby-debug"
 require "factory_girl"
+if RUBY_PLATFORM =~ /darwin/
+  require "spork/ext/ruby-debug"
+end
 
 ENV["RAILS_ENV"] ||= "test"
 abort("RAILS_ENV != test") unless ENV["RAILS_ENV"] == "test"
@@ -11,9 +13,8 @@ Spork.prefork do
   require "rspec/autorun"
   require "capybara/rails"
   require "database_cleaner"
-  # FactoryGirl.find_definitions
   
-  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+  Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
   RSpec.configure do |config|
     config.use_transactional_fixtures = false
