@@ -21,7 +21,7 @@ gem "oauth", "0.4.4"
 gem "oauth2"
 
 # Database
-gem "mysql2"
+gem "mysql2", "0.2.7"
 
 # View
 gem "will_paginate"
