@@ -2,7 +2,9 @@ Factory.sequence :course_code_value do |n|
   "TDA123_#{n}"
 end
 
-Factory.define(:course) do |c|
+Factory.define(:course) {}
+
+Factory.define(:course_with_course_code, class: CourseCode) do |c|
   c.after_create { |c| c.course_codes << Factory(:course_code) }
 end
 
