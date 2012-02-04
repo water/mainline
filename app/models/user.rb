@@ -381,7 +381,17 @@ class User < ActiveRecord::Base
     items = WillPaginate::Collection.new(watched.current_page, watched.per_page, total)
     items.replace(Event.find(watched.map(&:event_id), {:order => "created_at desc"}))
   end
-
+  
+  def role?(role, course)
+#    if role == :examiner #and GivenCourse.where("examiner_id = ? AND course_id = ?", id, course.id).first
+#      Examiner.is_a?(self)
+#    elsif 
+#      
+#    else
+#      false
+#    end
+  end
+  
   protected
     # before filter
     def encrypt_password
