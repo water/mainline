@@ -1,9 +1,13 @@
 describe "User" do
-  let(:user) { Factory(:user) }
-  
+  #let(:user) { Factory(:user) }
+  #let(:given_course) { Factory(:given_course) }
   it "should respond to both examiner and assistent" do
-    # user 
-    user.role?(:examiner).should be_true
-    user.role?(:assistent).should be_true
+    user = create(:user)
+    given_course = create(:given_course, examiner: user)
+    create(:assistant_registered_to_given_course, assistant: user, given_course: given_course)
+    
+    user.role_for_given_course?(:examiner, given_course).should be_true
+    user.role_for_given_course?(:assistent, given_course).should be_true
+    user.role_for_given_course?(:student, given_course).should be_false
   end
 end
