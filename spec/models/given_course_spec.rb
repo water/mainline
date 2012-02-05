@@ -15,4 +15,26 @@ describe GivenCourse do
       Factory.build(:given_course).should be_valid
     end
   end
+  
+  describe "relations" do
+    let(:user) { create(:user) }
+    let(:given_course) { create(:given_course) }
+    
+    it "should have a list of students" do
+      create(:registered_course, given_course: given_course, student: user)
+      
+      given_course.should have(1).students
+      given_course.students.should include(user)
+    end
+    
+    it "should have a examiner" do
+      given_course.examiner.should_not be_nil
+    end
+    
+    it "should have a list of assistents" do
+      artgc = create(:assistant_registered_to_given_course, assistant: user, given_course: given_course)
+      given_course.should have(1).assistants
+      given_course.assistants.should include(user)
+    end
+  end
 end
