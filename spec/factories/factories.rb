@@ -2,6 +2,11 @@ Factory.sequence :course_code_value do |n|
   "TDA123_#{n}"
 end
 
+Factory.define(:registered_course) do |r|
+  r.association(:student, factory: :user)
+  r.association(:given_course)
+end
+
 Factory.define(:course) {}
 
 Factory.define(:assistant_registered_to_given_course) do |c|
