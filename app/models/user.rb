@@ -384,18 +384,18 @@ class User < ActiveRecord::Base
   
   #
   # @role Symbol Role for the given user
-  # @g_course GivenCourse The given course for which the @role to apply to
+  # @given_course GivenCourse The given course for which the @role to apply to
   # @return Boolean Does @self have @role for @g_course ?
   #
-  def role_for_given_course?(role, g_course)
+  def role_for_given_course?(role, given_course)
     return true if role == :examiner and GivenCourse.
       select("1").
-      where(examiner_id: id, course_id: g_course.id).
+      where(examiner_id: id, course_id: given_course.id).
       first
     return true if role == :assistent and 
     AssistantRegisteredToGivenCourse.
       select("1").
-      where(given_course_id: g_course.id).
+      where(given_course_id: given_course.id).
       where(assistant_id: id).first
     false
   end
