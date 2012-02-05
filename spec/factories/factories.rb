@@ -4,8 +4,14 @@ end
 
 Factory.define(:course) {}
 
-Factory.define(:course_with_course_code, class: CourseCode) do |c|
-  c.after_create { |c| c.course_codes << Factory(:course_code) }
+Factory.define(:assistant_registered_to_given_course) do |c|
+  c.association(:assistant, factory: :user)
+  c.can_change_deadline(true)
+  c.association(:given_course)
+end
+
+Factory.define(:course_with_course_code, class: Course) do |c|
+  c.course_codes { [Factory(:course_code)] }
 end
 
 Factory.define(:course_code) do |c|
@@ -19,7 +25,7 @@ end
 
 
 Factory.define(:given_course) do |c|
-  c.association(:course)
+  c.association(:course, factory: :course_with_course_code)
   c.association(:examiner, factory: :user)
   c.association(:when)
 end  
