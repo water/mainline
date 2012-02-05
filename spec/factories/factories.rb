@@ -23,7 +23,6 @@ Factory.define(:when) do |c|
   c.study_period 2
 end
 
-
 Factory.define(:given_course) do |c|
   c.association(:course, factory: :course_with_course_code)
   c.association(:examiner, factory: :user)
