@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120205214025) do
+ActiveRecord::Schema.define(:version => 20120205215836) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -235,7 +235,7 @@ ActiveRecord::Schema.define(:version => 20120205214025) do
   end
 
   create_table "lab_groups", :force => true do |t|
-    t.integer  "ident"
+    t.integer  "identification"
     t.integer  "registered_course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -394,13 +394,13 @@ ActiveRecord::Schema.define(:version => 20120205214025) do
   add_index "projects", ["title"], :name => "index_projects_on_name"
   add_index "projects", ["user_id"], :name => "index_projects_on_user_id"
 
-  create_table "registered_course_has_lab_group", :id => false, :force => true do |t|
+  create_table "registered_course_has_lab_groups", :id => false, :force => true do |t|
     t.integer "registered_course_id"
     t.integer "lab_group_id"
   end
 
-  add_index "registered_course_has_lab_group", ["lab_group_id"], :name => "index_registered_course_has_lab_group_on_lab_group_id"
-  add_index "registered_course_has_lab_group", ["registered_course_id"], :name => "index_registered_course_has_lab_group_on_registered_course_id"
+  add_index "registered_course_has_lab_groups", ["lab_group_id"], :name => "index_registered_course_has_lab_groups_on_lab_group_id"
+  add_index "registered_course_has_lab_groups", ["registered_course_id"], :name => "index_registered_course_has_lab_groups_on_registered_course_id"
 
   create_table "registered_courses", :force => true do |t|
     t.integer  "student_id"

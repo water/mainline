@@ -15,6 +15,10 @@ Factory.define(:assistant_registered_to_given_course) do |c|
   c.association(:given_course)
 end
 
+Factory.define(:lab_group) do |c|
+  c.sequence(:identification)
+end
+
 Factory.define(:course_with_course_code, class: Course) do |c|
   c.course_codes { [Factory(:course_code)] }
 end

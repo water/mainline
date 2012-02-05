@@ -1,7 +1,9 @@
 describe RegisteredCourse do
+  let(:given_course) { create(:given_course) }
+  let(:user) { create(:user) }
+  let(:registered_course) { build(:registered_course) }
+  
   describe "validation" do
-    let(:given_course) { create(:given_course) }
-    let(:user) { create(:user) }
     
     it "should only contain one unique pair" do
       create(:registered_course, student: user, given_course: given_course).should be_valid
@@ -18,6 +20,16 @@ describe RegisteredCourse do
     
     it "requires a given course" do
       build(:registered_course, given_course: nil).should_not be_valid
+    end
+  end
+  
+  describe "relation" do
+    
+    it "should have a lab group" do
+      lab_group = create(:lab_group)
+      registered_course.lab_group = lab_group
+      registered_course.save!
+      RegisteredCourseHasLabGroup.count.should_not be_zero
     end
   end
 end
