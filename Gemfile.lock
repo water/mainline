@@ -14,14 +14,14 @@ GIT
 
 GIT
   remote: git://github.com/smartinez87/exception_notification.git
-  revision: 8d081676092f888da4ab48b5ab8b19bd5ca28d87
+  revision: 63d9d483fab05340dd5392269c3a6f5b08721267
   specs:
     exception_notification (2.5.2)
       actionmailer (>= 3.0.4)
 
 GIT
   remote: git://github.com/thoughtbot/paperclip.git
-  revision: 1cb40e352eaa0f42560021c32705933f4d4eb46a
+  revision: 772c8e96d8fdd8293e3745138287e3a4e9181e20
   specs:
     paperclip (2.5.2)
       activerecord (>= 2.3.0)
@@ -31,10 +31,16 @@ GIT
 
 GIT
   remote: http://github.com/thoughtbot/factory_girl.git
-  revision: 850116da11077c56cacb065924eaa655a517c09c
+  revision: c103ca1a6dc1593d44ee946e1a4d7d74e02a48d0
   specs:
-    factory_girl (2.5.0)
-      activesupport
+    factory_girl (2.5.1)
+      activesupport (>= 2.3.9)
+
+PATH
+  remote: /Users/linus/Documents/Projekt/Slug/citier
+  specs:
+    citier (0.1.15)
+      rails_sql_views
 
 GEM
   remote: http://rubygems.org/
@@ -80,11 +86,9 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
-    childprocess (0.3.0)
+    childprocess (0.3.1)
       ffi (~> 1.0.6)
-    chronic (0.6.6)
-    citier (0.1.15)
-      rails_sql_views
+    chronic (0.6.7)
     cocaine (0.2.1)
     colorize (0.5.8)
     columnize (0.3.6)
@@ -107,16 +111,17 @@ GEM
       multipart-post (~> 1.1)
       rack (~> 1.1)
     ffi (1.0.11)
-    foreman (0.37.2)
+    foreman (0.38.0)
       term-ansicolor (~> 1.0.7)
       thor (>= 0.13.6)
     gemcutter (0.7.1)
     geoip (1.1.2)
     git (1.2.5)
-    guard (0.8.8)
+    guard (1.0.0)
+      ffi (>= 0.5.0)
       thor (~> 0.14.6)
-    guard-spork (0.3.1)
-      guard (>= 0.8.4)
+    guard-spork (0.5.2)
+      guard (>= 0.10.0)
       spork (>= 0.8.4)
     hirb (0.6.0)
     hoe (2.13.0)
@@ -145,7 +150,7 @@ GEM
       treetop (~> 1.4.8)
     metaclass (0.0.1)
     mime-types (1.17.2)
-    minitest (2.11.0)
+    minitest (2.11.1)
     mocha (0.10.3)
       metaclass (~> 0.0.1)
     multi_json (1.0.4)
@@ -231,10 +236,11 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    turn (0.8.3)
+    turn (0.9.1)
       ansi
+      minitest
     tzinfo (0.3.31)
-    will_paginate (3.0.2)
+    will_paginate (3.0.3)
     xpath (0.1.4)
       nokogiri (~> 1.3)
     zip (2.0.2)
@@ -248,7 +254,7 @@ DEPENDENCIES
   builder
   capybara
   chronic
-  citier
+  citier!
   colorize
   daemons
   database_cleaner

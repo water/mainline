@@ -22,7 +22,7 @@ gem "oauth2"
 
 # Database
 gem "mysql"
-gem "citier"
+gem "citier", path: "/Users/linus/Documents/Projekt/Slug/citier"
 
 # View
 gem "will_paginate"
