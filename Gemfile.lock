@@ -66,6 +66,8 @@ GEM
       activemodel (= 3.0.10)
       activesupport (= 3.0.10)
     activesupport (3.0.10)
+    acts_as_relation (0.1)
+      activerecord
     addressable (2.2.6)
     allison (2.0.3)
     ansi (1.4.2)
@@ -83,8 +85,6 @@ GEM
     childprocess (0.3.1)
       ffi (~> 1.0.6)
     chronic (0.6.7)
-    citier (0.1.15)
-      rails_sql_views
     cocaine (0.2.1)
     colorize (0.5.8)
     columnize (0.3.6)
@@ -174,8 +174,6 @@ GEM
       activesupport (= 3.0.10)
       bundler (~> 1.0)
       railties (= 3.0.10)
-    rails_sql_views (0.8.0)
-      activerecord
     railties (3.0.10)
       actionpack (= 3.0.10)
       activesupport (= 3.0.10)
@@ -246,11 +244,11 @@ PLATFORMS
 
 DEPENDENCIES
   activemessaging!
+  acts_as_relation
   beanstalk-client
   builder
   capybara
   chronic
-  citier
   colorize
   daemons
   database_cleaner
