@@ -22,6 +22,7 @@ gem "oauth2"
 
 # Database
 gem "mysql"
+gem "citier"
 
 # View
 gem "will_paginate"
