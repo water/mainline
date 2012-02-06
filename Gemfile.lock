@@ -36,6 +36,12 @@ GIT
     factory_girl (2.5.1)
       activesupport (>= 2.3.9)
 
+PATH
+  remote: /Users/linus/Documents/Projekt/Slug/citier
+  specs:
+    citier (0.1.15)
+      rails_sql_views
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -66,8 +72,6 @@ GEM
       activemodel (= 3.0.10)
       activesupport (= 3.0.10)
     activesupport (3.0.10)
-    acts_as_relation (0.1)
-      activerecord
     addressable (2.2.6)
     allison (2.0.3)
     archive-tar-minitar (0.5.2)
@@ -167,6 +171,8 @@ GEM
       activesupport (= 3.0.10)
       bundler (~> 1.0)
       railties (= 3.0.10)
+    rails_sql_views (0.8.0)
+      activerecord
     railties (3.0.10)
       actionpack (= 3.0.10)
       activesupport (= 3.0.10)
@@ -234,11 +240,11 @@ PLATFORMS
 
 DEPENDENCIES
   activemessaging!
-  acts_as_relation
   beanstalk-client
   builder
   capybara
   chronic
+  citier!
   colorize
   daemons
   database_cleaner
