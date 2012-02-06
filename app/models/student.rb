@@ -1,3 +1,4 @@
-class Student < ActiveRecord::Base
-  belongs_to :User
+class Student < User
+  acts_as_citier
+  # belongs_to :User
 end

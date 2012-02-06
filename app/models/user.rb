@@ -25,7 +25,7 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   include UrlLinting
-
+  acts_as_citier
   has_many :projects
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
