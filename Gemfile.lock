@@ -36,12 +36,6 @@ GIT
     factory_girl (2.5.1)
       activesupport (>= 2.3.9)
 
-PATH
-  remote: /Users/linus/Documents/Projekt/Slug/citier
-  specs:
-    citier (0.1.15)
-      rails_sql_views
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -89,6 +83,8 @@ GEM
     childprocess (0.3.1)
       ffi (~> 1.0.6)
     chronic (0.6.7)
+    citier (0.1.15)
+      rails_sql_views
     cocaine (0.2.1)
     colorize (0.5.8)
     columnize (0.3.6)
@@ -254,7 +250,7 @@ DEPENDENCIES
   builder
   capybara
   chronic
-  citier!
+  citier
   colorize
   daemons
   database_cleaner
