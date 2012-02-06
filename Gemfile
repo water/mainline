@@ -22,7 +22,6 @@ gem "oauth2"
 
 # Database
 gem "mysql"
-#gem "citier"#, path: "/Users/linus/Documents/Projekt/Slug/citier"
 gem "acts_as_relation"
 
 # View
@@ -45,7 +44,7 @@ end
 group :test do
   gem "spork-testunit"
   gem "term-ansicolor"
-  gem "turn"
+  # gem "turn"
   gem "factory_girl_rails"
   gem "minitest"
   gem "spork", "0.9.0"
@@ -59,6 +58,6 @@ group :test do
   gem "launchy"
   gem "selenium"
   gem "rspec-rails"
-  gem "guard-spork"
+  # gem "guard-spork"
   gem "database_cleaner"
 end
