@@ -22,7 +22,7 @@ gem "oauth2"
 
 # Database
 gem "mysql"
-gem "citier"
+gem "citier", git: "git://github.com/water/citier.git"
 
 # View
 gem "will_paginate"
