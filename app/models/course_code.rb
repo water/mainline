@@ -1,3 +1,4 @@
 class CourseCode < ActiveRecord::Base
-  belongs_to :Course
+  belongs_to :course
+  validates_uniqueness_of :code
 end

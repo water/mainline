@@ -1,0 +1,6 @@
+--drb
+--color
+-fs
+-Ilib
+-Ispec
+--require spec_helper

@@ -1,3 +1,2 @@
-class Assistant < ActiveRecord::Base
-  belongs_to :User
+class Assistant < User
 end

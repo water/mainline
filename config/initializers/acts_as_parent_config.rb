@@ -1,0 +1,1 @@
+require Rails.root.join("lib/other/acts_as_parent.rb")

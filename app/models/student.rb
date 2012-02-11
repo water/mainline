@@ -1,3 +1,3 @@
-class Student < ActiveRecord::Base
-  belongs_to :User
+class Student < User
+  acts_as_parent
 end

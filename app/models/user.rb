@@ -4,12 +4,13 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   include UrlLinting
-
+  acts_as_citier(ignore_view_prefix: true)
+  has_many :registered_courses, through: :students
   has_many :projects
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
   has_many :repositories, :as => :owner, :conditions => ["kind != ?", Repository::KIND_WIKI],
-    :dependent => :destroy
+   :dependent => :destroy
   has_many :committerships, :as => :committer, :dependent => :destroy
   has_many :commit_repositories, :through => :committerships, :source => :repository,
   :conditions => ["repositories.kind NOT IN (?)", Repository::KINDS_INTERNAL_REPO]
@@ -360,7 +361,34 @@ class User < ActiveRecord::Base
     items = WillPaginate::Collection.new(watched.current_page, watched.per_page, total)
     items.replace(Event.find(watched.map(&:event_id), {:order => "created_at desc"}))
   end
-
+  
+  #
+  # @role Symbol Role for the given user
+  # @given_course GivenCourse The given course for which the @role to apply to
+  # @return Boolean Does @self have @role for @g_course ?
+  #
+  def role_for_given_course?(role, given_course)
+    return true if role == :examiner and 
+      GivenCourse.
+        select("1").
+        where(examiner_id: id, course_id: given_course.id).
+        first
+    return true if role == :assistent and 
+      AssistantRegisteredToGivenCourse.
+        select("1").
+        where(given_course_id: given_course.id).
+        where(assistant_id: id).
+        first
+    return true if role == :student and
+      RegisteredCourse.
+        select("1").
+        where(given_course_id: given_course.id).
+        where(student_id: id).
+        first
+        
+    false
+  end
+  
   protected
     # before filter
     def encrypt_password
@@ -380,4 +408,8 @@ class User < ActiveRecord::Base
     def downcase_login
       login.downcase! if login
     end
+end                             
+
+class User
+  has_one :student
 end
