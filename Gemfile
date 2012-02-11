@@ -13,7 +13,6 @@ gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
-gem "defined"
 
 # Authentication
 gem "rack-openid"
@@ -23,7 +22,7 @@ gem "oauth2"
 
 # Database
 gem "mysql"
-gem "citier", path: "/Users/linus/Documents/Projekt/Slug/citier"
+gem "citier"
 
 # View
 gem "will_paginate"
