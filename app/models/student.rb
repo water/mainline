@@ -1,4 +1,5 @@
-class Student < User
-  acts_as_citier do_not_touch: false
-  belongs_to :user
+class Student < User  
+  def method_missing(meth, *args, &blk)
+    
+  end
 end
