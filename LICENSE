@@ -659,3 +659,11 @@ specific requirements.
 if any, to sign a "copyright disclaimer" for the program, if necessary.
 For more information on this, and how to apply and follow the GNU AGPL, see
 <http://www.gnu.org/licenses/>.
+
+
+
+Addendum to AFFERO copyright notice by 'project water':
+
+As of commit `edf14a0b065ea169f473ec8ca3b34975dc36e827` we removed the
+copyright notices from the source code files as they were annoying.
+Please see the diff of the commit for the removed copyright notices.
