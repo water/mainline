@@ -1,5 +1,3 @@
-class Student < User  
-  def method_missing(meth, *args, &blk)
-    
-  end
+class Student < User
+  acts_as_parent
 end

@@ -1,16 +1,15 @@
 describe Student do
-  describe "inheritance" do
-    let(:student) { create(:student) }
-    let(:given_course) { create(:given_course) }
-    
-    it "should inherit from user" do
-      class User; def new_m; end; end
-      student.should respond_to(:new_m)
-    end
-    
-    it "should have some registered courses" do
-      create(:registered_course, student: student, given_course: given_course)
-      student.should have(1).registered_courses
-    end
+  subject { Student.new }
+  
+  it "should share methods with a user" do
+    class User; def my_a_method; end; end
+    should respond_to(:my_a_method)
+  end
+  
+  it "should share attributes with its parent" do
+    lambda {
+      subject.user_id
+      subject.fullname
+    }.should_not raise_error(NoMethodError)
   end
 end
