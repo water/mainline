@@ -25,7 +25,8 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   include UrlLinting
-  acts_as_citier
+  acts_as_citier(ignore_view_prefix: true)
+  has_many :registered_courses, through: :students
   has_many :projects
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
@@ -428,4 +429,8 @@ class User < ActiveRecord::Base
     def downcase_login
       login.downcase! if login
     end
+end                             
+
+class User
+  has_one :student
 end
