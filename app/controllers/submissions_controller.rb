@@ -1,4 +1,4 @@
-class SubmissionController < ApplicationController
+class SubmissionsController < ApplicationController
   def index
   end
 

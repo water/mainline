@@ -1,13 +1,7 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  get "submission/index"
-
-  get "submission/show"
-
-  get "submission/create"
-
-  get "submission/new"
+  resources :submissions, :only => [:index, :show, :create, :new]
 
   extend Gitorious::RepositoryRoutes
   
