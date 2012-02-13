@@ -33,6 +33,7 @@ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
+gem "stalker"
 
 group :development do
   gem "hirb"
