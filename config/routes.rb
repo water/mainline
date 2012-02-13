@@ -1,6 +1,14 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
+  get "submission/index"
+
+  get "submission/show"
+
+  get "submission/create"
+
+  get "submission/new"
+
   extend Gitorious::RepositoryRoutes
   
   root :to => "site#index"
