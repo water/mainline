@@ -36,13 +36,6 @@ GIT
     citier (0.1.15)
       rails_sql_views
 
-GIT
-  remote: http://github.com/thoughtbot/factory_girl.git
-  revision: c103ca1a6dc1593d44ee946e1a4d7d74e02a48d0
-  specs:
-    factory_girl (2.5.1)
-      activesupport (>= 2.3.9)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -103,6 +96,8 @@ GEM
       rubyforge (>= 2.0.4)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    factory_girl (2.5.1)
+      activesupport
     factory_girl_rails (1.6.0)
       factory_girl (~> 2.5.0)
       railties (>= 3.0.0)
@@ -255,7 +250,6 @@ DEPENDENCIES
   diff-lcs
   echoe
   exception_notification!
-  factory_girl!
   factory_girl_rails
   foreman
   geoip
