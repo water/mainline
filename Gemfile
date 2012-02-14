@@ -34,6 +34,7 @@ gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
 gem "stalker"
+gem "grit"
 
 group :development do
   gem "hirb"
