@@ -11,7 +11,6 @@ ENV["Rails.env"] ||= "production"
 require File.expand_path("../../config/environment", __FILE__)
 
 Rails.configuration.log_level = :info # Disable debug
-ActiveRecord::Base.allow_concurrency = true
 
 ENV["PATH"] = "/usr/local/bin/:/opt/local/bin:#{ENV["PATH"]}"
 
