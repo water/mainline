@@ -21,10 +21,10 @@ development:
   gitorious_client_host: localhost
 
   # Host which is serving the gitorious app, eg "gitorious.org"
-  gitorious_host: gitorious.test
+  gitorious_host: localhost
 
   # User which is running git daemon
-  gitorious_user: git
+  gitorious_user: jesper
 
   # Email address to the support for the Gitorious server
   gitorious_support_email: support@gitorious.org
@@ -81,10 +81,10 @@ test:
   gitorious_client_host: localhost
 
   # Host which is serving the gitorious app, eg "gitorious.org"
-  gitorious_host: gitorious.test
+  gitorious_host: localhost
 
   # User which is running git daemon
-  gitorious_user: git
+  gitorious_user: jesper
 
   # Email address to the support for the Gitorious server
   gitorious_support_email: support@gitorious.org
