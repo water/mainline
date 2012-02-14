@@ -6,4 +6,8 @@ describe CommitRequest do
     cr.options = "value"
     cr.options.should eq("value")
   end
+  
+  describe "#perform!" do
+    
+  end
 end
