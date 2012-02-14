@@ -144,7 +144,7 @@ Gitorious::Application.routes.draw do
     resources :repositories
   end
   
-  scope "/:project_id", constraints: { project_id: /.+?[^\/]/ } do    
+  scope "/:project_id", constraints: { project_id: /.+?^[\/]/ } do    
     resources :repositories do
       match "commit/:id(.:format)" => "commits#show"
       #match "trees" => "trees#index", :as => :trees
