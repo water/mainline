@@ -8,7 +8,7 @@ require 'fcntl'
 require "optparse"
 
 ENV["Rails.env"] ||= "production"
-require File.dirname(__FILE__)+'/../config/environment'
+require File.expand_path("../../config/environment", __FILE__)
 
 Rails.configuration.log_level = :info # Disable debug
 ActiveRecord::Base.allow_concurrency = true
