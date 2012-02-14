@@ -55,5 +55,6 @@ group :test do
   gem "launchy"
   gem "selenium"
   gem "rspec-rails"
+  gem "turn"
   gem "database_cleaner"
 end
