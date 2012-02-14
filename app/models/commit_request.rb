@@ -1,14 +1,58 @@
 class CommitRequest < Struct.new(:options)
   #
   # Performs the the action given by @options
-  # Example: @options {
-  #   action: "mv",
-  #   user: "acb59ee0-38a2-012f-a9f9-58b035fcfcff",
-  #   ...
-  #   ...
+  # @move {
+  #  command: "move",
+  #  user: 1,
+  #  repository: 123,
+  #  branch: "master",
+  #  commit_message: "A commit message",
+  #  paths: [{
+  #    from: "old/path",
+  #    to: "new/path"
+  #  }],
+  #  files: [{
+  #    from: "path/to/file.txt",
+  #    to: "path/to/new_file.txt"
+  #  }]
   # }
+  #
+  # @add {
+  #  command: "add",
+  #  user: 1,
+  #  repository: 123,
+  #  branch: "master",
+  #  commit_message: "A commit message",
+  #  files: [{
+  #    raw: !Binary,
+  #    to: "path/to/dir"
+  #  }]
+  # }
+  #
+  # @remove {
+  #   user: 1,
+  #   command: "remove",
+  #   repository: 123,
+  #   branch: "master",
+  #   commit_message: "A commit message",
+  #   files: [
+  #     "path/to/file1.txt", 
+  #     "path/to/file2.txt"
+  #   ],
+  #   paths: [
+  #     "path/to/dir1",
+  #     "path/to/dir2",
+  #   ]
+  # }
+  #
   # Called from a beanstalkd worker
   def perform!
-    # TODO: make it work
+    send(@options["command"])
+  end
+  
+private
+
+  def move
+    
   end
 end

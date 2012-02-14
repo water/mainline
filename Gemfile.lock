@@ -68,6 +68,7 @@ GEM
     activesupport (3.0.10)
     addressable (2.2.6)
     allison (2.0.3)
+    ansi (1.4.2)
     archive-tar-minitar (0.5.2)
     arel (2.0.10)
     beanstalk-client (1.1.1)
@@ -112,6 +113,9 @@ GEM
     gemcutter (0.7.1)
     geoip (1.1.2)
     git (1.2.5)
+    grit (2.4.1)
+      diff-lcs (~> 1.1)
+      mime-types (~> 1.15)
     hirb (0.6.0)
     hoe (2.13.0)
       rake (~> 0.8)
@@ -228,6 +232,8 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
+    turn (0.9.2)
+      ansi
     tzinfo (0.3.31)
     will_paginate (3.0.3)
     xpath (0.1.4)
@@ -253,6 +259,7 @@ DEPENDENCIES
   factory_girl_rails
   foreman
   geoip
+  grit
   hirb
   hoe
   launchy
@@ -280,4 +287,5 @@ DEPENDENCIES
   stalker
   state_machine
   term-ansicolor
+  turn
   will_paginate

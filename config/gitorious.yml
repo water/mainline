@@ -6,7 +6,7 @@ development:
 
   # The path where git repositories are stored. The actual (bare) repositories resides
   # in repository_base_path/#{project.slug}/#{repository.name}.git/:
-  repository_base_path: "/tmp/git-repos"
+  repository_base_path: "/tmp"
 
   # Stuff that's in the html <head>. custom stats javascript code etc
   extra_html_head_data: 
