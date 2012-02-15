@@ -35,6 +35,13 @@ Gitorious::Application.configure do
     :host => YAML.load_file(File.join(Rails.root, "config/gitorious.yml"))[Rails.env]["gitorious_host"]
   }
 
+  # Configure static asset server for tests with Cache-Control for performance
+  config.serve_static_assets = true
+  config.static_cache_control = "public, max-age=3600"
+
+  # Allow pass debug_assets=true as a query parameter to load pages with unpackaged assets
+  config.assets.allow_debugging = true
+
   ActiveSupport::Deprecation.silenced = true
   
   config.logger = config.logger = Logger.new(Rails.root.join("log/test.log"), 50, 10**6)

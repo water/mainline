@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "3.0.10"
+gem "rails", "3.1.3"
 gem "chronic"
 gem "geoip"
 gem "hoe", :require => false
@@ -21,13 +21,21 @@ gem "oauth", "0.4.4"
 gem "oauth2"
 
 # Database
-gem "mysql2", "0.2.7"
+gem "mysql2", "~> 0.3.11"
 gem "citier", git: "git://github.com/water/citier.git"
 
 # View
 gem "will_paginate"
 gem "builder"
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+
+group :assets do
+  gem 'sass-rails', " ~> 3.1.0"
+  gem 'coffee-rails', " ~> 3.1.0"
+  gem 'uglifier'
+end
+
+gem 'jquery-rails'
 
 # Background
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"

@@ -1,3 +1,8 @@
+//= require jquery
+//= require jquery_ujs
+//= require_self
+//= require_tree .
+
 /*
 #--
 #   Copyright (C) 2007-2009 Johan Sørensen <johan@johansorensen.com>

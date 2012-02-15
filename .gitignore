@@ -26,6 +26,7 @@ public/system/group_avatars
 data.sql
 data.tsv
 log/*
+.sass-cache/
 
 # gitorious
 ###################
