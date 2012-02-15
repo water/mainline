@@ -10,6 +10,7 @@ Core web application written in Rails 3
 2. Install [beanstalkd](http://kr.github.com/beanstalkd/), used for internal messaging.
 3. Install and start `mysql`, pg will be used later in the development process. See below for instructions.
 4. Install [foreman](http://railscasts.com/episodes/281-foreman) using `gem install foreman`
+5. Make sure you have some kind of ```sshd``` installed
 
 ### Installation
 
@@ -19,10 +20,11 @@ Core web application written in Rails 3
 4. Install all dependencies using `bundle install`
 5. Create db, migrate db and add a user `bundle exec rake db:create db:migrate db:seed`. User credentials are printed in green.
 6. Create two empty log files, just in case rails complains about it, `touch log/development.log log/test.log`
-7. Start server, `rails s`
-8. Start [poller](https://github.com/water/mainline/blob/master/script/poller), beanstalkd and [spork](http://railscasts.com/episodes/285-spork) by running `foreman start`
-9. Navigate to [localhost:3000](http://localhost:3000)
-10. Login using the green stuff from before.
+7. Rename ```gitorious.sample.yml``` to ```gitorious.yml``` and change hosts and usernames to suit your system
+8. Start server, `rails s`
+9. Start [poller](https://github.com/water/mainline/blob/master/script/poller), beanstalkd and [spork](http://railscasts.com/episodes/285-spork) by running `foreman start`
+10. Navigate to [localhost:3000](http://localhost:3000)
+11. Login using the green stuff from before.
 
 ### Install MySQL
 
