@@ -27,6 +27,10 @@ data.sql
 data.tsv
 log/*
 
+# gitorious
+###################
+config/gitorious.yml
+
 # backup files
 ###################
 *.swp
