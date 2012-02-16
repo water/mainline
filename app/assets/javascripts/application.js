@@ -11,7 +11,6 @@
 //= require jquery.cycle.all.min
 //= require jquery.gitorious_extensions
 //= require notification_center
-//= require merge_requests
 //= require diff_browser
 //= require messages
 //= require_self

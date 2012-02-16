@@ -19,12 +19,12 @@
 */
 var diffBrowserCompactCommitSelectable;
 $(document).ready(function() {
-    $("body#merge_requests", function(){
-        var spec = Gitorious.ShaSpec.parseLocationHash(document.location.hash);
-        if (spec) {
-          Gitorious.MergeRequestController.getInstance().loadFromBookmark(spec);
-        }
-    });
+    // $("body#merge_requests", function(){
+    //     var spec = Gitorious.ShaSpec.parseLocationHash(document.location.hash);
+    //     if (spec) {
+    //       Gitorious.MergeRequestController.getInstance().loadFromBookmark(spec);
+    //     }
+    // });
 
     // toggling of diffs in diff browsers
     $('.file-diff .header').live("click", function(event) {
