@@ -1,13 +1,36 @@
+
 describe CommitRequest do
-  it "should have have getters 'n setters for #options" do
-    value = {data: 1}
-    cr = CommitRequest.new(value)
-    cr.options.should eq(value)
-    cr.options = "value"
-    cr.options.should eq("value")
-  end
-  
-  describe "#perform!" do
-    
+  describe "validation" do 
+    it "validates a commitrequest" do
+      value = {
+        command: "move",
+        user: 1,
+        repository: 123,
+        branch: "master",
+        commit_message: "A commit message",
+        files: [{
+          from: "path/to/file.txt",
+          to: "path/to/newfile.text"
+          }]
+      }
+      cr = CommitRequest.new(value)
+      cr.should be_valid   
+    end
+
+    it "can fail to validate a commitrequest" do
+      value = {
+        command: "fiskpinne",
+        user: 1,
+        repository: 123,
+        branch: "master",
+        commit_message: "A commit message",
+        files: [{
+          from: "path/to/file.txt",
+          to: "path/to/newfile.text"
+          }]
+      }
+      cr = CommitRequest.new(value)
+      cr.should_not be_valid 
+    end 
   end
 end
