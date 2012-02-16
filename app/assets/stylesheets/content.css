@@ -60,7 +60,7 @@
 		float: left;
 		padding: 15px;
 		font-size: 12px;
-		/*background: url(../img/repos-bg.png) bottom repeat-x;*/
+		/*background: url(/assets/img/repos-bg.png) bottom repeat-x;*/
 
 }
 
@@ -81,7 +81,7 @@
 		font-size: 11px;
 		float: left;
 		padding: 0px 0px 0px 8px;
-		background: url(../img/clone-bg.png) repeat-x;
+		background: url(/assets/img/clone-bg.png) repeat-x;
 }
 
 .repository_meta .infobox ul li form strong {
@@ -91,7 +91,7 @@
 	float: left;
 	height: 21px;
 	font-size: 11px;
-	background: url(../images/silk/link.png) no-repeat 0px 7px;
+	background: url(/assets/images/silk/link.png) no-repeat 0px 7px;
 }
 
 .repository_meta .infobox ul li form p {
@@ -107,7 +107,7 @@
 }
 .repository_meta .infobox ul li form p.clone_radio {
 		border-right: 1px solid #cccccc;
-		background: url(../img/clone-url-bg.png) repeat-x;
+		background: url(/assets/img/clone-url-bg.png) repeat-x;
 		padding: 6px 9px 1px 7px;
 		height: 21px;
 }
@@ -168,7 +168,7 @@
 		-webkit-border-bottom-right-radius: 6px;
 		-moz-border-radius-bottomleft: 6px;
 		-moz-border-radius-bottomright: 6px;
-		background: url(../img/repos-link-bg.png) repeat-x;
+		background: url(/assets/img/repos-link-bg.png) repeat-x;
 }
 
 /* LINKS */
@@ -325,7 +325,7 @@ span.changed{
 	height: 16px;
   color: #fff;
 	text-indent: -9999px;
-	background:  #FFF url(../img/events.png) no-repeat; 
+	background:  #FFF url(/assets/img/events.png) no-repeat; 
 
 }
 .events .event_instance .event_category.push { background-position: 0px 0px; }
