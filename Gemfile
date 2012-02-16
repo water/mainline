@@ -6,7 +6,7 @@ gem "geoip"
 gem "hoe", :require => false
 gem "echoe", :require => false
 gem "ruby-yadis", :require => "yadis"
-gem "rdiscount", "1.3.1.1"
+gem "rdiscount" # , "1.3.1.1"
 gem "mime-types", :require => "mime/types"
 gem "diff-lcs", :require => "diff/lcs"
 gem "state_machine"
@@ -28,9 +28,11 @@ gem "citier", git: "git://github.com/water/citier.git"
 gem "will_paginate"
 gem "builder"
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+gem "rails_autolink"
 
 group :assets do
   gem 'sass-rails', " ~> 3.1.0"
+  gem 'haml-rails'
   gem 'coffee-rails', " ~> 3.1.0"
   gem 'uglifier'
 end

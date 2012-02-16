@@ -1,7 +1,24 @@
+//= require jquery.core
+//= require jquery.autocomplete
+//= require jquery.cookie
+//= require color_picker
+//= require ui.core
+//= require ui.selectable
+//= require jquery.scrollto
+//= require jquery.timeago
+//= require core_extensions
+//= require jquery.expander
+//= require jquery.cycle.all.min
+//= require jquery.gitorious_extensions
+//= require notification_center
+//= require merge_requests
+//= require diff_browser
+//= require messages
+//= require_self
+//= require live_search
+//= require repository_search
 //= require jquery
 //= require jquery_ujs
-//= require_self
-//= require_tree .
 
 /*
 #--

@@ -1,0 +1,17 @@
+%meta{:content => "chrome=1", "http-equiv" => "X-UA-Compatible"}/
+%meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+%title
+  = @page_title ? @page_title + " - " : ""
+  = current_site.title
+= stylesheet_link_tag("application")
+= javascript_include_tag "application"
+/ = include_javascripts
+- if @atom_auto_discovery_url
+  = auto_discovery_link_tag(:atom, @atom_auto_discovery_url, |
+    :title => @atom_auto_discovery_title)                    |
+= yield :extra_head
+/[if IE 8]
+  <link rel="stylesheet" href="/stylesheets/ie8.css" type="text/css">
+/[if IE 7]
+  <link rel="stylesheet" href="/stylesheets/ie7.css" type="text/css">
+= GitoriousConfig["extra_html_head_data"]
