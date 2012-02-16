@@ -1,5 +1,6 @@
 require "spork"
 require "factory_girl"
+require "test/unit"
 if RUBY_PLATFORM =~ /darwin/
   require "spork/ext/ruby-debug"
 end
