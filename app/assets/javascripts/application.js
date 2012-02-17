@@ -1,4 +1,5 @@
-//= require jquery.core
+//= require jquery
+//= require jquery_ujs
 //= require jquery.autocomplete
 //= require jquery.cookie
 //= require color_picker
@@ -14,10 +15,8 @@
 //= require diff_browser
 //= require messages
 //= require_self
-//= require live_search
-//= require repository_search
-//= require jquery
-//= require jquery_ujs
+// require live_search
+// require repository_search
 
 /*
 #--
@@ -54,7 +53,7 @@ $(document).ready(function() {
     });
 
     // Line highlighting/selection
-    $("#codeblob").highlightSelectedLines();
+    // $("#codeblob").highlightSelectedLines();
 
     // no-op links
     $("a.link_noop").click(function(event) {
@@ -287,7 +286,7 @@ $(document).ready(function() {
     });
 
     // Misc
-		$('.with_sidebar').parent().css('background', 'url("/img/container-bg310.png") repeat-y');
+		$('.with_sidebar').parent().css('background', 'url("/assets/img/container-bg310.png") repeat-y');
 		$('ul.navigation').find('li:first').addClass("first"); 
 		$('ul.navigation').find('li:last').addClass("last"); 
 		$("ul.navigation ~ ul.navigation").addClass("multiple");

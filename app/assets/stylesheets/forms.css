@@ -158,7 +158,7 @@ textarea:focus, select:focus {
 
 /* embeds the openid image in the text field */
 input#openid_url {
-   background: url(../images/login-bg.gif) no-repeat;
+   background: url(/assets/images/login-bg.gif) no-repeat;
    background-color: #fff;
    background-position: 0 50%;
    color: #000;

@@ -1,12 +1,12 @@
 #sidebar ul.links.navigation li.new_project a{
-	  background: url("../images/silk/report_add.png") no-repeat 10px 9px;		
+	  background: url("/assets/images/silk/report_add.png") no-repeat 10px 9px;		
 } 
 
 .pull-box-links #new-project-button a {
-	  background-image: url("../images/silk/report_add.png");	
+	  background-image: url("/assets/images/silk/report_add.png");	
 }
 .button.add_link a {
-  	background-image: url("../images/silk/add.png");
+  	background-image: url("/assets/images/silk/add.png");
 }
 
 .repository-link a, .pull-box-links a, .button a {
@@ -44,9 +44,9 @@
 }
 
 .repository-link.favorite, .repository-link.favorite a { float: right; margin-right: 0; }
-.repository-link.favorite a.enabled {	background: #e8e8e8 url("../images/silk/star.png") no-repeat 6px 4px; }
-.repository-link.favorite a.disabled {	background: #e8e8e8 url("../images/silk/star_deselected.png") no-repeat 6px 4px; }
-.repository-link.favorite a.waiting { background: #e8e8e8 url("../images/spinner.gif") no-repeat 6px 4px;}
+.repository-link.favorite a.enabled {	background: #e8e8e8 url("/assets/images/silk/star.png") no-repeat 6px 4px; }
+.repository-link.favorite a.disabled {	background: #e8e8e8 url("/assets/images/silk/star_deselected.png") no-repeat 6px 4px; }
+.repository-link.favorite a.waiting { background: #e8e8e8 url("/assets/images/spinner.gif") no-repeat 6px 4px;}
 .repository-link.favorite a:hover { background-color: #cdcdcd; }
 
 form .message_list_actions input[type='submit'] {

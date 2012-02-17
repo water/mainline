@@ -54,7 +54,7 @@ Big header
   /* IE7 adds a strange margin here. Dunno why. This "fixes" it. */
   height:500px;
   
-  background-image:url(../images/big_header_gloss.png);
+  background-image:url(/assets/images/big_header_gloss.png);
   background-repeat:repeat-x;
   background-color:#000;
   color:#fff;
@@ -107,7 +107,7 @@ Big header
   width:20px;
   height:20px;
   margin-left:2px;
-  background-image:url(../images/button_search.png);
+  background-image:url(/assets/images/button_search.png);
   background-repeat:no-repeat;
   display:block;
   float:left;
@@ -124,7 +124,7 @@ Big header
 #logo_image{
   top:50px;
   position:absolute;
-  background-image:url(../images/gitorious_logo_big.png);
+  background-image:url(/assets/images/gitorious_logo_big.png);
   height:253px;
   width:492px;
   margin:0;
@@ -172,7 +172,7 @@ Big header
 #big_header_pay_off{
   width:520px;
   height:74px;
-  background-image:url(../images/pay_off.png);
+  background-image:url(/assets/images/pay_off.png);
   margin:0;
 }
 
@@ -190,7 +190,7 @@ Big header
 #big_header_login_box_header{
   margin:0;
   height:25px;
-  background-image:url(../images/login_box_head.png);
+  background-image:url(/assets/images/login_box_head.png);
   background-repeat:no-repeat;
   background-position:center;
 }
@@ -212,7 +212,7 @@ Big header
   text-shadow:rgba(0, 0, 0, 0.5) 0px -1px 1px; 
   
   background-color:#0e0e0e;
-  background-image:url(../images/dialogue_small_bg_0e0e0e.png);
+  background-image:url(/assets/images/dialogue_small_bg_0e0e0e.png);
   background-repeat:repeat-x;
   border-width:1px;
   border-style:solid;
@@ -265,7 +265,7 @@ Recent activities
 #recent_activities{
   float:left;
   width:100%;
-  background-image:url(../images/ticker_bg.png);
+  background-image:url(/assets/images/ticker_bg.png);
   background-repeat:repeat-x;
   background-position:top left;
   background-color:#fff;
@@ -279,7 +279,7 @@ Recent activities
 }
 
 .recent_activity{
-  background-image:url(../images/border_pixel_v.gif);
+  background-image:url(/assets/images/border_pixel_v.gif);
   background-repeat:repeat-y;
   background-position:top right;
   width:227px;
@@ -342,19 +342,19 @@ Homepage lists
 }
 
 #homepage_listed_left_column h2{
-  background-image:url(../images/list_head_projects.png);
+  background-image:url(/assets/images/list_head_projects.png);
 }
 
 #homepage_listed_middle_column h2{
-  background-image:url(../images/list_head_teams.png);
+  background-image:url(/assets/images/list_head_teams.png);
 }
 
 #homepage_listed_right_column h2{
-  background-image:url(../images/list_head_users.png);
+  background-image:url(/assets/images/list_head_users.png);
 }
 
 .homepage_listing > ul{
-  background-image:url(../images/border_pixel_h.gif);
+  background-image:url(/assets/images/border_pixel_h.gif);
   background-repeat:repeat-x;
   background-position:left top;
 }
@@ -373,7 +373,7 @@ Homepage lists
 }
 
 .homepage_listing .summary_box{
-  background-image:url(../images/border_pixel_h.gif);
+  background-image:url(/assets/images/border_pixel_h.gif);
   background-repeat:repeat-x;
   background-position:left bottom;
   padding:10px 0;
@@ -456,7 +456,7 @@ Avatars
   z-index:2;
   width:30px;
   height:31px;
-  background-image:url(../images/icon_avatar_mask.png);
+  background-image:url(/assets/images/icon_avatar_mask.png);
   background-repeat:no-repeat;
 }
 
@@ -522,7 +522,7 @@ a.button_link.medium{
 	padding:0 20px 0 0; 
 	margin-right:5px; 
 	background-color:transparent;
-  background-image:url(../images/buttons_medium.png);
+  background-image:url(/assets/images/buttons_medium.png);
   background-repeat:no-repeat;
   background-position:right -108px;
 }
@@ -532,7 +532,7 @@ a.button_link.medium span{
 	padding:8px 0 0 20px; 
 	height:21px;
   background-color:transparent;
-  background-image:url(../images/buttons_medium.png);
+  background-image:url(/assets/images/buttons_medium.png);
   background-repeat:no-repeat;
   background-position:left top;
 }
@@ -552,7 +552,7 @@ a.button_link.big{
   padding:0 20px 0 0;
   margin-right:5px;
   background-color:transparent;
-  background-image:url(../images/buttons_big.png);
+  background-image:url(/assets/images/buttons_big.png);
   background-repeat:no-repeat;
   background-position:right -138px;
   color: #fff !important;
@@ -564,7 +564,7 @@ a.button_link.big span{
   padding:13px 0 0 20px;
   height:36px;
   background-color:transparent;
-  background-image:url(../images/buttons_big.png);
+  background-image:url(/assets/images/buttons_big.png);
   background-repeat:no-repeat;
   background-position:left top;
 }
