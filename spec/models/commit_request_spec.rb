@@ -14,7 +14,9 @@ describe CommitRequest do
           }]
       }
       cr = CommitRequest.new(value)
-      cr.should be_valid   
+      cr.should be_valid
+      cr.should_receive(:enqueue)
+      cr.save
     end
 
     it "can fail to validate a commitrequest" do
@@ -31,6 +33,8 @@ describe CommitRequest do
       }
       cr = CommitRequest.new(value)
       cr.should_not be_valid 
+      cr.should_not_receive(:enqueue)
+      cr.save
     end 
   end
 end
