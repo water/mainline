@@ -1,4 +1,7 @@
-class CommitRequest < Struct.new(:options)
+class CommitRequest 
+	include ActiveModel::Validations
+	include ActiveModel::Conversion
+	extend ActiveModel::Naming
   #
   # Performs the the action given by @options
   # @move {
@@ -45,14 +48,31 @@ class CommitRequest < Struct.new(:options)
   #   ]
   # }
   #
-  # Called from a beanstalkd worker
-  def perform!
-    send(@options["command"])
+  attr_accessor :user, :command, :repository, :branch, :commit_message, :files, :paths
+
+  validates_presence_of :user,:command, :repository, :branch, :commit_message, :files
+  validates_numericality_of :user, :repository
+  validates_inclusion_of :command, :in => %w( move add remove ), :message => "%s is not an acceptable command" 
+
+  def initialize(options = {})
+    @options = options
+    options.each do |name, value|
+      send("#{name}=",value)
+    end
+  end
+
+  def save
+    return false unless valid?
+    enqueue
+  end  
+
+  def enqueue
+    raise "not implemented yet, blame linus"
   end
   
-private
+  def persisted?
+    false
+  end  
 
-  def move
-    
-  end
 end
+
