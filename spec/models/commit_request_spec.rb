@@ -2,6 +2,15 @@
 describe CommitRequest do
   describe "validation" do 
     it "validates a commitrequest" do
+        u = User.new({
+            :id => 1,
+            :email => 'test@example.com',
+            :password => 'test',
+            :password_confirmation => 'test',
+            :terms_of_use => "1"
+        })
+        u.login  = 'test'
+        u.save
       value = {
         command: "move",
         user: 1,
@@ -20,6 +29,15 @@ describe CommitRequest do
     end
 
     it "can fail to validate a commitrequest" do
+        u = User.new({
+            :id => 1,
+            :email => 'test@example.com',
+            :password => 'test',
+            :password_confirmation => 'test',
+            :terms_of_use => "1"
+        })
+        u.login  = 'test'
+        u.save
       value = {
         command: "fiskpinne",
         user: 1,
