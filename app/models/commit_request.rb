@@ -53,6 +53,8 @@ class CommitRequest
   validates_presence_of :user,:command, :repository, :branch, :commit_message, :files
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, :in => %w( move add remove ), :message => "%s is not an acceptable command" 
+  validate :user_id_exists
+
 
   def initialize(options = {})
     @options = options
@@ -73,6 +75,13 @@ class CommitRequest
   def persisted?
     false
   end  
+
+ 
+private
+
+def user_id_exists
+  return false if User.find(self.user).nil?
+end
 
 end
 
