@@ -37,6 +37,7 @@ group :assets do
   gem 'haml-rails'
   gem 'coffee-rails', " ~> 3.1.0"
   gem 'uglifier'
+  gem 'less-rails-bootstrap'
 end
 
 gem 'jquery-rails'

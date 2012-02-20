@@ -7,6 +7,8 @@
 = yield :pre_head
 
 = stylesheet_link_tag("application")
+
+= yield :post_css
 = javascript_include_tag "application"
 = javascript_include_tag "controllers/#{params[:controller]}"
 

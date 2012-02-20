@@ -1,4 +1,5 @@
 class SubmissionsController < ApplicationController
+  layout "water"
   def index
   end
 

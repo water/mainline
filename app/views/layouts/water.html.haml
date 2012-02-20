@@ -1,0 +1,33 @@
+!!!
+/[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
+/[if IE 7] <html class="no-js lt-ie9 lt-ie8" lang="en">
+/[if IE 8] <html class="no-js lt-ie9" lang="en">
+/ [if gt IE 8]><!
+%html
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %title
+    = stylesheet_link_tag "water"
+    = javascript_include_tag "water"
+  %body
+    /[if lt IE 7] <p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p>
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.brand This be navbar
+          .nav-collapse
+            %ul.nav
+              %li 
+                %a{:href =>"#"} Item1
+              %li 
+                %a{:href =>"#"} Item2
+              %li.divider-vertical
+              %li 
+                %a{:href =>"#"} Item3
+              
+    #main.container
+      .alert.alert-info
+        = flashes
+      = yield
+    %footer
