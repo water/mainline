@@ -67,12 +67,6 @@ module ApplicationHelper
     %w(tag_size_1 tag_size_2 tag_size_3 tag_size_4)
   end
 
-  def linked_tag_list_as_sentence(tags)
-    tags.map do |tag|
-      link_to(h(tag.name), search_path(:q => "category:#{h(tag.name)}"))
-    end.to_sentence
-  end
-
   def build_notice_for(object, options = {})
     out =  %Q{<div class="being_constructed round-10">}
     out <<  %Q{<div class="being_constructed_content round-10">}

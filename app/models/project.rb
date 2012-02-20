@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 class Project < ActiveRecord::Base
-  acts_as_taggable
   include RecordThrottling
   include UrlLinting
   include Watchable
@@ -25,13 +24,6 @@ class Project < ActiveRecord::Base
   attr_protected :owner_id, :user_id, :site_id
 
   is_indexed :fields => ["title", "description", "slug"],
-    :concatenate => [
-      { :class_name => 'Tag',
-        :field => 'name',
-        :as => 'category',
-        :association_sql => "LEFT OUTER JOIN taggings ON taggings.taggable_id = projects.id " +
-                            "AND taggings.taggable_type = 'Project' LEFT OUTER JOIN tags ON taggings.tag_id = tags.id"
-      }],
     :include => [{
       :association_name => "user",
       :field => "login",
@@ -102,13 +94,6 @@ class Project < ActiveRecord::Base
 
   def self.per_page() 20 end
 
-  def self.top_tags(limit = 10)
-    # Should not be deactivated 
-    # More info: https://github.com/mbleigh/acts-as-taggable-on
-    # Signed off by: Linus Oleander
-    [] #tag_counts(:limit => limit, :order => "count desc")
-  end
-
   # Returns the projects limited by +limit+ who has the most activity within
   # the +cutoff+ period
   def self.most_active_recently(limit = 10, number_of_days = 3)
@@ -171,11 +156,6 @@ class Project < ActiveRecord::Base
 
   def can_be_deleted_by?(candidate)
     admin?(candidate) && repositories.clones.count == 0
-  end
-
-  def tag_list=(tag_list)
-    tag_list.gsub!(",", "")
-    super
   end
 
   def home_url=(url)

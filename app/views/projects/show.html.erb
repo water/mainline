@@ -48,10 +48,6 @@
 
     <ul id="project-meta">
 		<h3>Project information</h3>
-	<% unless @project.tags.blank? -%>
-      <li><strong><%= t("views.projects.labels") %>:</strong> 
-        <%= @project.tag_list.blank? ? "none" : linked_tag_list_as_sentence(@project.tags) -%></li>
-	<% end %>
 	<% unless @project.license.blank? -%>
       <li><strong><%= t("views.projects.license") %>:</strong> <%= h(@project.license) -%></li>
 	<% end %>

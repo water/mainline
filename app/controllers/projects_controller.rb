@@ -14,31 +14,15 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.
       order("projects.created_at desc").
-      page(params[:page]).
-      includes(:tags, {:repositories => :project})
+      page(params[:page])
     
     @atom_auto_discovery_url = projects_path(:format => :atom)
     respond_to do |format|
       format.html {
         @active_recently = Project.most_active_recently
-        @tags = Project.top_tags
       }
       format.xml  { render :xml => @projects }
       format.atom { }
-    end
-  end
-
-  def category
-    tags = params[:id].to_s.gsub(/,\ ?/, " ")
-    @projects = Project.paginate_by_tag(tags, :order => 'created_at desc', :page => params[:page])
-    @atom_auto_discovery_url = projects_category_path(params[:id], :format => :atom)
-    respond_to do |format|
-      format.html do
-        @tags = Project.tag_counts
-        render :action => "index"
-      end
-      format.xml  { render :xml => @projects }
-      format.atom { render :action => "index"}
     end
   end
 

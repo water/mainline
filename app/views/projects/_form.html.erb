@@ -17,10 +17,6 @@
   		</li>
 		<% end -%>
 		<li>
-  			<%= form.label :tag_list, t(:tag_list, :scope => 'activerecord.attributes.project') -%>
-  			<div><%= form.text_field :tag_list -%></div>
-		</li>
-		<li>
   			<%= form.label :license, t(:license, :scope => 'activerecord.attributes.project') -%>
   			<div><%= form.select :license, Project::LICENSES, { :selected => (@project.license || GitoriousConfig['default_license']) } -%>
 			</div>
