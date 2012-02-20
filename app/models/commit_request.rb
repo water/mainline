@@ -53,7 +53,6 @@ class CommitRequest
   validates_presence_of :user,:command, :repository, :branch, :commit_message, :files
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, :in => %w( move add remove ), :message => "%s is not an acceptable command" 
-  validate :user_id_exists
 
 
   def initialize(options = {})
@@ -61,27 +60,38 @@ class CommitRequest
     options.each do |name, value|
       send("#{name}=",value)
     end
+    @commit_message ||= generate_commit_message
+  end
+
+  def generate_commit_message
+    return "WebCommit: #{@command}"
+  end
+
+  def valid?
+    super
+    return (@errors[:user] = "User does not exist") && false unless User.exists?(@user)
+    return (@errors[:repository] = "Repository does not exist") && false unless Repository.exists?(@repository)
+    @errors[:user_can_commit] = "Permission denied, user is not allowed to commit to this repo" unless user_can_commit?
+    @errors.empty?
   end
 
   def save
     return false unless valid?
     enqueue
-  end  
+  end
 
   def enqueue
     raise "not implemented yet, blame linus"
   end
-  
+
   def persisted?
     false
-  end  
-
- 
-private
-
-def user_id_exists
-  return false if User.find(self.user).nil?
-end
+  end
+private 
+  def user_can_commit?
+        sids = GroupHasUser.find_all_by_student_id(@user)
+        sids.any?{ | x | LabHasGroup.find(x.lab_group_id).repo_id == @repository }
+  end
 
 end
 
