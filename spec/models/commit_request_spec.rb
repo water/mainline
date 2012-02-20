@@ -1,18 +1,18 @@
 
 describe CommitRequest do
-    def create_user_project_repo(repo_id,repo_name)
+    def create_user_project_repo(repo_id,unique_name)
         user = Factory.build(:user)
         user.save
         project = Project.new({
-          :title => "foo project",
-          :slug => "foo",
+          :title => unique_name,
+          :slug => unique_name,
           :description => "my little project",
           :user => user,
           :owner => user
         })
         project.save
         repo = Repository.new({
-            :name => repo_name,
+            :name => unique_name,
             :user => user,
             :owner => user,
             :project => project
@@ -42,7 +42,7 @@ describe CommitRequest do
         @rc.student_id = @user.id
         @labgroup = create(:lab_group)
         @labgroup.registered_course_id = @rc.id
-        @labgroup.save!
+        @labgroup.save
         @ghu = GroupHasUser.new(:student_id => @user.id , :lab_group_id => @labgroup.id)
         @ghu.save!
         @lhg = LabHasGroup.new(:lab_group_id => @labgroup.id , :repo_id => @repo.id)
