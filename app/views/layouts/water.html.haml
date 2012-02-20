@@ -8,8 +8,12 @@
   %head
     %meta{:charset => "utf-8"}/
     %title
+      = @page_title ? @page_title + " - " : ""
+      = current_site.title
     = stylesheet_link_tag "water"
+    = yield :post_css
     = javascript_include_tag "water"
+    = yield :post_js
   %body
     /[if lt IE 7] <p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p>
     .navbar.navbar-fixed-top
@@ -27,7 +31,8 @@
                 %a{:href =>"#"} Item3
               
     #main.container
-      .alert.alert-info
-        = flashes
+      - unless flash.empty?
+        .alert.alert-info
+          = flashes
       = yield
     %footer
