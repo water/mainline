@@ -57,7 +57,7 @@ class SiteController < ApplicationController
       @page_title = "Gitorious: your dashboard"
       @user = current_user
       @projects = @user.projects.find(:all,
-        :include => [:tags, { :repositories => :project }])
+        :include => [{ :repositories => :project }])
       @repositories = current_user.commit_repositories if current_user != @user
       @events = @user.paginated_events_in_watchlist(:page => params[:page])
       @messages = @user.messages_in_inbox(3) if @user == current_user
