@@ -12,6 +12,7 @@ class TreesController < ApplicationController
   end
   
   def show
+    debugger
     @git = @repository.git
     @ref, @path = branch_and_path(params[:branch_and_path], @git)
     unless @commit = @git.commit(@ref)

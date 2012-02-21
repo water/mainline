@@ -33,6 +33,7 @@
     #main.container
       - unless flash.empty?
         .alert.alert-info
+          %a.close{"data-dismiss" => "alert"} ×
           = flashes
       = yield
     %footer
