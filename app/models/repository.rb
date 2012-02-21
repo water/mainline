@@ -547,7 +547,7 @@ class Repository < ActiveRecord::Base
       raw_hash = Digest::SHA1.hexdigest(owner.to_param +
                                         self.to_param +
                                         Time.now.to_f.to_s +
-                                        ActiveSupport::SecureRandom.hex)
+                                        SecureRandom.hex)
       sharded_hash = sharded_hashed_path(raw_hash)
       sharded_hash
     end

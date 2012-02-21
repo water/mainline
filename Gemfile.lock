@@ -177,7 +177,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.0.4)
     multipart-post (1.1.5)
-    mysql2 (0.3.11)
+    mysql2 (0.3.10)
     nokogiri (1.5.0)
     oauth (0.4.4)
     oauth2 (0.5.2)
@@ -325,7 +325,7 @@ DEPENDENCIES
   mime-types
   minitest
   mocha
-  mysql2 (~> 0.3.11)
+  mysql2 (= 0.3.10)
   oauth (= 0.4.4)
   oauth2
   paperclip!

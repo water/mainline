@@ -23,7 +23,7 @@ gem "oauth", "0.4.4"
 gem "oauth2"
 
 # Database
-gem "mysql2", "~> 0.3.11"
+gem "mysql2", "0.3.10"
 gem "citier", git: "git://github.com/water/citier.git"
 
 # View
