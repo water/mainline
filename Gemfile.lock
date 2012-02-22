@@ -124,9 +124,6 @@ GEM
     gemcutter (0.7.1)
     geoip (1.1.2)
     git (1.2.5)
-    grit (2.4.1)
-      diff-lcs (~> 1.1)
-      mime-types (~> 1.15)
     haml (3.1.4)
     haml-rails (0.3.4)
       actionpack (~> 3.0)
@@ -315,7 +312,6 @@ DEPENDENCIES
   factory_girl_rails
   foreman
   geoip
-  grit
   haml-rails
   hirb
   hoe
