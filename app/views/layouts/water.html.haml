@@ -25,18 +25,30 @@
           %a.brand This be navbar
           .nav-collapse
             %ul.nav
-              %li 
+              %li.divider-vertical
+              %li
                 %a{:href =>"#"} Item1
+              %li.divider-vertical
               %li 
                 %a{:href =>"#"} Item2
               %li.divider-vertical
               %li 
                 %a{:href =>"#"} Item3
-              
+            %ul.nav.pull-right 
+              %li.dropdown{:id => "Options"}
+                %a.dropdown-toggle{:"data-toggle" => "dropdown", :href => "#Options"} 
+                  Options
+                  %b.caret
+                %ul.dropdown-menu
+                  %li
+                    %a{:href => "#"} Settings
+                  %li.divider
+                  %li
+                    %a{:href => "#"} Log out
+    #main.container
     #main.container
       - unless flash.empty?
         .alert.alert-info
           %a.close{"data-dismiss" => "alert"} ×
           = flashes
       = yield
-    %footer
