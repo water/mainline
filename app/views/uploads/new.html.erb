@@ -1,0 +1,5 @@
+<%= form_tag('/upload', :multipart => true, :method => :post) do %>
+  <label for="file">File to Upload</label> <%= file_field_tag "files[]" %>
+  <%= submit_tag %>
+<% end %>
+
