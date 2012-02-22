@@ -26,6 +26,9 @@ public/system/group_avatars
 data.sql
 data.tsv
 log/*
+# Water-specific rails
+######################
+tmp/uploads
 
 # gitorious
 ###################
