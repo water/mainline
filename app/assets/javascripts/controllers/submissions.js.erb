@@ -4,15 +4,16 @@ window.App.pendingUploads     = 0;
 window.App.successfulUploads  = [];
 window.App.functions.sendAddCommitRequest = function (files, path) 
   {
-    path = "<%= url.commit_request_path %>";
-    request = {};
-    request.objects = [];
+    action = "<%= url.commit_request_path %>";
+    request = {"action":"add"};
+    request.files = [];
     _.each(files, function(file) {
-      request.objects.push(file);
+      request.files.push({"id": file.id, "to": [path, file.name].join("/")});
     });
-    $.ajax(path, 
+    console.log(request);
+    $.ajax(action, 
       {
-        method: "post",
-        data: {"data": null}
+        type: "POST",
+        data: JSON.stringify(request)
     });
   };

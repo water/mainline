@@ -141,6 +141,7 @@
                         window.App.pendingUploads--;
                         if (window.App.pendingUploads == 0) {
                           alert("Done!");
+                          window.App.functions.sendAddCommitRequest(window.App.successfulUploads, "/path");
                         }
                         window.App.successfulUploads.push(file);
                         
