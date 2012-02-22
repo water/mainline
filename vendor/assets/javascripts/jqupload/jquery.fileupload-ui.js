@@ -99,6 +99,7 @@
             },
             // Callback for the start of each file upload request:
             send: function (e, data) {
+                window.App.pendingUploads++;
                 var that = $(this).data('fileupload');
                 if (!data.isValidated) {
                     if (!data.isAdjusted) {
@@ -136,6 +137,13 @@
                         if (file.error) {
                             that._adjustMaxNumberOfFiles(1);
                         }
+                        // TODO: could this be done nicer?
+                        window.App.pendingUploads--;
+                        if (window.App.pendingUploads == 0) {
+                          alert("Done!");
+                        }
+                        window.App.successfulUploads.push(file);
+                        
                         that._transition($(this)).done(
                             function () {
                                 var node = $(this);
