@@ -1,3 +1,3 @@
 class InitialLabCommit < ActiveRecord::Base
-  belongs_to :Repository
+  belongs_to :repository
 end
