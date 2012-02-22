@@ -1,0 +1,18 @@
+<% url = Gitorious::Application.routes.url_helpers %>
+
+window.App.pendingUploads     = 0;
+window.App.successfulUploads  = [];
+window.App.functions.sendAddCommitRequest = function (files, path) 
+  {
+    path = "<%= url.commit_request_path %>";
+    request = {};
+    request.objects = [];
+    _.each(files, function(file) {
+      request.objects.push(file);
+    });
+    $.ajax(path, 
+      {
+        method: "post",
+        data: {"data": null}
+    });
+  };
