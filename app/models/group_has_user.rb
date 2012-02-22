@@ -1,4 +1,4 @@
 class GroupHasUser < ActiveRecord::Base
-  belongs_to :Student
-  belongs_to :LabGroup
+  belongs_to :student
+  belongs_to :lab_group
 end
