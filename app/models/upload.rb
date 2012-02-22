@@ -23,7 +23,6 @@ class Upload
     # to hash. Do for beginning and end of file.
     hash = 0
     filesize = tempfile.size
-    tempfile
     # Q = unsigned long long = 64 bit
     tempfile.read(CHUNK_SIZE).unpack("Q*").each do |n|
       hash = hash + n & 0xffffffffffffffff # to remain as 64 bit number
