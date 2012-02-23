@@ -26,7 +26,7 @@ public/system/group_avatars
 data.sql
 data.tsv
 log/*
-
+/data
 # backup files
 ###################
 *.swp
