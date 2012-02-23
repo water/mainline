@@ -20,7 +20,6 @@ class User < ActiveRecord::Base
   has_many :events, :order => "events.created_at asc", :dependent => :destroy
   has_many :events_as_target, :class_name => "Event", :as => :target
   has_many :favorites, :dependent => :destroy
-  has_many :feed_items, :foreign_key => "watcher_id"
 
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :current_password
@@ -319,20 +318,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def watched_objects
-    favorites.find(:all, {
-      :include => :watchable,
-      :order => "id desc"
-    }).collect(&:watchable)
-  end
 
-  def paginated_events_in_watchlist(pagination_options = {})
-    watched = feed_items.order("created_at desc").
-      page(pagination_options[:page])
-    total = (watched.length < watched.per_page ? watched.length : watched.total_entries)
-    items = WillPaginate::Collection.new(watched.current_page, watched.per_page, total)
-    items.replace(Event.find(watched.map(&:event_id), {:order => "created_at desc"}))
-  end
   
   #
   # @role Symbol Role for the given user

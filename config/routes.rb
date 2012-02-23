@@ -26,13 +26,7 @@ Gitorious::Application.routes.draw do
     resources :memberships
   end
   
-  resources :events do
-    get :commits, :on => :member
-  end
 
-  resource :search
-
-  resources :favorites
 
   resources :messages do
     member do

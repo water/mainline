@@ -346,9 +346,6 @@ class MergeRequest < ActiveRecord::Base
     reviewers.each { |reviewer|
       add_to_reviewers_favorites(reviewer)
     }
-    if event = creation_event
-      FeedItem.bulk_create_from_watcher_list_and_event!(reviewers.map(&:id), event)
-    end
   end
 
   def reviewers

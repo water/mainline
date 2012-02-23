@@ -33,34 +33,14 @@ class UsersController < ApplicationController
     @messages = @user.messages_in_inbox(3) if @user == current_user
     @favorites = @user.favorites.includes(:watchable)
 
-    @atom_auto_discovery_url = feed_user_path(@user, :format => :atom)
-    @atom_auto_discovery_title = "Public activity feed"
 
     respond_to do |format|
       format.html { }
-      format.atom { redirect_to feed_user_path(@user, :format => :atom) }
-    end
-  end
-
-  def feed
-    @user = User.find_by_login!(params[:id])
-    @events = @user.events.
-      order("events.created_at desc").
-      includes(:user, :project).
-      limit(10)
-          
-    respond_to do |format|
-      format.html { redirect_to user_path(@user) }
-      format.atom { }
     end
   end
 
   def watchlist
     @user = User.find_by_login!(params[:id])
-    @events = @user.paginated_events_in_watchlist({:page => 1})
-    respond_to do |wants|
-      wants.atom { render :template => "users/feed" }
-    end
   end
 
   def create

@@ -23,15 +23,6 @@
     </p>
   <% end unless logged_in? -%>
 
-<% cache([:site_index, :recent_activities], :expires_in => 10.minutes) do -%>
-  <%= pull_box("Recent activities", :class => "pull-box-510") do -%>
-    <ul class="events inline">
-    <% @latest_events.each do |event| -%>
-      <%= render :partial => event, :locals => { :relative_time => true } -%>
-    <% end -%>
-    </ul>
-  <% end -%>
-<% end -%>
 </div>
 
 <div id="right">

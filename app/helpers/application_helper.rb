@@ -5,7 +5,6 @@ module ApplicationHelper
   include TagsHelper
   include UsersHelper
   include BreadcrumbsHelper
-  include EventRenderingHelper
 
   GREETINGS = ["Hello", "Hi", "Greetings", "Howdy", "Heya", "G'day"]
 
@@ -58,10 +57,6 @@ module ApplicationHelper
     sanitize(markdownized_text)
   end
 
-  def feed_icon(url, alt_title = "Atom feed", size = :small)
-    link_to image_tag("silk/feed.png", :class => "feed_icon"), url,
-      :alt => alt_title, :title => alt_title
-  end
 
   def default_css_tag_sizes
     %w(tag_size_1 tag_size_2 tag_size_3 tag_size_4)
