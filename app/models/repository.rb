@@ -33,7 +33,7 @@ class Repository < ActiveRecord::Base
   has_many :hooks, :dependent => :destroy
 
   NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
-  validates_presence_of :user_id, :name, :owner_id, :project_id
+  validates_presence_of :user_id, :name, :owner_id
   validates_format_of :name, :with => /^#{NAME_FORMAT}$/i,
     :message => "is invalid, must match something like /[a-z0-9_\\-]+/"
   validates_exclusion_of :name,
@@ -729,8 +729,8 @@ class Repository < ActiveRecord::Base
     def create_add_event_if_project_repo
       if project_repo?
         #(action_id, target, user, data = nil, body = nil, date = Time.now.utc)
-        self.project.create_event(Action::ADD_PROJECT_REPOSITORY, self, self.user,
-              nil, nil, date = created_at)
+     ##   self.project.create_event(Action::ADD_PROJECT_REPOSITORY, self, self.user,
+     ##         nil, nil, date = created_at)
       end
     end
 

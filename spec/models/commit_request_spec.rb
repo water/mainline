@@ -3,30 +3,30 @@ describe CommitRequest do
     def create_user_project_repo(repo_id,unique_name)
         user = Factory.build(:user)
         user.save
-        project = Project.new({
-          :title => unique_name,
-          :slug => unique_name,
-          :description => "my little project",
-          :user => user,
-          :owner => user
-        })
-        project.save
+#        project = Project.new({
+#          :title => unique_name,
+#          :slug => unique_name,
+#          :description => "my little project",
+#          :user => user,
+#          :owner => user
+#        })
+#        project.save
         repo = Repository.new({
             :name => unique_name,
             :user => user,
-            :owner => user,
-            :project => project
+            :owner => user
+#            :project => project
         })
         repo.id = repo_id
         repo.save
-        [user, project, repo]
+        [user,  repo]
     end
         let(:given_course) { create(:given_course)}
         let(:user) { create(:user)}
         let(:registered_course) { build(:registered_course)}
     before (:each) do
-        @user,@project,@repo = create_user_project_repo( 123, "foo")
-        @user2,@project2,@repo2 = create_user_project_repo( 321, "bar")
+        @user,@repo = create_user_project_repo( 123, "foo")
+        @user2,@repo2 = create_user_project_repo( 321, "bar")
         @value = {
             command: "move",
             user: @user.id,
