@@ -10,8 +10,8 @@ class SubmissionsController < ApplicationController
   end
 
   def new
-    mock!
-    prepare_tree
+    # mock!
+    # prepare_tree
     flash[:notice] = "Incredibly useless message."
   end
   

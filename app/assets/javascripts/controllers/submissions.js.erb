@@ -5,8 +5,9 @@ window.App.successfulUploads  = [];
 window.App.functions.sendAddCommitRequest = function (files, path) 
   {
     action = "<%= url.commit_request_path %>";
-    request = {"action":"add"};
+    request = {"method":"add"};
     request.files = [];
+    
     _.each(files, function(file) {
       request.files.push({"id": file.id, "to": [path, file.name].join("/")});
     });
@@ -14,6 +15,7 @@ window.App.functions.sendAddCommitRequest = function (files, path)
     $.ajax(action, 
       {
         type: "POST",
-        data: JSON.stringify(request)
+        data: request,
+        success: function() {alert("Success!");}
     });
   };
