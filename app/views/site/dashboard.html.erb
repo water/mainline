@@ -77,63 +77,9 @@
   </div>
 	</div>
   <div id="right" class="w-390">
-    <% pull_box("Open merge requests for you", :class => "merge-requests pull-box-390") do %>
-      <ul>
-        <% @user.review_repositories_with_open_merge_request_count.each do |repo| %>
-          <li>
-            <%= link_to(repo.url_path + ": " + repo.open_merge_request_count,
-                 repo_owner_path(repo, [repo.project, repo, :merge_requests])) %>
-          </li>
-        <% end %>
-      </ul>
-    <% end if show_merge_request_count_for_user?(@user) %>
 
 
-    <% pull_box("You're watching", :class => "your-favorites favorite pull-box-390") do %>
-      <div class="filters">
-        <ul>
-			<li><strong>Sort by:</strong></li>
-          <% if is_current_user?(@user) -%>
-            <li><a class="foreign" href="#not-mine">Not yours</a></li>
-            <li><a class="mine" href="#mine">Yours</a></li>
-          <% end -%>
-          <li>
-            <a href="#merge-requests" class="merge-requests">Merge requests</a>
-          </li>
-          <li>
-            <a href="#repos" class="repositories">Repositories</a>
-          </li>
-          <li><a href="#all" class="all">All</a></li>
-        </ul>
-      </div>
-      <ul class="with_icons">
-        <% @favorites.each do |favorite| %>
-          <li class="<%= css_classes_for(favorite) -%>">
-            <%= link_to_watchable(favorite) -%>
-          </li>
-        <% end %>
-        <% if @favorites.blank? -%>
-          <p class="hint"><%= no_watchings_notice_for(@user) -%></p>
-        <% end -%>
-      </ul>
-    <% end %>
 
-    <% pull_box("Your projects", :class => "your-projects pull-box-390") do -%>
-      <ul class="with_icons">
-      <% @projects.each do |project| -%>
-        <li class="project">
-          <%= link_to h(project.title), project -%>
-        </li>
-      <% end -%>
-
-      </ul>
-      <% if is_current_user?(@user) -%>
-	<div class="pull-box-links">	
-      <%= link_button_link_to(t("views.projects.create_new"), new_project_path, {
-            :id => "new-project-button"}) %>
-	</div>
-      <% end -%>
-    <% end -%>
 
     <% pull_box("Your repositories", :class => "your-repositories pull-box-390") do -%>
     <% if @repositories.blank? -%>

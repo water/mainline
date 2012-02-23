@@ -128,13 +128,13 @@ class ApplicationController < ActionController::Base
     def find_repository_owner
       if params[:user_id]
         @owner = User.find_by_login!(params[:user_id])
-        @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
+      #  @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
       elsif params[:group_id]
         @owner = Group.find_by_name!(params[:group_id])
-        @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
-      elsif params[:project_id]
-        @owner = Project.find_by_slug!(params[:project_id])
-        @project = @owner
+     #   @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
+    #  elsif params[:project_id]
+     ##   @owner = Project.find_by_slug!(params[:project_id])
+     #   @project = @owner
       else
         raise ActiveRecord::RecordNotFound
       end
@@ -145,16 +145,16 @@ class ApplicationController < ActionController::Base
       @owner.repositories.find_by_name!(params[:id])
     end
     
-    def find_project
-      @project = Project.find_by_slug!(params[:project_id])
-    end
+ #   def find_project
+ #     @project = Project.find_by_slug!(params[:project_id])
+#    end
     
-    def find_project_and_repository
-      @project = Project.find_by_slug!(params[:project_id])
+#    def find_project_and_repository
+#      @project = Project.find_by_slug!(params[:project_id])
       # We want to look in all repositories that's somehow within this project
       # realm, not just @project.repositories
-      @repository = Repository.find_by_name_and_project_id!(params[:repository_id], @project.id)
-    end
+#      @repository = Repository.find_by_name_and_project_id!(params[:repository_id], @project.id)
+#    end
     
     def check_repository_for_commits
       unless @repository.has_commits?
@@ -231,13 +231,13 @@ class ApplicationController < ActionController::Base
     
     def find_current_site
       @current_site ||= begin
-        if @project
-          @project.site
-        else
+    #    if @project
+    #      @project.site
+    #    else
           if !subdomain_without_common.blank?
             Site.find_by_subdomain(subdomain_without_common)
           end
-        end
+      #  end
       end
     end
     

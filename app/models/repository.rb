@@ -17,7 +17,7 @@ class Repository < ActiveRecord::Base
   WIKI_WRITABLE_PROJECT_MEMBERS = 1
 
   belongs_to  :user
-  belongs_to  :project
+#  belongs_to  :project
   belongs_to  :owner, :polymorphic => true
   has_many    :committerships, :dependent => :destroy
   belongs_to  :parent, :class_name => "Repository"
@@ -36,15 +36,15 @@ class Repository < ActiveRecord::Base
   validates_presence_of :user_id, :name, :owner_id
   validates_format_of :name, :with => /^#{NAME_FORMAT}$/i,
     :message => "is invalid, must match something like /[a-z0-9_\\-]+/"
-  validates_exclusion_of :name,
-    :in => (Gitorious::Reservations.project_names + Gitorious::Reservations.repository_names)
-  validates_uniqueness_of :name, :scope => :project_id, :case_sensitive => false
+##  validates_exclusion_of :name,
+##    :in => (Gitorious::Reservations.project_names + Gitorious::Reservations.repository_names)
+#  validates_uniqueness_of :name, :scope => :project_id, :case_sensitive => false
   validates_uniqueness_of :hashed_path, :case_sensitive => false
 
   before_validation :downcase_name
   before_create :set_repository_hash
   after_create :create_initial_committership
-  after_create :create_add_event_if_project_repo
+#  after_create :create_add_event_if_project_repo
   after_create :post_repo_creation_message
   after_create :add_owner_as_watchers
   after_destroy :post_repo_deletion_message
@@ -85,23 +85,23 @@ class Repository < ActiveRecord::Base
 
   def self.new_by_cloning(other, username=nil)
     suggested_name = username ? "#{username}s-#{other.name}" : nil
-    new(:parent => other, :project => other.project, :name => suggested_name,
+    new(:parent => other, :name => suggested_name,
       :merge_requests_enabled => other.merge_requests_enabled)
   end
 
-  def self.find_by_name_in_project!(name, containing_project = nil)
-    if containing_project
-      find_by_name_and_project_id!(name, containing_project.id)
-    else
-      find_by_name!(name)
-    end
-  end
+#  def self.find_by_name_in_project!(name, containing_project = nil)
+#    if containing_project
+#      find_by_name_and_project_id!(name, containing_project.id)
+#    else
+#      find_by_name!(name)
+#    end
+#  end
 
   def self.find_by_path(path)
     base_path = path.gsub(/^#{Regexp.escape(GitoriousConfig['repository_base_path'])}/, "")
     path_components = base_path.split("/").reject{|p| p.blank? }
     repo_name, owner_name = [path_components.pop, path_components.shift]
-    project_name = path_components.pop
+#    project_name = path_components.pop
     repo_name.sub!(/\.git/, "")
 
     owner = case owner_name[0].chr
@@ -110,19 +110,19 @@ class Repository < ActiveRecord::Base
       when "~"
         User.find_by_login!(owner_name.sub(/^~/, ""))
       else
-        Project.find_by_slug!(owner_name)
+       # Project.find_by_slug!(owner_name)
       end
 
-    if owner.is_a?(Project)
-      owner_conditions = { :project_id => owner.id }
-    else
+#    if owner.is_a?(Project)
+#      owner_conditions = { :project_id => owner.id }
+#    else
       owner_conditions = { :owner_type => owner.class.name, :owner_id => owner.id }
-    end
-    if project_name
-      if project = Project.find_by_slug(project_name)
-        owner_conditions.merge!(:project_id => project.id)
-      end
-    end
+#    end
+ #   if project_name
+  #    if project = Project.find_by_slug(project_name)
+   #     owner_conditions.merge!(:project_id => project.id)
+   #   end
+   # end
     Repository.find(:first, :conditions => {:name => repo_name}.merge(owner_conditions))
   end
 
@@ -146,21 +146,21 @@ class Repository < ActiveRecord::Base
     git_backend.delete!(full_path_from_partial_path(path))
   end
 
-  def self.most_active_clones_in_projects(projects, limit = 5)
-    key = "repository:most_active_clones_in_projects:#{projects.map(&:id).join('-')}:#{limit}"
-    Rails.cache.fetch(key, :expires_in => 2.hours) do
-      clone_ids = projects.map do |project|
-        project.repositories.clones.map{|r| r.id }
-      end.flatten
-      find(:all, :limit => limit,
-        :select => 'distinct repositories.*, count(events.id) as event_count',
-        :order => "event_count desc", :group => "repositories.id",
-        :conditions => ["repositories.id in (?) and events.created_at > ? and kind in (?)",
-                        clone_ids, 7.days.ago, [KIND_USER_REPO, KIND_TEAM_REPO]],
-        #:conditions => { :id => clone_ids },
-        :joins => :events, :include => :project)
-    end
-  end
+#  def self.most_active_clones_in_projects(projects, limit = 5)
+#    key = "repository:most_active_clones_in_projects:#{projects.map(&:id).join('-')}:#{limit}"
+#    Rails.cache.fetch(key, :expires_in => 2.hours) do
+#      clone_ids = projects.map do |project|
+#        project.repositories.clones.map{|r| r.id }
+#      end.flatten
+#      find(:all, :limit => limit,
+#        :select => 'distinct repositories.*, count(events.id) as event_count',
+#        :order => "event_count desc", :group => "repositories.id",
+#        :conditions => ["repositories.id in (?) and events.created_at > ? and kind in (?)",
+#                        clone_ids, 7.days.ago, [KIND_USER_REPO, KIND_TEAM_REPO]],
+#        #:conditions => { :id => clone_ids },
+#        :joins => :events, :include => :project)
+#    end
+#  end
 
   def self.most_active_clones(limit = 10)
     Rails.cache.fetch("repository:most_active_clones:#{limit}", :expires_in => 2.hours) do
@@ -169,7 +169,7 @@ class Repository < ActiveRecord::Base
         :order => "event_count desc", :group => "repositories.id",
         :conditions => ["events.created_at > ? and kind in (?)",
                         7.days.ago, [KIND_USER_REPO, KIND_TEAM_REPO]],
-        :joins => :events, :include => :project)
+        :joins => :events)
     end
   end
 
@@ -187,11 +187,11 @@ class Repository < ActiveRecord::Base
   end
 
   def url_path
-    if project_repo?
-      File.join(project.to_param_with_prefix, name)
-    else
+ #   if project_repo?
+ #     File.join(project.to_param_with_prefix, name)
+ #   else
       File.join(owner.to_param_with_prefix, project.slug, name)
-    end
+ #   end
   end
 
   def real_gitdir
@@ -244,7 +244,7 @@ class Repository < ActiveRecord::Base
       builder = options[:builder]
       builder.owner(owner.to_param, :kind => (owned_by_group? ? "Team" : "User"))
       builder.kind(["mainline", "wiki", "team", "user"][self.kind])
-      builder.project(project.to_param)
+ #     builder.project(project.to_param)
     end
 
     super({
@@ -442,13 +442,13 @@ class Repository < ActiveRecord::Base
     kind == KIND_WIKI
   end
 
-  def project_repo?
-    kind == KIND_PROJECT_REPO
-  end
+ # def project_repo?
+ #   kind == KIND_PROJECT_REPO
+ # end
 
-  def mainline?
-    project_repo?
-  end
+#  def mainline?
+#    project_repo?
+#  end
 
   def team_repo?
     kind == KIND_TEAM_REPO
@@ -506,11 +506,11 @@ class Repository < ActiveRecord::Base
   end
 
   def breadcrumb_parent
-    if mainline?
-      project
-    else
+  #  if mainline?
+  #    project
+  #  else
       owner
-    end
+  #  end
   end
 
   def title
@@ -518,12 +518,13 @@ class Repository < ActiveRecord::Base
   end
 
   def owner_title
-    mainline? ? project.title : owner.title
+#    mainline? ? project.title : owner.title
+      owner.title
   end
 
   # returns the project if it's a KIND_PROJECT_REPO, otherwise the owner
   def project_or_owner
-    project_repo? ? project : owner
+     owner
   end
 
   def full_hashed_path
@@ -577,16 +578,17 @@ class Repository < ActiveRecord::Base
   # Logs events that occured within a log_changes_with_user block
   def log_updates(a_user)
     @updated_fields.each do |field_name|
-      events.build(:action => Action::UPDATE_REPOSITORY, :user => a_user, :project => project, :body => "Changed the repository #{field_name.to_s}")
+      events.build(:action => Action::UPDATE_REPOSITORY, :user => a_user,  :body => "Changed the repository #{field_name.to_s}")
     end
   end
 
   def requires_signoff_on_merge_requests?
-    mainline? && project.merge_requests_need_signoff?
+      false
+#    mainline? && project.merge_requests_need_signoff?
   end
 
   def build_tracking_repository
-    result = Repository.new(:parent => self, :user => user, :owner => owner, :kind => KIND_TRACKING_REPO, :name => "tracking_repository_for_#{id}", :project => project)
+    result = Repository.new(:parent => self, :user => user, :owner => owner, :kind => KIND_TRACKING_REPO, :name => "tracking_repository_for_#{id}")
     return result
   end
 

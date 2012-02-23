@@ -36,17 +36,17 @@ class SiteController < ApplicationController
 
     # Render a Site-specific index template
     def render_site_index
-      @projects = current_site.projects.find(:all, :order => "created_at asc")
-      @teams = Group.all_participating_in_projects(@projects)
-      @top_repository_clones = Repository.most_active_clones_in_projects(@projects)
-      @latest_events = Event.latest_in_projects(25, @projects.map{|p| p.id })
+      #@projects = current_site.projects.find(:all, :order => "created_at asc")
+      #@teams = Group.all_participating_in_projects(@projects)
+      #@top_repository_clones = Repository.most_active_clones_in_projects(@projects)
+      #@latest_events = Event.latest_in_projects(25, @projects.map{|p| p.id })
       render "site/#{current_site.subdomain}/index"
     end
 
     def render_public_timeline
-      @projects = Project.find(:all, :limit => 10, :order => "id desc")
+      #@projects = Project.find(:all, :limit => 10, :order => "id desc")
       @top_repository_clones = Repository.most_active_clones
-      @active_projects = Project.most_active_recently(15)
+      #@active_projects = Project.most_active_recently(15)
       @active_users = User.most_active
       @active_groups = Group.most_active
       @latest_events = Event.latest(25)
@@ -56,8 +56,8 @@ class SiteController < ApplicationController
     def render_dashboard
       @page_title = "Gitorious: your dashboard"
       @user = current_user
-      @projects = @user.projects.find(:all,
-        :include => [:tags, { :repositories => :project }])
+     # @projects = @user.projects.find(:all,
+    #    :include => [:tags, { :repositories => :project }])
       @repositories = current_user.commit_repositories if current_user != @user
       @events = @user.paginated_events_in_watchlist(:page => params[:page])
       @messages = @user.messages_in_inbox(3) if @user == current_user
