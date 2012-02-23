@@ -99,7 +99,7 @@
             },
             // Callback for the start of each file upload request:
             send: function (e, data) {
-                window.App.pendingUploads++;
+                window.App.pendingUploads += data.files.length;
                 $("#counter").text(window.App.pendingUploads);
                 var that = $(this).data('fileupload');
                 if (!data.isValidated) {
