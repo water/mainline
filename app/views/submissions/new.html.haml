@@ -58,9 +58,10 @@
   %table.table.table-striped
     %tbody.files{"data-target" => "#modal-gallery", "data-toggle" => "modal-gallery"}
 %br/
-
-.container
-  = render :template => "trees/show"
+.well
+  %h1#counter Counter
+/ .container
+/   = render :template => "trees/show"
 
 / The template to display files available for upload
 %script#template-upload{:type => "text/x-tmpl"}
