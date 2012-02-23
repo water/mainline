@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   #include ExceptionNotifiable
   
   before_filter :public_and_logged_in
-  before_filter :require_current_eula
   
   after_filter :mark_flash_status
 
@@ -113,17 +112,6 @@ class ApplicationController < ActionController::Base
       redirect_to root_path if logged_in?
     end
     
-    def require_current_eula
-      if logged_in?
-        unless current_user.terms_accepted?
-          store_location
-          flash[:error] = I18n.t "views.license.terms_not_accepted"
-          redirect_to user_license_path(current_user)
-          return
-        end
-      end
-      return true
-    end
     
     def find_repository_owner
       if params[:user_id]

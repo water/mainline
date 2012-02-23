@@ -107,7 +107,6 @@ Gitorious::Application.routes.draw do
       resources :aliases do
         get :confirm, :on => :member
       end
-      resource :license
 
       repositories
 

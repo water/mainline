@@ -50,36 +50,8 @@ class User < ActiveRecord::Base
   after_save :expire_avatar_email_caches_if_avatar_was_changed
   after_destroy :expire_avatar_email_caches
 
-  state_machine :aasm_state, :initial => :pending do
-    state :terms_accepted
 
-    event :accept_terms do
-      transition :pending => :terms_accepted
-    end
 
-  end
-
-  has_many :received_messages, :class_name => "Message",
-      :foreign_key => 'recipient_id', :order => "created_at DESC" do
-    def unread
-      find(:all, :conditions => {:aasm_state => "unread"})
-    end
-
-    def top_level
-      find(:all, :conditions => {:in_reply_to_id => nil})
-    end
-
-    def unread_count
-      count(:all, :conditions => {
-        :aasm_state => "unread",
-        :archived_by_recipient => false,
-      })
-    end
-  end
-
-  def all_messages
-    Message.find(:all, :conditions => ["sender_id = ? OR recipient_id = ?", self, self])
-  end
 
   Paperclip.interpolates(:login) do |attachment, style|
     attachment.instance.login.downcase
@@ -218,7 +190,7 @@ class User < ActiveRecord::Base
 
   # Can this user be shown in public
   def public?
-    activated?# && !pending?
+    activated?
   end
 
   # Encrypts the password with the user salt
