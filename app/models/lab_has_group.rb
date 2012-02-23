@@ -1,4 +1,4 @@
 class LabHasGroup < ActiveRecord::Base
-  belongs_to :Lab
-  belongs_to :LabGroup
+  belongs_to :lab
+  belongs_to :lab_group
 end

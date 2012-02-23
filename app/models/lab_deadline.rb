@@ -1,3 +1,3 @@
 class LabDeadline < ActiveRecord::Base
-  belongs_to :Lab
+  belongs_to :lab
 end

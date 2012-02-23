@@ -1,4 +1,4 @@
 class Lab < ActiveRecord::Base
-  belongs_to :GivenCourse
-  belongs_to :LabDescription
+  belongs_to :given_course
+  belongs_to :lab_description
 end
