@@ -5,6 +5,7 @@ public/cache/*
 public/images/graphs/*
 config/ultrasphinx/*.conf
 db/*.sqlite3
+data/*
 .autotest
 db/sphinx/*
 doc/api
