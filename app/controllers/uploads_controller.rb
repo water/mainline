@@ -8,7 +8,7 @@ class UploadsController < ApplicationController
       local_path: u.path # TODO: should not be shown to user
     }
 
-    response = {name: file.original_filename, id: u.hash, debug: debug}
+    response = [{name: file.original_filename, id: u.hash, debug: debug}]
     respond_to do |format|
       format.html { render :json => response} # For testing purposes
       format.json { render :json => response}
