@@ -40,11 +40,6 @@
     <ul id="breadcrumbs">
       <%= yield :breadcrumbs -%>
     </ul>
-    <% if GitoriousConfig['public_mode'] || logged_in? -%>
-      <div id="searchbox">
-        <%= render :partial => "/searches/search_box", :locals => {:hide_tips => true} -%>
-      </div>
-    <% end -%>
   </div>
 
   <div id="container" class="<%= @content_for_submenu.blank? ? "" : "in-context-mode" -%>">
