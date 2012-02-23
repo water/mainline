@@ -1,6 +1,10 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
+  post "upload" => "uploads#upload"
+  get "new_upload" => "uploads#new"
+  post "commit_requests/new" => "commit_requests#new", :as => :commit_request
+
   resources :submissions, :only => [:index, :show, :create, :new]
 
   extend Gitorious::RepositoryRoutes

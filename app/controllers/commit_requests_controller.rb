@@ -5,7 +5,7 @@ class CommitRequestsController < ApplicationController
 
   def create
     @commit_request = CommitRequest.new(params)
-    if @CommitRequest.save
+    if @commitRequest.save
       flash[:notice] = "Yay"
     else
       flash[:notice] = "Noooo"

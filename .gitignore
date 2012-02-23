@@ -28,6 +28,10 @@ data.tsv
 log/*
 .sass-cache/
 
+# Water-specific rails
+######################
+tmp/uploads
+
 # gitorious
 ###################
 config/gitorious.yml
