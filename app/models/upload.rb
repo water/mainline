@@ -5,12 +5,8 @@ class Upload
   CHUNK_SIZE = 64 * 1024 # in bytes
   UPLOADS_FOLDER = File.join(Rails.root, "tmp/uploads")
 
-  # Try to store a file, if validations pass a hash
-  # containing an :id will be returned
-  def self.store(file)
-    new(file).response
-  end
-
+  ### Functions to be used by others
+  #######################################
   # Returns a path if found, nil otherwise
   def self.get(hash)
     return nil unless @@dictionary.member? hash
@@ -22,15 +18,12 @@ class Upload
     FileUtils.rm hash_to_path(hash) if @@dictionary.delete hash
   end
 
-  def response
-    extra = {
-      local_path: path # TODO: should not be shown to user
-    }
-    {name: @file.original_filename, id: @hash, extra: extra}
-  end
+  ### Functions to be used by controller and model internals
+  #######################################
+  attr_reader :hash
 
-  private
-
+  # The object created is of little importance, the hash will be
+  # useful even after the objects lifetime
   def initialize(file)
     @file = file
     @hash = Upload.hash_content(file.tempfile)
@@ -52,8 +45,8 @@ class Upload
     tempfile.close(false) # close file without deleting it
     src = tempfile.path
     dest = path
-   FileUtils.mv(src, dest)
-   tempfile.unlink
+    FileUtils.mv(src, dest)
+    tempfile.unlink
   end
 
   # Hash an open tempfile

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120220153922) do
+ActiveRecord::Schema.define(:version => 20120223175025) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -508,6 +508,19 @@ ActiveRecord::Schema.define(:version => 20120220153922) do
 
   add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
+  create_table "tasks", :force => true do |t|
+    t.string   "target_class"
+    t.string   "command"
+    t.text     "arguments"
+    t.boolean  "performed",    :default => false
+    t.datetime "performed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "target_id"
+  end
+
+  add_index "tasks", ["performed"], :name => "index_tasks_on_performed"
+
   create_table "users", :force => true do |t|
     t.string   "login"
     t.string   "email"
@@ -525,7 +538,6 @@ ActiveRecord::Schema.define(:version => 20120220153922) do
     t.text     "identity_url"
     t.boolean  "is_admin",                                     :default => false
     t.datetime "suspended_at"
-    t.string   "aasm_state"
     t.boolean  "public_email",                                 :default => true
     t.boolean  "wants_email_notifications",                    :default => true
     t.string   "password_key"

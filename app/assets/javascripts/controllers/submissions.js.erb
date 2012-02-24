@@ -2,8 +2,10 @@
 
 window.App.pendingUploads     = 0;
 window.App.successfulUploads  = [];
+
 window.App.functions.sendAddCommitRequest = function (files, path) 
   {
+    $("#main").append("<div id=\"status\" class=\"well\"><h1>Sending commit request... </h1></div>");
     action = "<%= url.commit_request_path %>";
     request = {"method":"add"};
     request.files = [];
@@ -16,6 +18,6 @@ window.App.functions.sendAddCommitRequest = function (files, path)
       {
         type: "POST",
         data: request,
-        success: function() {alert("Success!");}
+        success: function() {$("#status h1").text("Done!"); }
     });
   };

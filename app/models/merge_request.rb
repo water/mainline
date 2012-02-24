@@ -34,7 +34,6 @@ class MergeRequest < ActiveRecord::Base
   validates_presence_of :ending_commit, :on => :create
   validates_uniqueness_of :sequence_number, :scope => :target_repository_id
 
-  STATUS_PENDING_ACCEPTANCE_OF_TERMS = 0
   STATUS_OPEN = 1
   STATUS_CLOSED = 5 # further states must start at 5+n (for backwards compat)
 #   STATUS_MERGED = 2
@@ -42,7 +41,6 @@ class MergeRequest < ActiveRecord::Base
 #   STATUS_VERIFYING = 4
 
   state_machine :status, :initial => :pending do
-    state :pending, :value => ::MergeRequest::STATUS_PENDING_ACCEPTANCE_OF_TERMS
     state :open, :value => ::MergeRequest::STATUS_OPEN
     state :closed, :value => ::MergeRequest::STATUS_CLOSED
 
@@ -59,7 +57,6 @@ class MergeRequest < ActiveRecord::Base
     end
   end
 
-  scope :public, :conditions => ["status != ?", STATUS_PENDING_ACCEPTANCE_OF_TERMS]
   scope :open, :conditions => ['status = ?', STATUS_OPEN]
   scope :closed, :conditions => ["status = ?", STATUS_CLOSED]
   scope :by_status, lambda {|state|
@@ -112,9 +109,6 @@ class MergeRequest < ActiveRecord::Base
     statuses.invert[status_code.to_i].to_s.downcase
   end
 
-  def pending_acceptance_of_terms?
-    pending?
-  end
 
   def open_or_in_verification?
     open? || verifying?
@@ -324,9 +318,6 @@ class MergeRequest < ActiveRecord::Base
     to_param
   end
 
-  def acceptance_of_terms_required?
-    target_repository.requires_signoff_on_merge_requests?
-  end
 
   # Publishes a notification, causing a new tracking branch (and
   # version) to be created in the background
@@ -355,9 +346,6 @@ class MergeRequest < ActiveRecord::Base
     reviewers.each { |reviewer|
       add_to_reviewers_favorites(reviewer)
     }
-    if event = creation_event
-      FeedItem.bulk_create_from_watcher_list_and_event!(reviewers.map(&:id), event)
-    end
   end
 
   def reviewers
@@ -387,20 +375,6 @@ class MergeRequest < ActiveRecord::Base
     self.oauth_secret = token.secret
   end
 
-  def terms_accepted
-   # validate_through_oauth do
-   #   confirmed_by_user
-   #   callback_response = access_token.post(target_repository.project.oauth_path_prefix,
-   #     oauth_signoff_parameters)
-   # 
-   #   if Net::HTTPAccepted === callback_response
-   #     self.contribution_notice = callback_response.body
-   #   end
-   # 
-   #   contribution_agreement_version = callback_response['X-Contribution-Agreement-Version']
-   #   update_attributes(:contribution_agreement_version => contribution_agreement_version)
-   # end
-  end
 
   # If the contribution agreement site wants to remind the user of the
   # current contribution license, they respond with a
