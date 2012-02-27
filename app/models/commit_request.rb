@@ -89,8 +89,8 @@ class CommitRequest
   end
 private 
   def user_can_commit?
-        sids = GroupHasUser.find_all_by_student_id(@user)
-        sids.any?{ | x | LabHasGroup.find(x.lab_group_id).repo_id == @repository }
+    sids = GroupHasUser.find_all_by_student_id(@user)
+    sids.any?{ | x | LabHasGroup.find(x.lab_group_id).repo_id == @repository }
   end
 
 end
