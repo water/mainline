@@ -13,6 +13,7 @@ gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
+gem "gash", git: "git://github.com/water/gash.git"
 
 # Authentication
 gem "rack-openid"
