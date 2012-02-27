@@ -36,6 +36,13 @@ GIT
     citier (0.1.15)
       rails_sql_views
 
+GIT
+  remote: git://github.com/water/gash.git
+  revision: 5b580afc95c32721d35a7d659abce1e3845635a9
+  specs:
+    gash (0.1.4)
+      open4 (>= 0.9.6)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -154,6 +161,7 @@ GEM
     oauth2 (0.5.2)
       faraday (~> 0.7)
       multi_json (~> 1.0)
+    open4 (1.3.0)
     polyglot (0.3.3)
     rack (1.2.5)
     rack-mount (0.6.14)
@@ -258,6 +266,7 @@ DEPENDENCIES
   exception_notification!
   factory_girl_rails
   foreman
+  gash!
   geoip
   grit
   hirb
