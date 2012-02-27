@@ -1,8 +1,11 @@
 class UploadsController < ApplicationController
   def upload
-    file = params[:files].first
+    files = params[:files]
     # response needs to be array to prepare for multiple simultaneous uploads
-    response = [Upload.store(file)]
+    response = []
+    files.each do |file|
+      response << Upload.store(file)
+    end
     respond_to do |format|
       format.html { render :json => response} # For testing purposes
       format.json { render :json => response}
