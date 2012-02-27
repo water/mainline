@@ -4,7 +4,12 @@ Gitorious::Application.routes.draw do
   post "upload" => "uploads#upload"
   get "new_upload" => "uploads#new"
   post "commit_requests/create" => "commit_requests#create", :as => :commit_request
-
+  
+  resources :courses do
+    resources :labs do
+      resources :submissions
+    end
+  end
   resources :submissions, :only => [:index, :show, :create, :new]
 
   extend Gitorious::RepositoryRoutes
