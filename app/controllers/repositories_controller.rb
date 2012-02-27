@@ -111,7 +111,7 @@ class RepositoriesController < ApplicationController
 
     respond_to do |format|
       if @repository.save
-        @owner.create_event(Action::CLONE_REPOSITORY, @repository, current_user, @repository_to_clone.id)
+        #@owner.create_event(Action::CLONE_REPOSITORY, @repository, current_user, @repository_to_clone.id)
 
         location = repo_owner_path(@repository, :project_repository_path, @owner, @repository)
         format.html { redirect_to location }
@@ -216,8 +216,8 @@ class RepositoriesController < ApplicationController
       repo_name = @repository.name
       flash[:notice] = I18n.t "repositories_controller.destroy_notice"
       @repository.destroy
-      @repository.project.create_event(Action::DELETE_REPOSITORY, @owner,
-                                        current_user, repo_name)
+   #   @repository.project.create_event(Action::DELETE_REPOSITORY, @owner,
+   #                                     current_user, repo_name)
     else
       flash[:error] = I18n.t "repositories_controller.destroy_error"
     end

@@ -14,8 +14,6 @@
 <%= render "getting_started" -%>
   <% end -%>
 </div>
-  <h2><%= t("views.repos.activities") %> <%= feed_icon @atom_auto_discovery_url %></h2>
-  <%= render :partial => "events/events", :locals => { :events => @events, :container_css_class => "w-750" } -%>
 <% end -%>
 
 <% content_for :sidebar do -%>

@@ -87,13 +87,8 @@ class SessionsController < ApplicationController
   end
   
   def check_state_and_redirect(redirection_url)
-    if current_user.pending?
-      flash[:notice] = "You need to accept the terms"
-      redirect_to user_license_path(current_user) and return
-    else
       flash[:notice] = "Logged in successfully"
       redirect_back_or_default(redirection_url)
-    end
   end
 
 end
