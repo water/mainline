@@ -2,6 +2,8 @@ class GivenCourse < ActiveRecord::Base
   belongs_to :course
   belongs_to :examiner, class_name: "User"
   belongs_to :when
+
+  has_and_belongs_to_many :examiners
   
   has_many :registered_courses
   has_many :students, through: :registered_courses, class_name: "User"
