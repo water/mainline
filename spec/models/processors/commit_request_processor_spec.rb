@@ -29,7 +29,8 @@ describe CommitRequestProcessor do
   end
 
   after(:each) do
-    `rm -rf #{@destintation}`
+    puts @destintation
+    #{}`rm -rf #{@destintation}`
   end
 
   it "should add file to repo" do

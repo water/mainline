@@ -52,9 +52,12 @@ class CommitRequestProcessor < ApplicationProcessor
   def on_message(message)
     @options = JSON.parse(message)
     send(@options.delete("command"), @options)
+    git.commit(options["commit_message"])
   end
 
-
+  #
+  # Add the given files to {repository}
+  #
   # @options = {
   #  user: 1,
   #  repository: 123,
@@ -64,10 +67,11 @@ class CommitRequestProcessor < ApplicationProcessor
   #    raw: !Binary,
   #    to: "path/to/dir"
   #  }]
-  # }  
+  # }
+  #
   def add(options)
-    options["files"].each do |file|
-      puts "file=#{file}, repository.full_repository_path=#{repository.full_repository_path}"
+    options["files"].each do |source|
+      git[source["to"]] = source["raw"]
     end
   end
 
@@ -78,5 +82,9 @@ class CommitRequestProcessor < ApplicationProcessor
 
   def user
     User.find(@options["user"])
+  end
+
+  def git
+    @_git ||= Gash.new(repository.full_repository_path, @options["branch"])
   end
 end
