@@ -50,6 +50,13 @@ class CommitRequestProcessor < ApplicationProcessor
   # }
   #
   def on_message(message)
-    puts "====> #{message}"
+    perform(JSON.parse(message))
+  end
+
+  #
+  # @options Hash An option hash, as above
+  #
+  def perform(options)
+    
   end
 end
