@@ -27,9 +27,7 @@ public/system/group_avatars
 data.sql
 data.tsv
 log/*
-<<<<<<< HEAD
 /data
-=======
 # Water-specific rails
 ######################
 tmp/uploads
@@ -38,7 +36,6 @@ tmp/uploads
 ###################
 config/gitorious.yml
 
->>>>>>> feature/submission
 # backup files
 ###################
 *.swp
