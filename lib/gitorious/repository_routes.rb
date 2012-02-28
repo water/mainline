@@ -56,7 +56,7 @@ module Gitorious
 
           match "trees" => "trees#index", :as => :trees
           match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
-          match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
+          match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_format => "tar.gz"}
           match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
         end
 
