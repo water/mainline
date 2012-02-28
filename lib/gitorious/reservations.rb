@@ -21,18 +21,18 @@ module Gitorious
         @controller_names
       end
 
-      def projects_member_actions
-        ProjectsController.action_methods.to_a
-      end
+##      def projects_member_actions
+##        ProjectsController.action_methods.to_a
+##      end
 
       def project_names
         @project_names ||= reserved_root_names + controller_names
       end
 
-      def repository_names
-        actions = RepositoriesController.action_methods.to_a
-        @repository_names ||= projects_member_actions + controller_names + actions
-      end
+ #     def repository_names
+ #       actions = RepositoriesController.action_methods.to_a
+ #       @repository_names ||= projects_member_actions + controller_names + actions
+ #     end
     end
   end
 end

@@ -31,6 +31,7 @@ gem "will_paginate"
 gem "builder"
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem "rails_autolink"
+gem "spine-rails"
 
 group :assets do
   gem 'sass-rails', " ~> 3.1.0"

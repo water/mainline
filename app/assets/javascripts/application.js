@@ -15,6 +15,7 @@
 //= require diff_browser
 //= require messages
 //= require_self
+//= require app
 // require live_search
 // require repository_search
 

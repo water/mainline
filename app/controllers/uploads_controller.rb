@@ -4,7 +4,11 @@ class UploadsController < ApplicationController
     # response needs to be array to prepare for multiple simultaneous uploads
     response = []
     files.each do |file|
-      response << Upload.store(file)
+      u = Upload.new(file)
+      debug = {
+        local_path: u.path # TODO: should not be shown to user
+      }
+      response << {name: file.original_filename, id: u.hash, debug: debug}
     end
     respond_to do |format|
       format.html { render :json => response} # For testing purposes
