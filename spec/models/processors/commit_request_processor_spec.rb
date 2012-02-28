@@ -1,7 +1,7 @@
 describe CommitRequestProcessor do
   let(:processor) { CommitRequestProcessor.new }
-  let(:user) { Factory.build(:user) }
-  let(:repository) { Factory.build(:repository) }
+  let(:user) { Factory.create(:user) }
+  let(:repository) { Factory.create(:repository, user: user, owner: user) }
 
   before(:each) do
     @destintation = Dir.mktmpdir
@@ -20,9 +20,11 @@ describe CommitRequestProcessor do
     }
 
     Repository.should_receive(:find).
+      any_number_of_times.
       with(repository.id).
       and_return(repository)
     repository.should_receive(:full_repository_path).
+      any_number_of_times.
       and_return(@destintation)
   end
 

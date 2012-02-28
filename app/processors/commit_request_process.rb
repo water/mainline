@@ -50,8 +50,8 @@ class CommitRequestProcessor < ApplicationProcessor
   # }
   #
   def on_message(message)
-    options = JSON.parse(message)
-    send(message.delete("command"), message)
+    @options = JSON.parse(message)
+    send(@options.delete("command"), @options)
   end
 
 
@@ -66,6 +66,17 @@ class CommitRequestProcessor < ApplicationProcessor
   #  }]
   # }  
   def add(options)
-    puts options.inspect
+    options["files"].each do |file|
+      puts "file=#{file}, repository.full_repository_path=#{repository.full_repository_path}"
+    end
+  end
+
+  private
+  def repository
+    Repository.find(@options["repository"])
+  end
+
+  def user
+    User.find(@options["user"])
   end
 end
