@@ -120,9 +120,6 @@ GEM
     gemcutter (0.7.1)
     geoip (1.1.2)
     git (1.2.5)
-    grit (2.4.1)
-      diff-lcs (~> 1.1)
-      mime-types (~> 1.15)
     hirb (0.6.0)
     hoe (2.13.0)
       rake (~> 0.8)
@@ -265,7 +262,6 @@ DEPENDENCIES
   foreman
   gash!
   geoip
-  grit
   hirb
   hoe
   launchy

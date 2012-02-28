@@ -4,10 +4,8 @@ describe CommitRequestProcessor do
   let(:repository) { Factory.build(:repository) }
 
   before(:each) do
-    @source = Dir.mktmpdir
     @destintation = Dir.mktmpdir
     `cd #{@destintation} && git --bare init`
-    `cd #{@source} && echo "content" > file`
     @options = {}
     @options[:add] = {
       command: "add",
@@ -20,15 +18,19 @@ describe CommitRequestProcessor do
         to: "path/file"
       }]
     }
+
+    Repository.should_receive(:find).
+      with(repository.id).
+      and_return(repository)
+    repository.should_receive(:full_repository_path).
+      and_return(@destintation)
   end
 
   after(:each) do
-    `rm -rf #{@source}`
     `rm -rf #{@destintation}`
   end
 
-  it "should not crash" do
-    # repository.full_repository_path
+  it "should add file to repo" do
     processor.on_message(@options[:add].to_json)
   end
 end

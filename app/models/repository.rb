@@ -113,22 +113,22 @@ class Repository < ActiveRecord::Base
        # Project.find_by_slug!(owner_name)
       end
 
-#    if owner.is_a?(Project)
-#      owner_conditions = { :project_id => owner.id }
-#    else
-      owner_conditions = { :owner_type => owner.class.name, :owner_id => owner.id }
-#    end
- #   if project_name
-  #    if project = Project.find_by_slug(project_name)
-   #     owner_conditions.merge!(:project_id => project.id)
-   #   end
-   # end
-    Repository.find(:first, :conditions => {:name => repo_name}.merge(owner_conditions))
+    Repository.where({
+      name: repo_name
+    }.merge({
+      owner_type: owner.class.name, 
+      owner_id: owner.id 
+    })).first
   end
 
+  #
+  # @path String Project name for which a repo whould be created
+  #
   def self.create_git_repository(path)
     full_path = full_path_from_partial_path(path)
     git_backend.create(full_path)
+
+    puts "FULL PATH: #{full_path}"
 
     self.create_hooks(full_path)
   end
@@ -545,10 +545,14 @@ class Repository < ActiveRecord::Base
 
   def set_repository_hash
     self.hashed_path ||= begin
-      raw_hash = Digest::SHA1.hexdigest(owner.to_param +
-                                        self.to_param +
-                                        Time.now.to_f.to_s +
-                                        ActiveSupport::SecureRandom.hex)
+      string = [
+        owner.to_param,
+        self.to_param,
+        Time.now.to_f.to_s,
+        ActiveSupport::SecureRandom.hex
+      ].join
+
+      raw_hash = Digest::SHA1.hexdigest(string)
       sharded_hash = sharded_hashed_path(raw_hash)
       sharded_hash
     end
