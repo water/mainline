@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120205215836) do
+ActiveRecord::Schema.define(:version => 20120223175025) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(:version => 20120205215836) do
     t.integer  "lab_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "repo_id"
   end
 
   create_table "lab_has_registered_assistants", :force => true do |t|
@@ -524,7 +525,6 @@ ActiveRecord::Schema.define(:version => 20120205215836) do
     t.text     "identity_url"
     t.boolean  "is_admin",                                     :default => false
     t.datetime "suspended_at"
-    t.string   "aasm_state"
     t.boolean  "public_email",                                 :default => true
     t.boolean  "wants_email_notifications",                    :default => true
     t.string   "password_key"

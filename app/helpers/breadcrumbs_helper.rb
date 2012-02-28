@@ -31,8 +31,8 @@ module BreadcrumbsHelper
     url = case an_object
     when Repository
       repo_owner_path(an_object, :project_repository_path, an_object.project, an_object)
-    when Project
-      project_path(an_object)
+#    when Project
+#      project_path(an_object)
     when Group
       group_path(an_object)
     when User

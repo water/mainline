@@ -17,4 +17,5 @@ ActiveMessaging::Gateway.define do |s|
   s.destination :merge_request_backend_updates, '/queue/GitoriousMergeRequestBackend'
   s.destination :merge_request_version_deletion, '/queue/GitoriousMergeRequestVersionDeletion'
   s.destination :web_hook_notifications, '/queue/GitoriousPostReceiveWebHook'
+  s.destination :commit, '/queue/CommitRequest'
 end

@@ -10,12 +10,12 @@ class GroupsController < ApplicationController
   end
   
   def show
-    @group = Group.includes(:members, :projects, :repositories, :committerships).find_by_name!(params[:id]) 
+    @group = Group.includes(:members, :repositories, :committerships).find_by_name!(params[:id]) 
     @events = Event.top.
       page(params[:page]).
-      where("events.user_id in (?) and events.project_id in (?)", @group.members.map{|u| u.id }, @group.all_related_project_ids).
+      where("events.user_id in (?) ", @group.members.map{|u| u.id }).
       order("events.created_at desc").
-      includes(:user, :project)
+      includes(:user)
       
     @memberships = @group.memberships.includes(:user, :role).all
   end
@@ -73,10 +73,10 @@ class GroupsController < ApplicationController
   end
   
   def auto_complete_for_project_slug
-    @projects = Project.
-      where("LOWER(slug) LIKE ?", "%#{params[:project][:slug].downcase}%").
-      limit(10)
-    render :layout => false
+#    @projects = Project.
+ #     where("LOWER(slug) LIKE ?", "%#{params[:project][:slug].downcase}%").
+  #    limit(10)
+ #   render :layout => false
   end
 
   protected

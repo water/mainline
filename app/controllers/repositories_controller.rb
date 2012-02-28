@@ -110,7 +110,7 @@ class RepositoriesController < ApplicationController
 
     respond_to do |format|
       if @repository.save
-        @owner.create_event(Action::CLONE_REPOSITORY, @repository, current_user, @repository_to_clone.id)
+        #@owner.create_event(Action::CLONE_REPOSITORY, @repository, current_user, @repository_to_clone.id)
 
         location = repo_owner_path(@repository, :project_repository_path, @owner, @repository)
         format.html { redirect_to location }
@@ -172,8 +172,6 @@ class RepositoriesController < ApplicationController
     end
     super
   end
-
-
 
   private
     def require_owner_adminship
