@@ -10,7 +10,7 @@ Gitorious::Application.routes.draw do
       resources :submissions
     end
   end
-  resources :submissions, :only => [:index, :show, :create, :new]
+  resources :submissions, only: [:index, :show, :create, :new]
 
   extend Gitorious::RepositoryRoutes
   
