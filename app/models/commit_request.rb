@@ -2,43 +2,17 @@ class CommitRequest
 	include ActiveModel::Validations
 	include ActiveModel::Conversion
 	extend ActiveModel::Naming
+  include ActiveMessaging::MessageSender
 
-  attr_accessor :user, :command, :repository, :branch, :commit_message, :files, :paths
+  attr_accessor :user, :command, :repository, :branch, :files, :paths
+  attr_writer :commit_message
+
   validates_presence_of :user,:command, :repository, :branch, :commit_message, :files
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
   validate :existence_of_user, :existence_of_repository, :commit_access
 
-  def initialize(options = {})
-    @options = options
-    options.each do |name, value|
-      send("#{name}=",value)
-    end
-    @commit_message = generate_commit_message
-  end
-
-  #
-  # @return String Commit message provided by frontend
-  #
-  def generate_commit_message
-    "WebCommit: #{@command}"
-  end
-
-  #
-  # Ads self to beanstalkd
-  # @return Boolean True if all validations passes
-  #
-  def save
-    return false unless valid?
-    postpone.persist!
-  end
-
-  #
-  # @return Boolean False by default
-  #
-  def persisted?
-    false
-  end
+  publishes_to :commit
 
   #
   # Performs the the action given by @options
@@ -86,8 +60,34 @@ class CommitRequest
   #   ]
   # }
   #
-  def persist!
-    
+  def initialize(options = {})
+    @options = options
+    options.each do |name, value|
+      send("#{name}=",value)
+    end
+  end
+
+  #
+  # @return String Commit message provided by frontend
+  #
+  def commit_message
+    @commit_message || "WebCommit: #{@command}"
+  end
+
+  #
+  # Ads @options to beanstalkd
+  # @return Boolean True if all validations passes
+  #
+  def save
+    return false unless valid?
+    publish :commit, @options.to_json
+  end
+
+  #
+  # @return Boolean False by default
+  #
+  def persisted?
+    false
   end
 private 
   def existence_of_user
@@ -114,6 +114,4 @@ private
     sids = GroupHasUser.find_all_by_student_id(@user)
     sids.any?{ | x | LabHasGroup.find(x.lab_group_id).repo_id == @repository }
   end
-
 end
-
