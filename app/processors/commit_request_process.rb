@@ -21,18 +21,6 @@ class CommitRequestProcessor < ApplicationProcessor
   #  }]
   # }
   #
-  # @add {
-  #  command: "add",
-  #  user: 1,
-  #  repository: 123,
-  #  branch: "master",
-  #  commit_message: "A commit message",
-  #  files: [{
-  #    raw: !Binary,
-  #    to: "path/to/dir"
-  #  }]
-  # }
-  #
   # @remove {
   #   user: 1,
   #   command: "remove",
@@ -52,7 +40,7 @@ class CommitRequestProcessor < ApplicationProcessor
   def on_message(message)
     @options = JSON.parse(message)
     send(@options.delete("command"), @options)
-    git.commit(options["commit_message"])
+    git.commit(@options["commit_message"])
   end
 
   #
@@ -75,16 +63,46 @@ class CommitRequestProcessor < ApplicationProcessor
     end
   end
 
+  # @move = {
+  #  user: 1,
+  #  repository: 123,
+  #  branch: "master",
+  #  commit_message: "A commit message",
+  #  files: [{
+  #    from: "path/to/file.txt",
+  #    to: "path/to/new_file.txt"
+  #  }]
+  # }
+  def move(options)
+    options["files"].each do |source|      
+      puts source["to"]
+      puts source["from"]
+      puts git[source["to"]]
+      puts git[source["from"]].class
+      puts git[source["from"]].content
+      puts "--------"
+      git[source["to"]] = git[source["from"]]#.content
+      split = source["from"].split("/")
+      if split.one?
+        git.delete(split.first)
+      else
+        file = split.last
+        dir = split[0..-2]
+        git[dir.join("/")].delete(file)
+      end
+    end
+  end
+
   private
-  def repository
-    Repository.find(@options["repository"])
-  end
+    def repository
+      Repository.find(@options["repository"])
+    end
 
-  def user
-    User.find(@options["user"])
-  end
+    def user
+      User.find(@options["user"])
+    end
 
-  def git
-    @_git ||= Gash.new(repository.full_repository_path, @options["branch"])
-  end
+    def git
+      @_git ||= Gash.new(repository.full_repository_path, @options["branch"])
+    end
 end
