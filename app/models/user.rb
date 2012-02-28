@@ -6,7 +6,6 @@ class User < ActiveRecord::Base
   include UrlLinting
   acts_as_citier(ignore_view_prefix: true)
   has_many :registered_courses, through: :students
-  has_many :projects
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
   has_many :repositories, :as => :owner, :conditions => ["kind != ?", Repository::KIND_WIKI],
@@ -188,16 +187,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  # A Hash of repository => count of mergerequests active in the
-  # repositories that the user is a reviewer in
-  def review_repositories_with_open_merge_request_count
-    mr_repository_ids = self.committerships.reviewers.select("repository_id").map(&:repository_id)
-    Repository.select("repositories.*, count(merge_requests.id) as open_merge_request_count").
-      where("repositories.id in (?) and merge_requests.status = ?", mr_repository_ids, MergeRequest::STATUS_OPEN).
-      group("repositories.id").
-      joins(:merge_requests).
-      limit(5)
-  end
 
   # Activates the user in the database.
   def activate

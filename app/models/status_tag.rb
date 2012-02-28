@@ -11,10 +11,6 @@ class StatusTag
     name
   end
 
-  def status
-    project.merge_request_statuses.find(:first,
-      :conditions => ["LOWER(name) = ?", name.downcase])
-  end
 
   def description
     status ? status.description : nil
