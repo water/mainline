@@ -1,9 +1,7 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-
   post "upload" => "uploads#upload"
-  get "new_upload" => "uploads#new"
   post "commit_requests/create" => "commit_requests#create", :as => :commit_request
   
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
@@ -37,9 +35,7 @@ Gitorious::Application.routes.draw do
     
   scope "/+:group_id" do
     resources :memberships
-  end
-  
-
+  end 
 
   resources :messages do
     member do
