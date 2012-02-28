@@ -50,13 +50,22 @@ class CommitRequestProcessor < ApplicationProcessor
   # }
   #
   def on_message(message)
-    perform(JSON.parse(message))
+    options = JSON.parse(message)
+    send(message.delete("command"), message)
   end
 
-  #
-  # @options Hash An option hash, as above
-  #
-  def perform(options)
-    
+
+  # @options = {
+  #  user: 1,
+  #  repository: 123,
+  #  branch: "master",
+  #  commit_message: "A commit message",
+  #  files: [{
+  #    raw: !Binary,
+  #    to: "path/to/dir"
+  #  }]
+  # }  
+  def add(options)
+    puts options.inspect
   end
 end
