@@ -24,36 +24,11 @@ class Comment < ActiveRecord::Base
     {:conditions => { :sha1 => shas.flatten }, :include => :user}
   }
 
-  NOTIFICATION_TARGETS = [ MergeRequest, MergeRequestVersion ]
 
-  def deliver_notification_to(another_user)
-    message_body = "#{user.title} commented:\n\n#{body}"
-    if [MergeRequest, MergeRequestVersion].include?(target.class)
-      if state_change
-        message_body << "\n\nThe status of your merge request"
-        message_body << " is now #{state_changed_to}"
-      end
-      subject_class_name = "merge request"
-    else
-      subject_class_name = target.class.human_name.downcase
-    end
-    message = Message.new({
-      :sender => self.user,
-      :recipient => another_user,
-      :subject => "#{user.title} commented on your #{subject_class_name}",
-      :body => message_body,
-      :notifiable => self.target,
-    })
-    message.save
-  end
 
   def state=(new_state)
     return if new_state.blank?
     result = []
-    if applies_to_merge_request?
-      return if target.status_tag.to_s == new_state
-      result << (target.status_tag.nil? ? nil : target.status_tag.name)
-    end
     result << new_state
     self.state_change = result
   end
@@ -67,11 +42,7 @@ class Comment < ActiveRecord::Base
   end
 
   def body_required?
-    if applies_to_merge_request?
-      return state_change.blank?
-    else
       return true
-    end
   end
 
   # +lines_str+ is a representation of the first and last line-number
@@ -103,9 +74,6 @@ class Comment < ActiveRecord::Base
     return !first_line_number.blank?
   end
 
-  def applies_to_merge_request?
-    MergeRequest === target
-  end
 
   def editable_by?(a_user)
     creator?(a_user) && recently_created?
@@ -122,25 +90,11 @@ class Comment < ActiveRecord::Base
   protected
     def notify_target_if_supported
       if target && NOTIFICATION_TARGETS.include?(target.class)
-        if self.target === MergeRequestVersion
-          target_user = target.merge_request.user
-        else
           target_user = target.user
-        end
         return if target_user == user
         deliver_notification_to(target_user)
       end
     end
 
-    def update_state_in_target
-      if applies_to_merge_request? and state_change
-        target.with_user(user) do
-          if target.resolvable_by?(user)
-            target.status_tag=(state_changed_to)
-            target.create_status_change_event(body)
-          end
-        end
-      end
-    end
 
 end

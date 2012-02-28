@@ -23,7 +23,6 @@ class Repository < ActiveRecord::Base
   has_many    :clones, :class_name => "Repository", :foreign_key => "parent_id",
     :dependent => :nullify
   has_many    :comments, :as => :target, :dependent => :destroy
-    :order => "status, id desc", :dependent => :destroy
   has_many    :cloners, :dependent => :destroy
   has_many    :events, :as => :target, :dependent => :destroy
   has_many :hooks, :dependent => :destroy
