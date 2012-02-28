@@ -8,30 +8,86 @@ class CommitRequest
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
   validate :existence_of_user, :existence_of_repository, :commit_access
-  
+
   def initialize(options = {})
     @options = options
     options.each do |name, value|
       send("#{name}=",value)
     end
-    @commit_message ||= generate_commit_message
+    @commit_message = generate_commit_message
   end
 
+  #
+  # @return String Commit message provided by frontend
+  #
   def generate_commit_message
-    return "WebCommit: #{@command}"
+    "WebCommit: #{@command}"
   end
 
+  #
+  # Ads self to beanstalkd
+  # @return Boolean True if all validations passes
+  #
   def save
     return false unless valid?
-    enqueue
+    postpone.persist!
   end
 
-  def enqueue
-    raise "not implemented yet, blame linus"
-  end
-
+  #
+  # @return Boolean False by default
+  #
   def persisted?
     false
+  end
+
+  #
+  # Performs the the action given by @options
+  # @move {
+  #  command: "move",
+  #  user: 1,
+  #  repository: 123,
+  #  branch: "master",
+  #  commit_message: "A commit message",
+  #  paths: [{
+  #    from: "old/path",
+  #    to: "new/path"
+  #  }],
+  #  files: [{
+  #    from: "path/to/file.txt",
+  #    to: "path/to/new_file.txt"
+  #  }]
+  # }
+  #
+  # @add {
+  #  command: "add",
+  #  user: 1,
+  #  repository: 123,
+  #  branch: "master",
+  #  commit_message: "A commit message",
+  #  files: [{
+  #    raw: !Binary,
+  #    to: "path/to/dir"
+  #  }]
+  # }
+  #
+  # @remove {
+  #   user: 1,
+  #   command: "remove",
+  #   repository: 123,
+  #   branch: "master",
+  #   commit_message: "A commit message",
+  #   files: [
+  #     "path/to/file1.txt", 
+  #     "path/to/file2.txt"
+  #   ],
+  #   paths: [
+  #     "path/to/dir1",
+  #     "path/to/dir2",
+  #   ]
+  # }
+  #
+  def persist!
+    
   end
 private 
   def existence_of_user
