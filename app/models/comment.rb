@@ -8,15 +8,7 @@ class Comment < ActiveRecord::Base
   after_create :notify_target_if_supported
   after_create :update_state_in_target
   serialize :state_change, Array
-
-  is_indexed :fields => ["body"], :include => [{
-      :association_name => "user",
-      :field => "login",
-      :as => "commented_by"
-    }]
-
   attr_protected :user_id
-
   validates_presence_of :user_id, :target, :project_id
   validates_presence_of :body, :if =>  Proc.new {|mr| mr.body_required?}
 

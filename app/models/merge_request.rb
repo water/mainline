@@ -18,14 +18,6 @@ class MergeRequest < ActiveRecord::Base
   after_create :add_to_creators_favorites
 
   before_validation :set_sequence_number, :on => :create
-
-  is_indexed :fields => ["proposal", {:field => "status_tag", :as => "status"}],
-    :include => [{
-      :association_name => "user",
-      :field => "login",
-      :as => "proposed_by"
-    }], :conditions => "status != 0"
-
   attr_protected :user_id, :status, :merge_requests_need_signoff, :oauth_path_prefix,
     :oauth_signoff_key, :oauth_signoff_secret, :oauth_signoff_site, :sequence_number
 
