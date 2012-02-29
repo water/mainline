@@ -4,7 +4,6 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   include UrlLinting
-  acts_as_citier(ignore_view_prefix: true)
   has_many :registered_courses, through: :students
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships

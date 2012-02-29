@@ -25,7 +25,6 @@ gem "oauth2"
 
 # Database
 gem "mysql2", "0.3.10"
-gem "citier", git: "git://github.com/water/citier.git"
 
 # View
 gem "will_paginate"
@@ -48,7 +47,6 @@ gem 'jquery-rails'
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
-# gem "grit"
 gem "gash", git: "git://github.com/water/gash.git"
 
 group :development do
@@ -59,7 +57,7 @@ group :development do
 end
 
 group :test do
-  gem "spork-testunit"
+  gem "spork-testunit", git: "git://github.com/water/spork-testunit.git"
   gem "term-ansicolor"
   gem "factory_girl_rails"
   gem "minitest"

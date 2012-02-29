@@ -30,18 +30,16 @@ GIT
       mime-types
 
 GIT
-  remote: git://github.com/water/citier.git
-  revision: 820d502a6c857a988dbd201379afbda12a887856
-  specs:
-    citier (0.1.15)
-      rails_sql_views
-
-GIT
   remote: git://github.com/water/gash.git
   revision: 88aac385b7eb28b2832d10f193baa321af08c398
   specs:
     gash (0.1.4)
       open4 (>= 0.9.6)
+
+GIT
+  remote: git://github.com/water/spork-testunit.git
+  revision: e69586f17af4f7497c862bb663fa0d53ffa746a9
+  specs:
 
 GEM
   remote: http://rubygems.org/
@@ -214,8 +212,6 @@ GEM
       railties (~> 3.1)
     rails_autolink (1.0.5)
       rails (~> 3.1)
-    rails_sql_views (0.8.0)
-      activerecord
     railties (3.1.3)
       actionpack (= 3.1.3)
       activesupport (= 3.1.3)
@@ -308,7 +304,6 @@ DEPENDENCIES
   builder
   capybara
   chronic
-  citier!
   coffee-rails (~> 3.1.0)
   colorize
   daemons
@@ -350,7 +345,7 @@ DEPENDENCIES
   shoulda!
   spine-rails
   spork (= 0.9.0)
-  spork-testunit
+  spork-testunit!
   state_machine
   term-ansicolor
   turn

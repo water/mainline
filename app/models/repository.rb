@@ -29,7 +29,7 @@ class Repository < ActiveRecord::Base
 
   NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
   validates_presence_of :user_id, :name, :owner_id
-  validates_format_of :name, :with => /^#{NAME_FORMAT}$/i,
+  validates_format_of :name, :with => /^#{NAME_FORMAT}$/i, 
     :message => "is invalid, must match something like /[a-z0-9_\\-]+/"
   validates_uniqueness_of :hashed_path, :case_sensitive => false
 

@@ -47,6 +47,7 @@ class Mailer < ActionMailer::Base
     setup_email(user)
     @subject += I18n.t "mailer.new_password"
     @body[:url] = reset_password_url(password_key)
+    @user = user
   end
 
   def new_email_alias(email)
@@ -70,6 +71,7 @@ class Mailer < ActionMailer::Base
     @subject += "Activity: #{notification_body[0,35]}..."
     @body[:user] = user
     @body[:notification_body] = notification_body
+    @user        = user
   end
 
   protected
@@ -79,6 +81,7 @@ class Mailer < ActionMailer::Base
       @subject     = "[Gitorious] "
       @sent_on     = Time.now
       @body[:user] = user
+      @user        = user
     end
 
 end
