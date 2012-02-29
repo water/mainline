@@ -25,7 +25,6 @@ gem "oauth2"
 
 # Database
 gem "mysql2", "0.3.10"
-gem "citier", git: "git://github.com/water/citier.git"
 
 # View
 gem "will_paginate"
