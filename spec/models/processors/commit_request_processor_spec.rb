@@ -4,7 +4,7 @@ describe CommitRequestProcessor do
   let(:repository) { Factory.create(:repository, user: user, owner: user) }
 
   def content_for(branch = "master")
-    `cd #{@destintation} && git checkout #{branch} 2&> /dev/null && git show --name-status --format=fuller`
+    `cd #{@destintation} && git checkout #{branch} --quiet; git show --name-status --format=fuller`
   end
 
   before(:each) do
@@ -52,6 +52,8 @@ describe CommitRequestProcessor do
         }]
       }).to_json)
 
+      content_for("stable").should match(%r{A\s+stable})
+
       processor = CommitRequestProcessor.new 
       processor.on_message(@options.merge({
         branch: "master",
@@ -61,8 +63,7 @@ describe CommitRequestProcessor do
         }]
       }).to_json)
 
-      content_for("master").match(%r{A  master})
-      content_for("stable").match(%r{A  stable})
+      content_for("master").should match(%r{A\s+master})
     end
   end
 
@@ -90,8 +91,8 @@ describe CommitRequestProcessor do
     it "should move file in repo" do
       add_file("old", "content")
       processor.on_message(@options.to_json)
-      content_for.match(%r{D  old})
-      content_for.match(%r{A  new})
+      content_for.should match(%r{D\s+old})
+      content_for.should match(%r{A\s+new})
     end
 
     it "can handle folders" do
@@ -103,8 +104,29 @@ describe CommitRequestProcessor do
         }]
       }
       processor.on_message(@options.merge(hash).to_json)
-      content_for.match(%r{D\s+file})
-      content_for.match(%r{A\s+d/e/f})
+      content_for.should match(%r{D\s+file})
+      content_for.should match(%r{A\s+d/e/f})
+    end
+  end
+
+  describe "#remove" do
+    before(:each) do
+      @options = {
+        command: "remove",
+        user: user.id,
+        repository: repository.id,
+        branch: "master",
+        commit_message: "A commit message",
+        raw: [
+          "file"
+        ]
+      }
+    end
+
+    it "should remove file from repo" do
+      add_file("file", "content")
+      processor.on_message(@options.to_json)
+      content_for.should match(%r{D\s+file})
     end
   end
 end

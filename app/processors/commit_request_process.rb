@@ -5,38 +5,6 @@ class CommitRequestProcessor < ApplicationProcessor
   # @message String A JSON encoded string
   # Performs the the action given by @message.from_json["command"]
   #
-  # @move {
-  #  command: "move",
-  #  user: 1,
-  #  repository: 123,
-  #  branch: "master",
-  #  commit_message: "A commit message",
-  #  paths: [{
-  #    from: "old/path",
-  #    to: "new/path"
-  #  }],
-  #  files: [{
-  #    from: "path/to/file.txt",
-  #    to: "path/to/new_file.txt"
-  #  }]
-  # }
-  #
-  # @remove {
-  #   user: 1,
-  #   command: "remove",
-  #   repository: 123,
-  #   branch: "master",
-  #   commit_message: "A commit message",
-  #   files: [
-  #     "path/to/file1.txt", 
-  #     "path/to/file2.txt"
-  #   ],
-  #   paths: [
-  #     "path/to/dir1",
-  #     "path/to/dir2",
-  #   ]
-  # }
-  #
   def on_message(message)
     @options = JSON.parse(message)
     send(@options.delete("command"), @options)
@@ -74,7 +42,7 @@ class CommitRequestProcessor < ApplicationProcessor
   #  }]
   # }
   def move(options)
-    options["files"].each do |source|      
+    options["files"].each do |source|
       git[source["to"]] = git[source["from"]]
       split = source["from"].split("/")
       if split.one?
@@ -85,6 +53,23 @@ class CommitRequestProcessor < ApplicationProcessor
         git[dir.join("/")].delete(file)
       end
     end
+  end
+
+  #
+  # @remove {
+  #   user: 1,
+  #   command: "remove",
+  #   repository: 123,
+  #   branch: "master",
+  #   commit_message: "A commit message",
+  #   raw: [
+  #     "path/to/file1.txt", 
+  #     "path/to/file2.txt"
+  #   ]
+  # }
+  #
+  def remove(options)
+    options["raw"].each { |raw| git.delete(raw) }
   end
 
   private
