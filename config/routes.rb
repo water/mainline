@@ -2,8 +2,9 @@
 
 Gitorious::Application.routes.draw do
   
-  match "upload" => "uploads#upload"
-  match "commit_requests/create" => "commit_requests#create", :as => :commit_request
+  post "upload" => "uploads#upload"
+  get "new_upload" => "uploads#new"
+  post "commit_requests/create" => "commit_requests#create", :as => :commit_request
  
   resources :courses do
     resources :labs do
