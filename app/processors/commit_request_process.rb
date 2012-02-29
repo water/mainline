@@ -36,13 +36,13 @@ class CommitRequestProcessor < ApplicationProcessor
   #  repository: 123,
   #  branch: "master",
   #  commit_message: "A commit message",
-  #  files: [{
+  #  records: [{
   #    from: "path/to/file.txt",
   #    to: "path/to/new_file.txt"
   #  }]
   # }
   def move(options)
-    options["files"].each do |source|
+    options["records"].each do |source|
       git[source["to"]] = git[source["from"]]
       split = source["from"].split("/")
       if split.one?
@@ -62,14 +62,14 @@ class CommitRequestProcessor < ApplicationProcessor
   #   repository: 123,
   #   branch: "master",
   #   commit_message: "A commit message",
-  #   raw: [
+  #   records: [
   #     "path/to/file1.txt", 
   #     "path/to/file2.txt"
   #   ]
   # }
   #
   def remove(options)
-    options["raw"].each { |raw| git.delete(raw) }
+    options["records"].each { |raw| git.delete(raw) }
   end
 
   private

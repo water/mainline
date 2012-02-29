@@ -91,7 +91,7 @@ describe CommitRequestProcessor do
         repository: repository.id,
         branch: "master",
         commit_message: "A commit message",
-        files: [{
+        records: [{
           from: "old",
           to: "new"
         }]
@@ -108,7 +108,7 @@ describe CommitRequestProcessor do
     it "can handle folders" do
       add_file("file", "content")
       hash = {
-         files: [{
+         records: [{
           from: "file",
           to: "d/e/f"
         }]
@@ -121,7 +121,7 @@ describe CommitRequestProcessor do
     it "should be able to move folders" do
       add_file("folder1/file", "content")
       hash = {
-         files: [{
+         records: [{
           from: "folder1",
           to: "folder2"
         }]
@@ -140,7 +140,7 @@ describe CommitRequestProcessor do
         repository: repository.id,
         branch: "master",
         commit_message: "A commit message",
-        raw: [
+        records: [
           "file"
         ]
       }
