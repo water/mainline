@@ -76,8 +76,8 @@ describe CommitRequestProcessor do
         }]
       }
       processor.on_message(@options.merge(hash).to_json)
-      content.match(%r{D  file})
-      content.match(%r{A  d/e/f})
+      content.match(%r{D\s+file})
+      content.match(%r{A\s+d/e/f})
     end
   end
 end

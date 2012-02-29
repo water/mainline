@@ -75,13 +75,7 @@ class CommitRequestProcessor < ApplicationProcessor
   # }
   def move(options)
     options["files"].each do |source|      
-      puts source["to"]
-      puts source["from"]
-      puts git[source["to"]]
-      puts git[source["from"]].class
-      puts git[source["from"]].content
-      puts "--------"
-      git[source["to"]] = git[source["from"]]#.content
+      git[source["to"]] = git[source["from"]]
       split = source["from"].split("/")
       if split.one?
         git.delete(split.first)
