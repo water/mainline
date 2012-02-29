@@ -48,12 +48,6 @@
 	      	<%= link_to "Source tree",
 	            repo_owner_path(repository, [repository.project, repository, :trees]) -%>
 	    	</li>
-	    <%- if repository.merge_requests_enabled? -%>
-	    	<li class="repository-link merge_requests">
-	      	<%= link_to "Merge requests <small>(#{repository.merge_requests.open.count})</small>",
-	            repo_owner_path(repository, [repository.project, repository, :merge_requests]) -%>
-	    	</li>
-	    <%- end -%>
 	    <% if repository.parent -%>
 	    	<li class="repository-link clone">
 	      	<%= link_to "Clone of #{h(repository.parent.name)}",

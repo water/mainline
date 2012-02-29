@@ -13,6 +13,7 @@ gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
+gem "gash", git: "git://github.com/water/gash.git"
 
 # Authentication
 gem "rack-openid"
@@ -33,6 +34,8 @@ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
+# gem "grit"
+gem "gash", git: "git://github.com/water/gash.git"
 
 group :development do
   gem "hirb"
@@ -44,20 +47,16 @@ end
 group :test do
   gem "spork-testunit"
   gem "term-ansicolor"
-  # gem "turn"
   gem "factory_girl_rails"
   gem "minitest"
   gem "spork", "0.9.0"
   gem "mocha", require: false
-  gem "factory_girl", :git => "http://github.com/thoughtbot/factory_girl.git", :require => false
-  gem "shoulda", :git => "git://github.com/bmaddy/shoulda.git", :branch => "rails3", :require => false
-  
-  gem "factory_girl_rails"
+  gem "shoulda", :git => "git://github.com/bmaddy/shoulda.git", :branch => "rails3", :require => false  
   gem "rspec"
   gem "capybara"
   gem "launchy"
   gem "selenium"
   gem "rspec-rails"
-  # gem "guard-spork"
+  gem "turn"
   gem "database_cleaner"
 end

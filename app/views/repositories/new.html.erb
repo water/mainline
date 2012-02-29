@@ -17,10 +17,6 @@
     
     <div><%= f.text_area :description, :class => "text wide" -%><br /> <span class="hint">(<%= markdown_hint -%>)</span></div>
   </li>
-  <li>
-    <%= f.label :enable_merge_requests -%>
-    <div><%= f.check_box :merge_requests_enabled -%><span class="hint" style="float: left;"> <%= t("views.repos.merge_requests_enabled") -%></span></div>
-  </li>
 </fieldset>
 <fieldset class="submit">	  
   <%= f.submit "Create repository" -%>

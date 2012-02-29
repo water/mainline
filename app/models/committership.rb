@@ -122,14 +122,14 @@ class Committership < ActiveRecord::Base
     end
 
     def add_new_committer_event
-      repository.project.create_event(Action::ADD_COMMITTER, repository,
-                                      creator, committer.title)
+  #    repository.project.create_event(Action::ADD_COMMITTER, repository,
+  #                                    creator, committer.title)
     end
 
     def add_removed_committer_event
       return unless repository
-      repository.project.create_event(Action::REMOVE_COMMITTER, repository,
-                                      creator, committer.title)
+  #    repository.project.create_event(Action::REMOVE_COMMITTER, repository,
+  #                                    creator, committer.title)
     end
 
     def nullify_messages
