@@ -35,10 +35,6 @@ module UsersHelper
     logged_in? && current_user == a_user
   end
 
-  def show_merge_request_count_for_user?(a_user)
-    is_current_user?(a_user) &&
-         !a_user.review_repositories_with_open_merge_request_count.blank?
-  end
 
   def personified(user, current_user_msg, other_user_msg)
     is_current_user?(user) ? h(current_user_msg) : h(other_user_msg)

@@ -107,7 +107,7 @@ module ApplicationHelper
        return "selected"
      end
     when :repositories
-      if %w[repositories trees logs commits comitters comments merge_requests
+      if %w[repositories trees logs commits comitters
             blobs committers].include?(controller.controller_name )
         return "selected"
       end
@@ -447,19 +447,7 @@ module ApplicationHelper
     end
   end
 
-  def comment_applies_to_merge_request?(parent)
-    MergeRequest === parent && (logged_in? && parent.resolvable_by?(current_user))
-  end
 
-  def statuses_for_merge_request_for_select(merge_request)
-    merge_request.target_repository.project.merge_request_statuses.map do |status|
-      if status.description.blank?
-        [h(status.name), h(status.name)]
-      else
-        [h("#{status.name} - #{status.description}"), h(status.name)]
-      end
-    end
-  end
 
   # The javascripts to be included in all layouts
   def include_javascripts
@@ -467,7 +455,7 @@ module ApplicationHelper
       "color_picker", "ui.core","ui.selectable", "jquery.scrollto", "jquery.timeago",
       "core_extensions", "jquery.expander", "jquery.cycle.all.min",
       "jquery.gitorious_extensions",
-      "notification_center", "merge_requests", "diff_browser", "messages",
+      "notification_center", "diff_browser", "messages",
       "application", "live_search", "repository_search", :cache => true
   end
 
