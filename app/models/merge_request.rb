@@ -31,7 +31,7 @@ class MergeRequest < ActiveRecord::Base
   # STATUS_MERGED = 2
   # STATUS_REJECTED = 3
   # STATUS_VERIFYING = 4
-  STATUS_PENDING_ACCEPTANCE_OF_TERMS
+  STATUS_PENDING_ACCEPTANCE_OF_TERMS = 10
 
   state_machine :status, :initial => :pending do
     state :open, :value => ::MergeRequest::STATUS_OPEN
