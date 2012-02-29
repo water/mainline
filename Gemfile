@@ -13,6 +13,7 @@ gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
+gem "gash", git: "git://github.com/water/gash.git"
 
 gem 'rails-dev-tweaks', '~> 0.6.1'
 
@@ -47,7 +48,8 @@ gem 'jquery-rails'
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
-gem "stalker"
+# gem "grit"
+gem "gash", git: "git://github.com/water/gash.git"
 
 group :development do
   gem "hirb"

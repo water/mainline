@@ -56,10 +56,6 @@
     
 	</div>
   <div id="right" class="w-390">
-
-
-
-
     <% pull_box("Your repositories", :class => "your-repositories pull-box-390") do -%>
     <% if @repositories.blank? -%>
       <% if is_current_user?(@user) -%>

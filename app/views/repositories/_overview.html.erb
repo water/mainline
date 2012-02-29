@@ -44,7 +44,8 @@
 	      	<%= link_to "Commit log", repo_owner_path(repository, [repository.project, repository, :commits]) -%>
 	    	</li>
 	    	<li class="repository-link tree">
-	      	<%= link_to "Source tree", repo_owner_path(repository, [repository.project, repository, :trees]) -%>
+	      	<%= link_to "Source tree",
+	            repo_owner_path(repository, [repository.project, repository, :trees]) -%>
 	    	</li>
 	    <% if repository.parent -%>
 	    	<li class="repository-link clone">

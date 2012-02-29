@@ -508,19 +508,6 @@ ActiveRecord::Schema.define(:version => 20120223175025) do
 
   add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
-  create_table "tasks", :force => true do |t|
-    t.string   "target_class"
-    t.string   "command"
-    t.text     "arguments"
-    t.boolean  "performed",    :default => false
-    t.datetime "performed_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "target_id"
-  end
-
-  add_index "tasks", ["performed"], :name => "index_tasks_on_performed"
-
   create_table "users", :force => true do |t|
     t.string   "login"
     t.string   "email"

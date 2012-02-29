@@ -53,7 +53,7 @@ describe CommitRequest do
     it "validates a commitrequest" do
       @cr = CommitRequest.new(@value)
       @cr.should be_valid
-      @cr.should_receive(:enqueue)
+      @cr.should_receive(:publish)
       @cr.save
       @cr.errors.should be_empty
     end
