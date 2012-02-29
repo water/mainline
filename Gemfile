@@ -57,7 +57,7 @@ group :development do
 end
 
 group :test do
-  gem "spork-testunit"
+  gem "spork-testunit", git: "git://github.com/water/spork-testunit.git"
   gem "term-ansicolor"
   gem "factory_girl_rails"
   gem "minitest"
