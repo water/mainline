@@ -20,14 +20,14 @@ class CommitRequestProcessor < ApplicationProcessor
   #  branch: "master",
   #  commit_message: "A commit message",
   #  files: [{
-  #    raw: !Binary,
+  #    data: !Binary,
   #    to: "path/to/dir"
   #  }]
   # }
   #
   def add(options)
     options["files"].each do |source|
-      git[source["to"]] = source["raw"]
+      git[source["to"]] = source["data"]
     end
   end
 
