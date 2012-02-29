@@ -23,7 +23,7 @@ class UsersController < ApplicationController
 
   def show
     @projects = @user.projects.find(:all,
-      :include => [:tags, { :repositories => :project }])
+      :include => [{ :repositories => :project }])
     @repositories = @user.commit_repositories
     @events = @user.events.excluding_commits.
       page(params[:page]).

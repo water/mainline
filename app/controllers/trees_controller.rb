@@ -12,12 +12,14 @@ class TreesController < ApplicationController
   end
   
   def show
+    debugger
     @git = @repository.git
     @ref, @path = branch_and_path(params[:branch_and_path], @git)
     unless @commit = @git.commit(@ref)
       handle_missing_tree_sha and return
     end
-    if stale_conditional?(Digest::SHA1.hexdigest(@commit.id + params[:branch_and_path].join), 
+    if stale_conditional?(Digest::SHA1.hexdigest(@commit.id + 
+      (params[:branch_and_path].kind_of?(Array) ? params[:branch_and_path].join : params[:branch_and_path])), 
                           @commit.committed_date.utc)
       head = @git.get_head(@ref) || Grit::Head.new(@commit.id_abbrev, @commit)
       @root = Breadcrumb::Folder.new({:paths => @path, :head => head, 

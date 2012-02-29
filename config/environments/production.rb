@@ -39,7 +39,16 @@ Gitorious::Application.configure do
 
   # Enable threaded mode
   # config.threadsafe!
+  
+  # Compress JavaScript and CSS
+  config.assets.compress = true
 
+  # Don't fallback to assets pipeline
+  config.assets.compile = false
+
+  # Generate digests for assets URLs
+  config.assets.digest = true
+  
   config.action_controller.page_cache_directory = cache_dir
   #config.action_controller.cache_store = :file_store, File.join(cache_dir, "fragments")
   config.cache_store = :mem_cache_store, "localhost"

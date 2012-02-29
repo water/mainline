@@ -2,11 +2,22 @@
 
 Gitorious::Application.routes.draw do
   post "upload" => "uploads#upload"
-  get "new_upload" => "uploads#new"
-
-  post "commit_requests/new" => "commit_requests#new", :as => :commit_request
-
-  resources :submissions, :only => [:index, :show, :create, :new]
+  post "commit_requests/create" => "commit_requests#create", :as => :commit_request
+  
+  # /lab_groups/:group_id/labs/:lab_id/submissions/new
+  scope "lab_groups/:group_id" do
+    resources :labs do
+      resources :submissions
+    end
+  end
+  
+  # This is perhaps useful for an assistant?
+  # Example:
+  # /courses/2/labs/3 # <= Shows all submissions for particular lab?
+  resources :courses do
+    resources :labs
+  end
+  resources :submissions, only: [:index, :show, :create, :new]
 
   extend Gitorious::RepositoryRoutes
   
@@ -24,9 +35,7 @@ Gitorious::Application.routes.draw do
     
   scope "/+:group_id" do
     resources :memberships
-  end
-  
-
+  end 
 
   resources :messages do
     member do

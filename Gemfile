@@ -1,12 +1,12 @@
 source "http://rubygems.org"
 
-gem "rails", "3.0.10"
+gem "rails", "3.1.3"
 gem "chronic"
 gem "geoip"
 gem "hoe", :require => false
 gem "echoe", :require => false
 gem "ruby-yadis", :require => "yadis"
-gem "rdiscount", "1.3.1.1"
+gem "rdiscount" # , "1.3.1.1"
 gem "mime-types", :require => "mime/types"
 gem "diff-lcs", :require => "diff/lcs"
 gem "state_machine"
@@ -15,6 +15,8 @@ gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
 gem "gash", git: "git://github.com/water/gash.git"
 
+gem 'rails-dev-tweaks', '~> 0.6.1'
+
 # Authentication
 gem "rack-openid"
 gem "ruby-openid", "2.1.8", :require => "openid"
@@ -22,20 +24,36 @@ gem "oauth", "0.4.4"
 gem "oauth2"
 
 # Database
-gem "mysql2", "0.2.7"
+gem "mysql2", "0.3.10"
 gem "citier", git: "git://github.com/water/citier.git"
 
 # View
 gem "will_paginate"
 gem "builder"
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+gem "rails_autolink"
+gem "spine-rails"
+
+group :assets do
+  gem 'sass-rails', " ~> 3.1.0"
+  gem 'haml-rails'
+  gem 'coffee-rails', " ~> 3.1.0"
+  gem 'uglifier'
+  gem 'less-rails-bootstrap'
+end
+
+gem 'jquery-rails'
 
 # Background
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
+<<<<<<< HEAD
 # gem "grit"
 gem "gash", git: "git://github.com/water/gash.git"
+=======
+gem "stalker"
+>>>>>>> 6ee34dd9678c67c2675eb0f759838f88238c6aab
 
 group :development do
   gem "hirb"

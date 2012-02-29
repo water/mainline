@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
 <head>
-  <%= render :partial => "layouts/common_head" %>
+  <%= render "layouts/common_head" %>
 </head>
 
 <body id="<%= controller.controller_name -%>">
@@ -19,7 +19,7 @@
   </ul>
   <div id="header">
     <h1 id="logo">
-      <%= link_to image_tag("/img/logo.png"), root_path -%>
+      <%= link_to image_tag("img/logo.png"), root_path -%>
     </h1>
 
     <ul id="menu">
