@@ -7,6 +7,22 @@ describe CommitRequestProcessor do
     `cd #{@destintation} && git checkout #{branch} --quiet; git show --name-status --format=fuller`
   end
 
+  #
+  # Creates file stucture
+  # @file String Relative path to file, including file name
+  # @content String Content for @file
+  #
+  def add_file(file, content)
+    Dir.chdir(@destintation) do
+      split = file.split("/")
+      paths = split.one? ? [] : split[0..-2]
+      paths.each_with_index do |_, index|
+        `mkdir -p #{paths[0..index].join("/")}`
+      end
+      `echo #{content} > #{file} && git add . && git commit -m "Commit"`
+    end
+  end
+
   before(:each) do
     @destintation = Dir.mktmpdir
     `cd #{@destintation} && git init`
@@ -67,12 +83,6 @@ describe CommitRequestProcessor do
     end
   end
 
-  def add_file(file, content)
-    Dir.chdir(@destintation) do
-      `echo #{content} > #{file} && git add . && git commit -m "Commit"`
-    end
-  end
-
   describe "#move" do
     before(:each) do
       @options = {
@@ -106,6 +116,19 @@ describe CommitRequestProcessor do
       processor.on_message(@options.merge(hash).to_json)
       content_for.should match(%r{D\s+file})
       content_for.should match(%r{A\s+d/e/f})
+    end
+
+    it "should be able to move folders" do
+      add_file("folder1/file", "content")
+      hash = {
+         files: [{
+          from: "folder1",
+          to: "folder2"
+        }]
+      }
+      processor.on_message(@options.merge(hash).to_json)
+      content_for.should match(%r{D\s+folder1/file})
+      content_for.should match(%r{A\s+folder2/file})
     end
   end
 
