@@ -40,6 +40,8 @@ GIT
   remote: git://github.com/water/spork-testunit.git
   revision: e69586f17af4f7497c862bb663fa0d53ffa746a9
   specs:
+    spork-testunit (0.0.8)
+      spork (>= 0.6.0)
 
 GEM
   remote: http://rubygems.org/
@@ -269,8 +271,6 @@ GEM
     spine-rails (0.1.0)
       rails (>= 3.1.0)
     spork (0.9.0)
-    spork-testunit (0.0.8)
-      spork (>= 0.6.0)
     sprockets (2.0.3)
       hike (~> 1.2)
       rack (~> 1.0)
