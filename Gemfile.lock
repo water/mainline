@@ -38,7 +38,7 @@ GIT
 
 GIT
   remote: git://github.com/water/spork-testunit.git
-  revision: 03729cd6a0fa78f75c2188eed9ef7ec73ddef4b3
+  revision: e69586f17af4f7497c862bb663fa0d53ffa746a9
   specs:
     spork-testunit (0.0.8)
       spork (>= 0.6.0)
