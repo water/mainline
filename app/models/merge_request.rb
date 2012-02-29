@@ -28,9 +28,10 @@ class MergeRequest < ActiveRecord::Base
 
   STATUS_OPEN = 1
   STATUS_CLOSED = 5 # further states must start at 5+n (for backwards compat)
-#   STATUS_MERGED = 2
-#   STATUS_REJECTED = 3
-#   STATUS_VERIFYING = 4
+  # STATUS_MERGED = 2
+  # STATUS_REJECTED = 3
+  # STATUS_VERIFYING = 4
+  STATUS_PENDING_ACCEPTANCE_OF_TERMS
 
   state_machine :status, :initial => :pending do
     state :open, :value => ::MergeRequest::STATUS_OPEN

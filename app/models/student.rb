@@ -1,3 +1,2 @@
-class Student < User
-  acts_as_parent
+class Student < ActiveRecord::Base
 end
