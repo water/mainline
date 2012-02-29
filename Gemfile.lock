@@ -40,8 +40,6 @@ GIT
   remote: git://github.com/water/spork-testunit.git
   revision: e69586f17af4f7497c862bb663fa0d53ffa746a9
   specs:
-    spork-testunit (0.0.8)
-      spork (>= 0.6.0)
 
 GEM
   remote: http://rubygems.org/
@@ -131,10 +129,6 @@ GEM
     gemcutter (0.7.1)
     geoip (1.1.2)
     git (1.2.5)
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 55d19b76bedf4f6b0e58205bac46b33817048b9e
     haml (3.1.4)
     haml-rails (0.3.4)
       actionpack (~> 3.0)
@@ -142,11 +136,6 @@ GEM
       haml (~> 3.0)
       railties (~> 3.0)
     hike (1.2.1)
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 65f06619fafd3e23646dbc5bba191102777740f4
->>>>>>> 55d19b76bedf4f6b0e58205bac46b33817048b9e
     hirb (0.6.0)
     hoe (2.14.0)
       rake (~> 0.8)
@@ -280,24 +269,12 @@ GEM
     spine-rails (0.1.0)
       rails (>= 3.1.0)
     spork (0.9.0)
-<<<<<<< HEAD
-=======
     spork-testunit (0.0.8)
       spork (>= 0.6.0)
-<<<<<<< HEAD
->>>>>>> 55d19b76bedf4f6b0e58205bac46b33817048b9e
     sprockets (2.0.3)
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-<<<<<<< HEAD
-=======
-    stalker (0.9.0)
-      beanstalk-client
-      json_pure
-=======
->>>>>>> 65f06619fafd3e23646dbc5bba191102777740f4
->>>>>>> 55d19b76bedf4f6b0e58205bac46b33817048b9e
     state_machine (1.1.2)
     term-ansicolor (1.0.7)
     therubyracer (0.9.10)
@@ -338,14 +315,7 @@ DEPENDENCIES
   foreman
   gash!
   geoip
-<<<<<<< HEAD
   haml-rails
-=======
-<<<<<<< HEAD
-  haml-rails
-=======
->>>>>>> 65f06619fafd3e23646dbc5bba191102777740f4
->>>>>>> 55d19b76bedf4f6b0e58205bac46b33817048b9e
   hirb
   hoe
   jquery-rails

@@ -47,10 +47,6 @@ gem 'jquery-rails'
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
-<<<<<<< HEAD
-=======
-# gem "grit"
->>>>>>> 55d19b76bedf4f6b0e58205bac46b33817048b9e
 gem "gash", git: "git://github.com/water/gash.git"
 
 group :development do
