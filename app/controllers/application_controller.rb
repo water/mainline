@@ -278,6 +278,26 @@ class ApplicationController < ActionController::Base
       stale?(:etag => [etag, current_user], :last_modified => last_modified)
     end
     
+  # Sets up the variables needed to render a tree view
+  # @param repository The repository for which to render the tree view
+  def set_up_trees(repository)
+    @git = repository.git
+    @ref, @path = branch_and_path(params[:branch_and_path], @git)
+    unless @commit = @git.commit(@ref)
+      handle_missing_tree_sha and return
+    end
+    if stale_conditional?(Digest::SHA1.hexdigest(@commit.id + 
+      (params[:branch_and_path].kind_of?(Array) ? params[:branch_and_path].join : params[:branch_and_path])), 
+                          @commit.committed_date.utc)
+      head = @git.get_head(@ref) || Grit::Head.new(@commit.id_abbrev, @commit)
+      @root = Breadcrumb::Folder.new({:paths => @path, :head => head, 
+                                      :repository => @repository})
+      path = @path.blank? ? [] : ["#{@path.join("/")}/"] # FIXME: meh, this sux
+      @tree = @git.tree(@commit.tree.id, path)
+      expires_in 30.seconds
+    end
+  end
+
   private  
     def unshifted_polymorphic_path(repo, path_spec)
       if path_spec[0].is_a?(Symbol)

@@ -2,6 +2,7 @@
 
 class TreesController < ApplicationController
   include ActiveMessaging::MessageSender
+  # TODO: this method has been deprecated
   before_filter :find_project_and_repository
   before_filter :check_repository_for_commits
   renders_in_site_specific_context

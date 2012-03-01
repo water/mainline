@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class CommitsController < ApplicationController
+  # TODO: this method has been deprecated
   before_filter :find_project_and_repository
   before_filter :check_repository_for_commits
   before_filter do
