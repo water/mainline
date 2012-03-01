@@ -1,9 +1,7 @@
 <%
 %>
 
-<% # @page_title = t("views.trees.page_title", :repo => @repository.name, :title => @project.title) -%>
-
-<%= breadcrumbs_from(@root) -%>
+<% @page_title = "Page Title" -%>
 
 <% cache(tree_path(@commit.id, @path)) do -%>
 <table class="listing tree">
