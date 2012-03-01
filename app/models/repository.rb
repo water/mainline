@@ -633,7 +633,7 @@ class Repository < ActiveRecord::Base
     # @args,  a hash containing a group object and a lab object
     #         or to normal arguments - group_id and lab_id 
     # returns the repo associated with a particular lab and group.
-    def find_by_group_and_lab(*args)
+    def self.find_by_group_and_lab(*args)
       if args.one? and args.first.is_a? Hash
         group = args.first[:group]
         lab = args.first[:lab]
