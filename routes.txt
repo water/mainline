@@ -12,7 +12,7 @@ ActiveMessaging: Loading /Users/jesper/Documents/water/mainline/app/processors/w
 ActiveMessaging: Rails available: Adding dispatcher prepare callback.
                                         upload POST   /upload(.:format)                                                                              {:action=>"upload", :controller=>"uploads"}
                                 commit_request POST   /commit_requests/create(.:format)                                                              {:controller=>"commit_requests", :action=>"create"}
-                           lab_submission_tree        /lab_groups/:group_id/labs/:lab_id/submissions/:submission_id/trees/*branch_and_path(.:format) {:branch_and_path=>/.+?/, :controller=>"trees", :action=>"show"}
+                          lab_submission_trees        /lab_groups/:group_id/labs/:lab_id/submissions/:submission_id/trees/*branch_and_path(.:format) {:branch_and_path=>/.+?/, :controller=>"trees", :action=>"show"}
                                lab_submissions GET    /lab_groups/:group_id/labs/:lab_id/submissions(.:format)                                       {:action=>"index", :controller=>"submissions"}
                                                POST   /lab_groups/:group_id/labs/:lab_id/submissions(.:format)                                       {:action=>"create", :controller=>"submissions"}
                             new_lab_submission GET    /lab_groups/:group_id/labs/:lab_id/submissions/new(.:format)                                   {:action=>"new", :controller=>"submissions"}
@@ -45,6 +45,18 @@ ActiveMessaging: Rails available: Adding dispatcher prepare callback.
                                                POST   /submissions(.:format)                                                                         {:action=>"create", :controller=>"submissions"}
                                 new_submission GET    /submissions/new(.:format)                                                                     {:action=>"new", :controller=>"submissions"}
                                     submission GET    /submissions/:id(.:format)                                                                     {:action=>"show", :controller=>"submissions"}
+                           repository_raw_blob        /repositories/:repository_id/blobs/raw/*branch_and_path(.:format)                              {:branch_and_path=>/.+?/, :controller=>"blobs", :action=>"raw"}
+                     repository_commits_in_ref        /repositories/:repository_id/commits/*branch(.:format)                                         {:branch=>/.+?/, :controller=>"commits", :action=>"index"}
+                               repository_tree        /repositories/:repository_id/trees/*branch_and_path(.:format)                                  {:branch_and_path=>/.+?/, :controller=>"trees", :action=>"show"}
+                               repository_blob        /repositories/:repository_id/blobs/*branch_and_path(.:format)                                  {:branch_and_path=>/.+?/, :controller=>"blobs", :action=>"show"}
+                       repository_blob_history        /repositories/:repository_id/blobs/history/*branch_and_path(.:format)                          {:branch_and_path=>/.+?/, :controller=>"blobs", :action=>"history"}
+                                  repositories GET    /repositories(.:format)                                                                        {:action=>"index", :controller=>"repositories"}
+                                               POST   /repositories(.:format)                                                                        {:action=>"create", :controller=>"repositories"}
+                                new_repository GET    /repositories/new(.:format)                                                                    {:action=>"new", :controller=>"repositories"}
+                               edit_repository GET    /repositories/:id/edit(.:format)                                                               {:action=>"edit", :controller=>"repositories"}
+                                    repository GET    /repositories/:id(.:format)                                                                    {:action=>"show", :controller=>"repositories"}
+                                               PUT    /repositories/:id(.:format)                                                                    {:action=>"update", :controller=>"repositories"}
+                                               DELETE /repositories/:id(.:format)                                                                    {:action=>"destroy", :controller=>"repositories"}
                                           root        /                                                                                              {:controller=>"site", :action=>"index"}
                                 merge_requests GET    /merge_requests(.:format)                                                                      {:action=>"index", :controller=>"merge_requests"}
                                                POST   /merge_requests(.:format)                                                                      {:action=>"create", :controller=>"merge_requests"}
