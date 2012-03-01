@@ -8,7 +8,7 @@ Gitorious::Application.routes.draw do
   scope "lab_groups/:group_id" do
     resources :labs do
       resources :submissions do
-        resources :trees
+        match "trees/*branch_and_path" => "trees#show", as: "trees"
       end
     end
   end
