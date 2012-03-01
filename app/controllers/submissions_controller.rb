@@ -1,5 +1,7 @@
 class SubmissionsController < ApplicationController
   layout "water"
+  before_filter :add_commit_request_path, only: [:new]
+  
   def index
   end
 
@@ -17,7 +19,6 @@ class SubmissionsController < ApplicationController
   end
   
   def mock!
-    @repository = Repository.find(6)
     params[:branch_and_path] = "master"
   end
   
@@ -43,5 +44,10 @@ class SubmissionsController < ApplicationController
       flash[:error] = "No such tree SHA1 was found"
       redirect_to project_repository_tree_path(@project, @repository, 
                       branch_with_tree("HEAD", @path || []))
+  end
+  
+  protected
+  def add_commit_request_path
+    gon.commit_request_path = commit_request_path
   end
 end
