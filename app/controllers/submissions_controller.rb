@@ -10,14 +10,13 @@ class SubmissionsController < ApplicationController
   end
 
   def new
-    # mock!
-    # prepare_tree
+    mock!
+    prepare_tree
     flash[:notice] = "Incredibly useless message."
   end
   
   def mock!
     @repository = Repository.find(6)
-    @project = Project.find(4)
     params[:branch_and_path] = "master"
   end
   

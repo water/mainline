@@ -47,9 +47,6 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.login = params[:user][:login]
     @user.save!
-    if !@user.terms_of_use.blank?
-      @user.accept_terms!
-    end
     redirect_to :action => "pending_activation"
   rescue ActiveRecord::RecordInvalid
     render :action => 'new'

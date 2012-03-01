@@ -11,14 +11,21 @@ module RepositoriesHelper
   end
 
   def commit_path(objectish = "master")
-    repo_owner_path(@repository, :project_repository_commit_path, @project, @repository, objectish)
+    repo_owner_path(@repository, :repository_commit_path, @repository, objectish)
   end
 
   def tree_path(treeish = "master", path = [])
     if path.respond_to?(:to_str)
       path = path.split("/")
     end
-    repo_owner_path(@repository, :project_repository_tree_path, @project, @repository, branch_with_tree(treeish, path))
+    repo_owner_path(@repository, :repository_tree_path, @repository, branch_with_tree(treeish, path))
+  end
+  
+  def submission_path(treeish = "master", path = [])
+    if path.respond_to?(:to_str)
+      path = path.split("/")
+    end
+    repo_owner_path(@repository, :lab_submission_tree_path, @lab, @submission, @repository, branch_with_tree(treeish, path))
   end
 
   def repository_path(action, sha1=nil)
@@ -26,7 +33,7 @@ module RepositoriesHelper
   end
 
   def blob_path(shaish, path)
-    repo_owner_path(@repository, :project_repository_blob_path, @project, @repository, branch_with_tree(shaish, path))
+    repo_owner_path(@repository, :repository_blob_path, @repository, branch_with_tree(shaish, path))
   end
 
   def raw_blob_path(shaish, path)
