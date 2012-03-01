@@ -7,7 +7,9 @@ Gitorious::Application.routes.draw do
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
   scope "lab_groups/:group_id" do
     resources :labs do
-      resources :submissions
+      resources :submissions do
+        resources :trees
+      end
     end
   end
   
