@@ -3,7 +3,6 @@
 
 <% @page_title = "Page Title" -%>
 
-<% cache(tree_path(@commit.id, @path)) do -%>
 <table class="listing tree">
   <% @tree.contents.sort_by{|c| force_utf8(c.name).downcase}.each do |node| -%>
   <tr class="<%= cycle("odd", "even") -%>">
@@ -35,7 +34,6 @@
   </tr>
   <% end -%>
 </table>
-<% end -%>
 
 <% content_for :sidebar do -%>  
   <ul class="sidebar-meta">
