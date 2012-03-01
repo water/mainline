@@ -23,8 +23,8 @@ class TreesController < ApplicationController
       (params[:branch_and_path].kind_of?(Array) ? params[:branch_and_path].join : params[:branch_and_path])), 
                           @commit.committed_date.utc)
       head = @git.get_head(@ref) || Grit::Head.new(@commit.id_abbrev, @commit)
-      @root = Breadcrumb::Folder.new({:paths => @path, :head => head, 
-                                      :repository => @repository})
+      # @root = Breadcrumb::Folder.new({:paths => @path, :head => head, 
+      #                                 :repository => @repository})
       path = @path.blank? ? [] : ["#{@path.join("/")}/"] # FIXME: meh, this sux
       @tree = @git.tree(@commit.tree.id, path)
       expires_in 30.seconds
