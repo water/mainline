@@ -3,7 +3,7 @@ class Lab < ActiveRecord::Base
   belongs_to :lab_description
   
   # Returns all labs for given group
-  def self.find_by_group(group_íd)
+  def self.find_by_group(group_id)
   end
   
 end
