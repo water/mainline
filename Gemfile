@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "3.1.3"
+gem "rails", "~> 3.2"
 gem "chronic"
 gem "geoip"
 gem "hoe", :require => false
@@ -15,7 +15,7 @@ gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
 gem "gash", git: "git://github.com/water/gash.git"
 
-gem 'rails-dev-tweaks', '~> 0.6.1'
+gem "rails-dev-tweaks", "~> 0.6.1"
 
 # Authentication
 gem "rack-openid"
@@ -34,14 +34,14 @@ gem "rails_autolink"
 gem "spine-rails"
 
 group :assets do
-  gem 'sass-rails', " ~> 3.1.0"
-  gem 'haml-rails'
-  gem 'coffee-rails', " ~> 3.1.0"
-  gem 'uglifier'
-  gem 'less-rails-bootstrap'
+  gem "sass-rails", " ~> 3.2.0"
+  gem "haml-rails"
+  gem "coffee-rails", " ~> 3.2.0"
+  gem "uglifier"
+  gem "less-rails-bootstrap"
 end
 
-gem 'jquery-rails'
+gem "jquery-rails"
 
 # Background
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
