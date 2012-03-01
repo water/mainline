@@ -101,7 +101,7 @@ module AuthenticatedSystem
     # We can return to this location by calling #redirect_back_or_default.
     def store_location(location = nil)
       if defined?(request) and not location and request.respond_to?(:request_uri)
-        location = request.request_uri
+        location = request.fullpath
       end
       session[:return_to] = location
     end

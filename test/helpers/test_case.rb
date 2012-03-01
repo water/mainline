@@ -121,7 +121,7 @@ class ActionController::TestCase
   def self.should_redirect_to_ssl
     should 'redirect to ssl' do
       # TODO Fix this!
-      assert_redirected_to "https://" + @request.host + @request.request_uri
+      assert_redirected_to "https://" + @request.host + @request.fullpath
     end
   end
 end

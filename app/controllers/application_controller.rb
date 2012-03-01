@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
     return if Rails.env.development? and ENV["Rails.env"] != "test"
     
     unless request.ssl? and request.respond_to?(:request_uri)
-      redirect_to "https://" + request.host + request.request_uri
+      redirect_to "https://" + request.host + request.fullpath
       flash.keep
     end
       
