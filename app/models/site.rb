@@ -1,14 +1,13 @@
 # encoding: utf-8
 class Site < ActiveRecord::Base
+  HTTP_CLONING_SUBDOMAIN = "git"
+
   has_many :projects
-  
   validates_presence_of :title
-  HTTP_CLONING_SUBDOMAIN = 'git'
-  validates_exclusion_of :subdomain, :in => [HTTP_CLONING_SUBDOMAIN]
-  
+  validates_exclusion_of :subdomain, in: [HTTP_CLONING_SUBDOMAIN]  
   attr_protected :subdomain
   
   def self.default
-    site = new(title: "Gitorious")
+    new(title: "Gitorious")
   end
 end
