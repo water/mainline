@@ -18,7 +18,7 @@ module RepositoriesHelper
     if path.respond_to?(:to_str)
       path = path.split("/")
     end
-    repo_owner_path(@repository, :project_repository_tree_path, @project, @repository, branch_with_tree(treeish, path))
+    repo_owner_path(@repository, :lab_submission_tree_path, @project, @repository, branch_with_tree(treeish, path))
   end
 
   def repository_path(action, sha1=nil)
