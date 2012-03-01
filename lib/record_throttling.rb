@@ -6,7 +6,8 @@ module RecordThrottling
   def self.included(base)
     base.class_eval do
       include RecordThrottlingInstanceMethods
-      
+      cattr_accessor :creation_throttle_options
+
       # Thottles record creation/update. 
       # Raises RecordThrottling::RecordThrottleLimitReachedError if limit is 
       # reached.
@@ -28,7 +29,7 @@ module RecordThrottling
       #   :timeframe => 5.minutes
       def self.throttle_records(create_or_update, options)
         options.assert_valid_keys(:limit, :counter, :conditions, :timeframe)
-        write_inheritable_attribute(:creation_throttle_options, options)
+        self.creation_throttle_options = options
         send("before_#{create_or_update}", :check_throttle_limits)
       end
     end
