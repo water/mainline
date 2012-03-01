@@ -1,5 +1,5 @@
 - @page_title = "Page Title"
-%table.table.table-bordered.table-striped
+%table#tree-view.table.table-bordered.table-striped
   %thead
     %th File or directory
     %th Changed
@@ -8,13 +8,13 @@
     %tr{:class => cycle("odd", "even")}
       - if node.is_a? Grit::Tree
         %td.node.folder
-          = link_to h(node.basename) + "/", tree_path(@ref, node.name)
+          = link_to h(node.basename) + "/", "#", data: {url: tree_path(@ref, node.name)}
       - elsif node.is_a? Grit::Submodule
         %td.node.submodule
           %a{:href => "#"}= h(node.basename)
       - else
         %td{:class => "node file #{class_for_filename(node.name)}"}
-          = link_to h(node.basename), blob_path(@ref, node.name).gsub("%2F","/")
+          = link_to h(node.basename), "#", data: {url: blob_path(@ref, node.name).gsub("%2F","/")}
       - if node.is_a? Grit::Submodule
         %td.meta
         %td.meta.commit_message
