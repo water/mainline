@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
   def ssl_required
     return if Rails.env.development? and ENV["Rails.env"] != "test"
     
-    unless request.ssl?
+    unless request.ssl? and request.respond_to?(:request_uri)
       redirect_to "https://" + request.host + request.request_uri
       flash.keep
     end
