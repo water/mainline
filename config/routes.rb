@@ -27,6 +27,7 @@ Gitorious::Application.routes.draw do
     match "trees/*branch_and_path" => "trees#show", :as => :tree
     match "blobs/*branch_and_path" => "blobs#show", :as => :blob
     match "blobs/history/*branch_and_path" => "blobs#history", :as => :blob_history
+    match "commit/:id(.:format)" => "commits#show", :as => :commit
   end
   
   extend Gitorious::RepositoryRoutes
