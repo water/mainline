@@ -10,6 +10,7 @@
     %title
       = @page_title ? @page_title + " - " : ""
       = current_site.title
+    = include_gon
     = stylesheet_link_tag "water"
     = yield :post_css
     = javascript_include_tag "water"

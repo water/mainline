@@ -134,6 +134,9 @@ GEM
     gemcutter (0.7.1)
     geoip (1.1.2)
     git (1.2.5)
+    gon (2.1.0)
+      actionpack (>= 2.3.0)
+      json
     haml (3.1.4)
     haml-rails (0.3.4)
       actionpack (~> 3.0)
@@ -318,6 +321,7 @@ DEPENDENCIES
   foreman
   gash!
   geoip
+  gon
   haml-rails
   hirb
   hoe
