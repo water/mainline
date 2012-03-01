@@ -11,7 +11,7 @@ module RepositoriesHelper
   end
 
   def commit_path(objectish = "master")
-    repo_owner_path(@repository, :project_repository_commit_path, @project, @repository, objectish)
+    repo_owner_path(@repository, :repository_commit_path, @repository, objectish)
   end
 
   def tree_path(treeish = "master", path = [])
