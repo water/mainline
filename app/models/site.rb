@@ -9,6 +9,6 @@ class Site < ActiveRecord::Base
   attr_protected :subdomain
   
   def self.default
-    new(:title => "Gitorious", :subdomain => nil)
+    site = new(title: "Gitorious")
   end
 end
