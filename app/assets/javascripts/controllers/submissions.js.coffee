@@ -2,7 +2,14 @@ window.App.pendingUploads     = 0;
 window.App.successfulUploads  = [];
 
 $ ->
-  $("#tree-view td.node a").on("click", () -> alert("click"))
+  fetch_tree_for_path = (url) ->
+    alert("Fetching!")
+    success = (data) -> $("#tree-view").html(data)
+    $.get url, null, success, 'html'
+  $("#tree-view").on("click",
+    "#tree-view td.node a",
+    () -> fetch_tree_for_path($(this).data("url")))
+  fetch_tree_for_path("/repositories/test2/trees/master")
 
 
 window.App.functions.sendAddCommitRequest = (files, path) ->
