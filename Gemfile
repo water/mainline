@@ -14,8 +14,8 @@ gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
 gem "gash", git: "git://github.com/water/gash.git"
-
 gem "rails-dev-tweaks", "~> 0.6.1"
+gem "active_attr"
 
 # Authentication
 gem "rack-openid"
