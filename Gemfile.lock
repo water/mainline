@@ -115,6 +115,7 @@ GEM
       therubyracer (~> 0.9.9)
     daemons (1.1.8)
     database_cleaner (0.7.1)
+    diff-display (0.0.1)
     diff-lcs (1.1.3)
     dynamic_form (1.0.0)
     echoe (4.6.3)
@@ -319,6 +320,7 @@ DEPENDENCIES
   colorize
   daemons
   database_cleaner
+  diff-display (= 0.0.1)
   diff-lcs
   dynamic_form (= 1.0.0)
   echoe

@@ -15,6 +15,7 @@ gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
 gem "rails-dev-tweaks", "~> 0.6.1"
 gem "active_attr"
+gem "diff-display", "0.0.1"
 
 # Authentication
 gem "rack-openid"
