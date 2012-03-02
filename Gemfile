@@ -55,9 +55,12 @@ end
 gem "jquery-rails"
 
 # Background
-gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
+gem "activemessaging", git: "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
+gem "carrot"
+gem "reliable-msg"
+gem "stomp"
 
 group :development do
   gem "hirb"
@@ -69,11 +72,11 @@ end
 group :test do
   gem "spork-testunit", git: "git://github.com/water/spork-testunit.git"
   gem "term-ansicolor"
+  gem "shoulda"
   gem "factory_girl_rails"
   gem "minitest"
   gem "spork", "0.9.0"
   gem "mocha", require: false
-  gem "shoulda", :git => "git://github.com/bmaddy/shoulda.git", :branch => "rails3", :require => false  
   gem "rspec"
   gem "capybara"
   gem "launchy"
