@@ -1,47 +1,43 @@
 require "colorize"
+require "database_cleaner"
+require "factory_girl"
 
-attributes = {
-  login: "thedude",  
-  email: "admin@popfizzle.com",  
-  password: "abc123",  
-  password_confirmation: "abc123",  
-  terms_of_use: "1", 
-  activated_at: Time.now, 
-  is_admin: true
-}
-
-user = User.new(attributes)
-user.login = attributes[:login]
-user.save!
-puts attributes.to_yaml.green
-
-more_attributes = {
-  login: "examiner",  
-  email: "examiner@popfizzle.com",  
-  password: "abc123",  
-  password_confirmation: "abc123",  
-  terms_of_use: "1", 
-  activated_at: Time.now, 
-  is_admin: true
-}
-
-user2 = User.new(more_attributes)
-user2.login = more_attributes[:login]
-user.save!
-
-student = Student.create(user: user)
-examiner = Examiner.create(user: user2)
-
-###################
-# Courses and codes
-codes = ["TDA289", "DAT255", "FFR101", "EDA343", "DAT036", "EDA331", "EDA451"]
-codes.each do |code|
-  course_code = CourseCode.new({code: code})
-  course = Course.new
-  course.save!(validation: false)
-  course_code.course = course
-  course_code.save!
+if ENV["CLEAR"]
+  puts "Clear database, hold on".yellow
+  DatabaseCleaner.strategy = :truncation
+  DatabaseCleaner.clean
 end
 
+FactoryGirl.reload
+user = Factory.create(:admin, {
+  email: "admin@popfizzle.com",
+  password: "abc123"
+})
 
+repository = Factory.create(:repository, {
+  user: user, 
+  owner: user
+})
 
+sleep(10) # Wait for repository to be created
+unless repository.full_repository_path
+  abort("You have to start foreman first".red)
+end
+
+paths = repository.full_repository_path.split("/")
+path = paths[0..-2].join("/")
+git = paths.last
+puts %x{
+  cd #{path} && 
+  rm -rf #{git} &&
+  git clone --bare git://github.com/water/grack.git #{git}
+}
+
+# codes = ["TDA289", "DAT255", "FFR101", "EDA343", "DAT036", "EDA331", "EDA451"]
+# codes.each do |code|
+#   course_code = CourseCode.new({code: code})
+#   course = Course.new
+#   course.save!(validation: false)
+#   course_code.course = course
+#   course_code.save!
+# end
