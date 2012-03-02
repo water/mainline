@@ -13,9 +13,12 @@ gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
-gem "gash", git: "git://github.com/water/gash.git"
 gem "rails-dev-tweaks", "~> 0.6.1"
 gem "active_attr"
+gem "diff-display", "0.0.1"
+gem "localized_dates", git: "git://github.com/water/localized_dates.git"
+gem "hodel_3000_compliant_logger", "0.1.0"
+gem "restful-authentication", "1.2.1"
 
 # Authentication
 gem "rack-openid"
@@ -34,6 +37,12 @@ gem "rails_autolink"
 gem "spine-rails"
 gem "dynamic_form", "1.0.0"
 gem "gon"
+gem "redcarpet"
+
+# Git
+gem "grit", git: "git://github.com/water/grit.git"
+gem "gash", git: "git://github.com/water/gash.git"
+gem "git", "1.1.1"
 
 group :assets do
   gem "sass-rails", " ~> 3.2.0"
@@ -49,7 +58,6 @@ gem "jquery-rails"
 gem "activemessaging", :git => "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
-gem "gash", git: "git://github.com/water/gash.git"
 
 group :development do
   gem "hirb"
