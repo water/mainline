@@ -1,7 +1,5 @@
 class CommitRequest 
-	include ActiveModel::Validations
-	include ActiveModel::Conversion
-	extend ActiveModel::Naming
+  include ActiveAttr::Model
   include ActiveMessaging::MessageSender
 
   attr_accessor :user, :command, :repository, :branch, :files, :paths
@@ -60,12 +58,6 @@ class CommitRequest
   #   ]
   # }
   #
-  def initialize(options = {})
-    @options = options
-    options.each do |name, value|
-      send("#{name}=",value)
-    end
-  end
 
   #
   # @return String Commit message provided by frontend
@@ -83,12 +75,6 @@ class CommitRequest
     publish :commit, @options.to_json
   end
 
-  #
-  # @return Boolean False by default
-  #
-  def persisted?
-    false
-  end
 private 
   def existence_of_user
     unless User.exists?(@user)

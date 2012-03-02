@@ -56,3 +56,15 @@ Factory.define(:given_course) do |c|
   c.association(:examiner, factory: :user)
   c.association(:when)
 end  
+
+FactoryGirl.define do
+  factory :repository do
+    sequence(:name) { |i| "repo_#{i}" }
+    user
+    owner { user }
+    kind Repository::KIND_PROJECT_REPO
+    factory :merge_request_repository do
+      kind Repository::KIND_TRACKING_REPO
+    end
+  end
+end

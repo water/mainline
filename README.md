@@ -56,6 +56,17 @@ Make sure you use the correct version of mysql in the path below. `5.5.14` is us
 - SshKey#publish_deletion_message
 - ActionController::TestCase.should_redirect_to_ssl
 
+## Generating nice graphic of model
+
+To better get a understanding for our model, it's nice to get a graphical
+overview of it. `railroady` can create it for you automatically, install
+if first by `gem install railroady` and then issue
+
+    railroady -M | grep -v "Overwriting" | dot -Tsvg > Model.svg
+
+where the `grep -v` part is a hack to get rid of the warnings rails
+wrongly writes to stdin rather than stderr.
+
 ## Tests
 
 1. Migrate test database `RAILS_ENV=test bundle exec rake db:create db:migrate`
