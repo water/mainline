@@ -2,9 +2,13 @@
 
 class BlobsController < ApplicationController
   # TODO: this method has been deprecated
-  before_filter :find_project_and_repository
+  before_filter :find_repository
   before_filter :check_repository_for_commits
   renders_in_site_specific_context
+
+  def find_repository
+    @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
+  end
 
   def show
     @git = @repository.git
@@ -13,19 +17,21 @@ class BlobsController < ApplicationController
     unless @commit
       redirect_to_head and return
     end
-    if stale_conditional?(Digest::SHA1.hexdigest(@commit.id + params[:branch_and_path].join), 
-                          @commit.committed_date.utc)
+    if stale_conditional?(Digest::SHA1.hexdigest(
+        @commit.id + 
+        (params[:branch_and_path].is_a?(Array) ? params[:branch_and_path].join : params[:branch_and_path] )), 
+        @commit.committed_date.utc)
       @blob = @git.tree(@commit.tree.id, ["#{@path.join("/")}"]).contents.first
       render_not_found and return unless @blob
       unless @blob.respond_to?(:data) # it's a tree
-        redirect_to repo_owner_path(@repository, :project_repository_tree_path, 
-          @project, @repository, params[:branch_and_path])
+        redirect_to repo_owner_path(@repository, :repository_tree_path, @repository, params[:branch_and_path])
       end
       head = @git.get_head(@ref) || Grit::Head.new(@commit.id_abbrev, @commit)
-      @root = Breadcrumb::Blob.new(:paths => @path, :head => head, 
-                  :repository => @repository, :name => @blob.basename)
+      # @root = Breadcrumb::Blob.new(:paths => @path, :head => head, 
+      #             :repository => @repository, :name => @blob.basename)
       expires_in 10.minutes
     end
+    render {template: false}
   end
 
   def raw
