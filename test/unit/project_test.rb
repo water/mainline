@@ -278,22 +278,6 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
 
-  context "Thottling" do
-    setup{ Project.destroy_all }
-
-    should "throttle on create" do
-      assert_nothing_raised do
-        5.times{|i| create_project(:slug => "wifebeater#{i}").save! }
-      end
-
-      assert_no_difference("Project.count") do
-        assert_raises(RecordThrottling::LimitReachedError) do
-          create_project(:slug => "wtf-are-you-doing-bro").save!
-        end
-      end
-    end
-  end
-
   context 'Oauth' do
     setup do
       @project = projects(:johans)
