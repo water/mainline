@@ -8,7 +8,7 @@
         %a#highlight-anyway{:href => "#highlight-anyway"}
           Highlight
           it anyway
-  %pre.prettyprint= @blob.data # render_highlighted(@blob.data, current_path.last || "")
+  %pre.prettyprint= markdown_if_markdown(@blob.data,current_path.last) # render_highlighted(@blob.data, current_path.last || "")
 - elsif textual?(@blob) && too_big_to_render?(@blob.size)
   %p
     = t("views.blobs.too_big").call(self, raw_blob_path(@commit.id, current_path))
