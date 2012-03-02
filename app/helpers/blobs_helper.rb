@@ -64,6 +64,13 @@ module BlobsHelper
     out.join("\n")
   end
   
+  def markdown? (string)
+    WaterConfig["markdown_file_extensions"].include?(File.extname(string))
+  end
+  
+  def render_markdown
+  end
+  
   def too_big_to_render?(size)
     size > 350.kilobytes
   end
