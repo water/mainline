@@ -39,12 +39,18 @@ module ApplicationHelper
     out << "</div></div>"
     out.html_safe
   end
-
-  def markdown(text, options = [:smart])
-    renderer = MarkupRenderer.new(text, :markdown => options)
-    renderer.to_html
+  
+  # TODO: take care of options...
+  def markdown(text, options = {})
+    renderer = Markdown.new(text)
+    renderer.to_html.html_safe
   end
-
+  
+  # def markdown(text, options = [:smart])
+  #   renderer = MarkupRenderer.new(text, :markdown => options)
+  #   renderer.to_html
+  # end
+  # 
   def render_markdown(text, *options)
     # RDiscount < 1.4 doesn't support the :auto_link, use Rails' instead
     do_auto_link = options.delete(:auto_link)

@@ -37,6 +37,7 @@ gem "rails_autolink"
 gem "spine-rails"
 gem "dynamic_form", "1.0.0"
 gem "gon"
+gem "redcarpet"
 
 # Git
 gem "grit", git: "git://github.com/water/grit.git"
