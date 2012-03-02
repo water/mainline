@@ -244,6 +244,7 @@ GEM
     rdiscount (1.6.8)
     rdoc (3.12)
       json (~> 1.4)
+    restful-authentication (1.2.1)
     riddle (1.5.1)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
@@ -360,6 +361,7 @@ DEPENDENCIES
   rails_autolink
   rdiscount
   rdoc
+  restful-authentication (= 1.2.1)
   riddle
   rspec
   rspec-rails

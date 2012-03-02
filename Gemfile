@@ -18,6 +18,7 @@ gem "active_attr"
 gem "diff-display", "0.0.1"
 gem "localized_dates", git: "git://github.com/water/localized_dates.git"
 gem "hodel_3000_compliant_logger"
+gem "restful-authentication", "1.2.1"
 
 # Authentication
 gem "rack-openid"
