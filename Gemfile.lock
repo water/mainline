@@ -342,7 +342,7 @@ DEPENDENCIES
   grit!
   haml-rails
   hirb
-  hodel_3000_compliant_logger
+  hodel_3000_compliant_logger (= 0.1.0)
   hoe
   jquery-rails
   launchy
