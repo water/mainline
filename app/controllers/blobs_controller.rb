@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 class BlobsController < ApplicationController
-  # TODO: this method has been deprecated
   before_filter :find_repository
   before_filter :check_repository_for_commits
   renders_in_site_specific_context
@@ -29,9 +28,11 @@ class BlobsController < ApplicationController
       head = @git.get_head(@ref) || Grit::Head.new(@commit.id_abbrev, @commit)
       # @root = Breadcrumb::Blob.new(:paths => @path, :head => head, 
       #             :repository => @repository, :name => @blob.basename)
-      expires_in 10.minutes
+      # expires_in 10.minutes
     end
-    render {template: false}
+    respond_to do |format|
+      format.html {render layout: false}
+    end
   end
 
   def raw
