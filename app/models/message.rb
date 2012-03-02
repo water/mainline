@@ -1,6 +1,5 @@
 # encoding: utf-8
 class Message < ActiveRecord::Base
-  include RecordThrottling
   
   belongs_to :notifiable, :polymorphic => true
   belongs_to :sender, :class_name => "User", :foreign_key => :sender_id
@@ -15,14 +14,6 @@ class Message < ActiveRecord::Base
   validates_presence_of :subject, :body
   validates_presence_of :recipient, :sender
   
-  throttle_records :create, :limit => 10,
-    :counter => proc{|msg|
-      msg.sender.sent_messages.count(:all,
-        :conditions => ["created_at > ?", 5.minutes.ago])
-    },
-    :conditions => proc{|msg| {:sender_id => msg.sender.id, :notifiable_type => nil} },
-    :timeframe => 5.minutes
-
   state_machine :aasm_state, :initial => :unread do
     event :read do
       transition :unread => :read

@@ -233,57 +233,7 @@ class MessageTest < ActiveSupport::TestCase
   context 'Mass email delivery' do
     should_eventually 'create n messages when supplying several recipients'
   end
-  
-  context "Thottling" do
-    setup do
-      Message.destroy_all
-      @recipient = Factory.create(:user)
-      @sender = Factory.create(:user)
-    end
     
-    should "not throttle system notifications" do
-      assert_nothing_raised do
-        15.times{|i|
-          @message = Message.new({:subject => "Hello#{i}", :body => "World"})
-          @message.sender = @sender
-          @message.recipient = @recipient
-          @message.notifiable = MergeRequest.first
-          @message.save!
-        }
-      end
-    end
-    
-    should "throttle on create" do
-      assert_nothing_raised do
-        10.times{|i|
-          @message = Message.new({:subject => "Hello#{i}", :body => "World"})
-          @message.sender = @sender
-          @message.recipient = @recipient
-          @message.save!
-        }
-      end
-      
-      assert_no_difference("Message.count") do
-        assert_raises(RecordThrottling::LimitReachedError) do
-          @message = Message.new({:subject => "spam much?", :body => "World"})
-          @message.sender = @sender
-          @message.recipient = @recipient
-          @message.save!
-        end
-      end
-      
-      # Should inflict with others
-      assert_difference("Message.count") do
-        assert_nothing_raised do
-          @message = Message.new({:subject => "spam much?", :body => "World"})
-          @message.sender = @recipient
-          @message.recipient = @sender
-          @message.save!
-        end
-      end
-    end
-  end
-  
   context 'Archive state' do
     setup do
       @sender = Factory.create(:user)

@@ -2,7 +2,6 @@
 
 class Repository < ActiveRecord::Base
   include ActiveMessaging::MessageSender
-  include RecordThrottling
   include Watchable
 
   KIND_PROJECT_REPO = 0
@@ -38,13 +37,6 @@ class Repository < ActiveRecord::Base
   after_create :create_initial_committership
   after_create :post_repo_creation_message
   after_destroy :post_repo_deletion_message
-
-  throttle_records :create, :limit => 5,
-    :counter => proc{|record|
-      record.user.repositories.count(:all, :conditions => ["created_at > ?", 5.minutes.ago])
-    },
-    :conditions => proc{|record| {:user_id => record.user.id} },
-    :timeframe => 5.minutes
 
   scope :by_users,  :conditions => { :kind => KIND_USER_REPO } do
     def fresh(limit = 10)
