@@ -81,20 +81,6 @@ describe CommitRequestProcessor do
 
       content_for("master").should match(%r{A\s+master})
     end
-
-    it "should not get confused about equal names on files and folders" do
-      processor.on_message(@options.merge({
-        files: [{
-          data: "Raw data 1",
-          to: "file"
-        }, {
-          data: "Raw data 2",
-          to: "file/file2"
-        }]
-      }).to_json)
-
-      puts content_for#("stable").should match(%r{A\s+stable})
-    end
   end
 
   describe "#move" do
