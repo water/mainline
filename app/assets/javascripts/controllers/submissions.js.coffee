@@ -2,11 +2,15 @@ window.App.pendingUploads     = 0;
 window.App.successfulUploads  = [];
 
 $ ->
+  prettyPrint()
+  
   # Fetches the tree for the given url and places it in the treeview
   fetch_tree_for_path = (url) ->
     internal_fetch = (url) ->
       $("#tree-view").html("Loading...")
-      success = (data) -> $("#tree-view").html(data)
+      success = (data) -> 
+        $("#tree-view").html(data)
+        prettyPrint()
       $.get url, null, success, 'html'
 
     if $("#tree-view table")
