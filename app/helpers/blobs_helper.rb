@@ -46,6 +46,7 @@ module BlobsHelper
     end
   end
   
+  # TODO PROBABLY NOT USED RIGHT NOW
   def render_highlighted(text, filename, code_theme_class = nil)
     out = []
     lang_class = "lang" + File.extname(filename).sub('.', '-')
@@ -64,13 +65,18 @@ module BlobsHelper
     out.join("\n")
   end
   
+  def markdown_if_markdown(text, filename)
+    if markdown?(filename)
+      markdown(text)
+    else
+      text
+    end
+  end
+  
   def markdown? (string)
     WaterConfig["markdown_file_extensions"].include?(File.extname(string))
   end
-  
-  def render_markdown
-  end
-  
+
   def too_big_to_render?(size)
     size > 350.kilobytes
   end

@@ -34,6 +34,7 @@ gem "rails_autolink"
 gem "spine-rails"
 gem "dynamic_form", "1.0.0"
 gem "gon"
+gem "redcarpet"
 
 group :assets do
   gem "sass-rails", " ~> 3.2.0"
