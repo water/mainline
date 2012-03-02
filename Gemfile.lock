@@ -160,6 +160,7 @@ GEM
       railties (~> 3.0)
     hike (1.2.1)
     hirb (0.6.0)
+    hodel_3000_compliant_logger (0.1.0)
     hoe (2.15.0)
       rake (~> 0.8)
     i18n (0.6.0)
@@ -340,6 +341,7 @@ DEPENDENCIES
   grit!
   haml-rails
   hirb
+  hodel_3000_compliant_logger
   hoe
   jquery-rails
   launchy

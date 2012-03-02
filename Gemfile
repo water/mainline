@@ -17,6 +17,7 @@ gem "rails-dev-tweaks", "~> 0.6.1"
 gem "active_attr"
 gem "diff-display", "0.0.1"
 gem "localized_dates", git: "git://github.com/water/localized_dates.git"
+gem "hodel_3000_compliant_logger"
 
 # Authentication
 gem "rack-openid"
