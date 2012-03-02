@@ -16,8 +16,11 @@ class When < ActiveRecord::Base
   end
   
   def uniqueness_of_time_span
-    if record = When.where(year: year, study_period: study_period)
-      errors[:base] << "Combination of year and study period should be unique. Existing record with id: #{record.id} already has same combo."
+    if record = When.where(year: year, study_period: study_period).first
+      errors[:base] << %Q{
+        Combination of year and study period should be unique. 
+        Existing record with id: #{record.id} already has same combo.
+      }
     end
   end
 end
