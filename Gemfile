@@ -13,10 +13,8 @@ gem "state_machine"
 gem "riddle" # For the ultrasphinx plugin
 gem "rdoc"
 gem "exception_notification", :git => "git://github.com/smartinez87/exception_notification.git"
-gem "gash", git: "git://github.com/water/gash.git"
 gem "rails-dev-tweaks", "~> 0.6.1"
 gem "active_attr"
-gem "grit", git: "git://github.com/water/grit.git"
 
 # Authentication
 gem "rack-openid"
@@ -35,6 +33,11 @@ gem "rails_autolink"
 gem "spine-rails"
 gem "dynamic_form", "1.0.0"
 gem "gon"
+
+# Git
+gem "grit", git: "git://github.com/water/grit.git"
+gem "gash", git: "git://github.com/water/gash.git"
+gem "git", "1.1.1"
 
 group :assets do
   gem "sass-rails", " ~> 3.2.0"
