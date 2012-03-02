@@ -37,6 +37,14 @@ GIT
       open4 (>= 0.9.6)
 
 GIT
+  remote: git://github.com/water/grit.git
+  revision: 23c087fd7354117e9326ad9824c47fcc75e54935
+  specs:
+    grit (1.0.3)
+      diff-lcs (>= 1.1.2)
+      mime-types (>= 1.15)
+
+GIT
   remote: git://github.com/water/spork-testunit.git
   revision: e69586f17af4f7497c862bb663fa0d53ffa746a9
   specs:
@@ -322,6 +330,7 @@ DEPENDENCIES
   gash!
   geoip
   gon
+  grit!
   haml-rails
   hirb
   hoe

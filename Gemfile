@@ -16,6 +16,7 @@ gem "exception_notification", :git => "git://github.com/smartinez87/exception_no
 gem "gash", git: "git://github.com/water/gash.git"
 gem "rails-dev-tweaks", "~> 0.6.1"
 gem "active_attr"
+gem "grit", git: "git://github.com/water/grit.git"
 
 # Authentication
 gem "rack-openid"
