@@ -472,7 +472,7 @@ class Repository < ActiveRecord::Base
         owner.to_param,
         self.to_param,
         Time.now.to_f.to_s,
-        ActiveSupport::SecureRandom.hex
+        SecureRandom.hex
       ].join
 
       raw_hash = Digest::SHA1.hexdigest(string)
