@@ -16,6 +16,7 @@ gem "exception_notification", :git => "git://github.com/smartinez87/exception_no
 gem "rails-dev-tweaks", "~> 0.6.1"
 gem "active_attr"
 gem "diff-display", "0.0.1"
+gem "localized_dates", git: "git://github.com/water/localized_dates.git"
 
 # Authentication
 gem "rack-openid"

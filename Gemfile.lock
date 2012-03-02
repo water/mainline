@@ -21,7 +21,7 @@ GIT
 
 GIT
   remote: git://github.com/thoughtbot/paperclip.git
-  revision: c95609bc9090e6f038624acd66d9f62b2e84359e
+  revision: 0efa3843164158df669497e6f12ce5a80ea368f1
   specs:
     paperclip (2.7.0)
       activerecord (>= 2.3.0)
@@ -43,6 +43,12 @@ GIT
     grit (1.0.3)
       diff-lcs (>= 1.1.2)
       mime-types (>= 1.15)
+
+GIT
+  remote: git://github.com/water/localized_dates.git
+  revision: c7fdfa02305b0858cf0494c3e2aa5ee79c74defb
+  specs:
+    localized_dates (0.0.1)
 
 GIT
   remote: git://github.com/water/spork-testunit.git
@@ -338,6 +344,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   less-rails-bootstrap
+  localized_dates!
   mime-types
   minitest
   mocha
