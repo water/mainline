@@ -1,35 +1,7 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  get "lab_deadlines/new"
-
-  get "lab_deadlines/index"
-
-  get "lab_deadlines/show"
-
-  get "lab_deadlines/create"
-
-  get "lab_deadlines/edit"
-
-  get "whens/new"
-
-  get "whens/index"
-
-  get "whens/show"
-
-  get "whens/create"
-
-  get "whens/edit"
-
-  get "course_codes/new"
-
-  get "course_codes/index"
-
-  get "course_codes/show"
-
-  get "course_codes/create"
-
-  get "course_codes/edit"
+  resources :course_codes, :whens, :lab_deadlines
 
   post "upload" => "uploads#upload"
   post "commit_requests/create" => "commit_requests#create", :as => :commit_request
