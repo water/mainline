@@ -13,7 +13,6 @@ class TreesController < ApplicationController
   end
   
   def show
-    debugger
     @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
     @git = @repository.git
     @ref, @path = branch_and_path(params[:branch_and_path], @git)
@@ -29,9 +28,6 @@ class TreesController < ApplicationController
       path = @path.blank? ? [] : ["#{@path.join("/")}/"] # FIXME: meh, this sux
       @tree = @git.tree(@commit.tree.id, path)
       expires_in 30.seconds
-    end
-    respond_to do |format|
-      format.html {render layout: false}
     end
   end
   

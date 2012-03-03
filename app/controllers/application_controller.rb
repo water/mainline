@@ -31,6 +31,11 @@ class ApplicationController < ActionController::Base
       super
     end
   end
+
+  def render(options = {}, extra_options = {}, &block)
+    options[:layout] ||= ! params[:bare]
+    super(options, extra_options, &block)
+  end
   
   def current_site
     @current_site || Site.default
