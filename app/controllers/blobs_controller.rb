@@ -30,9 +30,6 @@ class BlobsController < ApplicationController
       #             :repository => @repository, :name => @blob.basename)
       # expires_in 10.minutes
     end
-    respond_to do |format|
-      format.html {render layout: false}
-    end
   end
 
   def raw
