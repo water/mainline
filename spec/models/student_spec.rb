@@ -1,7 +1,7 @@
 describe Student do
-  let(:student) { Factory.create(:student) }
-  
   describe "relations" do
+    let(:student) { Factory.create(:student) }
+
     it "should have a base" do
       student.base.should be_instance_of(User)
     end
@@ -15,4 +15,13 @@ describe Student do
     end
   end
 
+  describe "validation" do
+    it "should start with a valid student" do
+      Factory.build(:student).should be_valid
+    end
+
+    it "should have a base" do
+      Factory.build(:student, base: nil).should_not be_valid
+    end
+  end
 end
