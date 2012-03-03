@@ -1,12 +1,3 @@
-Factory.sequence :course_code_value do |n|
-  "TDA123_#{n}"
-end
-
-Factory.define(:registered_course) do |r|
-  r.association(:student, factory: :user)
-  r.association(:given_course)
-end
-
 FactoryGirl.define do
   factory :user do
     login { Factory.next(:login) }
@@ -21,9 +12,19 @@ FactoryGirl.define do
       is_admin false
     end
   end
+
+  factory :student do
+    base { Factory.create(:user) }
+  end
 end
 
-Factory.define(:student) do |u|
+Factory.sequence :course_code_value do |n|
+  "TDA123_#{n}"
+end
+
+Factory.define(:registered_course) do |r|
+  r.association(:student, factory: :user)
+  r.association(:given_course)
 end
 
 Factory.define(:course) {}
