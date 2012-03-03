@@ -15,6 +15,7 @@ FactoryGirl.define do
 
   factory :student do
     base { Factory.create(:user) }
+    registered_courses { [Factory.create(:registered_course)] }
   end
 end
 
