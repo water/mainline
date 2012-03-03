@@ -1,6 +1,16 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
+  get "course_codes/new"
+
+  get "course_codes/index"
+
+  get "course_codes/show"
+
+  get "course_codes/create"
+
+  get "course_codes/edit"
+
   post "upload" => "uploads#upload"
   post "commit_requests/create" => "commit_requests#create", :as => :commit_request
   
