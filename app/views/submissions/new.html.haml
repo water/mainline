@@ -19,18 +19,21 @@
       %h1 Sending commit request...
   
 .page-header
-  %h1 Upload files or die!!
-%h1 Upload
+  %h1 Submit
   
 %blockquote
   %p
-    Use this page to upload files for your submission.
+    This is what your submission looks like right now.
     %br
-    Files can be uploaded without submitting them.
+    Use this page to upload files.
     %br
-    When you're done, click the Submit-button to submit.
+    When you are satisfied, click the submit button to submit your assignment
 %br/
 / The file upload form used as target for the file upload widget
+%br/
+  
+#tree-view
+
 %form#fileupload{:action => "/upload", :enctype => "multipart/form-data", :method => "POST"}
   / The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
   .fileupload-buttonbar
@@ -60,11 +63,6 @@
   / The table listing the files available for upload/download
   %table.table.table-striped
     %tbody.files{"data-target" => "#modal-gallery", "data-toggle" => "modal-gallery"}
-%br/
-.well
-  %h1#counter Counter
-  
-#tree-view
 
 / The template to display files available for upload
 %script#template-upload{:type => "text/x-tmpl"}

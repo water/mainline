@@ -100,7 +100,6 @@
             // Callback for the start of each file upload request:
             send: function (e, data) {
                 window.App.pendingUploads += data.files.length;
-                $("#counter").text(window.App.pendingUploads);
                 var that = $(this).data('fileupload');
                 if (!data.isValidated) {
                     if (!data.isAdjusted) {
@@ -141,7 +140,6 @@
                         // TODO: could this be done nicer?
                         window.App.successfulUploads.push(file);
                         window.App.pendingUploads--;
-                        $("#counter").text(window.App.pendingUploads);
                         if (window.App.pendingUploads == 0) {
                           alert("Done!");
                           window.App.functions.sendAddCommitRequest(window.App.successfulUploads, "/path");
