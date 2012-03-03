@@ -9,6 +9,10 @@ describe Student do
     it "should have a list of registered courses" do
       student.should have(1).registered_courses
     end
+
+    it "should have a list of given courses" do
+      student.should have(1).given_courses
+    end
   end
 
 end
