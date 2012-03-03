@@ -2,10 +2,12 @@
 
 Gitorious::Application.routes.draw do
 
+  resources :registered_courses
+  resources :students
   resources :lab_deadlines
   resources :whens
   resources :course_codes
-
+  
 
   post "upload" => "uploads#upload"
   post "commit_requests/create" => "commit_requests#create", :as => :commit_request
