@@ -622,6 +622,8 @@ class Repository < ActiveRecord::Base
       name.downcase! if name
     end
     
+    # TODO: this method is a stub!!!
+    #
     # @args,  a hash containing a group object and a lab object
     #         or to normal arguments - group_id and lab_id 
     # returns the repo associated with a particular lab and group.
