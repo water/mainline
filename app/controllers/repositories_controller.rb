@@ -26,7 +26,6 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    # @repository = @owner.repositories.find_by_name_in_project!(params[:id], @containing_project)
     @repository = Repository.find_by_name(params[:id])
     @root = @repository
     # @events = @repository.events.top.page(params[:page]).order("created_at desc")
