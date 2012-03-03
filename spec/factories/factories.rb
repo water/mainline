@@ -17,6 +17,10 @@ FactoryGirl.define do
     base { Factory.create(:user) }
     registered_courses { [Factory.create(:registered_course)] }
   end
+
+  factory :administrator do
+    base { Factory.create(:user) }
+  end
 end
 
 Factory.sequence :course_code_value do |n|

@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   has_many :events, :order => "events.created_at asc", :dependent => :destroy
   has_many :events_as_target, :class_name => "Event", :as => :target
   has_many :favorites, :dependent => :destroy
-
+  has_one :administrator
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :current_password
 
@@ -263,8 +263,12 @@ class User < ActiveRecord::Base
 
   # is +a_user+ an admin within this users realm
   # (for duck-typing repository etc access related things)
-  def admin?(a_user)
-    self == a_user
+  def admin?(a_user = nil)
+    if a_user
+      self == a_user
+    else
+      !! self.administrator
+    end
   end
 
   # is +a_user+ a committer within this users realm
