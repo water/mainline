@@ -16,7 +16,8 @@ user = Factory.create(:admin, {
 
 repository = Factory.create(:repository, {
   user: user, 
-  owner: user
+  owner: user,
+  name: "repo1"
 })
 
 sleep(10) # Wait for repository to be created
