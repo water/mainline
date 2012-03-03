@@ -45,10 +45,6 @@ class RepositoriesController < ApplicationController
     @repository = Repository.new()
     # @root = Breadcrumb::NewRepository.new(@project)
     @repository.kind = Repository::KIND_USER_REPO
-    # @repository.owner = @project.owner
-    # if @project.repositories.mainlines.count == 0
-    #   @repository.name = @project.slug
-    # end
   end
 
   def create
