@@ -1,0 +1,31 @@
+<%
+%>
+
+<%= breadcrumbs_from(@root) -%>
+
+<h2 class="content-header">Add new repository to <%= link_to @owner.title, @owner -%></h2>
+
+<%= error_messages_for :repository -%>
+<%= form_for([@owner, @repository]) do |f| -%>
+<fieldset>
+  <li>
+    <%= f.label :name -%>
+    <div><%= f.text_field :name -%></div>
+  </li>
+  <li>
+    <%= f.label :description -%> 
+    
+    <div><%= f.text_area :description, :class => "text wide" -%><br /> <span class="hint">(<%= markdown_hint -%>)</span></div>
+  </li>
+</fieldset>
+<fieldset class="submit">	  
+  <%= f.submit "Create repository" -%>
+</fieldset>
+<% end -%>
+<% content_for :sidebar do -%>
+	<h2>Information</h2>
+	<p>The repository will be in the <strong><%= link_to h(@project.title), @project -%></strong> project, 
+    and owned by <strong><%= link_to @repository.owner.title, @owner -%></strong>
+    (a <%= @repository.owner.class.human_name.downcase -%>).
+  </p>
+<% end -%>

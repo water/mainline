@@ -26,10 +26,10 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = @owner.repositories.find_by_name_in_project!(params[:id], @containing_project)
+    # @repository = @owner.repositories.find_by_name_in_project!(params[:id], @containing_project)
+    @repository = Repository.find_by_name(params[:id])
     @root = @repository
-    @events = @repository.events.top.page(params[:page]).order("created_at desc")
-    
+    # @events = @repository.events.top.page(params[:page]).order("created_at desc")
     # @atom_auto_discovery_url = repo_owner_path(@repository, :project_repository_path,
     #                               @repository.project, @repository, :format => :atom)
     response.headers['Refresh'] = "5" unless @repository.ready
@@ -52,10 +52,10 @@ class RepositoriesController < ApplicationController
   end
 
   def create
-    @repository = @project.repositories.new(params[:repository])
-    @root = Breadcrumb::NewRepository.new(@project)
-    @repository.kind = Repository::KIND_PROJECT_REPO
-    @repository.owner = @project.owner
+    @repository = Repository.new(params[:repository])
+    # @root = Breadcrumb::NewRepository.new(@project)
+    @repository.kind = Repository::KIND_USER_REPO
+    @repository.owner = current_user
     @repository.user = current_user
 
     if @repository.save
