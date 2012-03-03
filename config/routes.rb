@@ -1,6 +1,16 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
+  get "whens/new"
+
+  get "whens/index"
+
+  get "whens/show"
+
+  get "whens/create"
+
+  get "whens/edit"
+
   get "course_codes/new"
 
   get "course_codes/index"
