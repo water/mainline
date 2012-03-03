@@ -1,0 +1,2 @@
+module LabDeadlinesHelper
+end

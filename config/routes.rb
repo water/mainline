@@ -1,6 +1,16 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
+  get "lab_deadlines/new"
+
+  get "lab_deadlines/index"
+
+  get "lab_deadlines/show"
+
+  get "lab_deadlines/create"
+
+  get "lab_deadlines/edit"
+
   get "whens/new"
 
   get "whens/index"
