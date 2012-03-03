@@ -27,7 +27,7 @@ $ ->
       fetch_tree_for_path($(this).data("url")))
     
   # Fetch the first tree
-  fetch_tree_for_path("/repositories/test2/trees/master")
+  fetch_tree_for_path(gon.tree_root_path)
 
 
 window.App.functions.sendAddCommitRequest = (files, path) ->
