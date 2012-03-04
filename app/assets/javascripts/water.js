@@ -7,3 +7,4 @@
 //= require history.js/jquery.history
 //= require init
 //= require spine
+//= require app

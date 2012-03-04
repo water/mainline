@@ -4,6 +4,8 @@ window.App.successfulUploads  = [];
 $ ->
   prettyPrint()
   
+  new window.App.Spine();
+  
   # Fetches the tree for the given url and places it in the treeview
   fetch_tree_for_path = (url) ->
     internal_fetch = (url) ->

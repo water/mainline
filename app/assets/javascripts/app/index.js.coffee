@@ -14,6 +14,9 @@
 class App extends Spine.Controller
   constructor: ->
     super
+    @routes
+      "/tree/*branch_and_path": (params) -> alert "Tree!"
+        
     
     # Initialize controllers:
     #  @append(@items = new App.Items)
@@ -21,4 +24,4 @@ class App extends Spine.Controller
     
     Spine.Route.setup()    
 
-window.App = App
+window.App.Spine = App
