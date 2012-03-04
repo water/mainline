@@ -14,7 +14,7 @@ $ ->
       $.get url, null, success, 'html'
 
     if $("#tree-view table")
-      $("#tree-view table").slideUp("slow", internal_fetch(url))
+      $("#tree-view table").fadeOut("1500", internal_fetch(url))
     else
       internal_fetch(url)
 
@@ -27,13 +27,13 @@ $ ->
       fetch_tree_for_path($(this).data("url")))
     
   # Fetch the first tree
-  fetch_tree_for_path("/repositories/test2/trees/master")
+  fetch_tree_for_path(gon.tree_root_path)
 
 
 window.App.functions.sendAddCommitRequest = (files, path) ->
     $("#main").append($("#commit-request-dialog"))
     action = gon.commit_request_path
-    request = method: "add"
+    request = command: "add", repository: gon.repository_id, branch: "master", commit_message: "A commit message"
     request.files = ({id: file.id, to:[path, file.name].join("/")} for file in files)
     console.log(request)
     success = (data) -> $("#commit-request-dialog h1").text("Done!")

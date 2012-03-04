@@ -1,0 +1,17 @@
+%h2 Add new repository
+
+= error_messages_for :repository
+= form_for([@owner, @repository]) do |f|
+  %fieldset
+    %li
+      = f.label :name
+      %div= f.text_field :name
+    %li
+      = f.label :description
+      %div
+        = f.text_area :description, :class => "text wide"
+        %br/
+        %span.hint
+          (#{markdown_hint})
+  %fieldset.submit
+    = f.submit "Create repository"

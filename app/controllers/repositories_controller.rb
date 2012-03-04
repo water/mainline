@@ -3,12 +3,12 @@
 class RepositoriesController < ApplicationController
   before_filter :login_required,
     :except => [:index, :show, :writable_by, :configure, :search_clones]
-  before_filter :find_repository_owner
-  before_filter :require_owner_adminship, :only => [:new, :create]
+  # before_filter :find_repository_owner
+  # before_filter :require_owner_adminship, :only => [:new, :create]
   before_filter :find_and_require_repository_adminship,
     :only => [:edit, :update, :confirm_delete, :destroy]
   before_filter :require_user_has_ssh_keys, :only => [:clone, :create_clone]
-  before_filter :only_projects_can_add_new_repositories, :only => [:new, :create]
+  # before_filter :only_projects_can_add_new_repositories, :only => [:new, :create]
   skip_before_filter :public_and_logged_in, :only => [:writable_by, :configure]
   renders_in_site_specific_context :except => [:writable_by, :configure]
 
@@ -26,10 +26,9 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = @owner.repositories.find_by_name_in_project!(params[:id], @containing_project)
+    @repository = Repository.find_by_name(params[:id])
     @root = @repository
-    @events = @repository.events.top.page(params[:page]).order("created_at desc")
-    
+    # @events = @repository.events.top.page(params[:page]).order("created_at desc")
     # @atom_auto_discovery_url = repo_owner_path(@repository, :project_repository_path,
     #                               @repository.project, @repository, :format => :atom)
     response.headers['Refresh'] = "5" unless @repository.ready
@@ -42,20 +41,16 @@ class RepositoriesController < ApplicationController
   end
 
   def new
-    @repository = @project.repositories.new
-    @root = Breadcrumb::NewRepository.new(@project)
-    @repository.kind = Repository::KIND_PROJECT_REPO
-    @repository.owner = @project.owner
-    if @project.repositories.mainlines.count == 0
-      @repository.name = @project.slug
-    end
+    @repository = Repository.new()
+    # @root = Breadcrumb::NewRepository.new(@project)
+    @repository.kind = Repository::KIND_USER_REPO
   end
 
   def create
-    @repository = @project.repositories.new(params[:repository])
-    @root = Breadcrumb::NewRepository.new(@project)
-    @repository.kind = Repository::KIND_PROJECT_REPO
-    @repository.owner = @project.owner
+    @repository = Repository.new(params[:repository])
+    # @root = Breadcrumb::NewRepository.new(@project)
+    @repository.kind = Repository::KIND_USER_REPO
+    @repository.owner = current_user
     @repository.user = current_user
 
     if @repository.save

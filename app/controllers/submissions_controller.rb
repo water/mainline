@@ -1,6 +1,7 @@
 class SubmissionsController < ApplicationController
   layout "water"
-  before_filter :add_commit_request_path, only: [:new]
+  before_filter :find_repo
+  before_filter :add_paths_to_gon, only: [:new]
   
   def index
   end
@@ -12,42 +13,17 @@ class SubmissionsController < ApplicationController
   end
 
   def new
-    @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
-    # mock!
-    # prepare_tree
     flash[:notice] = "Incredibly useless message."
   end
-  
-  def mock!
-    params[:branch_and_path] = "master"
-  end
-  
+
   protected
-  def prepare_tree
-    @git = @repository.git
-    @ref, @path = branch_and_path(params[:branch_and_path], @git)
-    unless @commit = @git.commit(@ref)
-      handle_missing_tree_sha and return
-    end
-    if stale_conditional?(Digest::SHA1.hexdigest(@commit.id + 
-      (params[:branch_and_path].kind_of?(Array) ? params[:branch_and_path].join : params[:branch_and_path])), 
-                          @commit.committed_date.utc)
-      head = @git.get_head(@ref) || Grit::Head.new(@commit.id_abbrev, @commit)
-      @root = Breadcrumb::Folder.new({:paths => @path, :head => head, 
-                                      :repository => @repository})
-      path = @path.blank? ? [] : ["#{@path.join("/")}/"] # FIXME: meh, this sux
-      @tree = @git.tree(@commit.tree.id, path)
-      expires_in 30.seconds
-    end
+  def find_repo
+    @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
   end
-  def handle_missing_tree_sha
-      flash[:error] = "No such tree SHA1 was found"
-      redirect_to project_repository_tree_path(@project, @repository, 
-                      branch_with_tree("HEAD", @path || []))
-  end
-  
-  protected
-  def add_commit_request_path
+  def add_paths_to_gon
     gon.commit_request_path = commit_request_path
+    # TODO Make this nicer!
+    gon.tree_root_path = repository_tree_path(@repository, "master", bare: 1)
+    gon.repository_id = @repository.id
   end
 end
