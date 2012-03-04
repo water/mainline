@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120223175025) do
+ActiveRecord::Schema.define(:version => 20120304220114) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -148,6 +148,11 @@ ActiveRecord::Schema.define(:version => 20120223175025) do
     t.datetime "updated_at"
   end
 
+  create_table "examiners_given_courses", :id => false, :force => true do |t|
+    t.integer "examiner_id"
+    t.integer "given_course_id"
+  end
+
   create_table "favorites", :force => true do |t|
     t.integer  "user_id"
     t.string   "watchable_type"
@@ -171,7 +176,6 @@ ActiveRecord::Schema.define(:version => 20120223175025) do
 
   create_table "given_courses", :force => true do |t|
     t.integer  "course_id"
-    t.integer  "examiner_id"
     t.integer  "when_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -260,8 +264,8 @@ ActiveRecord::Schema.define(:version => 20120223175025) do
   create_table "labs", :force => true do |t|
     t.integer  "number"
     t.integer  "lab_commit_id"
-    t.integer  "GivenCourse_id"
-    t.integer  "LabDescription_id"
+    t.integer  "given_course_id"
+    t.integer  "lab_description_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
