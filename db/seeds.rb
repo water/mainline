@@ -32,7 +32,7 @@ puts %x{
   cd #{path} && 
   rm -rf #{git} &&
   git clone --bare git://github.com/water/grack.git #{git}
-}
+} unless git =~ /^\//
 
 # codes = ["TDA289", "DAT255", "FFR101", "EDA343", "DAT036", "EDA331", "EDA451"]
 # codes.each do |code|
