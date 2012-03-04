@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120304220114) do
+ActiveRecord::Schema.define(:version => 20120304231742) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -240,9 +240,13 @@ ActiveRecord::Schema.define(:version => 20120304220114) do
 
   create_table "lab_groups", :force => true do |t|
     t.integer  "identification"
-    t.integer  "registered_course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "lab_groups_registered_courses", :id => false, :force => true do |t|
+    t.integer "lab_group_id"
+    t.integer "registered_course_id"
   end
 
   create_table "lab_has_groups", :force => true do |t|
