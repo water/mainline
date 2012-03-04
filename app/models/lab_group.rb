@@ -1,3 +1,5 @@
 class LabGroup < ActiveRecord::Base
-  belongs_to :registered_course
+  has_and_belongs_to_many :registered_courses
+  has_many :labs, through: :lab_has_group
+  has_many :submissions, through: :lab_has_group
 end

@@ -25,6 +25,7 @@ class Repository < ActiveRecord::Base
   has_many    :cloners, :dependent => :destroy
   has_many    :events, :as => :target, :dependent => :destroy
   has_many :hooks, :dependent => :destroy
+  belongs_to :lab_has_group
 
   NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
   validates_presence_of :user_id, :name, :owner_id
