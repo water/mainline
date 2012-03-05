@@ -4,32 +4,33 @@ window.App.successfulUploads  = [];
 $ ->
   prettyPrint()
   
-  new window.App.Spine();
+  new window.App.Trees(el: $("#spine"))
   
-  # Fetches the tree for the given url and places it in the treeview
-  fetch_tree_for_path = (url) ->
-    internal_fetch = (url) ->
-      $("#tree-view").html("Loading...")
-      success = (data) -> 
-        $("#tree-view").html(data)
-        prettyPrint()
-      $.get url, null, success, 'html'
-
-    if $("#tree-view table")
-      $("#tree-view table").fadeOut("1500", internal_fetch(url))
-    else
-      internal_fetch(url)
-
   
-  # Catch all clicks for node links in the tree view and send the to the tree-fetcher
-  $("#tree-view").on("click",
-    "#tree-view td.node a",
-    (event) -> 
-      event.preventDefault()
-      fetch_tree_for_path($(this).data("url")))
-    
-  # Fetch the first tree
-  fetch_tree_for_path(gon.tree_root_path)
+  # # Fetches the tree for the given url and places it in the treeview
+  # fetch_tree_for_path = (url) ->
+  #   internal_fetch = (url) ->
+  #     $("#tree-view").html("Loading...")
+  #     success = (data) -> 
+  #       $("#tree-view").html(data)
+  #       prettyPrint()
+  #     $.get url, null, success, 'html'
+  # 
+  #   if $("#tree-view table")
+  #     $("#tree-view table").fadeOut("1500", internal_fetch(url))
+  #   else
+  #     internal_fetch(url)
+  # 
+  # 
+  # # Catch all clicks for node links in the tree view and send the to the tree-fetcher
+  # $("#tree-view").on("click",
+  #   "#tree-view td.node a",
+  #   (event) -> 
+  #     event.preventDefault()
+  #     fetch_tree_for_path($(this).data("url")))
+  #   
+  # # Fetch the first tree
+  # fetch_tree_for_path(gon.tree_root_path)
 
 
 window.App.functions.sendAddCommitRequest = (files, path) ->
