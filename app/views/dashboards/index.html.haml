@@ -4,7 +4,7 @@
     = link_to(current_user.login)
   %br 
 
-  - unless @registered_courses.empty?
+  - unless @registered_courses.nil?
     - @registered_courses.each do |registered_course|
       .well
         %h4 CourseName

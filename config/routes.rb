@@ -36,7 +36,7 @@ Gitorious::Application.routes.draw do
   
   extend Gitorious::RepositoryRoutes
   
-  root :to => "site#index"
+  root :to => "dashboards#index"
   
   resources :merge_requests
   
