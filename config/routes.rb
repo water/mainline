@@ -165,8 +165,6 @@ Gitorious::Application.routes.draw do
       end
   end
    
-  match "/site/dashboard" => "site#dashboard"
-  
   resources :commit_lists do
     resources :repositories do
       resources :merge_requests
