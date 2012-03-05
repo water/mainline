@@ -3,7 +3,7 @@ describe Student do
     let(:student) { Factory.create(:student) }
 
     it "should have a base" do
-      student.base.should be_instance_of(User)
+      student.user.should be_instance_of(User)
     end
 
     it "should have a list of registered courses" do
@@ -20,8 +20,8 @@ describe Student do
       Factory.build(:student).should be_valid
     end
 
-    it "should have a base" do
-      Factory.build(:student, base: nil).should_not be_valid
+    it "should have a user" do
+      Factory.build(:student, user: nil).should_not be_valid
     end
   end
 end

@@ -14,12 +14,12 @@ FactoryGirl.define do
   end
 
   factory :student do
-    base { Factory.create(:user) }
+    user { Factory.create(:user) }
     registered_courses { [Factory.create(:registered_course)] }
   end
 
   factory :administrator do
-    base { Factory.create(:user) }
+    user { Factory.create(:user) }
   end
 end
 
