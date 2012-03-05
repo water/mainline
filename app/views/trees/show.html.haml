@@ -8,14 +8,14 @@
       - if node.is_a? Grit::Tree
         %td.node.folder
           %i.icon-folder-close
-          = link_to h(node.basename) + "/", "#", data: {url: tree_path(@ref, node.name, bare: 1)}
+          = link_to h(node.basename) + "/", hash_path(@ref, node.name, :tree), data: {url: tree_path(@ref, node.name, bare: 1)}
       - elsif node.is_a? Grit::Submodule
         %td.node.submodule
           %a{:href => "#"}= h(node.basename)
       - else
         %td{:class => "node file #{class_for_filename(node.name)}"}
           %i.icon-file
-          = link_to h(node.basename), "#", data: {url: blob_path(@ref, node.name, bare: 1).gsub("%2F","/")}
+          = link_to h(node.basename),  hash_path(@ref, node.name, :blob), data: {url: blob_path(@ref, node.name, bare: 1).gsub("%2F","/")}
       - if node.is_a? Grit::Submodule
         %td.meta
         %td.meta.commit_message
