@@ -13,7 +13,8 @@ class TreesController < ApplicationController
   end
   
   def show
-    @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
+    # @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
+    @repository = Repository.find(6)
     @git = @repository.git
     @ref, @path = branch_and_path(params[:branch_and_path], @git)
     unless @commit = @git.commit(@ref)
@@ -99,7 +100,7 @@ class TreesController < ApplicationController
     
     def handle_missing_tree_sha
       flash[:error] = "No such tree SHA1 was found"
-      redirect_to project_repository_tree_path(@project, @repository, 
+      redirect_to repository_tree_path(@repository, 
                       branch_with_tree("HEAD", @path || []))
     end
 end
