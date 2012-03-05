@@ -1,0 +1,22 @@
+-if logged_in?
+  %h1 
+    Welcome 
+    = link_to(current_user.login)
+  %br 
+
+  - unless @registered_courses.empty?
+    - @registered_courses.each do |registered_course|
+      .well
+        %h4 CourseName
+        %br
+        %table.table
+          %tr
+            %th Submissions
+            %th Status
+            %th Deadline
+       
+  - else
+    %br
+      .well
+        You are currently not registered to any course
+
