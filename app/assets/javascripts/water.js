@@ -5,5 +5,4 @@
 //= require twitter/bootstrap
 //= require underscore
 //= require init
-//= require spine
 //= require app

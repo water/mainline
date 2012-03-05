@@ -4,7 +4,7 @@ window.App.successfulUploads  = [];
 $ ->
   prettyPrint()
   
-  new window.App.Trees(el: $("#spine"))
+  # new window.App.Trees(el: $("#spine"))
   
   
   # # Fetches the tree for the given url and places it in the treeview
