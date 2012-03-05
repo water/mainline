@@ -14,6 +14,10 @@ module RepositoriesHelper
     repo_owner_path(@repository, :repository_commit_path, @repository, objectish)
   end
   
+  def hash_path(ref, path, type)
+    "#/#{type}/#{ref}/#{path}"
+  end
+  
   def tree_path(treeish = "master", path = [], *args)
     if path.respond_to?(:to_str)
       path = path.split("/")
