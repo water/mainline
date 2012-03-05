@@ -16,7 +16,7 @@
     = javascript_include_tag "water"
     = javascript_include_tag "controllers/#{params[:controller]}"
     = yield :post_js
-  %body
+  %body{class: params[:controller]}
     /[if lt IE 7] <p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p>
     .navbar.navbar-fixed-top
       .navbar-inner
