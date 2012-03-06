@@ -23,9 +23,9 @@ FactoryGirl.define do
   end
 
   factory :lab_has_group do
-    association :repository
-    association :lab
-    association :lab_group
+    repository
+    lab
+    lab_group
   end
 
   factory :lab do
@@ -74,7 +74,9 @@ FactoryGirl.define do
     user { Factory.create(:user) }
   end
 
-  factory :lab_group do; end
+  factory :lab_group do
+    given_course
+  end
 end
 
 Factory.sequence :course_code_value do |n|
