@@ -11,6 +11,10 @@ describe LabGroup do
       s.first.lab_group.should eq(group)
       group.should have(2).submissions
     end
+
+    it "should have a list of students" do
+      group.should have(1).students
+    end
   end
 
   describe "validations" do

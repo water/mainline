@@ -9,17 +9,17 @@ FactoryGirl.define do
     is_admin false
     activated_at Time.now.to_s(:db)
     factory :admin do
-      is_admin false
+      is_admin true
     end
   end
 
   factory :student do
-    base { Factory.create(:user) }
+    user
     registered_courses { [Factory.create(:registered_course)] }
   end
 
   factory :administrator do
-    base { Factory.create(:user) }
+    user
   end
 
   factory :lab_has_group do
@@ -76,6 +76,7 @@ FactoryGirl.define do
 
   factory :lab_group do
     given_course
+    students { [Factory(:student)] }
   end
 end
 
