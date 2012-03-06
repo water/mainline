@@ -1,4 +1,6 @@
 describe Examiner do
+  let(:examiner) { Factory.create(:examiner) }
+
   it "should default to valid" do
     Factory.build(:examiner).should be_valid
   end
