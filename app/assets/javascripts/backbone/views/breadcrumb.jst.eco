@@ -1,10 +1,18 @@
-<ul class="breadcrumbs">
-  <% for crumb in @crumbs %>
-    <li>
-      <a href="<% crumb.href %>"><% crumb.name %></a><span class="divider">/</span>
+<ul class="breadcrumb">
+  <li>
+    <a href="#"> root </a>
+  </li>
+  <li>
+    <span class="divider">/</span>
+  <li>
+    <% if @crumbs then for crumb in @crumbs: %>
+      <li>
+        <a href="<%= crumb.href %>"><%= crumb.name %></a><span class="divider">/</span>
+      </li>
+    <% end %>
+  <% if @head: %>
+    <li class="active">
+      <%= @head %>
     </li>
   <% end %>
- <li class="active">
-   Data
- </li>
 </ul>
