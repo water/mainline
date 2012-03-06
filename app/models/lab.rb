@@ -1,4 +1,5 @@
 class Lab < ActiveRecord::Base
+
   belongs_to :lab_description, foreign_key: "description_id"
   belongs_to :given_course, foreign_key: "given_course_id"
 

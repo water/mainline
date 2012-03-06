@@ -23,9 +23,9 @@ FactoryGirl.define do
   end
 
   factory :lab_has_group do
-    repository
-    lab
-    lab_group
+    association :repository
+    association :lab
+    association :lab_group
   end
 
   factory :lab do
@@ -39,6 +39,37 @@ FactoryGirl.define do
     title "Lab title"
     association(:when)
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
+  end
+
+  factory :submission do
+    commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
+    lab_group
+    repository
+    lab
+  end
+
+   factory :repository do
+    sequence(:name) { |i| "repo_#{i}" }
+    user
+    owner { user }
+    kind Repository::KIND_PROJECT_REPO
+    factory :merge_request_repository do
+      kind Repository::KIND_TRACKING_REPO
+    end
+  end
+
+  factory :given_course do
+    course { Factory.create(:course_with_course_code) }
+    examiners { [Factory.create(:examiner)] }
+    association(:when)
+  end
+
+  factory :examiner do
+    user { Factory.create(:user) }
+  end
+
+  factory :lab_group do
+    sequence(:identification)
   end
 end
 
@@ -59,10 +90,6 @@ Factory.define(:assistant_registered_to_given_course) do |c|
   c.association(:given_course)
 end
 
-Factory.define(:lab_group) do |c|
-  c.sequence(:identification)
-end
-
 Factory.define(:course_with_course_code, class: Course) do |c|
   c.course_codes { [Factory(:course_code)] }
 end
@@ -74,26 +101,4 @@ end
 Factory.define(:when) do |c|
   c.sequence(:year){ |n| 1950 + n }
   c.sequence(:study_period)
-end
-
-FactoryGirl.define do
-  factory :repository do
-    sequence(:name) { |i| "repo_#{i}" }
-    user
-    owner { user }
-    kind Repository::KIND_PROJECT_REPO
-    factory :merge_request_repository do
-      kind Repository::KIND_TRACKING_REPO
-    end
-  end
-
-  factory :given_course do
-    course { Factory.create(:course_with_course_code) }
-    examiners { [Factory.create(:examiner)] }
-    association(:when)
-  end
-
-  factory :examiner do
-    user { Factory.create(:user) }
-  end
 end
