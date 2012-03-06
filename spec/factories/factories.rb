@@ -4,7 +4,7 @@ FactoryGirl.define do
     email { Factory.next(:email) }
     terms_of_use "1"
     password "password"
-    password_confirmation { |u| u.password }
+    password_confirmation { password }
     created_at Time.now.to_s(:db)
     is_admin false
     activated_at Time.now.to_s(:db)
@@ -20,6 +20,25 @@ FactoryGirl.define do
 
   factory :administrator do
     base { Factory.create(:user) }
+  end
+
+  factory :lab_has_group do
+    repository
+    lab
+    lab_group
+  end
+
+  factory :lab do
+    given_course
+    sequence(:number)
+    lab_description
+  end
+
+  factory :lab_description do
+    description "This is a description"
+    title "Lab title"
+    association(:when)
+    commit_hash "698441270533c964f26e5fa8621dc4b3cbba5f81"
   end
 end
 
@@ -53,8 +72,8 @@ Factory.define(:course_code) do |c|
 end
 
 Factory.define(:when) do |c|
-  c.year 2011
-  c.study_period 2
+  c.sequence(:year){ |n| 2012 + n }
+  c.sequence(:study_period)
 end
 
 FactoryGirl.define do
