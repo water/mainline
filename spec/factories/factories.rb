@@ -30,7 +30,6 @@ FactoryGirl.define do
 
   factory :lab do
     given_course
-    sequence(:number)
     lab_description
   end
 
