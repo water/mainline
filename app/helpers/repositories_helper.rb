@@ -15,7 +15,7 @@ module RepositoriesHelper
   end
   
   def hash_path(ref, path, type)
-    "#/#{type}/#{ref}/#{path}"
+    "#/#{type}/#{path}"
   end
   
   def tree_path(treeish = "master", path = [], *args)
