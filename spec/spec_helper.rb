@@ -1,5 +1,6 @@
 require "spork"
 require "factory_girl"
+require "test/unit"
 if RUBY_PLATFORM =~ /darwin/
   require "spork/ext/ruby-debug"
 end
@@ -27,6 +28,10 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  ActiveSupport::Dependencies.clear
+  ActiveRecord::Base.instantiate_observers
+  load "#{Rails.root}/config/routes.rb"
+  Dir["#{Rails.root}/app/**/*.rb"].each { |f| load f }
   FactoryGirl.factories.clear 
   FactoryGirl.sequences.clear
   FactoryGirl.traits.clear

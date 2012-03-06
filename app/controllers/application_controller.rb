@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   #include ExceptionNotifiable
   
   before_filter :public_and_logged_in
-  before_filter :require_current_eula
   
   after_filter :mark_flash_status
 
@@ -16,10 +15,9 @@ class ApplicationController < ActionController::Base
   
   rescue_from ActiveRecord::RecordNotFound, :with => :render_not_found
   rescue_from ActionController::UnknownController, :with => :render_not_found
-  rescue_from ActionController::UnknownAction, :with => :render_not_found
+  rescue_from AbstractController::ActionNotFound, :with => :render_not_found
   rescue_from Grit::GitRuby::Repository::NoSuchPath, :with => :render_not_found
   rescue_from Grit::Git::GitTimeout, :with => :render_git_timeout
-  rescue_from RecordThrottling::LimitReachedError, :with => :render_throttled_record
   
   def rescue_action(exception)
     return super if Rails.env != "production"
@@ -33,6 +31,11 @@ class ApplicationController < ActionController::Base
       super
     end
   end
+
+  def render(options = {}, extra_options = {}, &block)
+    options[:layout] ||= ! params[:bare]
+    super(options, extra_options, &block)
+  end
   
   def current_site
     @current_site || Site.default
@@ -44,8 +47,8 @@ class ApplicationController < ActionController::Base
   def ssl_required
     return if Rails.env.development? and ENV["Rails.env"] != "test"
     
-    unless request.ssl?
-      redirect_to "https://" + request.host + request.request_uri
+    unless request.ssl? and request.respond_to?(:request_uri)
+      redirect_to "https://" + request.host + request.fullpath
       flash.keep
     end
       
@@ -71,13 +74,13 @@ class ApplicationController < ActionController::Base
     # if +path_spec+ is an array (and no +args+ given) it'll use that as the 
     # polymorphic-url-style (eg [@project, @repo, @foo])
     def repo_owner_path(repo, path_spec, *args)
-      if repo.team_repo?
-        if path_spec.is_a?(Symbol)
-          return send("group_#{path_spec}", *args.unshift(repo.owner))
-        else
-          return *unshifted_polymorphic_path(repo, path_spec)
-        end
-      elsif repo.user_repo?
+      # if repo.team_repo?
+      #   if path_spec.is_a?(Symbol)
+      #     return send("group_#{path_spec}", *args.unshift(repo.owner))
+      #   else
+      #     return *unshifted_polymorphic_path(repo, path_spec)
+      #   end
+      if repo.user_repo?
         if path_spec.is_a?(Symbol)
           return send("user_#{path_spec}", *args.unshift(repo.owner))
         else
@@ -113,28 +116,17 @@ class ApplicationController < ActionController::Base
       redirect_to root_path if logged_in?
     end
     
-    def require_current_eula
-      if logged_in?
-        unless current_user.terms_accepted?
-          store_location
-          flash[:error] = I18n.t "views.license.terms_not_accepted"
-          redirect_to user_license_path(current_user)
-          return
-        end
-      end
-      return true
-    end
     
     def find_repository_owner
       if params[:user_id]
         @owner = User.find_by_login!(params[:user_id])
-        @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
+      #  @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
       elsif params[:group_id]
         @owner = Group.find_by_name!(params[:group_id])
-        @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
-      elsif params[:project_id]
-        @owner = Project.find_by_slug!(params[:project_id])
-        @project = @owner
+     #   @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
+    #  elsif params[:project_id]
+     ##   @owner = Project.find_by_slug!(params[:project_id])
+     #   @project = @owner
       else
         raise ActiveRecord::RecordNotFound
       end
@@ -145,16 +137,16 @@ class ApplicationController < ActionController::Base
       @owner.repositories.find_by_name!(params[:id])
     end
     
-    def find_project
-      @project = Project.find_by_slug!(params[:project_id])
-    end
+ #   def find_project
+ #     @project = Project.find_by_slug!(params[:project_id])
+#    end
     
-    def find_project_and_repository
-      @project = Project.find_by_slug!(params[:project_id])
+#    def find_project_and_repository
+#      @project = Project.find_by_slug!(params[:project_id])
       # We want to look in all repositories that's somehow within this project
       # realm, not just @project.repositories
-      @repository = Repository.find_by_name_and_project_id!(params[:repository_id], @project.id)
-    end
+#      @repository = Repository.find_by_name_and_project_id!(params[:repository_id], @project.id)
+#    end
     
     def check_repository_for_commits
       unless @repository.has_commits?
@@ -169,11 +161,6 @@ class ApplicationController < ActionController::Base
     
     def render_git_timeout
       render :partial => "/shared/git_timeout", :layout => "application" and return
-    end
-    
-    def render_throttled_record
-      render partial: "/shared/throttled_record", status: 412 # precondition failed
-      return false
     end
     
     def public_and_logged_in
@@ -231,13 +218,13 @@ class ApplicationController < ActionController::Base
     
     def find_current_site
       @current_site ||= begin
-        if @project
-          @project.site
-        else
+    #    if @project
+    #      @project.site
+    #    else
           if !subdomain_without_common.blank?
             Site.find_by_subdomain(subdomain_without_common)
           end
-        end
+      #  end
       end
     end
     
@@ -290,6 +277,26 @@ class ApplicationController < ActionController::Base
       stale?(:etag => [etag, current_user], :last_modified => last_modified)
     end
     
+  # Sets up the variables needed to render a tree view
+  # @param repository The repository for which to render the tree view
+  def set_up_trees(repository)
+    @git = repository.git
+    @ref, @path = branch_and_path(params[:branch_and_path], @git)
+    unless @commit = @git.commit(@ref)
+      handle_missing_tree_sha and return
+    end
+    if stale_conditional?(Digest::SHA1.hexdigest(@commit.id + 
+      (params[:branch_and_path].kind_of?(Array) ? params[:branch_and_path].join : params[:branch_and_path])), 
+                          @commit.committed_date.utc)
+      head = @git.get_head(@ref) || Grit::Head.new(@commit.id_abbrev, @commit)
+      @root = Breadcrumb::Folder.new({:paths => @path, :head => head, 
+                                      :repository => @repository})
+      path = @path.blank? ? [] : ["#{@path.join("/")}/"] # FIXME: meh, this sux
+      @tree = @git.tree(@commit.tree.id, path)
+      expires_in 30.seconds
+    end
+  end
+
   private  
     def unshifted_polymorphic_path(repo, path_spec)
       if path_spec[0].is_a?(Symbol)

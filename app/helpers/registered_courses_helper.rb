@@ -1,0 +1,2 @@
+module RegisteredCoursesHelper
+end

@@ -1,0 +1,52 @@
+!!!
+/[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
+/[if IE 7] <html class="no-js lt-ie9 lt-ie8" lang="en">
+/[if IE 8] <html class="no-js lt-ie9" lang="en">
+/ [if gt IE 8]><!
+%html
+  / <![endif]
+  %head
+    %meta{:charset => "utf-8"}/
+    %title
+      = @page_title ? @page_title + " - " : ""
+      = current_site.title
+    = include_gon
+    = stylesheet_link_tag "water"
+    = yield :post_css
+    = javascript_include_tag "water"
+    = javascript_include_tag "controllers/#{params[:controller]}"
+    = yield :post_js
+  %body
+    /[if lt IE 7] <p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p>
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.brand Water - Assignment Submission System
+          .nav-collapse
+            %ul.nav
+              %li.divider-vertical
+              %li
+                %a{:href =>"#"} Item1
+              %li.divider-vertical
+              %li 
+                %a{:href =>"#"} Item2
+              %li.divider-vertical
+              %li 
+                %a{:href =>"#"} Item3
+            %ul.nav.pull-right 
+              %li.dropdown{:id => "Options"}
+                %a.dropdown-toggle{:"data-toggle" => "dropdown", :href => "#Options"} 
+                  Options
+                  %b.caret
+                %ul.dropdown-menu
+                  %li
+                    %a{:href => "#"} Settings
+                  %li.divider
+                  %li
+                    %a{:href => "#"} Log out
+    #main.container
+      - unless flash.empty?
+        .alert.alert-info
+          %a.close{"data-dismiss" => "alert"} ×
+          = flashes
+      = yield

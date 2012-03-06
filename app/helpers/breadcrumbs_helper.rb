@@ -31,8 +31,8 @@ module BreadcrumbsHelper
     url = case an_object
     when Repository
       repo_owner_path(an_object, :project_repository_path, an_object.project, an_object)
-    when Project
-      project_path(an_object)
+#    when Project
+#      project_path(an_object)
     when Group
       group_path(an_object)
     when User
@@ -54,20 +54,6 @@ module BreadcrumbsHelper
       group_memberships_path(@group)
     when Membership
       edit_group_membership_path(@group, @membership)
-    when Breadcrumb::MergeRequests
-      [@owner, @repository, :merge_requests]
-    when MergeRequest
-      [@owner, @repository, @merge_request]
-    when Breadcrumb::Committerships
-      [@owner, @repository, :committerships]
-    when Committership
-      [@owner, @repository, @committership]
-    when Breadcrumb::Messages
-      messages_path
-    when Breadcrumb::ReceivedMessages
-      messages_path
-    when Breadcrumb::SentMessages
-      sent_messages_path
     when Breadcrumb::Aliases
       user_aliases_path
     when Breadcrumb::Keys

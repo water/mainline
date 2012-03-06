@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "yaml"
+puts File.expand_path("../../config/environment", __FILE__); abort
 if File.symlink?(__FILE__)
   $:.unshift File.dirname(File.readlink(__FILE__)) + "/../lib/gitorious/ssh"
   BASE_DIR = File.dirname(File.readlink(__FILE__)) + "/../"

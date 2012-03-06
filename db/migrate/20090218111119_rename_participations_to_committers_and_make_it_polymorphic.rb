@@ -8,7 +8,7 @@ class RenameParticipationsToCommittersAndMakeItPolymorphic < ActiveRecord::Migra
     add_index :committerships, [:committer_id, :committer_type]
     add_index :committerships, :repository_id
     
-    ActiveRecord::Base.reset_column_information
+    Committership.reset_column_information
     Committership.update_all("committer_type = 'User'")
   end
 

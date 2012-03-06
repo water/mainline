@@ -2,10 +2,8 @@
 
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  include TagsHelper
   include UsersHelper
   include BreadcrumbsHelper
-  include EventRenderingHelper
 
   GREETINGS = ["Hello", "Hi", "Greetings", "Howdy", "Heya", "G'day"]
 
@@ -41,36 +39,31 @@ module ApplicationHelper
     out << "</div></div>"
     out.html_safe
   end
-
-  def markdown(text, options = [:smart])
-    renderer = MarkupRenderer.new(text, :markdown => options)
-    renderer.to_html
+  
+  # TODO: take care of options...
+  def markdown(text, options = {})
+    renderer = Markdown.new(text)
+    renderer.to_html.html_safe
   end
-
+  
+  # def markdown(text, options = [:smart])
+  #   renderer = MarkupRenderer.new(text, :markdown => options)
+  #   renderer.to_html
+  # end
+  # 
   def render_markdown(text, *options)
     # RDiscount < 1.4 doesn't support the :auto_link, use Rails' instead
-    auto_link = options.delete(:auto_link)
+    do_auto_link = options.delete(:auto_link)
     markdown_options = [:smart] + options
     markdownized_text = markdown(text, markdown_options)
-    if auto_link
+    if do_auto_link
       markdownized_text = auto_link(markdownized_text, :urls)
     end
     sanitize(markdownized_text)
   end
 
-  def feed_icon(url, alt_title = "Atom feed", size = :small)
-    link_to image_tag("silk/feed.png", :class => "feed_icon"), url,
-      :alt => alt_title, :title => alt_title
-  end
-
   def default_css_tag_sizes
     %w(tag_size_1 tag_size_2 tag_size_3 tag_size_4)
-  end
-
-  def linked_tag_list_as_sentence(tags)
-    tags.map do |tag|
-      link_to(h(tag.name), search_path(:q => "category:#{h(tag.name)}"))
-    end.to_sentence
   end
 
   def build_notice_for(object, options = {})
@@ -97,7 +90,7 @@ module ApplicationHelper
 
   def selected_if_current_page(url_options, slack = false)
     if slack
-      if controller.request.request_uri.index(CGI.escapeHTML(url_for(url_options))) == 0
+      if controller.request.fullpath.index(CGI.escapeHTML(url_for(url_options))) == 0
         "selected"
       end
     else
@@ -112,7 +105,7 @@ module ApplicationHelper
        return "selected"
      end
     when :repositories
-      if %w[repositories trees logs commits comitters comments merge_requests
+      if %w[repositories trees logs commits comitters
             blobs committers].include?(controller.controller_name )
         return "selected"
       end
@@ -452,19 +445,7 @@ module ApplicationHelper
     end
   end
 
-  def comment_applies_to_merge_request?(parent)
-    MergeRequest === parent && (logged_in? && parent.resolvable_by?(current_user))
-  end
 
-  def statuses_for_merge_request_for_select(merge_request)
-    merge_request.target_repository.project.merge_request_statuses.map do |status|
-      if status.description.blank?
-        [h(status.name), h(status.name)]
-      else
-        [h("#{status.name} - #{status.description}"), h(status.name)]
-      end
-    end
-  end
 
   # The javascripts to be included in all layouts
   def include_javascripts
@@ -472,7 +453,7 @@ module ApplicationHelper
       "color_picker", "ui.core","ui.selectable", "jquery.scrollto", "jquery.timeago",
       "core_extensions", "jquery.expander", "jquery.cycle.all.min",
       "jquery.gitorious_extensions",
-      "notification_center", "merge_requests", "diff_browser", "messages",
+      "notification_center", "diff_browser", "messages",
       "application", "live_search", "repository_search", :cache => true
   end
 

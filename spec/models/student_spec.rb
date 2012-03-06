@@ -1,15 +1,27 @@
 describe Student do
-  subject { Student.new }
-  
-  it "should share methods with a user" do
-    class User; def my_a_method; end; end
-    should respond_to(:my_a_method)
+  describe "relations" do
+    let(:student) { Factory.create(:student) }
+
+    it "should have a base" do
+      student.base.should be_instance_of(User)
+    end
+
+    it "should have a list of registered courses" do
+      student.should have(1).registered_courses
+    end
+
+    it "should have a list of given courses" do
+      student.should have(1).given_courses
+    end
   end
-  
-  it "should share attributes with its parent" do
-    lambda {
-      subject.user_id
-      subject.fullname
-    }.should_not raise_error(NoMethodError)
+
+  describe "validation" do
+    it "should start with a valid student" do
+      Factory.build(:student).should be_valid
+    end
+
+    it "should have a base" do
+      Factory.build(:student, base: nil).should_not be_valid
+    end
   end
 end

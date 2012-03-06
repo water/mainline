@@ -1,0 +1,4 @@
+production:
+  
+development:
+  markdown_file_extensions: [".md", ".markdown", ".mdown", ".mdwn"]

@@ -1,0 +1,23 @@
+- if textual?(@blob) && !too_big_to_render?(@blob.size)
+  - help_box(:center, :error, :style => "display:none", :id => "long-file") do
+    %p
+      This file looks large and may slow your browser down if we attempt
+      to syntax highlight it, so we're showing it without any
+      pretty colors.
+      = succeed "." do
+        %a#highlight-anyway{:href => "#highlight-anyway"}
+          Highlight
+          it anyway
+  -if markdown?(current_path.last)
+    .markdown= markdown(@blob.data)
+  -else
+    %pre.prettyprint= markdown_if_markdown(@blob.data,current_path.last) # render_highlighted(@blob.data, current_path.last || "")
+- elsif textual?(@blob) && too_big_to_render?(@blob.size)
+  %p
+    = t("views.blobs.too_big").call(self, raw_blob_path(@commit.id, current_path))
+- elsif image?(@blob)
+  - cache(blob_path(@commit.id, @blob.id)) do
+    = image_tag raw_blob_path(@commit.id, current_path)
+- else
+  %p
+    = t("views.blobs.message").call(self, raw_blob_path(@commit.id, current_path))

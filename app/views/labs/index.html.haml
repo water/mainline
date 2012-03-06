@@ -1,0 +1,10 @@
+%h1 Hi! I'm the Labs#index action!
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+        Name
+      %th
+        Description
+  %tbody
+    = render partial: "lab_student", collection: @labs

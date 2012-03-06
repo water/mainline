@@ -1,0 +1,28 @@
+%meta{:content => "chrome=1", "http-equiv" => "X-UA-Compatible"}/
+%meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+%title
+  = @page_title ? @page_title + " - " : ""
+  = current_site.title
+/ Used to add additional content to the head
+= yield :pre_head
+
+= stylesheet_link_tag("application")
+
+= yield :post_css
+= javascript_include_tag "application"
+= javascript_include_tag "controllers/#{params[:controller]}"
+
+/ Used to add additional content to the head
+= yield :post_js
+
+- if @atom_auto_discovery_url
+  = auto_discovery_link_tag(:atom, @atom_auto_discovery_url, |
+    :title => @atom_auto_discovery_title)                    |
+/[if IE 8]
+  <link rel="stylesheet" href="/stylesheets/ie8.css" type="text/css">
+/[if IE 7]
+  <link rel="stylesheet" href="/stylesheets/ie7.css" type="text/css">
+= GitoriousConfig["extra_html_head_data"]
+
+/ Used to add additional content to the head
+= yield :post_css

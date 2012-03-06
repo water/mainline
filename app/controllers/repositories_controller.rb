@@ -3,12 +3,12 @@
 class RepositoriesController < ApplicationController
   before_filter :login_required,
     :except => [:index, :show, :writable_by, :configure, :search_clones]
-  before_filter :find_repository_owner
-  before_filter :require_owner_adminship, :only => [:new, :create]
+  # before_filter :find_repository_owner
+  # before_filter :require_owner_adminship, :only => [:new, :create]
   before_filter :find_and_require_repository_adminship,
     :only => [:edit, :update, :confirm_delete, :destroy]
   before_filter :require_user_has_ssh_keys, :only => [:clone, :create_clone]
-  before_filter :only_projects_can_add_new_repositories, :only => [:new, :create]
+  # before_filter :only_projects_can_add_new_repositories, :only => [:new, :create]
   skip_before_filter :public_and_logged_in, :only => [:writable_by, :configure]
   renders_in_site_specific_context :except => [:writable_by, :configure]
 
@@ -26,12 +26,11 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = @owner.repositories.find_by_name_in_project!(params[:id], @containing_project)
+    @repository = Repository.find_by_name(params[:id])
     @root = @repository
-    @events = @repository.events.top.page(params[:page]).order("created_at desc")
-    
-    @atom_auto_discovery_url = repo_owner_path(@repository, :project_repository_path,
-                                  @repository.project, @repository, :format => :atom)
+    # @events = @repository.events.top.page(params[:page]).order("created_at desc")
+    # @atom_auto_discovery_url = repo_owner_path(@repository, :project_repository_path,
+    #                               @repository.project, @repository, :format => :atom)
     response.headers['Refresh'] = "5" unless @repository.ready
 
     respond_to do |format|
@@ -42,22 +41,17 @@ class RepositoriesController < ApplicationController
   end
 
   def new
-    @repository = @project.repositories.new
-    @root = Breadcrumb::NewRepository.new(@project)
-    @repository.kind = Repository::KIND_PROJECT_REPO
-    @repository.owner = @project.owner
-    if @project.repositories.mainlines.count == 0
-      @repository.name = @project.slug
-    end
+    @repository = Repository.new()
+    # @root = Breadcrumb::NewRepository.new(@project)
+    @repository.kind = Repository::KIND_USER_REPO
   end
 
   def create
-    @repository = @project.repositories.new(params[:repository])
-    @root = Breadcrumb::NewRepository.new(@project)
-    @repository.kind = Repository::KIND_PROJECT_REPO
-    @repository.owner = @project.owner
+    @repository = Repository.new(params[:repository])
+    # @root = Breadcrumb::NewRepository.new(@project)
+    @repository.kind = Repository::KIND_USER_REPO
+    @repository.owner = current_user
     @repository.user = current_user
-    @repository.merge_requests_enabled = params[:repository][:merge_requests_enabled]
 
     if @repository.save
       flash[:success] = I18n.t("repositories_controller.create_success")
@@ -111,7 +105,7 @@ class RepositoriesController < ApplicationController
 
     respond_to do |format|
       if @repository.save
-        @owner.create_event(Action::CLONE_REPOSITORY, @repository, current_user, @repository_to_clone.id)
+        #@owner.create_event(Action::CLONE_REPOSITORY, @repository, current_user, @repository_to_clone.id)
 
         location = repo_owner_path(@repository, :project_repository_path, @owner, @repository)
         format.html { redirect_to location }
@@ -152,8 +146,6 @@ class RepositoriesController < ApplicationController
         @repository.replace_value(:description, params[:repository][:description], true)
       end
       @repository.deny_force_pushing = params[:repository][:deny_force_pushing]
-      @repository.notify_committers_on_new_merge_request = params[:repository][:notify_committers_on_new_merge_request]
-      @repository.merge_requests_enabled = params[:repository][:merge_requests_enabled]
       @repository.save!
       flash[:success] = "Repository updated"
       redirect_to [@repository.project_or_owner, @repository]
@@ -162,34 +154,8 @@ class RepositoriesController < ApplicationController
     render :action => "edit"
   end
 
-  # Used internally to check write permissions by gitorious
-  def writable_by
-    @repository = @owner.repositories.find_by_name_in_project!(params[:id], @containing_project)
-    user = User.find_by_login(params[:username])
-
-    if user && result = /^refs\/merge-requests\/(\d+)$/.match(params[:git_path].to_s)
-      # git_path is a merge request
-      begin
-        if merge_request = @repository.merge_requests.find_by_sequence_number!(result[1]) and (merge_request.user == user)
-          render :text => "true" and return
-        end
-      rescue ActiveRecord::RecordNotFound # No such merge request
-      end
-    elsif user && user.can_write_to?(@repository)
-      render :text => "true" and return
-    end
-    render :text => 'false' and return
-  end
 
 
-  def configure
-    @repository = @owner.repositories.find_by_name_in_project!(params[:id],
-      @containing_project)
-    config_data = "real_path:#{@repository.real_gitdir}\n"
-    config_data << "force_pushing_denied:"
-    config_data << (@repository.deny_force_pushing? ? 'true' : 'false')
-    render :text => config_data
-  end
   
   def config
     # A controller method can't be called #config as of Rails 3.0
@@ -202,28 +168,6 @@ class RepositoriesController < ApplicationController
     super
   end
 
-  def confirm_delete
-    @repository = @owner.repositories.find_by_name_in_project!(params[:id], @containing_project)
-    unless @repository.can_be_deleted_by?(current_user)
-      flash[:error] = I18n.t "repositories_controller.adminship_error"
-      redirect_to(@owner) and return
-    end
-  end
-
-  def destroy
-    @repository = @owner.repositories.find_by_name_in_project!(params[:id], @containing_project)
-    if @repository.can_be_deleted_by?(current_user)
-      repo_name = @repository.name
-      flash[:notice] = I18n.t "repositories_controller.destroy_notice"
-      @repository.destroy
-      @repository.project.create_event(Action::DELETE_REPOSITORY, @owner,
-                                        current_user, repo_name)
-    else
-      flash[:error] = I18n.t "repositories_controller.destroy_error"
-    end
-    redirect_to @owner
-  end
-
   private
     def require_owner_adminship
       unless @owner.admin?(current_user)
@@ -232,15 +176,6 @@ class RepositoriesController < ApplicationController
       end
     end
 
-    def find_and_require_repository_adminship
-      @repository = @owner.repositories.find_by_name_in_project!(params[:id],
-        @containing_project)
-      unless @repository.admin?(current_user)
-        respond_denied_and_redirect_to(repo_owner_path(@repository,
-            :project_repository_path, @owner, @repository))
-        return
-      end
-    end
 
     def respond_denied_and_redirect_to(target)
       respond_to do |format|
@@ -260,7 +195,7 @@ class RepositoriesController < ApplicationController
         {
           :name => repo.name,
           :description => repo.description,
-          :uri => url_for(project_repository_path(@project, repo)),
+      #    :uri => url_for(project_repository_path(@project, repo)),
           :img => repo.owner.avatar? ?
             repo.owner.avatar.url(:thumb) :
             "/images/default_face.gif",
@@ -271,19 +206,4 @@ class RepositoriesController < ApplicationController
       }.to_json
     end
 
-    def only_projects_can_add_new_repositories
-      if !@owner.is_a?(Project)
-        respond_to do |format|
-          format.html {
-            flash[:error] = I18n.t("repositories_controller.only_projects_create_new_error")
-            redirect_to(@owner)
-          }
-          format.xml  {
-            render :text => I18n.t( "repositories_controller.only_projects_create_new_error"),
-                    :status => :forbidden
-          }
-        end
-        return
-      end
-    end
 end

@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class CommitsController < ApplicationController
+  # TODO: this method has been deprecated
   before_filter :find_project_and_repository
   before_filter :check_repository_for_commits
   before_filter do
@@ -30,7 +31,6 @@ class CommitsController < ApplicationController
     if stale_conditional?(head.commit.id, head.commit.committed_date.utc)
       @root = Breadcrumb::Branch.new(head, @repository)
       @commits = @repository.cached_paginated_commits(@ref, params[:page])
-      @atom_auto_discovery_url = project_repository_formatted_commits_feed_path(@project, @repository, params[:branch], :atom)
       respond_to do |format|
         format.html
       end
@@ -59,19 +59,6 @@ class CommitsController < ApplicationController
     end
   end
   
-  def feed
-    @git = @repository.git
-    @ref = desplat_path(params[:branch])
-    @commits = @repository.git.commits(@ref, 1)
-    return if @commits.empty?
-    expires_in 30.minutes
-    if stale?(:etag => @commits.first.id, :last_modified => @commits.first.committed_date.utc)
-      @commits += @repository.git.commits(@ref, 49, 1)
-      respond_to do |format|
-        format.atom
-      end
-    end
-  end
   
   protected
     def handle_missing_sha

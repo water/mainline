@@ -2,14 +2,12 @@
 
 class CommentsController < ApplicationController
   before_filter :login_required, :only => [:new, :create, :edit, :update, :destroy]
-  before_filter :find_project_and_repository
   before_filter :find_polymorphic_parent
   before_filter :comment_should_be_editable, :only => [:edit, :update]
   renders_in_site_specific_context
   
   def index
     @comments = @repository.comments.includes(:user)
-    @merge_request_count = @repository.merge_requests.count_open
     @atom_auto_discovery_url = project_repository_comments_path(@project, @repository,
       :format => :atom)
     respond_to do |format|
@@ -84,7 +82,6 @@ class CommentsController < ApplicationController
           @diffs = @target.diffs(range_or_string(@comment.sha1)).select{|d|
             d.a_path == @comment.path
           }
-          @file_diff = render_to_string(:partial => "merge_request_versions/comments")
         end
         render :json => {
           "file-diff" => @file_diff,
@@ -94,13 +91,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  def add_to_favorites
-    favorite_target.watched_by!(current_user)
-  end
 
-  def favorite_target
-    @target.is_a?(MergeRequest) ? @target : @target.merge_request
-  end
   
   def comment_was_invalid
     respond_to { |wants|
@@ -109,9 +100,6 @@ class CommentsController < ApplicationController
     }
   end
   
-  def applies_to_merge_request_version?
-    MergeRequestVersion === @target
-  end
 
   def range_or_string(str)
     if match = /^([a-z0-9]*)-([a-z0-9]*)$/.match(str)
@@ -127,13 +115,7 @@ class CommentsController < ApplicationController
   end
 
   def find_polymorphic_parent
-    if params[:merge_request_version_id]
-      @target = MergeRequestVersion.find(params[:merge_request_version_id])
-    elsif params[:merge_request_id]
-      @target = @repository.merge_requests.find_by_sequence_number!(params[:merge_request_id])
-    else
       @target = @repository
-    end
   end
 
   def redirect_to_repository_or_target
@@ -144,21 +126,6 @@ class CommentsController < ApplicationController
     end
   end
 
-  def create_new_commented_posted_event
-    if applies_to_merge_request_version?
-      @project.create_event(Action::COMMENT, @target.merge_request, current_user,
-        @comment.to_param, "MergeRequest")
-      return
-    end
-
-    if @target == @repository
-      @project.create_event(Action::COMMENT, @repository, current_user,
-        @comment.to_param, "Repository")
-    else
-      @project.create_event(Action::COMMENT, @target, current_user,
-        @comment.to_param, "MergeRequest") if @comment.state_change.blank?
-    end
-  end
 
   def comment_should_be_editable
     @comment = Comment.find(params[:id])

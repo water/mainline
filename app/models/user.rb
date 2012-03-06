@@ -4,9 +4,7 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   include UrlLinting
-  acts_as_citier(ignore_view_prefix: true)
   has_many :registered_courses, through: :students
-  has_many :projects
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
   has_many :repositories, :as => :owner, :conditions => ["kind != ?", Repository::KIND_WIKI],
@@ -20,8 +18,7 @@ class User < ActiveRecord::Base
   has_many :events, :order => "events.created_at asc", :dependent => :destroy
   has_many :events_as_target, :class_name => "Event", :as => :target
   has_many :favorites, :dependent => :destroy
-  has_many :feed_items, :foreign_key => "watcher_id"
-
+  has_one :administrator
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :current_password
 
@@ -50,36 +47,8 @@ class User < ActiveRecord::Base
   after_save :expire_avatar_email_caches_if_avatar_was_changed
   after_destroy :expire_avatar_email_caches
 
-  state_machine :aasm_state, :initial => :pending do
-    state :terms_accepted
 
-    event :accept_terms do
-      transition :pending => :terms_accepted
-    end
 
-  end
-
-  has_many :received_messages, :class_name => "Message",
-      :foreign_key => 'recipient_id', :order => "created_at DESC" do
-    def unread
-      find(:all, :conditions => {:aasm_state => "unread"})
-    end
-
-    def top_level
-      find(:all, :conditions => {:in_reply_to_id => nil})
-    end
-
-    def unread_count
-      count(:all, :conditions => {
-        :aasm_state => "unread",
-        :archived_by_recipient => false,
-      })
-    end
-  end
-
-  def all_messages
-    Message.find(:all, :conditions => ["sender_id = ? OR recipient_id = ?", self, self])
-  end
 
   Paperclip.interpolates(:login) do |attachment, style|
     attachment.instance.login.downcase
@@ -188,16 +157,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  # A Hash of repository => count of mergerequests active in the
-  # repositories that the user is a reviewer in
-  def review_repositories_with_open_merge_request_count
-    mr_repository_ids = self.committerships.reviewers.select("repository_id").map(&:repository_id)
-    Repository.select("repositories.*, count(merge_requests.id) as open_merge_request_count").
-      where("repositories.id in (?) and merge_requests.status = ?", mr_repository_ids, MergeRequest::STATUS_OPEN).
-      group("repositories.id").
-      joins(:merge_requests).
-      limit(5)
-  end
 
   # Activates the user in the database.
   def activate
@@ -218,7 +177,7 @@ class User < ActiveRecord::Base
 
   # Can this user be shown in public
   def public?
-    activated?# && !pending?
+    activated?
   end
 
   # Encrypts the password with the user salt
@@ -304,8 +263,12 @@ class User < ActiveRecord::Base
 
   # is +a_user+ an admin within this users realm
   # (for duck-typing repository etc access related things)
-  def admin?(a_user)
-    self == a_user
+  def admin?(a_user = nil)
+    if a_user
+      self == a_user
+    else
+      !! self.administrator
+    end
   end
 
   # is +a_user+ a committer within this users realm
@@ -347,20 +310,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def watched_objects
-    favorites.find(:all, {
-      :include => :watchable,
-      :order => "id desc"
-    }).collect(&:watchable)
-  end
 
-  def paginated_events_in_watchlist(pagination_options = {})
-    watched = feed_items.order("created_at desc").
-      page(pagination_options[:page])
-    total = (watched.length < watched.per_page ? watched.length : watched.total_entries)
-    items = WillPaginate::Collection.new(watched.current_page, watched.per_page, total)
-    items.replace(Event.find(watched.map(&:event_id), {:order => "created_at desc"}))
-  end
   
   #
   # @role Symbol Role for the given user

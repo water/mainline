@@ -22,28 +22,13 @@ module Gitorious
 
       resource = CustomPrefixResource.new(name, options)
       resource.prefix = prefix
-      resource_scope(resource) do
+      resource_scope(:resources, resource) do
         yield if block_given?
-
-        #collection_scope do
-        #  get  :index if parent_resource.actions.include?(:index)
-        #  post :create if parent_resource.actions.include?(:create)
-        #end
-
-        # new_scope do
-        #   get :new
-        # end if parent_resource.actions.include?(:new)
-        # 
-        # member_scope do
-        #   get    :show if parent_resource.actions.include?(:show)
-        #   put    :update if parent_resource.actions.include?(:update)
-        #   delete :destroy if parent_resource.actions.include?(:destroy)
-        #   get    :edit if parent_resource.actions.include?(:edit)
-        # end
       end
     end
 
     def repositories
+      return 
       resources_with_custom_prefix :repositories do
         member do
           get :clone
@@ -56,22 +41,22 @@ module Gitorious
 
           match "trees" => "trees#index", :as => :trees
           match "trees/*branch_and_path.:format" => "trees#show", :as => :formatted_tree
-          match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_forat => "tar.gz"}
+          match "archive-tarball/*branch" => "trees#archive", :as => :archive_tar, :defaults => {:archive_format => "tar.gz"}
           match "archive-zip/*branch" => "trees#archive", :as => :archive_zip, :defaults => {:archive_format => "zip"}
         end
 
         # Make some of these member-ish routes act as if they were on a
         # nested controller, causing :repository_id instead of :id.
         with_scope_level :member do
-          scope ":repository_id", :name_prefix => parent_resource.member_name, :as => "" do
-            match "comments/commit/:sha" => "comments#commit", :as => :commit_comment, :via => :get
-            match "comments/preview" => "comments#preview", :as => :comments_preview
+          #scope ":repository_id", :name_prefix => parent_resource.member_name, :as => "" do
+          #  match "comments/commit/:sha" => "comments#commit", :as => :commit_comment, :via => :get
+          #  match "comments/preview" => "comments#preview", :as => :comments_preview
 
             # #   repo.formatted_commits_feed "commits/*branch/feed.:format",
             # #       :controller => "commits", :action => "feed", :conditions => {:feed => :get}
-            match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
-            match "commits" => "commits#index", :as => :commits
-          end
+          #  match "commits/*branch/feed.:format" => "commits#feed", :as => :formatted_commits_feed
+          #  match "commits" => "commits#index", :as => :commits
+          #end
         end
 
         resources :comments

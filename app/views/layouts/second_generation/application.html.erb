@@ -3,8 +3,8 @@
 <head> 
   	<title><%= @page_title + " - " if @page_title -%><%= current_site.title -%></title>
 	
-	<link rel="stylesheet" href="/stylesheets/external.css" type="text/css">
-	<%= include_javascripts -%>
+  <%= stylesheet_link_tag "external" %>
+	<%= javascript_include_tag "application" -%>
 	<script type="text/javascript">
 	$(function()
 	{

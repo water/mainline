@@ -6,6 +6,7 @@ require_relative "../test_helper"
 class MembershipsControllerTest < ActionController::TestCase
   
   should_render_in_global_context
+  self.use_transactional_fixtures = true
 
   context "Routing" do
     setup do
