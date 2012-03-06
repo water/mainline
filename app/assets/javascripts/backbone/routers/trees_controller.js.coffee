@@ -8,5 +8,7 @@ class Water.TreesController extends Backbone.Router
     @fetcher.fetch("trees", path)
   fetch_blob: (path) ->
     @fetcher.fetch("blobs", path)
+  root: () ->
+    @fetcher.fetch("trees", "")
   
   
