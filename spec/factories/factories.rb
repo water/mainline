@@ -57,12 +57,6 @@ Factory.define(:when) do |c|
   c.study_period 2
 end
 
-Factory.define(:given_course) do |c|
-  c.association(:course, factory: :course_with_course_code)
-  c.association(:examiner, factory: :user)
-  c.association(:when)
-end  
-
 FactoryGirl.define do
   factory :repository do
     sequence(:name) { |i| "repo_#{i}" }
@@ -72,5 +66,15 @@ FactoryGirl.define do
     factory :merge_request_repository do
       kind Repository::KIND_TRACKING_REPO
     end
+  end
+
+  factory :given_course do
+    course { Factory.create(:course_with_course_code) }
+    examiners { [Factory.create(:examiner)] }
+    association(:when)
+  end
+
+  factory :examiner do
+    user { Factory.create(:user) }
   end
 end
