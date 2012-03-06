@@ -1,0 +1,10 @@
+<ul class="breadcrumbs">
+  <% for crumb in @crumbs %>
+    <li>
+      <a href="<% crumb.href %>"><% crumb.name %></a><span class="divider">/</span>
+    </li>
+  <% end %>
+ <li class="active">
+   Data
+ </li>
+</ul>
