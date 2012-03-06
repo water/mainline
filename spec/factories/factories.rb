@@ -40,6 +40,12 @@ FactoryGirl.define do
     association(:when)
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
   end
+
+  factory :submission do
+    commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
+    lab_group
+    lab
+  end
 end
 
 Factory.sequence :course_code_value do |n|
