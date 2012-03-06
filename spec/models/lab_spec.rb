@@ -13,7 +13,8 @@ describe Lab do
     end
 
     it "should not accept non-unique given_course, number tuples" do
-      Factory.create(:lab, given_course: 1, lab_description: 1, )
+      Factory.create(:lab, given_course: 1, lab_description: 1 )
+      Factory.build(:lab, giver_course: 1, lab_description: 1).should_not be_valid
     end
   end
 end
