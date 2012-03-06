@@ -83,6 +83,7 @@ GEM
     activesupport (3.2.2)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts_as_list (0.1.5)
     addressable (2.2.7)
     allison (2.0.3)
     ansi (1.4.2)
@@ -320,6 +321,7 @@ PLATFORMS
 DEPENDENCIES
   active_attr
   activemessaging!
+  acts_as_list
   beanstalk-client
   builder
   capybara
