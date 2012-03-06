@@ -6,12 +6,12 @@ describe GivenCourse do
     end
     
     it "requires a when" do
-      Factory.build(:given_course, :when => nil).should_not be_valid
+      Factory.build(:given_course, when: nil).should_not be_valid
       Factory.build(:given_course).should be_valid
     end
     
     it "requires an examiner" do
-      Factory.build(:given_course, examiner: nil).should_not be_valid
+      Factory.build(:given_course, examiners: []).should_not be_valid
       Factory.build(:given_course).should be_valid
     end
   end
@@ -28,7 +28,7 @@ describe GivenCourse do
     end
     
     it "should have a examiner" do
-      given_course.examiner.should_not be_nil
+      given_course.should have_at_least(1).examiners
     end
     
     it "should have a list of assistents" do
