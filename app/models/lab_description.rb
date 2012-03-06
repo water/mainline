@@ -1,6 +1,6 @@
 class LabDescription < ActiveRecord::Base
   belongs_to :when
-  has_many :labs
+  has_many :labs, foreign_key: "description_id"
 
   validates_presence_of :description, :title, :when, :commit_hash
   validates_format_of :commit_hash, with: /^[a-f0-9]{40}$/

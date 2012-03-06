@@ -25,5 +25,10 @@ describe LabDescription do
     it "should have a 'when'" do
       create(:lab_description).when.should_not be_nil
     end
+
+    it "should have a list for labs" do
+      lab = create(:lab)
+      lab.lab_description.should have(1).labs
+    end
   end
 end

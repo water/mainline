@@ -72,7 +72,7 @@ Factory.define(:course_code) do |c|
 end
 
 Factory.define(:when) do |c|
-  c.sequence(:year){ |n| 2012 + n }
+  c.sequence(:year){ |n| 1950 + n }
   c.sequence(:study_period)
 end
 
