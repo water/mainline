@@ -1,7 +1,8 @@
 describe User do
   it "should respond to both examiner and assistent" do
-    user = create(:user)
-    given_course = create(:given_course, examiner: user)
+    examiner = create(:examiner)
+    given_course = create(:given_course, examiners: [examiner])
+    user = examiner.user
     create(:assistant_registered_to_given_course, assistant: user, given_course: given_course)
 
     user.role_for_given_course?(:examiner, given_course).should be_true

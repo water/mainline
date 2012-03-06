@@ -321,7 +321,15 @@ class User < ActiveRecord::Base
     return true if role == :examiner and 
       GivenCourse.
         select("1").
-        where(examiner_id: id, course_id: given_course.id).
+        joins(:examiners).
+        where({
+          examiners: {
+            user_id: id
+          }, 
+          given_courses: {
+            id: given_course.id
+          }
+        }).
         first
     return true if role == :assistent and 
       AssistantRegisteredToGivenCourse.
