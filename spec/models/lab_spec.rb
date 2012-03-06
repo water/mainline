@@ -12,7 +12,7 @@ describe Lab do
       Factory.build(:lab, given_course: nil).should_not be_valid
     end
 
-    if "should not accept non-unique given_course, number tuples" do
+    it "should not accept non-unique given_course, number tuples" do
       Factory.create(:lab, given_course: 1, lab_description: 1, )
     end
   end
