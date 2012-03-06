@@ -74,9 +74,7 @@ FactoryGirl.define do
     user { Factory.create(:user) }
   end
 
-  factory :lab_group do
-    sequence(:identification)
-  end
+  factory :lab_group do; end
 end
 
 Factory.sequence :course_code_value do |n|

@@ -7,12 +7,12 @@ describe LabGroup do
       build(:lab_group).should be_valid
     end
 
-    it "requires an identification number" do
-      build(:lab_group, identification: nil).should_not be_valid
+    it "should not be possible to override identification number" do
+      create(:lab_group, identification: nil).identification.should_not be_nil
     end
 
     it "should auto increment the identification number" do
-      3.times.map { create(:lab_group).identification }.should eq([1,2,3])
+      3.times.map { create(:lab_group).identification }.uniq.count.should eq(3)
     end
   end
 end
