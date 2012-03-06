@@ -38,7 +38,7 @@ FactoryGirl.define do
     description "This is a description"
     title "Lab title"
     association(:when)
-    commit_hash "698441270533c964f26e5fa8621dc4b3cbba5f81"
+    commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
   end
 end
 
@@ -72,7 +72,7 @@ Factory.define(:course_code) do |c|
 end
 
 Factory.define(:when) do |c|
-  c.sequence(:year){ |n| 2012 + n }
+  c.sequence(:year){ |n| 1950 + n }
   c.sequence(:study_period)
 end
 
