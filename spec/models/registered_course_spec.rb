@@ -24,12 +24,10 @@ describe RegisteredCourse do
   end
   
   describe "relation" do
-    
     it "should have a lab group" do
       lab_group = create(:lab_group)
-      registered_course.lab_group = lab_group
-      registered_course.save!
-      RegisteredCourseHasLabGroup.count.should_not be_zero
+      registered_course.lab_groups << lab_group
+      registered_course.should have_at_least(1).lab_groups
     end
   end
 end
