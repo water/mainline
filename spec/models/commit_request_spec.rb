@@ -13,7 +13,7 @@ describe CommitRequest do
             to: "path/to/newfile.text"
             }]
         }
-        @rc = build(:registered_course, student: @user)
+        @rc = build(:student_registered_for_course, student: @user)
         @labgroup = create(:lab_group)
         @ghu = GroupHasUser.new(:student_id => @user.id , :lab_group_id => @labgroup.id)
         @ghu.save!

@@ -21,7 +21,7 @@ describe GivenCourse do
     let(:given_course) { create(:given_course) }
     
     it "should have a list of students" do
-      create(:registered_course, given_course: given_course, student: user)
+      create(:student_registered_for_course, given_course: given_course, student: user)
       
       given_course.should have(1).students
       given_course.students.should include(user)

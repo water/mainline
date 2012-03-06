@@ -4,7 +4,7 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   include UrlLinting
-  has_many :registered_courses, through: :students
+  has_many :student_registered_for_courses, through: :students
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
   has_many :repositories, :as => :owner, :conditions => ["kind != ?", Repository::KIND_WIKI],
@@ -338,7 +338,7 @@ class User < ActiveRecord::Base
         where(assistant_id: id).
         first
     return true if role == :student and
-      RegisteredCourse.
+      StudentRegisteredForCourse.
         select("1").
         where(given_course_id: given_course.id).
         where(student_id: id).

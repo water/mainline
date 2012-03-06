@@ -13,7 +13,7 @@ describe User do
   it "should validate against a given course" do
     user = create(:user)
     given_course = create(:given_course)
-    create(:registered_course, student: user, given_course: given_course)
+    create(:student_registered_for_course, student: user, given_course: given_course)
     user.role_for_given_course?(:student, given_course).should be_true
   end
 
