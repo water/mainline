@@ -7,6 +7,5 @@ class Water.TreeFetcher extends Backbone.Model
       success: (data) => @data_did_fetch(data)
       dataType: "html"
   data_did_fetch: (data) =>
-    console.log data
     @set(data: data)
     
