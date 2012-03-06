@@ -1,5 +1,6 @@
 class Water.TreeFetcher extends Backbone.Model
   fetch: (node_type, path) =>
+    @trigger "start_fetch"
     url = [@attributes.repository_path, node_type, @attributes.ref , path].join("/")
     $.ajax
       url: url
