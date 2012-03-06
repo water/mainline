@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120304231742) do
+ActiveRecord::Schema.define(:version => 20120305233701) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -38,6 +38,11 @@ ActiveRecord::Schema.define(:version => 20120304231742) do
     t.boolean  "can_change_deadline"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "assistant_registered_to_given_courses_lab_has_groups", :id => false, :force => true do |t|
+    t.integer "assistant_registered_to_given_course_id"
+    t.integer "lab_has_group_id"
   end
 
   create_table "assistants", :force => true do |t|
@@ -268,8 +273,8 @@ ActiveRecord::Schema.define(:version => 20120304231742) do
   create_table "labs", :force => true do |t|
     t.integer  "number"
     t.integer  "lab_commit_id"
-    t.integer  "given_course_id"
-    t.integer  "lab_description_id"
+    t.integer  "GivenCourse_id"
+    t.integer  "LabDescription_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
