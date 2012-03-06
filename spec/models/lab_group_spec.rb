@@ -15,6 +15,11 @@ describe LabGroup do
     it "should have a list of students" do
       group.should have(1).students
     end
+
+    it "should have a list of labs" do
+      create(:lab, lab_groups: [group])
+      group.should have(1).labs
+    end
   end
 
   describe "validations" do
