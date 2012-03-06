@@ -18,7 +18,7 @@ class CreateGroups < ActiveRecord::Migration
         t.timestamps
       end
     
-      ActiveRecord::Base.reset_column_information
+      Role.reset_column_information
       Role.create!(:name => "Administrator", :kind => Role::KIND_ADMIN)
       Role.create!(:name => "Committer", :kind => Role::KIND_MEMBER)
     
