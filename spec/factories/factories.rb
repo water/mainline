@@ -70,6 +70,10 @@ FactoryGirl.define do
     association(:when)
   end
 
+  factory :assistant do
+    user
+  end
+
   factory :examiner do
     user { Factory.create(:user) }
   end
