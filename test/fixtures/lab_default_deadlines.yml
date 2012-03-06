@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  at: 2012-03-06 18:22:13
+  lab_id: 1
+  description: MyString
+
+two:
+  at: 2012-03-06 18:22:13
+  lab_id: 1
+  description: MyString
