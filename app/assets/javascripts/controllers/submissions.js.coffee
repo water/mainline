@@ -33,7 +33,7 @@ $ ->
   # fetch_tree_for_path(gon.tree_root_path)
   $("#scroll_to_uploads").on("click", (event) -> 
     event.preventDefault()
-    $.scrollTo("#fileupload", 1500, easing: "easeOutElastic")
+    $.scrollTo("#fileupload", 500, easing: "easeInOutSine")
     )
 
 
