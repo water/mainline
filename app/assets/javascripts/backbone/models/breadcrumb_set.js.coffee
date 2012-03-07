@@ -2,7 +2,8 @@ class Water.BreadcrumbSet extends Backbone.Model
   initialize: () ->
     @crumbs = []
     
-  path: (path) =>
+  set_path: (path) =>
+    @path = path
     console.log("Bread: Path!")
     split_path = (path for path in path.split("/") when path)
     @head = split_path.pop()
@@ -12,4 +13,5 @@ class Water.BreadcrumbSet extends Backbone.Model
     console.log("Bread: Root!")
     @crumbs = null
     @head = null
+    @path
     @trigger "crumbs_did_update"
