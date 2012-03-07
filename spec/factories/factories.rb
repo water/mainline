@@ -94,6 +94,10 @@ FactoryGirl.define do
     course_codes { [Factory.create(:course_code)] }
     department
   end
+
+  factory :course do
+    department
+  end
 end
 
 Factory.sequence :course_code_value do |n|
@@ -104,8 +108,6 @@ Factory.define(:student_registered_for_course) do |r|
   r.association(:student, factory: :user)
   r.association(:given_course)
 end
-
-Factory.define(:course) {}
 
 Factory.define(:assistant_registered_to_given_course) do |c|
   c.association(:assistant, factory: :user)
