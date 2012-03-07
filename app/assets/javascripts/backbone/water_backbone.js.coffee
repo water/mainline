@@ -17,7 +17,7 @@ $ ->
   breadcrumb_view = window.breadcrumb_view = new Water.BreadcrumbView(
     el: $("#breadcrumbs")
     model: breadcrumb_set
-    template: JST['backbone/views/breadcrumb']
+    template: JST['backbone/views/breadcrumb_template']
   )
   controller = window.tcl = new Water.TreesController(fetcher: fetcher, breadcrumbs: breadcrumb_set)
 
