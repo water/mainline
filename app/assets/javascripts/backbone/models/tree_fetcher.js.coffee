@@ -6,7 +6,10 @@ class Water.TreeFetcher extends Backbone.Model
       url: url
       data: bare: 1
       success: (data) => @data_did_fetch(data)
+      error: (hdr, status, error) => @error(hdr, status, error)
       dataType: "html"
   data_did_fetch: (data) =>
     @set(data: data)
+  error: (jqXHR, status, error) =>
+    @set(data: status)
     
