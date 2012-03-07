@@ -20,6 +20,7 @@ $ ->
     template: JST['backbone/views/breadcrumb_template']
   )
   controller = window.tcl = new Water.TreesController(fetcher: fetcher, breadcrumbs: breadcrumb_set)
+  window.Water.commit_request = new Water.CommitRequest()
 
   Backbone.history.start()
   
