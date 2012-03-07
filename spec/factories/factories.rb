@@ -85,6 +85,12 @@ FactoryGirl.define do
   factory :department do
     sequence(:name) { |n| "Computer Science #{n}" }
   end
+
+
+  factory :course_with_course_code, class: Course do
+    course_codes { [Factory.create(:course_code)] }
+    department
+  end
 end
 
 Factory.sequence :course_code_value do |n|
@@ -102,10 +108,6 @@ Factory.define(:assistant_registered_to_given_course) do |c|
   c.association(:assistant, factory: :user)
   c.can_change_deadline(true)
   c.association(:given_course)
-end
-
-Factory.define(:course_with_course_code, class: Course) do |c|
-  c.course_codes { [Factory(:course_code)] }
 end
 
 Factory.define(:course_code) do |c|
