@@ -72,7 +72,12 @@ class CommitRequest
   #
   def save
     return false unless valid?
-    publish :commit, @options.to_json
+    publish :commit, @options.merge({
+      callback: {
+        class: "CommitRequest",
+        method: "notify_user"
+      }
+    }).to_json
   end
 
 private 
