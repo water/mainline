@@ -21,9 +21,9 @@
 // ###################### HEADER ENDS ########################
 
 .hero-unit
-  %h1 Submissions
+  %h1 Submission
   %p 
-    Before you submit your submissions you upload files to it.
+    Before you submit your submission you upload files to it.
     %br
     Upload files to specific folders by navigating to them in the tree view.
     %br
@@ -32,9 +32,10 @@
     %a.btn.btn-primary.btn-large#scroll_to_uploads{href: "#"}
       Upload files
 
-#breadcrumbs
-#spine
 
+.breadcrumbs
+#spine
+.breadcrumbs
 %form#fileupload{:action => "/upload", :enctype => "multipart/form-data", :method => "POST"}
   / The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
   .fileupload-buttonbar

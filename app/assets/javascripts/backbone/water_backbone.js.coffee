@@ -15,7 +15,7 @@ $ ->
   tree_view = window.tree_view = new Water.TreeView(el: $("#spine"), model: window.tree_fetcher)
   breadcrumb_set = window.breadcrumb_set = new Water.BreadcrumbSet()
   breadcrumb_view = window.breadcrumb_view = new Water.BreadcrumbView(
-    el: $("#breadcrumbs")
+    el: $(".breadcrumbs")
     model: breadcrumb_set
     template: JST['backbone/views/breadcrumb_template']
   )
