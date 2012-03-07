@@ -1,0 +1,26 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      %a.brand{href: "/"} Water
+      .nav-collapse
+        %ul.nav
+          %li.divider-vertical
+          %li
+            = link_to "Courses", courses_path
+          %li.divider-vertical
+          %li 
+            = link_to "Labs", "#"
+          %li.divider-vertical
+          %li 
+            %a{:href =>"#"} Stuff
+        %ul.nav.pull-right 
+          %li.dropdown{:id => "Options"}
+            %a.dropdown-toggle{:"data-toggle" => "dropdown", :href => "#Options"} 
+              Options
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                %a{:href => "#"} Settings
+              %li.divider
+              %li
+                %a{:href => "#"} Log out

@@ -1,4 +1,5 @@
 class CoursesController < ApplicationController
+  layout "water"
   respond_to :html
   def index
     respond_with(@courses = Course.all)

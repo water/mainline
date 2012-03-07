@@ -4,7 +4,10 @@
 //= require prettify
 //= require twitter/bootstrap
 //= require underscore
-//= require history.js/jquery.history
 //= require init
-//= require spine
-//= require app
+//= require jquery.activity-indicator-1.0.0
+//= require jquery.scrollTo
+//= require backbone
+//= require backbone_rails_sync
+//= require backbone_datalink
+//= require backbone/water_backbone

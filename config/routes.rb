@@ -1,11 +1,9 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  resources :registered_courses
-  resources :students
-  resources :lab_deadlines
-  resources :whens
-  resources :course_codes
+  
+  resources :registered_courses, :dashboards, :students, 
+  :lab_deadlines, :whens, :course_codes
 
   post "upload" => "uploads#upload"
   post "commit_requests/create" => "commit_requests#create", :as => :commit_request
@@ -30,7 +28,7 @@ Gitorious::Application.routes.draw do
   resources :repositories do
     match "blobs/raw/*branch_and_path" => "blobs#raw", as: :raw_blob, format: false
     match "commits/*branch" => "commits#index", as: :commits_in_ref
-    match "trees/*branch_and_path" => "trees#show", as: :tree
+    match "trees/*branch_and_path" => "trees#show", as: :tree, format: false
     match "blobs/*branch_and_path" => "blobs#show", as: :blob, format: false
     match "blobs/history/*branch_and_path" => "blobs#history", as: :blob_history, format: false
     match "commit/:id(.:format)" => "commits#show", as: :commit
@@ -38,7 +36,7 @@ Gitorious::Application.routes.draw do
   
   extend Gitorious::RepositoryRoutes
   
-  root :to => "site#index"
+  root :to => "dashboards#index"
   
   resources :merge_requests
   
@@ -167,8 +165,6 @@ Gitorious::Application.routes.draw do
       end
   end
    
-  match "/site/dashboard" => "site#dashboard"
-  
   resources :commit_lists do
     resources :repositories do
       resources :merge_requests

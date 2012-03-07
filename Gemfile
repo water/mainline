@@ -35,10 +35,11 @@ gem "will_paginate"
 gem "builder"
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem "rails_autolink"
-gem "spine-rails"
 gem "dynamic_form", "1.0.0"
 gem "gon"
 gem "redcarpet"
+gem "rails-backbone"
+gem "eco"
 
 # Git
 gem "grit", git: "git://github.com/water/grit.git"

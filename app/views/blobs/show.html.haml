@@ -17,7 +17,8 @@
     = t("views.blobs.too_big").call(self, raw_blob_path(@commit.id, current_path))
 - elsif image?(@blob)
   - cache(blob_path(@commit.id, @blob.id)) do
-    = image_tag raw_blob_path(@commit.id, current_path)
+    = image_tag raw_blob_path(@commit.id, current_path, bare: 1)
 - else
   %p
-    = t("views.blobs.message").call(self, raw_blob_path(@commit.id, current_path))
+    What the fuck did just happen?
+    // = t("views.blobs.message").call(self, raw_blob_path(@commit.id, current_path))
