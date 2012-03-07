@@ -1,4 +1,4 @@
-class CommitRequest extends Backbone.Model
+class Water.CommitRequest extends Backbone.Model
   initialize: () ->
     # do stuff
   
