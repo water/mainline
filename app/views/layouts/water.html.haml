@@ -18,32 +18,7 @@
     = yield :post_js
   %body{class: params[:controller]}
     /[if lt IE 7] <p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p>
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
-          %a.brand Water - Assignment Submission System
-          .nav-collapse
-            %ul.nav
-              %li.divider-vertical
-              %li
-                %a{:href =>"#"} Item1
-              %li.divider-vertical
-              %li 
-                %a{:href =>"#"} Item2
-              %li.divider-vertical
-              %li 
-                %a{:href =>"#"} Item3
-            %ul.nav.pull-right 
-              %li.dropdown{:id => "Options"}
-                %a.dropdown-toggle{:"data-toggle" => "dropdown", :href => "#Options"} 
-                  Options
-                  %b.caret
-                %ul.dropdown-menu
-                  %li
-                    %a{:href => "#"} Settings
-                  %li.divider
-                  %li
-                    %a{:href => "#"} Log out
+    = render "layouts/navigation"
     #main.container
       - unless flash.empty?
         .alert.alert-info
