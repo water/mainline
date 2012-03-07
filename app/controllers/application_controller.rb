@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
     def check_repository_for_commits
       unless @repository.has_commits?
         flash[:notice] = I18n.t "application.no_commits_notice"
-        redirect_to project_repository_path(@project, @repository) and return
+        redirect_to repository_path(@repository) and return
       end
     end
     
