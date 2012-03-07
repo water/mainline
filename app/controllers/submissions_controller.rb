@@ -13,7 +13,6 @@ class SubmissionsController < ApplicationController
   end
 
   def new
-    flash[:notice] = "Incredibly useless message."
   end
 
   protected
