@@ -28,7 +28,7 @@ Gitorious::Application.routes.draw do
   resources :repositories do
     match "blobs/raw/*branch_and_path" => "blobs#raw", as: :raw_blob, format: false
     match "commits/*branch" => "commits#index", as: :commits_in_ref
-    match "trees/*branch_and_path" => "trees#show", as: :tree
+    match "trees/*branch_and_path" => "trees#show", as: :tree, format: false
     match "blobs/*branch_and_path" => "blobs#show", as: :blob, format: false
     match "blobs/history/*branch_and_path" => "blobs#history", as: :blob_history, format: false
     match "commit/:id(.:format)" => "commits#show", as: :commit
