@@ -7,10 +7,14 @@ class CommitRequestProcessor < ApplicationProcessor
   #
   def on_message(message)
     options, @options = [JSON.parse(message)] * 2
-    send(options.delete("command"), options)
-    git.commit(options["commit_message"])
-    logger.info("CommitRequest, Raw: #{message}")
-    handle_callback!
+    if repository and user
+      send(options.delete("command"), options)
+      git.commit(options["commit_message"])
+      logger.info("Success: CommitRequest, Raw: #{message}")
+      handle_callback!
+    else
+      logger.info("Failed: CommitRequest, repository or user are empty, #{message}")
+    end
   end
 
   #
