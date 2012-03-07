@@ -1,6 +1,6 @@
 class Course < ActiveRecord::Base
-  has_many :course_codes
-  belongs_to :department
+  has_many :course_codes, inverse_of: :course
+  belongs_to :department, inverse_of: :courses
 
   validate :course_codes_exists
   validates_presence_of :department
