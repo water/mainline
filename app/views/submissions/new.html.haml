@@ -17,7 +17,6 @@
   %script{type: "text/x-tmpl"}
     #commit-request-dialog.well
       %h1 Sending commit request...
-  
 .page-header
   %h1 Submit
   
@@ -34,9 +33,6 @@
 
 #breadcrumbs
 #spine
-
-%a{href: "#/tree/config"}
-  Klick!
 
 %form#fileupload{:action => "/upload", :enctype => "multipart/form-data", :method => "POST"}
   / The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
