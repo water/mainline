@@ -30,9 +30,12 @@ describe Lab do
       r1.should eq(r2)
     end
 
-    #it "should not accept non-unique given_course, number tuples" do
-    #  Factory.create(:lab, given_course: 1, lab_description: 1 )
-    #  Factory.build(:lab, giver_course: 1, lab_description: 1).should_not be_valid
-    #end
+    it "should not accept non-unique given_course, number tuples" do
+      lab = Factory.create(:lab)
+      Factory.build(:lab, {
+        given_course: lab.given_course, 
+        lab_description: lab.lab_description
+      }).should_not be_valid
+    end
   end
 end
