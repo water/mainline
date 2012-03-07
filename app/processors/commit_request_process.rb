@@ -9,6 +9,7 @@ class CommitRequestProcessor < ApplicationProcessor
     options, @options = [JSON.parse(message)] * 2
     send(options.delete("command"), options)
     git.commit(options["commit_message"])
+    logger.info("CommitRequest, Raw: #{message}")
     handle_callback!
   end
 

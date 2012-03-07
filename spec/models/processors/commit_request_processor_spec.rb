@@ -166,7 +166,9 @@ describe CommitRequestProcessor do
     end
 
     it "should have callbacks" do
-      Object.should_receive(:process_tester).with(@options.stringify_keys!).once
+      options = @options.dup
+      options.delete(:command)
+      Object.should_receive(:process_tester).with(options.stringify_keys!).once
       processor.on_message(@options.merge({
         callback: {
           class: "Object",
@@ -174,7 +176,6 @@ describe CommitRequestProcessor do
         }
       }).to_json)
     end
-
 
     it "should not raise error on invalid class" do
       processor.on_message(@options.merge({
