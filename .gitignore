@@ -27,20 +27,9 @@ public/system/group_avatars
 data.sql
 data.tsv
 log/*
-<<<<<<< HEAD
-<<<<<<< HEAD
 /data
-=======
 .sass-cache/
 
->>>>>>> 6ee34dd9678c67c2675eb0f759838f88238c6aab
-=======
-.sass-cache/
-
-=======
-/data
->>>>>>> 65f06619fafd3e23646dbc5bba191102777740f4
->>>>>>> 55d19b76bedf4f6b0e58205bac46b33817048b9e
 # Water-specific rails
 ######################
 tmp/uploads
