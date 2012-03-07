@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120306234655) do
+ActiveRecord::Schema.define(:version => 20120307020318) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -111,6 +111,12 @@ ActiveRecord::Schema.define(:version => 20120306234655) do
   end
 
   create_table "courses", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "departments", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -259,9 +265,9 @@ ActiveRecord::Schema.define(:version => 20120306234655) do
     t.integer  "given_course_id"
   end
 
-  create_table "lab_groups_student_registered_for_courses", :id => false, :force => true do |t|
+  create_table "lab_groups_registered_courses", :id => false, :force => true do |t|
     t.integer "lab_group_id"
-    t.integer "student_registered_for_course_id"
+    t.integer "registered_course_id"
   end
 
   create_table "lab_has_groups", :force => true do |t|
@@ -420,13 +426,13 @@ ActiveRecord::Schema.define(:version => 20120306234655) do
   add_index "projects", ["title"], :name => "index_projects_on_name"
   add_index "projects", ["user_id"], :name => "index_projects_on_user_id"
 
-  create_table "student_registered_for_course_has_lab_groups", :id => false, :force => true do |t|
-    t.integer "student_registered_for_course_id"
+  create_table "registered_course_has_lab_groups", :id => false, :force => true do |t|
+    t.integer "registered_course_id"
     t.integer "lab_group_id"
   end
 
-  add_index "student_registered_for_course_has_lab_groups", ["lab_group_id"], :name => "index_student_registered_for_course_has_lab_groups_on_lab_group_id"
-  add_index "student_registered_for_course_has_lab_groups", ["student_registered_for_course_id"], :name => "index_student_registered_for_course_has_lab_groups_on_student_registered_for_course_id"
+  add_index "registered_course_has_lab_groups", ["lab_group_id"], :name => "index_registered_course_has_lab_groups_on_lab_group_id"
+  add_index "registered_course_has_lab_groups", ["registered_course_id"], :name => "index_registered_course_has_lab_groups_on_registered_course_id"
 
   create_table "repositories", :force => true do |t|
     t.string   "name"

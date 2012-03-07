@@ -81,6 +81,10 @@ FactoryGirl.define do
     given_course
     students { [Factory(:student)] }
   end
+
+  factory :department do
+    sequence(:name) { |n| "Computer Science #{n}" }
+  end
 end
 
 Factory.sequence :course_code_value do |n|
