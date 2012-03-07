@@ -31,6 +31,10 @@ $ ->
   #   
   # # Fetch the first tree
   # fetch_tree_for_path(gon.tree_root_path)
+  $("#scroll_to_uploads").on("click", (event) -> 
+    event.preventDefault()
+    $.scrollTo("#fileupload", 1500, easing: "easeOutElastic")
+    )
 
 
 window.App.functions.sendAddCommitRequest = (files, path) ->
