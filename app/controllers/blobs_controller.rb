@@ -41,12 +41,14 @@ class BlobsController < ApplicationController
       redirect_to project_repository_raw_blob_path(@project, @repository, 
                     branch_with_tree("HEAD", @path)) and return
     end
-    if stale?(:etag => Digest::SHA1.hexdigest(@commit.id + params[:branch_and_path].join), :last_modified => @commit.committed_date.utc)
+    if stale?(:etag => Digest::SHA1.hexdigest(
+          @commit.id + (params[:branch_and_path].is_a?(Array) ? params[:branch_and_path].join : params[:branch_and_path])), 
+          last_modified: @commit.committed_date.utc)
       @blob = @git.tree(@commit.tree.id, ["#{@path.join("/")}"]).contents.first
       render_not_found and return unless @blob
       if @blob.size > 500.kilobytes
         flash[:error] = I18n.t "blobs_controller.raw_error", :size => @blob.size
-        redirect_to project_repository_path(@project, @repository) and return
+        redirect_to repository_path(@repository) and return
       end
       expires_in 30.minutes
       headers["Content-Disposition"] = %[attachment;filename="#{@blob.name}"]
@@ -93,7 +95,7 @@ class BlobsController < ApplicationController
   
   protected
     def redirect_to_head
-      redirect_to project_repository_blob_path(@project, @repository, 
+      redirect_to repository_blob_path(@repository, 
                     branch_with_tree("HEAD", @path))
     end
 end
