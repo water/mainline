@@ -152,4 +152,46 @@ describe CommitRequestProcessor do
       content_for.should match(%r{D\s+file})
     end
   end
+
+  describe "callback" do
+    before(:each) do
+      @options = {
+        command: "add",
+        user: user.id,
+        repository: repository.id,
+        branch: "master",
+        commit_message: "A commit message",
+        files: []
+      }
+    end
+
+    it "should have callbacks" do
+      Object.should_receive(:process_tester).with(@options.stringify_keys!).once
+      processor.on_message(@options.merge({
+        callback: {
+          class: "Object",
+          method: "process_tester"
+        }
+      }).to_json)
+    end
+
+
+    it "should not raise error on invalid class" do
+      processor.on_message(@options.merge({
+        callback: {
+          class: "NonExistingClass",
+          method: "method"
+        }
+      }).to_json)
+    end
+
+    it "should not raise error on invalid method" do
+      processor.on_message(@options.merge({
+        callback: {
+          class: "Object",
+          method: "non_existing_method"
+        }
+      }).to_json)
+    end
+  end
 end

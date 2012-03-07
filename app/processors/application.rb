@@ -32,6 +32,26 @@ class ApplicationProcessor < ActiveMessaging::Processor
       raise err
     end
   end
+
+  #
+  # Trigger callback defined by @options["callback"]
+  #   Example:
+  #     @options["callback"] = {
+  #       class: "Student",
+  #       method: "winner"
+  #    }
+  #
+  def handle_callback!
+    if defined?(@options) and c = @options["callback"]
+      if cons = c["class"].safe_constantize
+        if cons.respond_to?(c["method"])
+          options = @options.dup 
+          options.delete("callback")
+          cons.send(c["method"], options)
+        end
+      end
+    end
+  end
   
   # verify active database connections, reconnect if needed
   def verify_connections!
