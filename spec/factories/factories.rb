@@ -86,6 +86,9 @@ FactoryGirl.define do
     sequence(:name) { |n| "Computer Science #{n}" }
   end
 
+  factory :course_without_department, class: Course do
+    course_codes { [Factory.create(:course_code)] }
+  end
 
   factory :course_with_course_code, class: Course do
     course_codes { [Factory.create(:course_code)] }
