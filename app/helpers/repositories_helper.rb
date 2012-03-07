@@ -40,8 +40,8 @@ module RepositoriesHelper
     repo_owner_path(@repository, :repository_blob_path, @repository, branch_with_tree(shaish, path), *args)
   end
 
-  def raw_blob_path(shaish, path)
-    repo_owner_path(@repository, :project_repository_raw_blob_path, @project, @repository, branch_with_tree(shaish, path))
+  def raw_blob_path(shaish, path, *args)
+    repo_owner_path(@repository, :repository_raw_blob_path, @repository, branch_with_tree(shaish, path), *args)
   end
 
   def blob_history_path(shaish, path)
