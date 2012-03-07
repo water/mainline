@@ -268,8 +268,8 @@ ActiveRecord::Schema.define(:version => 20120304231742) do
   create_table "labs", :force => true do |t|
     t.integer  "number"
     t.integer  "lab_commit_id"
-    t.integer  "given_course_id"
-    t.integer  "lab_description_id"
+    t.integer  "GivenCourse_id"
+    t.integer  "LabDescription_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
