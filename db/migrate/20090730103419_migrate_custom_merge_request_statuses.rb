@@ -1,6 +1,7 @@
 class MigrateCustomMergeRequestStatuses < ActiveRecord::Migration
   def self.up
     transaction do
+      next unless defined?(Project)
       Project.all.each do |project|
         if !project.merge_request_custom_states.blank?
           project.merge_request_custom_states.each do |open_state|
@@ -31,6 +32,7 @@ class MigrateCustomMergeRequestStatuses < ActiveRecord::Migration
 
   def self.down
     transaction do
+      next unless defined?(Project)
       Project.all.each do |project|
         project.merge_request_statuses.each do |state|
           next unless state.open?

@@ -1,12 +1,13 @@
 class AddObjectOwnersAsWatchers < ActiveRecord::Migration
   def self.up
-    Favorite.class_eval do
-      # Don't create events for the favorites we're gonna add here
-      def event_should_be_created?
-        false
+    if defined?(Favorite)
+      Favorite.class_eval do
+        # Don't create events for the favorites we're gonna add here
+        def event_should_be_created?
+          false
+        end
       end
     end
-
     transaction do
       count = Repository.regular.count
       Repository.regular.each_with_index do |repo, idx|
