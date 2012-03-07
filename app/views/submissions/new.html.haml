@@ -17,19 +17,20 @@
   %script{type: "text/x-tmpl"}
     #commit-request-dialog.well
       %h1 Sending commit request...
-.page-header
-  %h1 Submit
-  
-%blockquote
+
+// ###################### HEADER ENDS ########################
+
+.hero-unit
+  %h1 Submissions
+  %p 
+    Before you submit your submissions you upload files to it.
+    %br
+    Upload files to specific folders by navigating to them in the tree view.
+    %br
+    When you are satisfied with the submission, push the submit button to submit it.
   %p
-    This is what your submission looks like right now.
-    %br
-    Use this page to upload files.
-    %br
-    When you are satisfied, click the submit button to submit your assignment
-%br/
-/ The file upload form used as target for the file upload widget
-%br/
+    %a.btn.btn-primary.btn-large#scroll_to_uploads{href: "#"}
+      Upload files
 
 #breadcrumbs
 #spine
