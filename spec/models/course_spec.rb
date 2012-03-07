@@ -1,7 +1,7 @@
 describe Course do
   describe "validation" do
     it "should have at least one course code" do
-      Factory.build(:course).should_not be_valid
+      Factory.build(:course, course_codes: []).should_not be_valid
       Factory.create(:course_with_course_code).should_not be_nil
     end
   end

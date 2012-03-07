@@ -15,7 +15,7 @@ class Course < ActiveRecord::Base
   private
   def course_codes_exists
     unless course_codes.any?
-      errors[:course] << "must have at least one course code"
+      errors[:course_codes] << "must have at least one course code"
     end
   end
 end
