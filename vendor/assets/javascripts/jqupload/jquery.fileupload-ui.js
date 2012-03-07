@@ -72,7 +72,9 @@
             // The add callback is invoked as soon as files are added to the fileupload
             // widget (via file input selection, drag & drop or add API call).
             // See the basic file upload widget for more information:
+            // this is the upload form in this function
             add: function (e, data) {
+                console.log(data)
                 var that = $(this).data('fileupload'),
                     options = that.options,
                     files = data.files;
@@ -109,6 +111,7 @@
                         return false;
                     }
                 }
+                window.Water.commit_request.addUpload(data.files.length);
                 if (data.context && data.dataType &&
                         data.dataType.substr(0, 6) === 'iframe') {
                     // Iframe Transport does not support progress events.
