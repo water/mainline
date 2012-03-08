@@ -5,10 +5,10 @@ require "yadis"
 
 # This controller handles the login/logout function of the site.
 class SessionsController < ApplicationController
+  layout "water"
   skip_before_filter :public_and_logged_in
-  renders_in_site_specific_context
+  # renders_in_site_specific_context
   before_filter :ssl_required, :only => [:new, :create, :destroy]
-  layout "second_generation/application"
   
   def new; end
 
