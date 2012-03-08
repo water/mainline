@@ -2,7 +2,7 @@
 
 ## Labs
 
-## GET /labs
+### GET /labs
 
 - Student
   - En lista med labbar som ska göras/gjorts
@@ -13,7 +13,7 @@
 
 ### GET /courses/:course_id/labs
 
-## GET /courses/:course_id/groups/:group_id/labs
+### GET /courses/:course_id/groups/:group_id/labs
 
 ## Courses
 
