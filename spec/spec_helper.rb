@@ -25,6 +25,7 @@ Spork.prefork do
     config.after(:each) { DatabaseCleaner.clean }
     config.infer_base_class_for_anonymous_controllers = false
     config.include Factory::Syntax::Methods
+    config.order = "random"
   end
 end
 
