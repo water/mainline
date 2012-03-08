@@ -84,4 +84,5 @@ group :test do
   gem "rspec-rails"
   gem "turn"
   gem "database_cleaner"
+  gem "fakefs", :require => "fakefs/safe"
 end

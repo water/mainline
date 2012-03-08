@@ -4,7 +4,7 @@ class UploadsController < ApplicationController
     # response needs to be array to prepare for multiple simultaneous uploads
     response = []
     files.each do |file|
-      u = Upload.new(file)
+      u = Upload.new(file.tempfile)
       debug = {
         local_path: u.path # TODO: should not be shown to user
       }

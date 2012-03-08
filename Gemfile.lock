@@ -138,6 +138,7 @@ GEM
     factory_girl_rails (1.7.0)
       factory_girl (~> 2.6.0)
       railties (>= 3.0.0)
+    fakefs (0.4.0)
     faraday (0.7.6)
       addressable (~> 2.2)
       multipart-post (~> 1.1)
@@ -345,6 +346,7 @@ DEPENDENCIES
   eco
   exception_notification!
   factory_girl_rails
+  fakefs
   foreman
   gash!
   geoip

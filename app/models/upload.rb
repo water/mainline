@@ -1,7 +1,7 @@
 # This function contains methods
 class Upload
 
-  @@dictionary = {}
+  @@dictionary = {} # TODO: Either use this or get rid of it!
   CHUNK_SIZE = 64 * 1024 # in bytes
   UPLOADS_FOLDER = File.join(Rails.root, "tmp/uploads")
 
@@ -24,10 +24,11 @@ class Upload
 
   # The object created is of little importance, the hash will be
   # useful even after the objects lifetime
+  # Input argument should be a file
   def initialize(file)
     @file = file
-    @hash = Upload.hash_content(file.tempfile)
-    store_tempfile
+    @hash = Upload.hash_content(@file)
+    store_file!
     @@dictionary[hash] = true # fixme, @@dictionary is used as a set for now
   end
 
@@ -35,40 +36,51 @@ class Upload
     File.join(UPLOADS_FOLDER, hash)
   end
 
-  def path
+  # Path to where the file will be stored
+  def stored_path
     Upload.hash_to_path(@hash)
   end
 
-  def store_tempfile
-    tempfile = @file.tempfile
+  def store_file!
     FileUtils.mkdir_p(UPLOADS_FOLDER) # TODO: should only call once
-    tempfile.close(false) # close file without deleting it
-    src = tempfile.path
-    dest = path
-    FileUtils.mv(src, dest)
-    tempfile.unlink
+    src = @file.path
+    dest = stored_path
+    FileUtils.cp(src, dest)
   end
 
-  # Hash an open tempfile
+  # Hash an open file, will also close file
   # Code taken from http://trac.opensubtitles.org/projects/opensubtitles/wiki/HashSourceCodes#Ruby
-  def self.hash_content(tempfile)
+  def self.hash_content(file)
     # Read 64 kbytes, divide up into 64 bits and add each
     # to hash. Do for beginning and end of file.
-    hash = 0
-    filesize = tempfile.size
+    filesize = file.size
+    hash =  startValue(0) # fixme, deliberate failure, should be filesize
     # Q = unsigned long long = 64 bit
-    tempfile.read(CHUNK_SIZE).unpack("Q*").each do |n|
-      hash = hash + n & 0xffffffffffffffff # to remain as 64 bit number
+    file.read(CHUNK_SIZE).unpack("Q*").each do |n|
+      hash = op(hash, n)
     end
 
-    tempfile.seek([0, filesize - CHUNK_SIZE].max, IO::SEEK_SET)
+    file.seek([0, filesize - CHUNK_SIZE].max, IO::SEEK_SET)
 
     # And again for the end of the file
-    tempfile.read(CHUNK_SIZE).unpack("Q*").each do |n|
-      hash = hash + n & 0xffffffffffffffff
+    file.read(CHUNK_SIZE).unpack("Q*").each do |n|
+      hash = op(hash, n)
     end
+    file.close # close file
     hash.to_s
   end
 
+  private
+
+  # Functions used in the hashing algorithm
+  #########################################
+
+  def self.startValue(x)
+    x
+  end
+
+  def self.op(x, y)
+    x + y & 0xffffffffffffffff # to remain as 64 bit number
+  end
 
 end
