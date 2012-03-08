@@ -13,5 +13,5 @@ class Water.BreadcrumbSet extends Backbone.Model
     console.log("Bread: Root!")
     @crumbs = null
     @head = null
-    @path
+    @path = "/"
     @trigger "crumbs_did_update"
