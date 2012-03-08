@@ -2,7 +2,14 @@
 
 ## Labs
 
-### GET /labs
+## GET /labs
+
+- Student
+  - En lista med labbar som ska göras/gjorts
+- Assistant
+  - En lista med labbar som ska/är rättas/rättade
+- Administrator
+  - Alla labbar i applikationen
 
 ### GET /courses/:course_id/labs
 
