@@ -54,8 +54,8 @@ class Upload
   def self.hash_content(tempfile)
     # Read 64 kbytes, divide up into 64 bits and add each
     # to hash. Do for beginning and end of file.
-    hash = 0
     filesize = tempfile.size
+    hash = filesize
     # Q = unsigned long long = 64 bit
     tempfile.read(CHUNK_SIZE).unpack("Q*").each do |n|
       hash = hash + n & 0xffffffffffffffff # to remain as 64 bit number
