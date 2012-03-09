@@ -7,7 +7,7 @@ class BlobsController < ApplicationController
 
   def find_repository
     # @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
-    @repository = Repository.find(6)
+    @repository = Repository.find(1)
   end
 
   def show

@@ -6,7 +6,7 @@
 //= require underscore
 //= require init
 //= require jquery.activity-indicator-1.0.0
-//= require jquery.scrollTo
+//= require jquery.scrollto
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink
