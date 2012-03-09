@@ -6,7 +6,7 @@ class UploadsController < ApplicationController
     files.each do |file|
       u = Upload.new(file.tempfile)
       debug = {
-        local_path: u.path # TODO: should not be shown to user
+        local_path: u.stored_path # TODO: should not be shown to user
       }
       response << {name: file.original_filename, id: u.hash, debug: debug}
     end
