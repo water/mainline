@@ -1,0 +1,583 @@
+fa06c328 (Linus Oleander   2012-01-27 01:57:08 +0100   1) # encoding: UTF-8
+fa06c328 (Linus Oleander   2012-01-27 01:57:08 +0100   2) # This file is auto-generated from the current state of the database. Instead
+fa06c328 (Linus Oleander   2012-01-27 01:57:08 +0100   3) # of editing this file, please use the migrations feature of Active Record to
+fa06c328 (Linus Oleander   2012-01-27 01:57:08 +0100   4) # incrementally modify your database, and then regenerate this schema definition.
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200   5) #
+fa06c328 (Linus Oleander   2012-01-27 01:57:08 +0100   6) # Note that this schema.rb definition is the authoritative source for your
+fa06c328 (Linus Oleander   2012-01-27 01:57:08 +0100   7) # database schema. If you need to create the application database on another
+fa06c328 (Linus Oleander   2012-01-27 01:57:08 +0100   8) # system, you should be using db:schema:load, not running all the migrations
+fa06c328 (Linus Oleander   2012-01-27 01:57:08 +0100   9) # from scratch. The latter is a flawed and unsustainable approach (the more migrations
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  10) # you'll amass, the slower it'll run and the greater likelihood for issues).
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  11) #
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  12) # It's strongly recommended to check this file into your version control system.
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  13) 
+ae047af2 (Linus Oleander   2012-03-07 22:54:10 +0100  14) ActiveRecord::Schema.define(:version => 20120307214249) do
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  15) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  16)   create_table "administrators", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  17)     t.integer  "user_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  18)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  19)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  20)   end
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  21) 
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  22)   create_table "archived_events", :force => true do |t|
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  23)     t.integer  "user_id"
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  24)     t.integer  "project_id"
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  25)     t.integer  "action"
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  26)     t.string   "data"
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  27)     t.text     "body"
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  28)     t.integer  "target_id"
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  29)     t.string   "target_type"
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  30)     t.string   "user_email"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  31)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  32)     t.datetime "updated_at"
+5b2fcb80 (Marius Mathiesen 2010-03-17 13:58:11 +0100  33)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  34) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  35)   create_table "assistant_registered_to_given_courses", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  36)     t.integer  "given_course_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  37)     t.integer  "assistant_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  38)     t.boolean  "can_change_deadline"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  39)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  40)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  41)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  42) 
+1a2859e7 (Linus Oleander   2012-03-06 01:01:24 +0100  43)   create_table "assistant_registered_to_given_courses_lab_has_groups", :id => false, :force => true do |t|
+1a2859e7 (Linus Oleander   2012-03-06 01:01:24 +0100  44)     t.integer "assistant_registered_to_given_course_id"
+1a2859e7 (Linus Oleander   2012-03-06 01:01:24 +0100  45)     t.integer "lab_has_group_id"
+1a2859e7 (Linus Oleander   2012-03-06 01:01:24 +0100  46)   end
+1a2859e7 (Linus Oleander   2012-03-06 01:01:24 +0100  47) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  48)   create_table "assistants", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  49)     t.integer  "user_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  50)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  51)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  52)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100  53) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  54)   create_table "cloners", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  55)     t.string   "ip"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  56)     t.string   "country_code"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  57)     t.string   "country"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  58)     t.datetime "date"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  59)     t.integer  "repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  60)     t.string   "protocol"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  61)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  62) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  63)   add_index "cloners", ["date"], :name => "index_cloners_on_date"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  64)   add_index "cloners", ["ip"], :name => "index_cloners_on_ip"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  65)   add_index "cloners", ["repository_id"], :name => "index_cloners_on_repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  66) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  67)   create_table "comments", :force => true do |t|
+a44bb2e0 (Marius Mathiesen 2009-10-06 10:57:23 +0200  68)     t.integer  "user_id",           :null => false
+a44bb2e0 (Marius Mathiesen 2009-10-06 10:57:23 +0200  69)     t.integer  "target_id",         :null => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  70)     t.string   "sha1"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  71)     t.text     "body"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  72)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  73)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  74)     t.integer  "project_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  75)     t.string   "target_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  76)     t.string   "state_change"
+a44bb2e0 (Marius Mathiesen 2009-10-06 10:57:23 +0200  77)     t.string   "path"
+6af131bf (Johan Sørensen   2009-11-02 15:53:31 +0100  78)     t.string   "first_line_number"
+a44bb2e0 (Marius Mathiesen 2009-10-06 10:57:23 +0200  79)     t.integer  "number_of_lines"
+ddd8531a (Johan Sørensen   2009-10-29 13:15:21 +0100  80)     t.text     "context"
+6af131bf (Johan Sørensen   2009-11-02 15:53:31 +0100  81)     t.string   "last_line_number"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  82)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  83) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  84)   add_index "comments", ["project_id"], :name => "index_comments_on_project_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  85)   add_index "comments", ["sha1"], :name => "index_comments_on_sha1"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  86)   add_index "comments", ["target_id", "target_type"], :name => "index_comments_on_target_id_and_target_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  87)   add_index "comments", ["target_id"], :name => "index_comments_on_repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  88)   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  89) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  90)   create_table "committerships", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  91)     t.integer  "committer_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  92)     t.integer  "repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  93)     t.integer  "kind",           :default => 2
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  94)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100  95)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  96)     t.string   "committer_type",                :null => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  97)     t.integer  "creator_id"
+6678caff (Johan Sørensen   2009-11-17 13:45:44 +0100  98)     t.integer  "permissions"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200  99)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 100) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 101)   add_index "committerships", ["committer_id", "committer_type"], :name => "index_committerships_on_committer_id_and_committer_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 102)   add_index "committerships", ["committer_id"], :name => "index_permissions_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 103)   add_index "committerships", ["repository_id"], :name => "index_committerships_on_repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 104)   add_index "committerships", ["repository_id"], :name => "index_permissions_on_repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 105) 
+0b263b8a (spontus          2012-02-02 22:29:05 +0100 106)   create_table "course_codes", :force => true do |t|
+0b263b8a (spontus          2012-02-02 22:29:05 +0100 107)     t.string   "code"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 108)     t.integer  "course_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 109)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 110)     t.datetime "updated_at"
+0b263b8a (spontus          2012-02-02 22:29:05 +0100 111)   end
+0b263b8a (spontus          2012-02-02 22:29:05 +0100 112) 
+0b263b8a (spontus          2012-02-02 22:29:05 +0100 113)   create_table "courses", :force => true do |t|
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 114)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 115)     t.datetime "updated_at"
+ae047af2 (Linus Oleander   2012-03-07 22:54:10 +0100 116)     t.integer  "department_id"
+0b263b8a (spontus          2012-02-02 22:29:05 +0100 117)   end
+0b263b8a (spontus          2012-02-02 22:29:05 +0100 118) 
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 119)   create_table "departments", :force => true do |t|
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 120)     t.string   "name"
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 121)     t.datetime "created_at", :null => false
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 122)     t.datetime "updated_at", :null => false
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 123)   end
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 124) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 125)   create_table "emails", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 126)     t.integer  "user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 127)     t.string   "address"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 128)     t.string   "aasm_state"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 129)     t.string   "confirmation_code"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 130)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 131)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 132)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 133) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 134)   add_index "emails", ["address"], :name => "index_emails_on_address"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 135)   add_index "emails", ["user_id"], :name => "index_emails_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 136) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 137)   create_table "events", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 138)     t.integer  "user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 139)     t.integer  "project_id",  :null => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 140)     t.integer  "action",      :null => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 141)     t.string   "data"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 142)     t.text     "body"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 143)     t.integer  "target_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 144)     t.string   "target_type"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 145)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 146)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 147)     t.string   "user_email"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 148)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 149) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 150)   add_index "events", ["action"], :name => "index_events_on_action"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 151)   add_index "events", ["created_at", "project_id"], :name => "index_events_on_created_at_and_project_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 152)   add_index "events", ["created_at"], :name => "index_events_on_created_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 153)   add_index "events", ["project_id"], :name => "index_events_on_project_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 154)   add_index "events", ["target_type", "target_id"], :name => "index_events_on_target_type_and_target_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 155)   add_index "events", ["user_id"], :name => "index_events_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 156) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 157)   create_table "examiners", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 158)     t.integer  "user_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 159)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 160)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 161)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 162) 
+570e8fc2 (Jesper Josefsson 2012-03-04 23:15:10 +0100 163)   create_table "examiners_given_courses", :id => false, :force => true do |t|
+570e8fc2 (Jesper Josefsson 2012-03-04 23:15:10 +0100 164)     t.integer "examiner_id"
+570e8fc2 (Jesper Josefsson 2012-03-04 23:15:10 +0100 165)     t.integer "given_course_id"
+570e8fc2 (Jesper Josefsson 2012-03-04 23:15:10 +0100 166)   end
+570e8fc2 (Jesper Josefsson 2012-03-04 23:15:10 +0100 167) 
+7de93f63 (Johan Sørensen   2009-12-07 09:53:50 +0100 168)   create_table "favorites", :force => true do |t|
+7de93f63 (Johan Sørensen   2009-12-07 09:53:50 +0100 169)     t.integer  "user_id"
+7de93f63 (Johan Sørensen   2009-12-07 09:53:50 +0100 170)     t.string   "watchable_type"
+7de93f63 (Johan Sørensen   2009-12-07 09:53:50 +0100 171)     t.integer  "watchable_id"
+7de93f63 (Johan Sørensen   2009-12-07 09:53:50 +0100 172)     t.string   "action"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 173)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 174)     t.datetime "updated_at"
+7abd7a06 (Johan Sørensen   2009-12-17 13:52:54 +0100 175)     t.boolean  "notify_by_email", :default => false
+7de93f63 (Johan Sørensen   2009-12-07 09:53:50 +0100 176)   end
+7de93f63 (Johan Sørensen   2009-12-07 09:53:50 +0100 177) 
+f26d1813 (Johan Sørensen   2009-12-07 14:41:20 +0100 178)   add_index "favorites", ["watchable_type", "watchable_id", "user_id"], :name => "index_favorites_on_watchable_type_and_watchable_id_and_user_id"
+f26d1813 (Johan Sørensen   2009-12-07 14:41:20 +0100 179) 
+cf1403fd (Johan Sørensen   2009-12-09 16:29:50 +0100 180)   create_table "feed_items", :force => true do |t|
+cf1403fd (Johan Sørensen   2009-12-09 16:29:50 +0100 181)     t.integer  "event_id"
+cf1403fd (Johan Sørensen   2009-12-09 16:29:50 +0100 182)     t.integer  "watcher_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 183)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 184)     t.datetime "updated_at"
+cf1403fd (Johan Sørensen   2009-12-09 16:29:50 +0100 185)   end
+cf1403fd (Johan Sørensen   2009-12-09 16:29:50 +0100 186) 
+cf1403fd (Johan Sørensen   2009-12-09 16:29:50 +0100 187)   add_index "feed_items", ["watcher_id", "created_at"], :name => "index_feed_items_on_watcher_id_and_created_at"
+cf1403fd (Johan Sørensen   2009-12-09 16:29:50 +0100 188) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 189)   create_table "given_courses", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 190)     t.integer  "course_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 191)     t.integer  "when_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 192)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 193)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 194)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 195) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 196)   create_table "group_has_users", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 197)     t.integer  "student_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 198)     t.integer  "lab_group_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 199)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 200)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 201)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 202) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 203)   create_table "groups", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 204)     t.string   "name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 205)     t.integer  "user_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 206)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 207)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 208)     t.text     "description"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 209)     t.string   "avatar_file_name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 210)     t.string   "avatar_content_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 211)     t.integer  "avatar_file_size"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 212)     t.datetime "avatar_updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 213)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 214) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 215)   add_index "groups", ["name"], :name => "index_groups_on_name_and_public"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 216)   add_index "groups", ["user_id"], :name => "index_groups_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 217) 
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 218)   create_table "hooks", :force => true do |t|
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 219)     t.integer  "user_id"
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 220)     t.integer  "repository_id"
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 221)     t.string   "url"
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 222)     t.string   "last_response"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 223)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 224)     t.datetime "updated_at"
+840f945c (Marius Mathiesen 2010-02-24 16:48:02 +0100 225)     t.integer  "failed_request_count",     :default => 0
+840f945c (Marius Mathiesen 2010-02-24 16:48:02 +0100 226)     t.integer  "successful_request_count", :default => 0
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 227)   end
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 228) 
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 229)   add_index "hooks", ["repository_id"], :name => "index_hooks_on_repository_id"
+990884cd (Marius Mathiesen 2010-02-16 15:19:24 +0100 230) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 231)   create_table "initial_lab_commits", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 232)     t.string   "commit_hash"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 233)     t.integer  "repository_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 234)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 235)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 236)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 237) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 238)   create_table "lab_deadlines", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 239)     t.datetime "at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 240)     t.integer  "lab_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 241)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 242)     t.datetime "updated_at"
+f9bc5d7c (Jonas Ängeslevä  2012-03-06 19:46:04 +0100 243)   end
+f9bc5d7c (Jonas Ängeslevä  2012-03-06 19:46:04 +0100 244) 
+f9bc5d7c (Jonas Ängeslevä  2012-03-06 19:46:04 +0100 245)   create_table "lab_default_deadlines", :force => true do |t|
+f9bc5d7c (Jonas Ängeslevä  2012-03-06 19:46:04 +0100 246)     t.datetime "at"
+f9bc5d7c (Jonas Ängeslevä  2012-03-06 19:46:04 +0100 247)     t.integer  "lab_id"
+f9bc5d7c (Jonas Ängeslevä  2012-03-06 19:46:04 +0100 248)     t.string   "description"
+f9bc5d7c (Jonas Ängeslevä  2012-03-06 19:46:04 +0100 249)     t.datetime "created_at",  :null => false
+f9bc5d7c (Jonas Ängeslevä  2012-03-06 19:46:04 +0100 250)     t.datetime "updated_at",  :null => false
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 251)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 252) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 253)   create_table "lab_descriptions", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 254)     t.string   "description"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 255)     t.string   "title"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 256)     t.integer  "when_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 257)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 258)     t.datetime "updated_at"
+33ad4caf (Linus Oleander   2012-03-06 02:14:23 +0100 259)     t.string   "commit_hash"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 260)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 261) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 262)   create_table "lab_groups", :force => true do |t|
+4947b8f7 (Linus Oleander   2012-02-05 23:15:37 +0100 263)     t.integer  "identification"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 264)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 265)     t.datetime "updated_at"
+9c087150 (Linus Oleander   2012-03-06 20:54:58 +0100 266)     t.integer  "given_course_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 267)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 268) 
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 269)   create_table "lab_groups_registered_courses", :id => false, :force => true do |t|
+4353a8ba (Jesper Josefsson 2012-03-05 00:40:39 +0100 270)     t.integer "lab_group_id"
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 271)     t.integer "registered_course_id"
+4353a8ba (Jesper Josefsson 2012-03-05 00:40:39 +0100 272)   end
+4353a8ba (Jesper Josefsson 2012-03-05 00:40:39 +0100 273) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 274)   create_table "lab_has_groups", :force => true do |t|
+c450554d (Linus Oleander   2012-03-06 17:59:27 +0100 275)     t.integer  "lab_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 276)     t.integer  "lab_group_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 277)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 278)     t.datetime "updated_at"
+c904a3a4 (Linus Oleander   2012-03-06 19:11:23 +0100 279)     t.integer  "repository_id"
+856312ed (Jonas Ängeslevä  2012-03-06 16:46:13 +0100 280)     t.string   "grade"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 281)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 282) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 283)   create_table "lab_has_registered_assistants", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 284)     t.integer  "assistant_registered_to_given_course_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 285)     t.integer  "lab_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 286)     t.integer  "when_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 287)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 288)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 289)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 290) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 291)   create_table "labs", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 292)     t.integer  "number"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 293)     t.integer  "lab_commit_id"
+f5e58712 (Linus Oleander   2012-03-06 22:41:22 +0100 294)     t.integer  "given_course_id"
+f5e58712 (Linus Oleander   2012-03-06 22:41:22 +0100 295)     t.integer  "lab_description_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 296)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 297)     t.datetime "updated_at"
+4df99bb6 (Linus Oleander   2012-03-06 16:50:02 +0100 298)     t.integer  "description_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 299)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 300) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 301)   create_table "memberships", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 302)     t.integer  "group_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 303)     t.integer  "user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 304)     t.integer  "role_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 305)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 306)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 307)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 308) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 309)   add_index "memberships", ["group_id", "user_id"], :name => "index_memberships_on_group_id_and_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 310) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 311)   create_table "merge_request_statuses", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 312)     t.integer  "project_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 313)     t.string   "name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 314)     t.string   "color"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 315)     t.integer  "state"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 316)     t.string   "description"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 317)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 318)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 319)     t.boolean  "default",     :default => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 320)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 321) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 322)   add_index "merge_request_statuses", ["project_id", "name"], :name => "index_merge_request_statuses_on_project_id_and_name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 323)   add_index "merge_request_statuses", ["project_id"], :name => "index_merge_request_statuses_on_project_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 324) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 325)   create_table "merge_request_versions", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 326)     t.integer  "merge_request_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 327)     t.integer  "version"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 328)     t.string   "merge_base_sha"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 329)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 330)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 331)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 332) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 333)   create_table "merge_requests", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 334)     t.integer  "user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 335)     t.integer  "source_repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 336)     t.integer  "target_repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 337)     t.text     "proposal"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 338)     t.string   "sha_snapshot"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 339)     t.integer  "status",                         :default => 0
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 340)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 341)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 342)     t.string   "source_branch"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 343)     t.string   "target_branch"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 344)     t.string   "ending_commit"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 345)     t.text     "reason"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 346)     t.string   "oauth_token"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 347)     t.string   "oauth_secret"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 348)     t.string   "contribution_agreement_version"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 349)     t.integer  "updated_by_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 350)     t.string   "status_tag"
+b170a861 (Johan Sørensen   2009-10-26 16:11:02 +0100 351)     t.string   "summary",                                           :null => false
+b170a861 (Johan Sørensen   2009-10-26 16:11:02 +0100 352)     t.boolean  "legacy",                         :default => false
+423dab73 (Marius Mathiesen 2009-11-17 14:43:42 +0100 353)     t.integer  "sequence_number"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 354)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 355) 
+e5a844a0 (Johan Sørensen   2009-11-30 10:15:46 +0100 356)   add_index "merge_requests", ["sequence_number", "target_repository_id"], :name => "index_merge_requests_on_sequence_number_and_target_repository_id", :unique => true
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 357)   add_index "merge_requests", ["source_repository_id"], :name => "index_merge_requests_on_source_repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 358)   add_index "merge_requests", ["status"], :name => "index_merge_requests_on_status"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 359)   add_index "merge_requests", ["target_repository_id"], :name => "index_merge_requests_on_target_repository_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 360)   add_index "merge_requests", ["user_id"], :name => "index_merge_requests_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 361) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 362)   create_table "messages", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 363)     t.integer  "sender_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 364)     t.integer  "recipient_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 365)     t.string   "subject"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 366)     t.text     "body"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 367)     t.string   "notifiable_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 368)     t.integer  "notifiable_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 369)     t.string   "aasm_state"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 370)     t.integer  "in_reply_to_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 371)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 372)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 373)     t.integer  "root_message_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 374)     t.boolean  "has_unread_replies",    :default => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 375)     t.boolean  "archived_by_sender",    :default => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 376)     t.boolean  "archived_by_recipient", :default => false
+1232709b (Marius Mathiesen 2009-12-10 15:21:40 +0100 377)     t.datetime "last_activity_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 378)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 379) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 380)   add_index "messages", ["aasm_state"], :name => "index_messages_on_aasm_state"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 381)   add_index "messages", ["in_reply_to_id"], :name => "index_messages_on_in_reply_to_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 382)   add_index "messages", ["notifiable_type", "notifiable_id"], :name => "index_messages_on_notifiable_type_and_notifiable_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 383)   add_index "messages", ["recipient_id"], :name => "index_messages_on_recipient_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 384)   add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 385) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 386)   create_table "open_id_authentication_associations", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 387)     t.integer "issued"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 388)     t.integer "lifetime"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 389)     t.string  "handle"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 390)     t.string  "assoc_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 391)     t.binary  "server_url"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 392)     t.binary  "secret"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 393)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 394) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 395)   create_table "open_id_authentication_nonces", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 396)     t.integer "timestamp",  :null => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 397)     t.string  "server_url"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 398)     t.string  "salt",       :null => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 399)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 400) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 401)   create_table "projects", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 402)     t.string   "title"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 403)     t.text     "description"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 404)     t.integer  "user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 405)     t.datetime "created_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 406)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 407)     t.string   "slug"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 408)     t.string   "license"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 409)     t.string   "home_url"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 410)     t.string   "mailinglist_url"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 411)     t.string   "bugtracker_url"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 412)     t.integer  "owner_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 413)     t.string   "owner_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 414)     t.boolean  "wiki_enabled",                :default => true
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 415)     t.integer  "site_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 416)     t.boolean  "merge_requests_need_signoff", :default => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 417)     t.string   "oauth_signoff_key"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 418)     t.string   "oauth_signoff_secret"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 419)     t.string   "oauth_signoff_site"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 420)     t.string   "oauth_path_prefix"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 421)     t.text     "merge_request_custom_states"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 422)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 423) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 424)   add_index "projects", ["owner_type", "owner_id"], :name => "index_projects_on_owner_type_and_owner_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 425)   add_index "projects", ["site_id"], :name => "index_projects_on_site_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 426)   add_index "projects", ["slug"], :name => "index_projects_on_slug", :unique => true
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 427)   add_index "projects", ["title"], :name => "index_projects_on_name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 428)   add_index "projects", ["user_id"], :name => "index_projects_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 429) 
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 430)   create_table "registered_course_has_lab_groups", :id => false, :force => true do |t|
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 431)     t.integer "registered_course_id"
+70b86289 (Linus Oleander   2012-02-05 22:47:15 +0100 432)     t.integer "lab_group_id"
+70b86289 (Linus Oleander   2012-02-05 22:47:15 +0100 433)   end
+70b86289 (Linus Oleander   2012-02-05 22:47:15 +0100 434) 
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 435)   add_index "registered_course_has_lab_groups", ["lab_group_id"], :name => "index_registered_course_has_lab_groups_on_lab_group_id"
+aef5591e (Linus Oleander   2012-03-07 03:29:34 +0100 436)   add_index "registered_course_has_lab_groups", ["registered_course_id"], :name => "index_registered_course_has_lab_groups_on_registered_course_id"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 437) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 438)   create_table "repositories", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 439)     t.string   "name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 440)     t.integer  "project_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 441)     t.integer  "user_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 442)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 443)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 444)     t.integer  "parent_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 445)     t.boolean  "ready",                                  :default => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 446)     t.integer  "kind",                                   :default => 0
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 447)     t.string   "owner_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 448)     t.integer  "owner_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 449)     t.string   "hashed_path"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 450)     t.text     "description"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 451)     t.datetime "last_pushed_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 452)     t.integer  "wiki_permissions",                       :default => 0
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 453)     t.boolean  "deny_force_pushing",                     :default => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 454)     t.boolean  "notify_committers_on_new_merge_request", :default => true
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 455)     t.datetime "last_gc_at"
+cb5f40e6 (Marius Mathiesen 2009-11-17 10:10:38 +0100 456)     t.boolean  "merge_requests_enabled",                 :default => true
+2ba97549 (Marius Mathiesen 2010-02-03 15:38:03 +0100 457)     t.integer  "disk_usage"
+2ba97549 (Marius Mathiesen 2010-02-03 15:38:03 +0100 458)     t.integer  "push_count_since_gc"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 459)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 460) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 461)   add_index "repositories", ["hashed_path"], :name => "index_repositories_on_hashed_path", :unique => true
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 462)   add_index "repositories", ["kind"], :name => "index_repositories_on_kind"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 463)   add_index "repositories", ["name"], :name => "index_repositories_on_name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 464)   add_index "repositories", ["owner_type", "owner_id"], :name => "index_repositories_on_owner_type_and_owner_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 465)   add_index "repositories", ["parent_id"], :name => "index_repositories_on_parent_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 466)   add_index "repositories", ["project_id", "kind"], :name => "index_repositories_on_project_id_and_kind"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 467)   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 468)   add_index "repositories", ["ready"], :name => "index_repositories_on_ready"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 469)   add_index "repositories", ["user_id"], :name => "index_repositories_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 470) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 471)   create_table "roles", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 472)     t.string   "name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 473)     t.integer  "kind"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 474)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 475)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 476)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 477) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 478)   create_table "sessions", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 479)     t.string   "session_id", :null => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 480)     t.text     "data"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 481)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 482)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 483)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 484) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 485)   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 486)   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 487) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 488)   create_table "sites", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 489)     t.string   "title"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 490)     t.string   "subdomain"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 491)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 492)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 493)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 494) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 495)   add_index "sites", ["subdomain"], :name => "index_sites_on_subdomain"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 496) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 497)   create_table "ssh_keys", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 498)     t.integer  "user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 499)     t.text     "key"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 500)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 501)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 502)     t.boolean  "ready",      :default => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 503)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 504) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 505)   add_index "ssh_keys", ["user_id"], :name => "index_ssh_keys_on_user_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 506) 
+98b3107f (Linus Oleander   2012-03-07 01:00:44 +0100 507)   create_table "student_registered_for_courses", :force => true do |t|
+98b3107f (Linus Oleander   2012-03-07 01:00:44 +0100 508)     t.integer  "student_id"
+98b3107f (Linus Oleander   2012-03-07 01:00:44 +0100 509)     t.integer  "given_course_id"
+180f6b03 (Linus Oleander   2012-03-07 21:35:28 +0100 510)     t.datetime "created_at"
+180f6b03 (Linus Oleander   2012-03-07 21:35:28 +0100 511)     t.datetime "updated_at"
+98b3107f (Linus Oleander   2012-03-07 01:00:44 +0100 512)   end
+98b3107f (Linus Oleander   2012-03-07 01:00:44 +0100 513) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 514)   create_table "students", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 515)     t.integer  "user_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 516)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 517)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 518)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 519) 
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 520)   create_table "submissions", :force => true do |t|
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 521)     t.string   "commit_hash"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 522)     t.integer  "lab_has_group_id"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 523)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 524)     t.datetime "updated_at"
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 525)   end
+0b462d08 (Linus Oleander   2012-02-04 19:31:37 +0100 526) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 527)   create_table "taggings", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 528)     t.integer  "tag_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 529)     t.integer  "taggable_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 530)     t.string   "taggable_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 531)     t.datetime "created_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 532)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 533) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 534)   add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 535)   add_index "taggings", ["taggable_id", "taggable_type"], :name => "index_taggings_on_taggable_id_and_taggable_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 536) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 537)   create_table "tags", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 538)     t.string "name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 539)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 540) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 541)   add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 542) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 543)   create_table "users", :force => true do |t|
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 544)     t.string   "login"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 545)     t.string   "email"
+6a5332a0 (Marius Mathiesen 2010-01-26 12:17:25 +0100 546)     t.string   "crypted_password",               :limit => 40
+6a5332a0 (Marius Mathiesen 2010-01-26 12:17:25 +0100 547)     t.string   "salt",                           :limit => 40
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 548)     t.datetime "created_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 549)     t.datetime "updated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 550)     t.string   "remember_token"
+06747d64 (Johan Sørensen   2010-05-19 13:18:24 +0200 551)     t.datetime "remember_token_expires_at"
+6a5332a0 (Marius Mathiesen 2010-01-26 12:17:25 +0100 552)     t.string   "activation_code",                :limit => 40
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 553)     t.datetime "activated_at"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 554)     t.integer  "ssh_key_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 555)     t.string   "fullname"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 556)     t.text     "url"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 557)     t.text     "identity_url"
+6a5332a0 (Marius Mathiesen 2010-01-26 12:17:25 +0100 558)     t.boolean  "is_admin",                                     :default => false
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 559)     t.datetime "suspended_at"
+6a5332a0 (Marius Mathiesen 2010-01-26 12:17:25 +0100 560)     t.boolean  "public_email",                                 :default => true
+6a5332a0 (Marius Mathiesen 2010-01-26 12:17:25 +0100 561)     t.boolean  "wants_email_notifications",                    :default => true
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 562)     t.string   "password_key"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 563)     t.string   "avatar_file_name"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 564)     t.string   "avatar_content_type"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 565)     t.integer  "avatar_file_size"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 566)     t.datetime "avatar_updated_at"
+6a5332a0 (Marius Mathiesen 2010-01-26 12:17:25 +0100 567)     t.boolean  "default_favorite_notifications",               :default => false
+244ff814 (spontus          2012-02-02 22:35:28 +0100 568)     t.string   "ssn"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 569)   end
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 570) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 571)   add_index "users", ["email"], :name => "index_users_on_email"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 572)   add_index "users", ["login"], :name => "index_users_on_login"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 573)   add_index "users", ["password_key"], :name => "index_users_on_password_key"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 574)   add_index "users", ["ssh_key_id"], :name => "index_users_on_ssh_key_id"
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 575) 
+244ff814 (spontus          2012-02-02 22:35:28 +0100 576)   create_table "whens", :force => true do |t|
+244ff814 (spontus          2012-02-02 22:35:28 +0100 577)     t.integer  "year"
+244ff814 (spontus          2012-02-02 22:35:28 +0100 578)     t.integer  "study_period"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 579)     t.datetime "created_at"
+923b4544 (Jesper Josefsson 2012-03-07 12:56:46 +0100 580)     t.datetime "updated_at"
+244ff814 (spontus          2012-02-02 22:35:28 +0100 581)   end
+244ff814 (spontus          2012-02-02 22:35:28 +0100 582) 
+724f5c56 (August Lilleaas  2009-09-24 20:52:33 +0200 583) end
