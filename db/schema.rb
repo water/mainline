@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120306151649) do
+ActiveRecord::Schema.define(:version => 20120307214249) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -113,6 +113,13 @@ ActiveRecord::Schema.define(:version => 20120306151649) do
   create_table "courses", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "department_id"
+  end
+
+  create_table "departments", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "emails", :force => true do |t|
@@ -235,6 +242,14 @@ ActiveRecord::Schema.define(:version => 20120306151649) do
     t.datetime "updated_at"
   end
 
+  create_table "lab_default_deadlines", :force => true do |t|
+    t.datetime "at"
+    t.integer  "lab_id"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "lab_descriptions", :force => true do |t|
     t.string   "description"
     t.string   "title"
@@ -248,6 +263,7 @@ ActiveRecord::Schema.define(:version => 20120306151649) do
     t.integer  "identification"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "given_course_id"
   end
 
   create_table "lab_groups_registered_courses", :id => false, :force => true do |t|
@@ -256,11 +272,12 @@ ActiveRecord::Schema.define(:version => 20120306151649) do
   end
 
   create_table "lab_has_groups", :force => true do |t|
-    t.integer  "Lab_id"
+    t.integer  "lab_id"
     t.integer  "lab_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "repo_id"
+    t.integer  "repository_id"
+    t.string   "grade"
   end
 
   create_table "lab_has_registered_assistants", :force => true do |t|
@@ -418,13 +435,6 @@ ActiveRecord::Schema.define(:version => 20120306151649) do
   add_index "registered_course_has_lab_groups", ["lab_group_id"], :name => "index_registered_course_has_lab_groups_on_lab_group_id"
   add_index "registered_course_has_lab_groups", ["registered_course_id"], :name => "index_registered_course_has_lab_groups_on_registered_course_id"
 
-  create_table "registered_courses", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "given_course_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "repositories", :force => true do |t|
     t.string   "name"
     t.integer  "project_id"
@@ -493,6 +503,13 @@ ActiveRecord::Schema.define(:version => 20120306151649) do
   end
 
   add_index "ssh_keys", ["user_id"], :name => "index_ssh_keys_on_user_id"
+
+  create_table "student_registered_for_courses", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "given_course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "students", :force => true do |t|
     t.integer  "user_id"

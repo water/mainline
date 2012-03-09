@@ -19,6 +19,7 @@ gem "diff-display", "0.0.1"
 gem "localized_dates", git: "git://github.com/water/localized_dates.git"
 gem "hodel_3000_compliant_logger", "0.1.0"
 gem "restful-authentication", "1.2.1"
+gem "acts_as_list"
 
 # Authentication
 gem "rack-openid"
@@ -84,4 +85,5 @@ group :test do
   gem "rspec-rails"
   gem "turn"
   gem "database_cleaner"
+  gem "fakefs", :require => "fakefs/safe"
 end

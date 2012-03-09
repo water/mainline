@@ -9,17 +9,17 @@ FactoryGirl.define do
     is_admin false
     activated_at Time.now.to_s(:db)
     factory :admin do
-      is_admin false
+      is_admin true
     end
   end
 
   factory :student do
-    user { Factory.create(:user) }
-    registered_courses { [Factory.create(:registered_course)] }
+    user
+    student_registered_for_courses { [Factory.create(:student_registered_for_course)] }
   end
 
   factory :administrator do
-    user { Factory.create(:user) }
+    user
   end
 
   factory :lab_has_group do
@@ -30,8 +30,13 @@ FactoryGirl.define do
 
   factory :lab do
     given_course
-    sequence(:number)
     lab_description
+  end
+
+  factory :lab_default_deadline do
+    lab
+    at (Time.now.to_s)
+    description ("foobar")
   end
 
   factory :lab_description do
@@ -40,44 +45,15 @@ FactoryGirl.define do
     association(:when)
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
   end
-end
 
-Factory.sequence :course_code_value do |n|
-  "TDA123_#{n}"
-end
+  factory :submission do
+    commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
+    lab_group
+    repository
+    lab
+  end
 
-Factory.define(:registered_course) do |r|
-  r.association(:student, factory: :user)
-  r.association(:given_course)
-end
-
-Factory.define(:course) {}
-
-Factory.define(:assistant_registered_to_given_course) do |c|
-  c.association(:assistant, factory: :user)
-  c.can_change_deadline(true)
-  c.association(:given_course)
-end
-
-Factory.define(:lab_group) do |c|
-  c.sequence(:identification)
-end
-
-Factory.define(:course_with_course_code, class: Course) do |c|
-  c.course_codes { [Factory(:course_code)] }
-end
-
-Factory.define(:course_code) do |c|
-  c.code { Factory.next :course_code_value }
-end
-
-Factory.define(:when) do |c|
-  c.sequence(:year){ |n| 1950 + n }
-  c.sequence(:study_period)
-end
-
-FactoryGirl.define do
-  factory :repository do
+   factory :repository do
     sequence(:name) { |i| "repo_#{i}" }
     user
     owner { user }
@@ -93,7 +69,57 @@ FactoryGirl.define do
     association(:when)
   end
 
+  factory :assistant do
+    user
+  end
+
   factory :examiner do
     user { Factory.create(:user) }
   end
+
+  factory :lab_group do
+    given_course
+    students { [Factory(:student)] }
+  end
+
+  factory :department do
+    sequence(:name) { |n| "Computer Science #{n}" }
+  end
+
+  factory :course_without_department, class: Course do
+    course_codes { [Factory.create(:course_code)] }
+  end
+
+  factory :course_with_course_code, class: Course do
+    course_codes { [Factory.create(:course_code)] }
+    department
+  end
+
+  factory :course do
+    department
+  end
+end
+
+Factory.sequence :course_code_value do |n|
+  "TDA123_#{n}"
+end
+
+Factory.define(:student_registered_for_course) do |r|
+  r.association(:student, factory: :user)
+  r.association(:given_course)
+end
+
+Factory.define(:assistant_registered_to_given_course) do |c|
+  c.association(:assistant, factory: :user)
+  c.can_change_deadline(true)
+  c.association(:given_course)
+end
+
+Factory.define(:course_code) do |c|
+  c.code { Factory.next :course_code_value }
+end
+
+Factory.define(:when) do |c|
+  c.sequence(:year){ |n| 1950 + n }
+  c.sequence(:study_period)
 end

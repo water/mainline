@@ -2,12 +2,12 @@ describe Student do
   describe "relations" do
     let(:student) { Factory.create(:student) }
 
-    it "should have a base" do
+    it "should have a user" do
       student.user.should be_instance_of(User)
     end
 
     it "should have a list of registered courses" do
-      student.should have(1).registered_courses
+      student.should have(1).student_registered_for_courses
     end
 
     it "should have a list of given courses" do

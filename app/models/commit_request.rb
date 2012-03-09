@@ -72,7 +72,20 @@ class CommitRequest
   #
   def save
     return false unless valid?
-    publish :commit, @options.to_json
+    publish :commit, (@options || {}).merge({
+      callback: {
+        class: "CommitRequest",
+        method: "notify_user"
+      }
+    }).to_json
+  end
+
+  #
+  # Notify view about process
+  # @options Hash See @remove, @add and @move
+  #
+  def self.notify_user(options)
+    # TODO: Send @options[:token] to user
   end
 
 private 
@@ -98,6 +111,6 @@ private
 
   def user_can_commit?
     sids = GroupHasUser.find_all_by_student_id(@user)
-    sids.any?{ | x | LabHasGroup.find(x.lab_group_id).repo_id == @repository }
+    sids.any?{ | x | LabHasGroup.find(x.lab_group_id).repository_id == @repository }
   end
 end
