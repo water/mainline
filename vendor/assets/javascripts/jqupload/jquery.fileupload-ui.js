@@ -102,6 +102,9 @@
             // Callback for the start of each file upload request:
             send: function (e, data) {
                 window.App.pendingUploads += data.files.length;
+                _.each(data.files, function (file) {
+                  window.Water.commit_request.addFile(file.fileName);
+                });
                 var that = $(this).data('fileupload');
                 if (!data.isValidated) {
                     if (!data.isAdjusted) {
@@ -111,7 +114,7 @@
                         return false;
                     }
                 }
-                window.Water.commit_request.addUpload(data.files.length);
+
                 if (data.context && data.dataType &&
                         data.dataType.substr(0, 6) === 'iframe') {
                     // Iframe Transport does not support progress events.
@@ -138,14 +141,10 @@
                         var file = ($.isArray(data.result) &&
                                 data.result[index]) || {error: 'emptyResult'};
                         if (file.error) {
-                            that._adjustMaxNumberOfFiles(1);
-                        }
-                        // TODO: could this be done nicer?
-                        window.App.successfulUploads.push(file);
-                        window.App.pendingUploads--;
-                        if (window.App.pendingUploads == 0) {
-                          alert("Done!");
-                          window.App.functions.sendAddCommitRequest(window.App.successfulUploads, "/path");
+                          window.Water.commit_request.errorForFile(file.name, file.error);
+                          that._adjustMaxNumberOfFiles(1);
+                        } else {
+                          window.Water.commit_request.uploadSuccessful(file.name, file.id);
                         }
                         
                         

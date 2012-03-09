@@ -6,9 +6,9 @@ class Water.TreesController extends Backbone.Router
     @fetcher = params.fetcher
     @breadcrumbs = params.breadcrumbs
   routes:
-    "/tree/*path": "fetch_tree"
-    "/blob/*path": "fetch_blob"
-    "*anything": "root"
+    "/tree/*path" : "fetch_tree"
+    "/blob/*path" : "fetch_blob"
+    "*anything"   : "root"
     
   fetch_tree: (path) ->
     @breadcrumbs.set_path(path)

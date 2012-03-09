@@ -40,6 +40,7 @@ gem "gon"
 gem "redcarpet"
 gem "rails-backbone"
 gem "eco"
+gem "pygments.rb"
 
 # Git
 gem "grit", git: "git://github.com/water/grit.git"

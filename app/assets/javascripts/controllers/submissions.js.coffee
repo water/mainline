@@ -36,12 +36,12 @@ $ ->
     $.scrollTo("#fileupload", 500, easing: "easeInOutSine")
     )
 
-
-window.App.functions.sendAddCommitRequest = (files, path) ->
-    $("#main").append($("#commit-request-dialog"))
-    action = gon.commit_request_path
-    request = command: "add", repository: gon.repository_id, branch: "master", commit_message: "A commit message"
-    request.files = ({id: file.id, to:[path, file.name].join("/")} for file in files)
-    console.log(request)
-    success = (data) -> $("#commit-request-dialog h1").text("Done!")
-    $.ajax action, type: "POST", data: request, success: success
+# 
+# window.App.functions.sendAddCommitRequest = (files, path) ->
+#     $("#main").append($("#commit-request-dialog"))
+#     action = gon.commit_request_path
+#     request = command: "add", repository: gon.repository_id, branch: "master", commit_message: "A commit message"
+#     request.files = ({id: file.id, to:[path, file.name].join("/")} for file in files)
+#     console.log(request)
+#     success = (data) -> $("#commit-request-dialog h1").text("Done!")
+#     $.ajax action, type: "POST", data: request, success: success

@@ -51,7 +51,7 @@ class Repository < ActiveRecord::Base
   end
   scope :clones,    :conditions => ["kind in (?) and parent_id is not null",
                                           [KIND_TEAM_REPO, KIND_USER_REPO]]
-  scope :mainlines, :conditions => { :kind => KIND_PROJECT_REPO }
+  # scope :mainlines, :conditions => { :kind => KIND_PROJECT_REPO }
 
   scope :regular, :conditions => ["kind in (?)", [KIND_TEAM_REPO, KIND_USER_REPO,
                                                        KIND_PROJECT_REPO]]

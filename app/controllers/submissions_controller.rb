@@ -18,7 +18,7 @@ class SubmissionsController < ApplicationController
   protected
   def find_repo
     # @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
-    @repository = Repository.find(6)
+    @repository = Repository.find(1)
   end
   def add_paths_to_gon
     gon.commit_request_path = commit_request_path

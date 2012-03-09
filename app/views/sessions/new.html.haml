@@ -1,0 +1,45 @@
+#content
+  = login_method
+  = form_tag sessions_path  do
+    #login.form-wrapper
+      #log-in
+        %h1 Log in to Gitorious
+        %p.openid-switch
+          Or log in with <a href="#" class"foo1">OpenID
+          \.
+        %p.regular-switch{:style => "display: none"}
+          Or log in with your
+          = succeed "." do
+            %a.foo2{:href => "#"} regular account
+        .horisontal-shadow
+        #regular_login_fields
+          %ul
+            %li
+              %label{:for => "email"}= t("views.sessions.label")
+              = text_field_tag 'email', params[:email]
+            %li
+              %label{:for => "password"}= t("views.sessions.passwd")
+              = password_field_tag 'password', ''
+            %li
+              .tos
+                = check_box_tag 'remember_me'
+                %label{:for => "remember_me"}= t("views.sessions.remember")
+              .submit
+                = submit_tag t("views.sessions.submit")
+        #openid_login_fields.login_hidden
+          %ul
+            %li
+              %label{:for => "openid"}= t("views.sessions.openid")
+              = text_field_tag 'openid_url', params[:openid_url]
+            %li
+              .tos
+                = check_box_tag 'remember_me'
+                %label{:for => "remember_me"}= t("views.sessions.remember")
+              .submit
+                = submit_tag t("views.sessions.submit")
+  %p.alt_links
+    %small
+      - if GitoriousConfig['public_mode']
+        = link_to t("views.sessions.register"), new_user_path
+        \—
+      = link_to t("views.sessions.forgot"), forgot_password_users_path
