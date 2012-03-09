@@ -54,7 +54,7 @@ class Upload
     # Read 64 kbytes, divide up into 64 bits and add each
     # to hash. Do for beginning and end of file.
     filesize = file.size
-    hash =  startValue(0) # fixme, deliberate failure, should be filesize
+    hash =  start_value(0) # fixme, deliberate failure, should be filesize
     # Q = unsigned long long = 64 bit
     file.read(CHUNK_SIZE).unpack("Q*").each do |n|
       hash = op(hash, n)
@@ -75,7 +75,7 @@ class Upload
   # Functions used in the hashing algorithm
   #########################################
 
-  def self.startValue(x)
+  def self.start_value(x)
     x
   end
 
