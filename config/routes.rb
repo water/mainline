@@ -2,16 +2,15 @@
 
 Gitorious::Application.routes.draw do
   
-  resources :registered_courses, :dashboards, :students, 
+  resources :labs,:registered_courses, :dashboards, :students, 
   :lab_deadlines, :whens, :course_codes
-
   post "upload" => "uploads#upload"
   post "commit_requests/create" => "commit_requests#create", :as => :commit_request
-  
+
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
   scope "lab_groups/:group_id" do
-    resources :labs do
-      resources :submissions do
+    resources :labs, only: [:index, :show] do
+      resources :submissions, only: [:index, :show] do
         match "trees/*branch_and_path" => "trees#show", as: "trees"
       end
     end
@@ -21,7 +20,8 @@ Gitorious::Application.routes.draw do
   # Example:
   # /courses/2/labs/3 # <= Shows all submissions for particular lab?
   resources :courses do
-    resources :labs
+    post "/courses/:course_id/upload" => "uploads#upload"
+    resources :labs, only: [:index, :show]
   end
   resources :submissions, only: [:index, :show, :create, :new]
   
