@@ -16,13 +16,17 @@ FactoryGirl.define do
 
   factory :student do
     user
-    student_registered_for_courses { [Factory.create(:student_registered_for_course)] }
   end
 
   factory :extended_deadline do
     at 3.days.from_now
     lab_group
     lab
+  end
+
+  factory :student_registered_for_course do
+    student
+    given_course
   end
 
   factory :administrator do
@@ -89,7 +93,6 @@ FactoryGirl.define do
 
   factory :lab_group do
     given_course
-    students { [Factory(:student)] }
   end
 
   factory :department do
@@ -112,11 +115,6 @@ end
 
 Factory.sequence :course_code_value do |n|
   "TDA123_#{n + rand(10**10)}"
-end
-
-Factory.define(:student_registered_for_course) do |r|
-  r.association(:student, factory: :user)
-  r.association(:given_course)
 end
 
 Factory.define(:assistant_registered_to_given_course) do |c|

@@ -3,9 +3,9 @@ describe CommitRequest do
     lab = create(:lab)
     student = create(:student)
     lab_group = create(:lab_group)
-    create(:student_registered_for_course, lab_groups: [lab_group], student: student.user)
+    create(:student_registered_for_course, lab_groups: [lab_group], student: student)
     repo = create(:lab_has_group, lab_group: lab_group, lab: lab).repository
-    
+
     @value = {
       command: "move",
       user: student.user.id,

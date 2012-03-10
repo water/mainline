@@ -90,13 +90,13 @@ class CommitRequest
 
 private 
   def existence_of_user
-    unless User.exists?(@user)
+    unless User.exists?(user)
       errors[:user] << "does not exist"
     end
   end
 
   def existence_of_repository
-    unless Repository.exists?(@repository)
+    unless Repository.exists?(repository)
       errors[:repository] << "does not exist"
     end
   end
@@ -109,8 +109,24 @@ private
     end
   end
 
+  def current_user
+    @_current_user ||= User.find_by_id(user)
+  end
+
   def user_can_commit?
-    sids = GroupHasUser.find_all_by_student_id(@user)
-    sids.any?{ | x | LabHasGroup.find(x.lab_group_id).repository_id == @repository }
+    return true if current_user and current_user.admin?
+
+    # Is the given repository part of a lab which
+    # responds to a given course that the user is 
+    # examiner in?
+    return true if LabHasGroup.
+      joins(lab_group: { given_course: { examiners: :user } }).
+      where("users.id = ?", user).
+      where("lab_has_groups.repository_id = ?", repository).first
+
+    return true if LabHasGroup.
+      joins(lab_group: { students: :user }).
+      where("users.id = ?", user).
+      where("lab_has_groups.repository_id = ?", repository).first
   end
 end
