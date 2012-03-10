@@ -40,7 +40,7 @@ FactoryGirl.define do
     lab_description
   end
 
-  factory :lab_default_deadline do
+  factory :default_deadline do
     lab
     at (Time.now.to_s)
     description ("foobar")

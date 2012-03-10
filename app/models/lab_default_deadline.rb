@@ -1,4 +1,4 @@
-class LabDefaultDeadline < ActiveRecord::Base
+class DefaultDeadline < ActiveRecord::Base
   belongs_to :lab
 
   validates_presence_of :lab, :at
@@ -10,7 +10,7 @@ class LabDefaultDeadline < ActiveRecord::Base
 
 private
   def time_difference
-    in_valid = LabDefaultDeadline.where(lab_id: lab_id).any? do |d| 
+    in_valid = DefaultDeadline.where(lab_id: lab_id).any? do |d| 
       (d.at.to_i - self.at.to_i) < MINIMUM_TIME_DIFFERENCE.to_i
     end
 
