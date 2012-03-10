@@ -72,6 +72,7 @@ FactoryGirl.define do
   factory :assistant do
     user
     given_courses { [Factory.create(:given_course)] }
+    lab_groups { [Factory.create(:lab_group)] }
   end
 
   factory :examiner do
