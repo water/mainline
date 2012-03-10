@@ -25,5 +25,9 @@ describe Examiner do
     it "should have a list of lab groups" do
       create(:examiner, lab_groups: [create(:lab_group)]).should have(1).lab_groups
     end
+
+    it "should have a list of students" do
+      create(:examiner, students: [create(:user)]).should have(1).students
+    end
   end
 end
