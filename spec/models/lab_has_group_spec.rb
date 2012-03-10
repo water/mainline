@@ -3,6 +3,23 @@ describe LabHasGroup do
     it "should have a lab group" do
       create(:lab_has_group).lab_group.should_not be_nil
     end
+
+    it "should have a repository" do
+      create(:lab_has_group).repository.should_not be_nil
+    end
+
+    it "should have a lab" do
+      create(:lab_has_group).lab.should_not be_nil
+    end
+
+    it "should have a list of submissions" do
+      create(:lab_has_group, submissions: [create(:submission)]).should have(1).submissions
+    end
+
+    it "should have one assistant" do
+      artgc = create(:assistant_registered_to_given_course)
+      create(:lab_has_group, assistant_registered_to_given_course: artgc).assistant.should_not be_nil
+    end
   end
 
   describe "validations" do
