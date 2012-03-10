@@ -2,7 +2,7 @@ class DefaultDeadline < ActiveRecord::Base
   belongs_to :lab
 
   validates_presence_of :lab, :at
-  validate :time_difference
+  validate :time_difference, :time_span
 
   # What's the minimum time between 
   # each deadline for a given group?
@@ -16,6 +16,12 @@ private
 
     if in_valid
       errors[:at] << "a bit to similar to some another deadline"
+    end
+  end
+
+  def time_span
+    if at and at < Time.zone.now
+      errors[:at] << "must be a future value"
     end
   end
 end

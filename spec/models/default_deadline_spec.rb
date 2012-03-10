@@ -23,6 +23,10 @@ describe DefaultDeadline do
       build(:default_deadline, at: 3.days.from_now + 1.minute, lab: lab1).should_not be_valid
       build(:default_deadline, at: 3.days.from_now + 1.minute, lab: lab2).should be_valid
     end
+    
+    it "should have a #at > current time" do
+      build(:default_deadline, at: 3.days.ago).should_not be_valid
+    end
   end
 
   describe "relations" do
