@@ -9,4 +9,5 @@ class LabHasGroup < ActiveRecord::Base
 
   validates_presence_of :lab, :lab_group, :repository
   validates_uniqueness_of :lab_id, scope: :lab_group_id
+  validates_uniqueness_of :repository_id
 end

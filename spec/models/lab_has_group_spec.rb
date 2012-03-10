@@ -45,5 +45,11 @@ describe LabHasGroup do
       create(:lab_has_group, lab_group: group, lab: lab).should be_valid
       build(:lab_has_group, lab_group: group, lab: lab).should_not be_valid
     end
+
+    it "should exist only one repository for each LabHasGroup" do
+      r = create(:repository)
+      create(:lab_has_group, repository: r).should be_valid
+      build(:lab_has_group, repository: r).should_not be_valid
+    end
   end
 end
