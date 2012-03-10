@@ -19,6 +19,12 @@ FactoryGirl.define do
     student_registered_for_courses { [Factory.create(:student_registered_for_course)] }
   end
 
+  factory :extended_deadline do
+    at 3.days.from_now
+    lab_group
+    lab
+  end
+
   factory :administrator do
     user
   end

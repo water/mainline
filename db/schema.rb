@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(:version => 20120310153414) do
 
   create_table "extended_deadlines", :force => true do |t|
     t.integer  "lab_id"
-    t.string   "group_id"
+    t.integer  "group_id"
     t.datetime "at"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
