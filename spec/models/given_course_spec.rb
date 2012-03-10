@@ -40,5 +40,9 @@ describe GivenCourse do
     it "should have a list of lab groups" do
       create(:given_course, lab_groups: [create(:lab_group)]).should have_at_least(1).lab_groups
     end
+
+    it "should have a list of labs" do
+      create(:given_course, labs: [create(:lab)]).should have_at_least(1).labs      
+    end
   end
 end
