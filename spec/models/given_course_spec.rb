@@ -36,5 +36,9 @@ describe GivenCourse do
       given_course.should have(1).assistants
       given_course.assistants.should include(user)
     end
+
+    it "should have a list of lab groups" do
+      create(:given_course, lab_groups: [create(:lab_group)]).should have_at_least(1).lab_groups
+    end
   end
 end
