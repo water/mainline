@@ -13,5 +13,9 @@ describe Examiner do
     it "should have a list of given courses" do
       create(:examiner, given_courses: [create(:given_course)]).should have(1).given_courses
     end
+
+    it "should have a list of labs" do
+      create(:examiner, labs: [create(:lab)]).should have(1).labs
+    end
   end
 end
