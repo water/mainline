@@ -37,5 +37,9 @@ describe Lab do
         lab_description: lab.lab_description
       }).should_not be_valid
     end
+
+    it "should have a list of submissions" do
+      create(:lab, submissions: [create(:submission)]).should have(1).submissions
+    end
   end
 end
