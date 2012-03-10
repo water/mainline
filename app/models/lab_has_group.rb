@@ -8,4 +8,5 @@ class LabHasGroup < ActiveRecord::Base
   has_one :assistant, through: :assistant_registered_to_given_course
 
   validates_presence_of :lab, :lab_group, :repository
+  validates_uniqueness_of :lab_id, scope: :lab_group_id
 end
