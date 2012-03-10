@@ -1,4 +1,4 @@
 class Administrator < ActiveRecord::Base
-  belongs_to :base, class_name: "User"
-  validates_presence_of :base
+  belongs_to :user
+  validates_presence_of :user
 end
