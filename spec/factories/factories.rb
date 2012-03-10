@@ -71,6 +71,7 @@ FactoryGirl.define do
 
   factory :assistant do
     user
+    given_courses { [Factory.create(:given_course)] }
   end
 
   factory :examiner do
