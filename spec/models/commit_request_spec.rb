@@ -17,7 +17,7 @@ describe CommitRequest do
         @labgroup = create(:lab_group)
         @ghu = GroupHasUser.new(:student_id => @user.id , :lab_group_id => @labgroup.id)
         @ghu.save!
-        @lhg = LabHasGroup.new(:lab_group_id => @labgroup.id , :repository_id => @repo.id)
+        @lhg = create(:lab_has_group, lab_group: @labgroup, repository: @repo)
         @lhg.save!
     end
 
