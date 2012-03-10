@@ -2,8 +2,6 @@ class LabDefaultDeadline < ActiveRecord::Base
   belongs_to :lab
 
   validates_presence_of :lab, :at
-  #validates_uniqueness_of :lab
-
   validate :time_difference
 
   # What's the minimum time between 
