@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  lab_id: 1
+  group_id: MyString
+  at: 2012-03-10 16:34:14
+
+two:
+  lab_id: 1
+  group_id: MyString
+  at: 2012-03-10 16:34:14

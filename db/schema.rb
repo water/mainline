@@ -116,6 +116,14 @@ ActiveRecord::Schema.define(:version => 20120310180506) do
     t.integer  "department_id"
   end
 
+  create_table "default_deadlines", :force => true do |t|
+    t.datetime "at"
+    t.integer  "lab_id"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "departments", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -163,6 +171,14 @@ ActiveRecord::Schema.define(:version => 20120310180506) do
   create_table "examiners_given_courses", :id => false, :force => true do |t|
     t.integer "examiner_id"
     t.integer "given_course_id"
+  end
+
+  create_table "extended_deadlines", :force => true do |t|
+    t.integer  "lab_id"
+    t.integer  "group_id"
+    t.datetime "at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "favorites", :force => true do |t|
@@ -240,14 +256,6 @@ ActiveRecord::Schema.define(:version => 20120310180506) do
     t.integer  "lab_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "lab_default_deadlines", :force => true do |t|
-    t.datetime "at"
-    t.integer  "lab_id"
-    t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
   end
 
   create_table "lab_descriptions", :force => true do |t|

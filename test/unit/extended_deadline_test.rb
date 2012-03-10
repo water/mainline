@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DefaultDeadlineTest < ActiveSupport::TestCase
+class ExtendedDeadlineTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
