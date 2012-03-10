@@ -15,5 +15,9 @@ describe Assistant do
     it "should have a list of lab groups" do
       Factory.create(:assistant).should have_at_least(1).lab_groups
     end
+
+    it "should be able to list all lab groups" do
+      Factory.create(:assistant).should have_at_least(1).all_lab_groups
+    end
   end
 end

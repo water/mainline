@@ -73,6 +73,7 @@ FactoryGirl.define do
     user
     given_courses { [Factory.create(:given_course)] }
     lab_groups { [Factory.create(:lab_group)] }
+    all_lab_groups { [Factory.create(:lab_group)] }
   end
 
   factory :examiner do
@@ -103,7 +104,7 @@ FactoryGirl.define do
 end
 
 Factory.sequence :course_code_value do |n|
-  "TDA123_#{n}"
+  "TDA123_#{n + rand(10**10)}"
 end
 
 Factory.define(:student_registered_for_course) do |r|
