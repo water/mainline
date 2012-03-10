@@ -131,6 +131,10 @@
 
 ### POST /courses/:course_id/uploads
 
+- Administrator/Examiner
+  - Skapar en uppladdning för en kurs, så att studenter kan ladda upp filer till repos osv
+
 ## CommitRequests
 
 ### POST /repositories/:repository_id/commit_requests
+
