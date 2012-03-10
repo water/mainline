@@ -26,5 +26,17 @@ describe LabHasGroup do
     it "defaults to valid" do
       build(:lab_has_group).should be_valid
     end
+
+    it "should have a lab" do
+      build(:lab_has_group, lab: nil).should_not be_valid
+    end
+
+    it "should have a lab group" do
+      build(:lab_has_group, lab_group: nil).should_not be_valid
+    end
+
+    it "should have a repository" do
+      build(:lab_has_group, repository: nil).should_not be_valid
+    end
   end
 end
