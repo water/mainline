@@ -27,5 +27,9 @@ describe Assistant do
     it "should list submissions" do
       create(:assistant, submissions: [create(:submission)]).should have(1).submissions      
     end
+
+    it "should list all submissions" do
+      create(:assistant, all_submissions: [create(:submission)]).should have(1).all_submissions      
+    end
   end
 end
