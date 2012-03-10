@@ -8,6 +8,7 @@ class Assistant < ActiveRecord::Base
   has_many :labs, through: :given_courses
   has_many :submissions, through: :lab_has_groups
   has_many :all_submissions, source: :submissions, through: :all_lab_groups
-
+  has_many :students, through: :given_courses
+  
   validates_presence_of :user
 end

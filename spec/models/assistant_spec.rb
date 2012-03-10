@@ -25,11 +25,15 @@ describe Assistant do
     end
 
     it "should list submissions" do
-      create(:assistant, submissions: [create(:submission)]).should have(1).submissions      
+      create(:assistant, submissions: [create(:submission)]).should have(1).submissions
     end
 
     it "should list all submissions" do
-      create(:assistant, all_submissions: [create(:submission)]).should have(1).all_submissions      
+      create(:assistant, all_submissions: [create(:submission)]).should have(1).all_submissions
+    end
+
+    it "should have a list of students" do
+      create(:assistant, students: [create(:user)]).should have(1).students
     end
   end
 end
