@@ -62,11 +62,22 @@
 
 ### GET /courses/:course_id/groups/new
 
+
+
 ### POST /courses/:course_id/groups/new
+
+- Student
+  - Skapar en grupp där studenten som skapade gruppen redan är medlem
 
 ### GET /courses/:course_id/groups/:id/join
 
+- Student
+  - En lista med alla grupper som en student kan gå med i
+
 ### POST /courses/:course_id/groups/:id/join
+
+- Student
+  - Studenten går med i en grupp
 
 ## Submissions
 
