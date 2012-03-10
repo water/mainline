@@ -17,9 +17,8 @@ describe User do
     user.role_for_given_course?(:student, given_course).should be_true
   end
 
-  # it "can be an administrator" do
-  #   admin = create(:administrator)
-  #   puts admin.user_id
-  #   puts admin.base.id#class #should be_admin
-  # end
+  it "can be an administrator" do
+    admin = create(:administrator)
+    admin.user.should be_admin
+  end
 end
