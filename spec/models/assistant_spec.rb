@@ -23,5 +23,9 @@ describe Assistant do
     it "should have a list of labs" do
       create(:assistant, labs: [create(:lab)]).should have(1).labs
     end
+
+    it "should list submissions" do
+      create(:assistant, submissions: [create(:submission)]).should have(1).submissions      
+    end
   end
 end
