@@ -13,6 +13,11 @@ describe Student do
     it "should have a list of given courses" do
       student.should have(1).given_courses
     end
+
+    it "should have a list of lab groups" do
+      create(:lab_group, student_registered_for_courses: student.student_registered_for_courses)
+      student.should have(1).lab_groups
+    end
   end
 
   describe "validation" do
