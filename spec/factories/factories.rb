@@ -1,3 +1,4 @@
+@@year = (1950..2050).to_a
 FactoryGirl.define do
   factory :user do
     login { Factory.next(:login) }
@@ -123,6 +124,6 @@ Factory.define(:course_code) do |c|
 end
 
 Factory.define(:when) do |c|
-  c.sequence(:year){ |n| 1950 + n }
+  c.sequence(:year) { |n| @@year[n % 100] }
   c.sequence(:study_period)
 end
