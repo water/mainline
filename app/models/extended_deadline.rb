@@ -1,5 +1,5 @@
 class ExtendedDeadline < ActiveRecord::Base
-  belongs_to :lab_group, foreign_key: "group_id"
+  belongs_to :lab_group
   belongs_to :lab
 
   validates_presence_of :lab, :lab_group, :at
@@ -17,7 +17,7 @@ private
   end
 
   def time_difference
-    in_valid = ExtendedDeadline.where(group_id: group_id).any? do |d| 
+    in_valid = ExtendedDeadline.where(lab_group_id: lab_group_id).any? do |d| 
       (d.at.to_i - self.at.to_i) < MINIMUM_TIME_DIFFERENCE.to_i
     end
 
