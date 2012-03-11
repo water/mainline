@@ -6,6 +6,14 @@ class Submission < ActiveRecord::Base
 
   validates_format_of :commit_hash, with: /^[a-f0-9]{40}$/
   validates_presence_of :lab_group, :lab, :commit_hash
+  validate :lab_access
 
   alias_method :repo, :repository
+
+  private
+    def lab_access
+      if lab and not lab.active?
+        errors[:lab_access]  << "failed, lab not accessible"
+      end
+    end
 end
