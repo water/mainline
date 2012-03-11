@@ -66,6 +66,10 @@ describe Lab do
     it "should have a list of submissions" do
       build(:lab, submissions: [create(:submission)]).should have(1).submissions
     end
+
+    it "should have a list of deadlines" do
+      build(:lab, default_deadlines: [create(:default_deadline)]).should have(1).default_deadlines
+    end
   end
 
   describe "#active" do
