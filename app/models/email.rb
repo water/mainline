@@ -2,7 +2,9 @@
 class Email < ActiveRecord::Base
   belongs_to :user
   
-  FORMAT = /^[^@\s]+@([\-a-z0-9]+\.)+[a-z]{2,}$/i
+  unless defined?(FORMAT)  
+    FORMAT = /^[^@\s]+@([\-a-z0-9]+\.)+[a-z]{2,}$/i
+  end
   validates_presence_of :user, :address
   validates_format_of   :address, :with => FORMAT
   validates_length_of   :address, :within => 5..255

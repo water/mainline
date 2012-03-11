@@ -17,7 +17,9 @@ module PagesHelper
     content_tag(:div, toc + sanitize(content), :class => "page wiki-page")
   end
   
-  BRACKETED_WIKI_WORD = /\[\[([A-Za-z0-9_\-]+)\]\]/
+  unless defined?(BRACKETED_WIKI_WORD)  
+    BRACKETED_WIKI_WORD = /\[\[([A-Za-z0-9_\-]+)\]\]/
+  end
   
   def wiki_link(content)
     content.gsub(BRACKETED_WIKI_WORD) do |page_link|
