@@ -33,7 +33,7 @@ describe Assistant do
     end
 
     it "should have a list of students" do
-      create(:assistant, students: [create(:user)]).should have(1).students
+      create(:assistant, students: [create(:student)]).should have(1).students
     end
   end
 end
