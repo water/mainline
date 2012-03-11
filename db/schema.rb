@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120310231141) do
+ActiveRecord::Schema.define(:version => 20120311010130) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -243,6 +243,11 @@ ActiveRecord::Schema.define(:version => 20120310231141) do
   end
 
   add_index "hooks", ["repository_id"], :name => "index_hooks_on_repository_id"
+
+  create_table "initial_lab_commit_for_labs", :id => false, :force => true do |t|
+    t.integer "initial_lab_commit_id"
+    t.integer "lab_id"
+  end
 
   create_table "initial_lab_commits", :force => true do |t|
     t.string   "commit_hash"

@@ -117,6 +117,11 @@ FactoryGirl.define do
     can_change_deadline true
     given_course
   end
+
+  factory :initial_lab_commit do
+    repository
+    lab
+  end
 end
 
 Factory.sequence :course_code_value do |n|
