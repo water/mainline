@@ -122,6 +122,11 @@ FactoryGirl.define do
     repository
     lab
   end
+
+  factory :initial_lab_commit_for_lab do
+    lab
+    initial_lab_commit
+  end
 end
 
 Factory.sequence :course_code_value do |n|
