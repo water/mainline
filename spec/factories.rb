@@ -137,4 +137,50 @@ FactoryGirl.define do
     sequence(:year) { |n| 1950 + (n % 101) }
     sequence(:study_period)
   end
+
+  factory :group do
+    name "b-team"
+    creator { Factory.create(:user) }
+  end
+
+  factory :membership do
+    role_id Role::KIND_MEMBER
+    association(:user)
+  end
+
+  factory :message do
+    sender { Factory.create(:user) }
+    recipient { Factory.create(:user) }
+    subject "Hello"
+    body "Just called to say hi"
+  end
+
+  factory :project do
+    slug "project"
+    title "Test project"
+    description "Random project"
+
+    factory :user_project do
+      user
+      owner { Factory.create(:user) }
+    end
+  end
+
+  sequence :key do |n|
+    "ssh-rsa #{["abcdef#{n}"].pack("m")} foo#{n}@bar"
+  end
+
+  factory :ssh_key do
+    user
+    sequence(:key) { Factory.next(:key) }
+    ready true
+  end
+
+  sequence :email do |n|
+    "john#{n}#{Random.rand(10**10)}@example.com"
+  end
+
+  sequence :login do |n|
+    "user#{n}#{Random.rand(10**10)}"
+  end
 end
