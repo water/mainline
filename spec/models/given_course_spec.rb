@@ -17,14 +17,15 @@ describe GivenCourse do
   end
   
   describe "relations" do
-    let(:user) { create(:user) }
+    let(:student) { create(:student) }
+    let(:assistant) { create(:assistant) }
     let(:given_course) { create(:given_course) }
     
     it "should have a list of students" do
-      create(:student_registered_for_course, given_course: given_course, student: user)
+      create(:student_registered_for_course, given_course: given_course, student: student)
       
       given_course.should have(1).students
-      given_course.students.should include(user)
+      given_course.students.should include(student)
     end
     
     it "should have a examiner" do
@@ -32,9 +33,9 @@ describe GivenCourse do
     end
     
     it "should have a list of assistents" do
-      artgc = create(:assistant_registered_to_given_course, assistant: user, given_course: given_course)
+      artgc = create(:assistant_registered_to_given_course, assistant: assistant, given_course: given_course)
       given_course.should have(1).assistants
-      given_course.assistants.should include(user)
+      given_course.assistants.should include(assistant)
     end
 
     it "should have a list of lab groups" do
