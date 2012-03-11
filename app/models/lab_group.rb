@@ -7,6 +7,6 @@ class LabGroup < ActiveRecord::Base
   belongs_to :given_course
   has_many :students, through: :student_registered_for_courses, class_name: "Student"
 
-  acts_as_list scope: :given_course, column: :identification
+  acts_as_list scope: :given_course, column: :number
   accepts_nested_attributes_for :lab_has_groups
 end
