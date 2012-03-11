@@ -38,12 +38,6 @@ GIT
       mime-types (>= 1.15)
 
 GIT
-  remote: git://github.com/water/localized_dates.git
-  revision: c7fdfa02305b0858cf0494c3e2aa5ee79c74defb
-  specs:
-    localized_dates (0.0.1)
-
-GIT
   remote: git://github.com/water/spork-testunit.git
   revision: e69586f17af4f7497c862bb663fa0d53ffa746a9
   specs:
@@ -366,7 +360,6 @@ DEPENDENCIES
   jquery-rails
   launchy
   less-rails-bootstrap
-  localized_dates!
   mime-types
   minitest
   mocha
