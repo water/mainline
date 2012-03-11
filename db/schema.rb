@@ -311,8 +311,9 @@ ActiveRecord::Schema.define(:version => 20120311113148) do
     t.integer  "lab_commit_id"
     t.integer  "given_course_id"
     t.integer  "lab_description_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.boolean  "active",             :default => false
   end
 
   create_table "memberships", :force => true do |t|
