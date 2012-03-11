@@ -1,4 +1,4 @@
-class When < ActiveRecord::Base
+class StudyPeriod < ActiveRecord::Base
   validate :year_span, :study_period_span, :uniqueness_of_time_span
   validates_presence_of :year, :study_period
   
@@ -16,7 +16,7 @@ class When < ActiveRecord::Base
   end
   
   def uniqueness_of_time_span
-    if record = When.where(year: year, study_period: study_period).first
+    if record = StudyPeriod.where(year: year, study_period: study_period).first
       errors[:base] << %Q{
         Combination of year and study period should be unique. 
         Existing record with id: #{record.id} already has same combo.

@@ -55,7 +55,7 @@ FactoryGirl.define do
   factory :lab_description do
     description "This is a description"
     title "Lab title"
-    association(:when)
+    association(:study_period)
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
   end
 
@@ -79,7 +79,7 @@ FactoryGirl.define do
   factory :given_course do
     course { Factory.create(:course_with_course_code) }
     examiners { [Factory.create(:examiner)] }
-    association(:when)
+    association(:study_period)
   end
 
   factory :assistant do
@@ -133,7 +133,7 @@ FactoryGirl.define do
     sequence(:code) { |n| "TDA121#{n}#{Random.rand(10**10)}" }
   end
 
-  factory :when do
+  factory :study_period do
     sequence(:year) { |n| 1950 + (n % 101) }
     sequence(:study_period)
   end
