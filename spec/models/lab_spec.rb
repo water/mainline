@@ -30,6 +30,10 @@ describe Lab do
       r1.should eq(r2)
     end
 
+    it "should have at least one deadline" do
+      build(:lab, default_deadlines: []).should_not be_valid
+    end
+
     it "should not accept non-unique given_course, number tuples" do
       lab = Factory.create(:lab)
       Factory.build(:lab, {
