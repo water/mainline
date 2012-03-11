@@ -27,7 +27,7 @@ describe LabDescription do
     end
 
     it "should have a list for labs" do
-      lab = create(:lab)
+      lab = create(:active_lab)
       lab.lab_description.should have(1).labs
     end
   end
