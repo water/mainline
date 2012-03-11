@@ -7,6 +7,11 @@ describe InitialLabCommit do
     it "should have a repository" do
       build(:initial_lab_commit, repository: nil).should_not be_valid
     end
+
+    it "should have a valid commit hash" do
+      build(:initial_lab_commit, commit_hash: "invalid").should_not be_valid
+      build(:initial_lab_commit, commit_hash: nil).should_not be_valid
+    end
   end
 
   describe "relations" do
