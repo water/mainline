@@ -7,6 +7,9 @@ class Lab < ActiveRecord::Base
   has_many :lab_groups, through: :lab_has_groups
   has_many :submissions
 
+  has_one :initial_lab_commit_for_lab
+  has_one :initial_lab_commit, through: :initial_lab_commit_for_lab
+  
   validates_presence_of :lab_description, :given_course, :number
   validates_uniqueness_of :description_id, scope: :given_course_id
 

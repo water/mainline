@@ -42,4 +42,10 @@ describe Lab do
       create(:lab, submissions: [create(:submission)]).should have(1).submissions
     end
   end
+
+  describe "relations" do
+    it "should have one initial lab commit" do
+      create(:lab, initial_lab_commit: create(:initial_lab_commit)).initial_lab_commit.should_not be_nil
+    end
+  end
 end
