@@ -1,8 +1,8 @@
 class LabDescription < ActiveRecord::Base
-  belongs_to :when
+  belongs_to :study_period
   has_many :labs
 
-  validates_presence_of :description, :title, :when, :commit_hash
+  validates_presence_of :description, :title, :study_period, :commit_hash
   validates_format_of :commit_hash, with: /^[a-f0-9]{40}$/
   validates_length_of :title, within: 2..40
   validate :proper_length_of_description
