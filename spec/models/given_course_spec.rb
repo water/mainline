@@ -5,8 +5,8 @@ describe GivenCourse do
       Factory.build(:given_course).should be_valid
     end
     
-    it "requires a when" do
-      Factory.build(:given_course, when: nil).should_not be_valid
+    it "requires a study period" do
+      Factory.build(:given_course, study_period: nil).should_not be_valid
       Factory.build(:given_course).should be_valid
     end
     
