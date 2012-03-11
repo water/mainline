@@ -13,4 +13,6 @@ class Lab < ActiveRecord::Base
   validates_uniqueness_of :description_id, scope: :given_course_id
 
   acts_as_list scope: :given_course, column: :number
+
+  default_scope where("labs.active = ?", true)
 end
