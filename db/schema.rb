@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120310180506) do
+ActiveRecord::Schema.define(:version => 20120310231141) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -175,7 +175,7 @@ ActiveRecord::Schema.define(:version => 20120310180506) do
 
   create_table "extended_deadlines", :force => true do |t|
     t.integer  "lab_id"
-    t.string   "group_id"
+    t.integer  "group_id"
     t.datetime "at"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -277,6 +277,11 @@ ActiveRecord::Schema.define(:version => 20120310180506) do
   create_table "lab_groups_registered_courses", :id => false, :force => true do |t|
     t.integer "lab_group_id"
     t.integer "registered_course_id"
+  end
+
+  create_table "lab_groups_student_registered_for_courses", :id => false, :force => true do |t|
+    t.integer "lab_group_id"
+    t.integer "student_registered_for_course_id"
   end
 
   create_table "lab_has_groups", :force => true do |t|
