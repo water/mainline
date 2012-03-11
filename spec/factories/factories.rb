@@ -1,3 +1,4 @@
+@@year = (1950..2050).to_a
 FactoryGirl.define do
   factory :user do
     login { Factory.next(:login) }
@@ -15,7 +16,17 @@ FactoryGirl.define do
 
   factory :student do
     user
-    student_registered_for_courses { [Factory.create(:student_registered_for_course)] }
+  end
+
+  factory :extended_deadline do
+    at 3.days.from_now
+    lab_group
+    lab
+  end
+
+  factory :student_registered_for_course do
+    student
+    given_course
   end
 
   factory :administrator do
@@ -33,10 +44,10 @@ FactoryGirl.define do
     lab_description
   end
 
-  factory :lab_default_deadline do
+  factory :default_deadline do
     lab
-    at (Time.now.to_s)
-    description ("foobar")
+    at 3.days.from_now
+    description "Lorem ipsum dolor sit amet"
   end
 
   factory :lab_description do
@@ -72,6 +83,8 @@ FactoryGirl.define do
   factory :assistant do
     user
     given_courses { [Factory.create(:given_course)] }
+    lab_groups { [Factory.create(:lab_group)] }
+    all_lab_groups { [Factory.create(:lab_group)] }
   end
 
   factory :examiner do
@@ -80,7 +93,6 @@ FactoryGirl.define do
 
   factory :lab_group do
     given_course
-    students { [Factory(:student)] }
   end
 
   factory :department do
@@ -99,21 +111,25 @@ FactoryGirl.define do
   factory :course do
     department
   end
+
+  factory :assistant_registered_to_given_course do |c|
+    assistant
+    can_change_deadline true
+    given_course
+  end
+
+  factory :initial_lab_commit do
+    repository
+  end
+
+  factory :initial_lab_commit_for_lab do
+    lab
+    initial_lab_commit
+  end
 end
 
 Factory.sequence :course_code_value do |n|
-  "TDA123_#{n}"
-end
-
-Factory.define(:student_registered_for_course) do |r|
-  r.association(:student, factory: :user)
-  r.association(:given_course)
-end
-
-Factory.define(:assistant_registered_to_given_course) do |c|
-  c.association(:assistant, factory: :user)
-  c.can_change_deadline(true)
-  c.association(:given_course)
+  "TDA123_#{n + rand(10**10)}"
 end
 
 Factory.define(:course_code) do |c|
@@ -121,6 +137,6 @@ Factory.define(:course_code) do |c|
 end
 
 Factory.define(:when) do |c|
-  c.sequence(:year){ |n| 1950 + n }
+  c.sequence(:year) { |n| @@year[n % 100] }
   c.sequence(:study_period)
 end

@@ -33,7 +33,7 @@
 - Examiner
   - En lista med alla labbar för en grupp
 - Administrator
-  - Alla labbar för en grupp
+  - Alla labbar för en viss grupp
 
 ## Courses
 
@@ -46,24 +46,20 @@
 - Examiner
   - En lista med alla kurser där usern kan registrera sig som examiner på
 - Administrator
- ---
 
 ### POST /courses/:id/join
 
 - Student
-  - Registrerar sig på en kurs.
+  - Registrerar sig på en kurs
 - Assistant
   - Registrerar sig som assistent på en kurs
 - Examiner
   - Registrerar sig som examiner på en kurs
 - Administrator
- ---
 
 ## Groups
 
 ### GET /courses/:course_id/groups/new
-
-
 
 ### POST /courses/:course_id/groups/new
 
@@ -92,8 +88,6 @@
   - En lista med alla submissions för alla labbar på en kurs där usern är examiner
 - Administrator
   - En lista med alla submissions för alla labbar på en viss kurs
- 
-
 
 ### GET /courses/:course_id/groups/:group_id/labs/:lab_id/submissions
 
@@ -106,15 +100,12 @@
 - Administrator
  - En lista med alla submissions för en lab
 
-
 ### POST /courses/:course_id/groups/:group_id/labs/:lab_id/submissions
 
 - Student
   - Gör en submission på en labb för en grupp som studenten är medlem i, på en kurs där studenten är registrerad. 
 
 ### GET /courses/:course_id/groups/:group_id/labs/:lab_id/submissions/new
-
-
 
 ### GET /courses/:course_id/groups/:group_id/submissions
 

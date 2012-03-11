@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DefaultDeadlineTest < ActiveSupport::TestCase
+class InitialLabCommitForLabTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
