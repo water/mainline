@@ -1,12 +1,12 @@
 describe StudentRegisteredForCourse do
   let(:given_course) { create(:given_course) }
-  let(:user) { create(:user) }
+  let(:student) { create(:student) }
   let(:course) { build(:student_registered_for_course) }
   
   describe "validation" do
     it "should only contain one unique pair" do
-      create(:student_registered_for_course, student: user, given_course: given_course).should be_valid
-      build(:student_registered_for_course, student: user, given_course: given_course).should_not be_valid
+      create(:student_registered_for_course, student: student, given_course: given_course).should be_valid
+      build(:student_registered_for_course, student: student, given_course: given_course).should_not be_valid
     end
 
     it "should be valid" do
