@@ -42,6 +42,9 @@ FactoryGirl.define do
   factory :lab do
     given_course
     lab_description
+    factory :active_lab do
+      active true
+    end
   end
 
   factory :default_deadline do
@@ -61,7 +64,7 @@ FactoryGirl.define do
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
     lab_group
     repository
-    lab
+    lab { Factory.create(:active_lab) }
   end
 
    factory :repository do
