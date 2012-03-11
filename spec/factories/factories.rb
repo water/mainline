@@ -120,7 +120,6 @@ FactoryGirl.define do
 
   factory :initial_lab_commit do
     repository
-    lab
   end
 
   factory :initial_lab_commit_for_lab do
