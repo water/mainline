@@ -3,7 +3,8 @@ describe User do
     examiner = create(:examiner)
     given_course = create(:given_course, examiners: [examiner])
     user = examiner.user
-    create(:assistant_registered_to_given_course, assistant: user, given_course: given_course)
+    assistant = create(:assistant, user: user)
+    create(:assistant_registered_to_given_course, assistant: assistant, given_course: given_course)
 
     user.role_for_given_course?(:examiner, given_course).should be_true
     user.role_for_given_course?(:assistent, given_course).should be_true
@@ -11,10 +12,10 @@ describe User do
   end
   
   it "should validate against a given course" do
-    user = create(:user)
+    student = create(:student)
     given_course = create(:given_course)
-    create(:student_registered_for_course, student: user, given_course: given_course)
-    user.role_for_given_course?(:student, given_course).should be_true
+    create(:student_registered_for_course, student: student, given_course: given_course)
+    student.user.role_for_given_course?(:student, given_course).should be_true
   end
 
   it "can be an administrator" do
