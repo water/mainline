@@ -1,5 +1,4 @@
 class Lab < ActiveRecord::Base
-
   belongs_to :lab_description, foreign_key: "description_id"
   belongs_to :given_course
 
@@ -9,7 +8,7 @@ class Lab < ActiveRecord::Base
 
   has_one :initial_lab_commit_for_lab
   has_one :initial_lab_commit, through: :initial_lab_commit_for_lab
-  
+
   validates_presence_of :lab_description, :given_course, :number
   validates_uniqueness_of :description_id, scope: :given_course_id
 

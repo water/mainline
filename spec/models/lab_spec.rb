@@ -37,15 +37,34 @@ describe Lab do
         lab_description: lab.lab_description
       }).should_not be_valid
     end
-
-    it "should have a list of submissions" do
-      create(:lab, submissions: [create(:submission)]).should have(1).submissions
-    end
   end
 
   describe "relations" do
     it "should have one initial lab commit" do
-      create(:lab, initial_lab_commit: create(:initial_lab_commit)).initial_lab_commit.should_not be_nil
+      build(:lab, initial_lab_commit: create(:initial_lab_commit)).initial_lab_commit.should_not be_nil
+    end
+
+    it "should have a lab description" do
+      build(:lab).lab_description.should_not be_nil
+    end
+
+    it "should have a given course" do
+      build(:lab).given_course.should_not be_nil
+    end
+
+    it "should have a list of lab_has_groups" do
+      create(:lab, lab_has_groups: [create(:lab_has_group)]).should have(1).lab_has_groups
+    end
+
+    it "should have a list of lab groups" do
+      lab = create(:lab)
+      group = create(:lab_group)
+      lhg = create(:lab_has_group, lab_group: group, lab: lab)
+      lab.should have(1).lab_groups
+    end
+
+    it "should have a list of submissions" do
+      build(:lab, submissions: [create(:submission)]).should have(1).submissions
     end
   end
 end
