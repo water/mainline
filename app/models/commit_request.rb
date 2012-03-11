@@ -118,15 +118,11 @@ private
 
     # Is the given repository part of a lab which
     # responds to a given course that the user is 
-    # examiner in?
-    return true if LabHasGroup.
-      joins(lab_group: { given_course: { examiners: :user } }).
-      where("users.id = ?", user).
-      where("lab_has_groups.repository_id = ?", repository).first
-
-    return true if LabHasGroup.
-      joins(lab_group: { students: :user }).
-      where("users.id = ?", user).
-      where("lab_has_groups.repository_id = ?", repository).first
+    # examiner in OR does the user belongs to the lab
+    # which owns the repository?
+    !! LabHasGroup.
+      joins(lab_group: [:students, { given_course: :examiners }]).
+      where("examiners.user_id = ? OR students.user_id = ?", user, user).
+      where("lab_has_groups.repository_id = ?", repository).exists?
   end
 end
