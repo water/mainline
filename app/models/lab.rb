@@ -12,8 +12,16 @@ class Lab < ActiveRecord::Base
 
   validates_presence_of :lab_description, :given_course, :number
   validates_uniqueness_of :lab_description_id, scope: :given_course_id
-  
+  #validate :presence_of_deadlines
+
   acts_as_list scope: :given_course, column: :number
 
   default_scope where("labs.active = ?", true)
+
+  private
+    def presence_of_deadlines
+      unless default_deadlines.any?
+        errors[:default_deadlines] << "required"
+      end
+    end
 end

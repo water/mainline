@@ -48,7 +48,7 @@ FactoryGirl.define do
 
   factory :default_deadline do
     lab
-    at 3.days.from_now
+    sequence(:at) { |n| ((n + 1)*2).days.from_now }
     description "Lorem ipsum dolor sit amet"
   end
 
