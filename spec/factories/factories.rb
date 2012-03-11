@@ -111,16 +111,16 @@ FactoryGirl.define do
   factory :course do
     department
   end
+
+  factory :assistant_registered_to_given_course do |c|
+    assistant
+    can_change_deadline true
+    given_course
+  end
 end
 
 Factory.sequence :course_code_value do |n|
   "TDA123_#{n + rand(10**10)}"
-end
-
-Factory.define(:assistant_registered_to_given_course) do |c|
-  c.association(:assistant, factory: :user)
-  c.can_change_deadline(true)
-  c.association(:given_course)
 end
 
 Factory.define(:course_code) do |c|
