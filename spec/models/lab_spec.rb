@@ -72,5 +72,13 @@ describe Lab do
     it "defaults to not active" do
       build(:lab).should_not be_active
     end
+
+    it "should not fetch non active labs" do
+      create(:lab, active: false)
+      lab = create(:lab, active: true)
+      labs = Lab.all
+      labs.count.should eq(1)
+      labs.should include(lab)
+    end
   end
 end
