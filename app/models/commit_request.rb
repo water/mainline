@@ -120,7 +120,7 @@ private
     # responds to a given course that the user is 
     # examiner in OR does the user belongs to the lab
     # which owns the repository?
-    !! LabHasGroup.
+    LabHasGroup.
       joins(lab_group: [:students, { given_course: :examiners }]).
       where("examiners.user_id = ? OR students.user_id = ?", user, user).
       where("lab_has_groups.repository_id = ?", repository).exists?
