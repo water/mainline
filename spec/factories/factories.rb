@@ -1,4 +1,3 @@
-@@year = (1950..2050).to_a
 FactoryGirl.define do
   factory :user do
     login { Factory.next(:login) }
@@ -129,17 +128,13 @@ FactoryGirl.define do
     lab
     initial_lab_commit
   end
-end
 
-Factory.sequence :course_code_value do |n|
-  "TDA123_#{n + rand(10**10)}"
-end
+  factory :course_code do
+    sequence(:code) { |n| "TDA121#{n}#{Random.rand(10**10)}" }
+  end
 
-Factory.define(:course_code) do |c|
-  c.code { Factory.next :course_code_value }
-end
-
-Factory.define(:when) do |c|
-  c.sequence(:year) { |n| @@year[n % 100] }
-  c.sequence(:study_period)
+  factory :when do
+    sequence(:year) { |n| 1950 + (n % 101) }
+    sequence(:study_period)
+  end
 end
