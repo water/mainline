@@ -1,6 +1,6 @@
 describe LabGroup do
   describe "relations" do
-    let(:group) { create(:lab_group) }
+    let(:group) { create(:lab_group, students: [create(:student)]) }
 
     it "should have a given course" do
       group.given_course.should_not be_nil
