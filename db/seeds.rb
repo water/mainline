@@ -34,12 +34,16 @@ course = Factory.create(:course, {
   course_codes_attributes: [{ code: "TDA123" }, { code: "EDA331" }]
 })
 
-#### LabGroup
-lab_group = Factory.create(:lab_group)
-
 #### Lab
 lab1 = Factory.create(:lab, active: true)
 lab2 = Factory.create(:lab, active: false)
+
+### DefaultDeadline
+Factory.create(:default_deadline, lab: lab1)
+Factory.create(:default_deadline, lab: lab2)
+
+#### LabGroup
+lab_group = Factory.create(:lab_group)
 
 #### GivenCourse
 given_course = Factory.create(:given_course, {
