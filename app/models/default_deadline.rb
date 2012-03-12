@@ -10,10 +10,13 @@ class DefaultDeadline < ActiveRecord::Base
 
 private
   def time_difference
-    in_valid = DefaultDeadline.where(lab_id: lab_id).any? do |d| 
-      (d.at.to_i - self.at.to_i) < MINIMUM_TIME_DIFFERENCE.to_i
+    in_valid = DefaultDeadline.
+      where("default_deadlines.lab_id = ?", lab_id).
+      where("default_deadlines.id != ?", id.to_i).
+    any? do |d|
+      (d.at.to_i - self.at.to_i).abs < MINIMUM_TIME_DIFFERENCE.to_i
     end
-
+    
     if in_valid
       errors[:at] << "a bit to similar to some another deadline"
     end
@@ -25,3 +28,5 @@ private
     end
   end
 end
+
+

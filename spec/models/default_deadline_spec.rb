@@ -27,6 +27,27 @@ describe DefaultDeadline do
     it "should have a #at > current time" do
       build(:default_deadline, at: 3.days.ago).should_not be_valid
     end
+
+    it "should validate #at with respect to DefaultDeadline::MINIMUM_TIME_DIFFERENCE" do
+      lab = create(:active_lab)
+      max_diff = DefaultDeadline::MINIMUM_TIME_DIFFERENCE
+
+      at = 1.day.from_now + max_diff + 1.minute
+      create(:default_deadline, {
+        at: 1.day.from_now, 
+        lab: lab
+      })
+
+      create(:default_deadline, {
+        at: at, 
+        lab: lab
+      }).should be_valid
+
+      build(:default_deadline, {
+        at: at,
+        lab: lab
+      }).should_not be_valid
+    end
   end
 
   describe "relations" do
