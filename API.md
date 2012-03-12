@@ -5,11 +5,11 @@
 ### GET /labs
 
 - Student
-  - En lista med labbar som ska göras/gjorts
+  - En lista med labbar som inte är avklarade
 - Assistant
-  - En lista med labbar som ska/är rättas/rättade
+  - En lista med labbar som ska rättas
 - Examiner
-  - En lista med alla labbar på alla kurser där han är examiner
+  - En lista med alla labbar där personen är examinator
 - Administrator
   - Alla labbar i applikationen
 
