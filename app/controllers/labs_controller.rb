@@ -22,6 +22,14 @@ class LabsController < ApplicationController
   def new
   end
 
+  def join
+    @group = LabGroup.find(params[:group_id])
+    @repository = Repository.new(:user_id => current_user, :name => "test", :owner_id => "123")
+    @labhasgroup = LabHasGroup.new(:lab_group_id => @group, 
+    :lab_id => params[:lab_id], :repository => @repository_id)
+    respond_with(@lab)
+  end
+
   def create
   end
 
