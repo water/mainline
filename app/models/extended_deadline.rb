@@ -17,8 +17,11 @@ private
   end
 
   def time_difference
-    in_valid = ExtendedDeadline.where(lab_group_id: lab_group_id).any? do |d| 
-      (d.at.to_i - self.at.to_i) < MINIMUM_TIME_DIFFERENCE.to_i
+    in_valid = ExtendedDeadline.
+      where("extended_deadlines.lab_group_id = ?", lab_group_id).
+      where("extended_deadlines.id != ?", id.to_i).
+    any? do |d|
+      (d.at.to_i - self.at.to_i).abs < MINIMUM_TIME_DIFFERENCE.to_i
     end
 
     if in_valid

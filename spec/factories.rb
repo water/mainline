@@ -1,4 +1,3 @@
-@@year = (1950..2050).to_a
 FactoryGirl.define do
   factory :user do
     login { Factory.next(:login) }
@@ -42,18 +41,21 @@ FactoryGirl.define do
   factory :lab do
     given_course
     lab_description
+    factory :active_lab do
+      active true
+    end
   end
 
   factory :default_deadline do
     lab
-    at 3.days.from_now
+    sequence(:at) { |n| ((n + 1)*2).days.from_now }
     description "Lorem ipsum dolor sit amet"
   end
 
   factory :lab_description do
     description "This is a description"
     title "Lab title"
-    association(:when)
+    association(:study_period)
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
   end
 
@@ -61,7 +63,7 @@ FactoryGirl.define do
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
     lab_group
     repository
-    lab
+    lab { Factory.create(:active_lab) }
   end
 
    factory :repository do
@@ -77,7 +79,7 @@ FactoryGirl.define do
   factory :given_course do
     course { Factory.create(:course_with_course_code) }
     examiners { [Factory.create(:examiner)] }
-    association(:when)
+    association(:study_period)
   end
 
   factory :assistant do
@@ -120,23 +122,66 @@ FactoryGirl.define do
 
   factory :initial_lab_commit do
     repository
+    commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
   end
 
   factory :initial_lab_commit_for_lab do
     lab
     initial_lab_commit
   end
-end
 
-Factory.sequence :course_code_value do |n|
-  "TDA123_#{n + rand(10**10)}"
-end
+  factory :course_code do
+    sequence(:code) { |n| "TDA121#{n}#{Random.rand(10**10)}" }
+  end
 
-Factory.define(:course_code) do |c|
-  c.code { Factory.next :course_code_value }
-end
+  factory :study_period do
+    sequence(:year) { |n| 1950 + (n % 101) }
+    sequence(:study_period)
+  end
 
-Factory.define(:when) do |c|
-  c.sequence(:year) { |n| @@year[n % 100] }
-  c.sequence(:study_period)
+  factory :group do
+    name "b-team"
+    creator { Factory.create(:user) }
+  end
+
+  factory :membership do
+    role_id Role::KIND_MEMBER
+    association(:user)
+  end
+
+  factory :message do
+    sender { Factory.create(:user) }
+    recipient { Factory.create(:user) }
+    subject "Hello"
+    body "Just called to say hi"
+  end
+
+  factory :project do
+    slug "project"
+    title "Test project"
+    description "Random project"
+
+    factory :user_project do
+      user
+      owner { Factory.create(:user) }
+    end
+  end
+
+  sequence :key do |n|
+    "ssh-rsa #{["abcdef#{n}"].pack("m")} foo#{n}@bar"
+  end
+
+  factory :ssh_key do
+    user
+    sequence(:key) { Factory.next(:key) }
+    ready true
+  end
+
+  sequence :email do |n|
+    "john#{n}#{Random.rand(10**10)}@example.com"
+  end
+
+  sequence :login do |n|
+    "user#{n}#{Random.rand(10**10)}"
+  end
 end

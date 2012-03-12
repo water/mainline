@@ -4,20 +4,22 @@ module BlobsHelper
   include RepositoriesHelper
   include TreesHelper
   
-  HIGHLIGHTER_TO_EXT = {
-    "list"  => /\.(lisp|cl|l|mud|el|clj)$/,
-    "hs"    => /\.hs$/,
-    "css"   => /\.css$/,
-    "lua"   => /\.lua$/,
-    "ml"    => /\.(ml|mli)$/,
-    "proto" => /\.proto$/,
-    "sql"   => /\.(sql|ddl|dml)$/,
-    "vb"    => /\.vb$/,
-    "wiki"  => /\.(mediawiki|wikipedia|wiki)$/,
-  }
-  
-  ASCII_MIME_TYPES_EXCEPTIONS = [ /^text/ ]
-  
+  unless defined?(ASCII_MIME_TYPES_EXCEPTIONS)
+    HIGHLIGHTER_TO_EXT = {
+      "list"  => /\.(lisp|cl|l|mud|el|clj)$/,
+      "hs"    => /\.hs$/,
+      "css"   => /\.css$/,
+      "lua"   => /\.lua$/,
+      "ml"    => /\.(ml|mli)$/,
+      "proto" => /\.proto$/,
+      "sql"   => /\.(sql|ddl|dml)$/,
+      "vb"    => /\.vb$/,
+      "wiki"  => /\.(mediawiki|wikipedia|wiki)$/,
+    }
+    
+    ASCII_MIME_TYPES_EXCEPTIONS = [ /^text/ ]
+  end
+    
   def textual?(blob)
     !binary?(blob)
   end

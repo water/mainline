@@ -1,4 +1,4 @@
-class WhensController < ApplicationController
+class StudyPeriodsController < ApplicationController
   def new
   end
 

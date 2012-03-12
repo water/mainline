@@ -1,9 +1,9 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  
-  resources :labs,:registered_courses, :dashboards, :students, 
-  :lab_deadlines, :whens, :course_codes
+  resources :labs,:registered_courses, :dashboards, :students
+  resources :lab_deadlines, :study_periods, :course_codes
+
   post "upload" => "uploads#upload"
 
   # /lab_groups/:group_id/labs/:lab_id/submissions/new

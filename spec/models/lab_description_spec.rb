@@ -16,18 +16,18 @@ describe LabDescription do
       build(:lab_description, description: "abcd").should_not be_valid
     end
 
-    it "must have a 'when' relation" do
-      build(:lab_description, when: nil).should_not be_valid
+    it "must have a study period" do
+      build(:lab_description, study_period: nil).should_not be_valid
     end
   end
 
   describe "realtions" do
-    it "should have a 'when'" do
-      create(:lab_description).when.should_not be_nil
+    it "should have a study period" do
+      create(:lab_description).study_period.should_not be_nil
     end
 
     it "should have a list for labs" do
-      lab = create(:lab)
+      lab = create(:active_lab)
       lab.lab_description.should have(1).labs
     end
   end

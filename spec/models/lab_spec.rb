@@ -30,6 +30,10 @@ describe Lab do
       r1.should eq(r2)
     end
 
+    it "should have at least one deadline" do
+      build(:lab, default_deadlines: []).should_not be_valid
+    end
+
     it "should not accept non-unique given_course, number tuples" do
       lab = Factory.create(:lab)
       Factory.build(:lab, {
@@ -65,6 +69,24 @@ describe Lab do
 
     it "should have a list of submissions" do
       build(:lab, submissions: [create(:submission)]).should have(1).submissions
+    end
+
+    it "should have a list of deadlines" do
+      build(:lab, default_deadlines: [create(:default_deadline)]).should have(1).default_deadlines
+    end
+  end
+
+  describe "#active" do
+    it "defaults to not active" do
+      build(:lab).should_not be_active
+    end
+
+    it "should not fetch non active labs" do
+      create(:lab, active: false)
+      lab = create(:lab, active: true)
+      labs = Lab.all
+      labs.count.should eq(1)
+      labs.should include(lab)
     end
   end
 end
