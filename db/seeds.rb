@@ -18,9 +18,9 @@ def populize(repository)
   path = paths[0..-2].join("/")
   git = paths.last
   %x{
-  cd #{path} && 
-  rm -rf #{git} &&
-  git clone --bare git://github.com/water/grack.git #{git}
+    cd #{path} && 
+    rm -rf #{git} &&
+    git clone --bare git://github.com/water/grack.git #{git}
   } unless git =~ /^\//
 end
 
@@ -93,6 +93,7 @@ given_course = Factory.create(:given_course, {
   labs: labs
 })
 
+#### Repository
 repository = Factory.create(:repository, {
   user: user, 
   owner: user,
