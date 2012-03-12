@@ -6,7 +6,6 @@ class CommitRequestsController < ApplicationController
   def create
     #fixme COMPLETLY UNTESTED!!!!
     @commit_request = CommitRequest.new(params)
-    logger.info("Params look like this: " + params.inspect)
     respond_to do |format|
       if @commit_request.save
         format.json { render json: {success: "true"} }
