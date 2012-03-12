@@ -5,7 +5,6 @@ Gitorious::Application.routes.draw do
   resources :lab_deadlines, :study_periods, :course_codes
 
   post "upload" => "uploads#upload"
-  post "commit_requests/create" => "commit_requests#create", :as => :commit_request
 
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
   scope "lab_groups/:group_id" do
@@ -32,6 +31,7 @@ Gitorious::Application.routes.draw do
     match "blobs/*branch_and_path" => "blobs#show", as: :blob, format: false
     match "blobs/history/*branch_and_path" => "blobs#history", as: :blob_history, format: false
     match "commit/:id(.:format)" => "commits#show", as: :commit
+    post "/commit_requests" => "commit_requests#create", as: :commit_request
   end
   
   extend Gitorious::RepositoryRoutes
