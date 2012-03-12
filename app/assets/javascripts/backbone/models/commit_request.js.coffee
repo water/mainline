@@ -35,7 +35,6 @@ class Water.CommitRequest extends Backbone.Model
     if @pendingFiles.length is 0
       request = 
         command: "add"
-        repository: gon.repository_id
         branch: gon.ref
         commit_message: "Dummy message"
         files: @processedfiles
