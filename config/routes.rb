@@ -8,11 +8,9 @@ Gitorious::Application.routes.draw do
   post "upload" => "uploads#upload"
 
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
-  scope "lab_groups/:group_id" do
+  resources :lab_groups do
     resources :labs, only: [:index, :show, :join] do
-      resources :submissions, only: [:index, :show] do
-        match "trees/*branch_and_path" => "trees#show", as: "trees"
-      end
+      resources :submissions, only: [:index, :show]
     end
   end
   
