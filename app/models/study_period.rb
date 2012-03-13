@@ -1,6 +1,6 @@
 class StudyPeriod < ActiveRecord::Base
-  validate :year_span, :study_period_span, :uniqueness_of_time_span
-  validates_presence_of :year, :study_period
+  validate :year_span, :period_span, :uniqueness_of_time_span
+  validates_presence_of :year, :period
   
   private
   def year_span
@@ -9,14 +9,14 @@ class StudyPeriod < ActiveRecord::Base
     end
   end
   
-  def study_period_span
-    if study_period.to_i <= 0
-      errors[:study_period] << "must be greater than 0"
+  def period_span
+    if period.to_i <= 0
+      errors[:period] << "must be greater than 0"
     end    
   end
   
   def uniqueness_of_time_span
-    if record = StudyPeriod.where(year: year, study_period: study_period).first
+    if record = StudyPeriod.where(year: year, period: period).first
       errors[:base] << %Q{
         Combination of year and study period should be unique. 
         Existing record with id: #{record.id} already has same combo.

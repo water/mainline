@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120311211111) do
+ActiveRecord::Schema.define(:version => 20120313161140) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -537,9 +537,9 @@ ActiveRecord::Schema.define(:version => 20120311211111) do
 
   create_table "study_periods", :force => true do |t|
     t.integer  "year"
-    t.integer  "study_period"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "period"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "submissions", :force => true do |t|

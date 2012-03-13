@@ -6,8 +6,8 @@ describe StudyPeriod do
     end
     
     it "requires a study period > 0" do
-      build(:study_period, study_period: 0).should_not be_valid
-      build(:study_period, study_period: 1).should be_valid
+      build(:study_period, period: 0).should_not be_valid
+      build(:study_period, period: 1).should be_valid
     end
   end
 end

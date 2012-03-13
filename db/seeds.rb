@@ -1,6 +1,7 @@
 require "colorize"
 require "database_cleaner"
 require "factory_girl"
+require "yaml"
 
 if ENV["CLEAR"]
   puts "Clear database, hold on".yellow
@@ -26,6 +27,13 @@ end
 
 FactoryGirl.reload
 labs = []
+# Nothing special
+# just copied from https://github.com/water/grack/commits
+commits = %w{
+  096277ba49b8db927f7d4ba9d3cf08b68dfc98f6
+  33877b2e102baf6f4f9f152e8169cebe889477d4
+  6a15f482779e43935622beb5a47cfc82e47005d5
+}
 
 #### User
 user = Factory.create(:user, {
@@ -51,8 +59,39 @@ course = Factory.create(:course, {
   course_codes_attributes: [{ code: "TDA123" }, { code: "EDA331" }]
 })
 
+#### Repository
+repository = Factory.create(:repository, {
+  user: user, 
+  owner: user,
+  name: "repo1"
+})
+
+#### InitialLabCommit
+ilc = Factory.create(:initial_lab_commit, {
+  commit_hash: commits.first,
+  repository: repository
+})
+
+#### StudyPeriod
+study_period = Factory.create(:study_period, {
+  study_period: 3,
+  year: 2012
+})
+
+#### LabDescription
+ld = Factory(:lab_description, {
+  study_period: study_period,
+  description: "This is my description",
+  title: "My title"
+})
+
 #### Lab
-labs << Factory.create(:lab, active: true)
+labs << Factory.create(:lab, {
+  active: true,
+  initial_lab_commit: ilc,
+  lab_description: ld
+})
+
 labs << Factory.create(:lab, active: false)
 
 ### DefaultDeadline
@@ -67,10 +106,15 @@ end
 lab_group = Factory.create(:lab_group)
 
 #### LabHasGroup
-labs.each do |lab|
-  Factory.create(:lab_has_group, {
+labs.each_with_index do |lab, index|
+  lhg = Factory.create(:lab_has_group, {
     lab: lab, 
     lab_group: lab_group
+  })
+
+  Factory.create(:submission, {
+    commit_hash: commits[index],
+    lab_has_group: lhg
   })
 end
 
@@ -90,14 +134,8 @@ given_course = Factory.create(:given_course, {
   assistants: [assistant],
   students: [student],
   lab_groups: [lab_group],
-  labs: labs
-})
-
-#### Repository
-repository = Factory.create(:repository, {
-  user: user, 
-  owner: user,
-  name: "repo1"
+  labs: labs,
+  study_period: study_period
 })
 
 sleep(10) # Wait for repository to be created
