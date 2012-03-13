@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require jquery.autocomplete
 //= require jquery.cookie
+//= require faye
 //= require color_picker
 //= require ui.core
 //= require ui.selectable

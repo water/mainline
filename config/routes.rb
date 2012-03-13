@@ -1,17 +1,16 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  
-  resources :registered_courses, :dashboards, :students, 
-  :lab_deadlines, :whens, :course_codes
+  resources :labs,:registered_courses, :dashboards, :students
+  resources :lab_deadlines, :study_periods, :course_codes
 
-  post "upload" => "uploads#upload"
-  post "commit_requests/create" => "commit_requests#create", :as => :commit_request
   
+  post "upload" => "uploads#upload"
+
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
   scope "lab_groups/:group_id" do
-    resources :labs do
-      resources :submissions do
+    resources :labs, only: [:index, :show, :join] do
+      resources :submissions, only: [:index, :show] do
         match "trees/*branch_and_path" => "trees#show", as: "trees"
       end
     end
@@ -21,7 +20,8 @@ Gitorious::Application.routes.draw do
   # Example:
   # /courses/2/labs/3 # <= Shows all submissions for particular lab?
   resources :courses do
-    resources :labs
+    post "/courses/:course_id/upload" => "uploads#upload"
+    resources :labs, only: [:index, :show]
   end
   resources :submissions, only: [:index, :show, :create, :new]
   
@@ -32,6 +32,7 @@ Gitorious::Application.routes.draw do
     match "blobs/*branch_and_path" => "blobs#show", as: :blob, format: false
     match "blobs/history/*branch_and_path" => "blobs#history", as: :blob_history, format: false
     match "commit/:id(.:format)" => "commits#show", as: :commit
+    post "/commit_requests" => "commit_requests#create", as: :commit_request
   end
   
   extend Gitorious::RepositoryRoutes

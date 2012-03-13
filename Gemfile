@@ -16,10 +16,10 @@ gem "exception_notification", :git => "git://github.com/smartinez87/exception_no
 gem "rails-dev-tweaks", "~> 0.6.1"
 gem "active_attr"
 gem "diff-display", "0.0.1"
-gem "localized_dates", git: "git://github.com/water/localized_dates.git"
 gem "hodel_3000_compliant_logger", "0.1.0"
 gem "restful-authentication", "1.2.1"
 gem "acts_as_list"
+gem "thin"
 
 # Authentication
 gem "rack-openid"
@@ -62,6 +62,7 @@ gem "activemessaging", git: "git://github.com/kookster/activemessaging.git"
 gem "daemons", :require => false
 gem "beanstalk-client"
 gem "stomp"
+gem "secure_faye", git: "git://github.com/oleander/secure_faye.git"
 
 group :development do
   gem "hirb"

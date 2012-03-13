@@ -2,10 +2,10 @@ class CommitRequest
   include ActiveAttr::Model
   include ActiveMessaging::MessageSender
 
-  attr_accessor :user, :command, :repository, :branch, :files, :paths
-  attr_writer :commit_message
+  attr_accessor :user, :command, :repository, :branch,:files,  :records
+  attr_writer :commit_message, :files
 
-  validates_presence_of :user,:command, :repository, :branch, :commit_message, :files
+  validates_presence_of :user,:command, :repository, :branch, :commit_message
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
   validate :existence_of_user, :existence_of_repository, :commit_access
@@ -24,7 +24,7 @@ class CommitRequest
   #    from: "old/path",
   #    to: "new/path"
   #  }],
-  #  files: [{
+  #  records: [{
   #    from: "path/to/file.txt",
   #    to: "path/to/new_file.txt"
   #  }]
@@ -48,11 +48,7 @@ class CommitRequest
   #   repository: 123,
   #   branch: "master",
   #   commit_message: "A commit message",
-  #   files: [
-  #     "path/to/file1.txt", 
-  #     "path/to/file2.txt"
-  #   ],
-  #   paths: [
+  #   records: [
   #     "path/to/dir1",
   #     "path/to/dir2",
   #   ]
@@ -85,18 +81,24 @@ class CommitRequest
   # @options Hash See @remove, @add and @move
   #
   def self.notify_user(options)
-    # TODO: Send @options[:token] to user
+    config = APP_CONFIG["faye"]
+    SecureFaye::Connect.new.
+      message({status: 200}.to_json).
+      token(config["token"]).
+      server("http://0.0.0.0:#{config["port"]}/faye").
+      channel("/users/#{options["token"]}").
+      send!
   end
 
 private 
   def existence_of_user
-    unless User.exists?(@user)
+    unless User.exists?(user)
       errors[:user] << "does not exist"
     end
   end
 
   def existence_of_repository
-    unless Repository.exists?(@repository)
+    unless Repository.exists?(repository)
       errors[:repository] << "does not exist"
     end
   end
@@ -109,8 +111,20 @@ private
     end
   end
 
+  def current_user
+    @_current_user ||= User.find_by_id(user)
+  end
+
   def user_can_commit?
-    sids = GroupHasUser.find_all_by_student_id(@user)
-    sids.any?{ | x | LabHasGroup.find(x.lab_group_id).repository_id == @repository }
+    return true if current_user and current_user.admin?
+
+    # Is the given repository part of a lab which
+    # responds to a given course that the user is 
+    # examiner in OR does the user belongs to the lab
+    # which owns the repository?
+    LabHasGroup.
+      joins(lab_group: [:students, { given_course: :examiners }]).
+      where("examiners.user_id = ? OR students.user_id = ?", user, user).
+      where("lab_has_groups.repository_id = ?", repository).exists?
   end
 end

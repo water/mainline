@@ -25,8 +25,11 @@ class User < ActiveRecord::Base
   attr_protected :login, :is_admin
 
   # For new users we are a little more strict than for existing ones.
-  USERNAME_FORMAT = /[a-z0-9\-_\.]+/i.freeze
-  USERNAME_FORMAT_ON_CREATE = /[a-z0-9\-]+/.freeze
+  unless defined?(USERNAME_FORMAT)
+    USERNAME_FORMAT = /[a-z0-9\-_\.]+/i.freeze
+    USERNAME_FORMAT_ON_CREATE = /[a-z0-9\-]+/.freeze
+  end
+  
   validates_presence_of     :login, :email,               :if => :password_required?
   validates_format_of       :login, :with => /^#{USERNAME_FORMAT_ON_CREATE}$/i, :on => :create
   validates_format_of       :login, :with => /^#{USERNAME_FORMAT}$/i, :on => :update
@@ -309,8 +312,16 @@ class User < ActiveRecord::Base
       end
     end
   end
-
-
+  
+  #
+  # @return String A token that is unique to the user
+  # N.B.: The string is based on the user's email. This can potentially change
+  #
+  def token
+    string = "#{self.email}#{self.id}#{self.created_at}"
+    string = string + APP_CONFIG["salt"]
+    Digest::SHA1.hexdigest(string)
+  end
   
   #
   # @role Symbol Role for the given user

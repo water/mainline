@@ -4,7 +4,9 @@
 module TreesHelper
   include RepositoriesHelper
 
-  MAX_TREE_ENTRIES_FOR_LAST_COMMIT_LOG = 15
+  unless defined?(MAX_TREE_ENTRIES_FOR_LAST_COMMIT_LOG)
+    MAX_TREE_ENTRIES_FOR_LAST_COMMIT_LOG = 15
+  end
 
   def current_path
     @path.dup

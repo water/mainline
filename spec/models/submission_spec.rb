@@ -17,5 +17,9 @@ describe Submission do
     it "should have a repository" do
       create(:submission).repository.should_not be_nil
     end
+
+    it "should only be valid if #lab is active" do
+      build(:submission, lab: build(:lab, active: false)).should_not be_valid
+    end
   end
 end

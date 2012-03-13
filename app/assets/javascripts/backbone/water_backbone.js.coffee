@@ -26,4 +26,3 @@ $ ->
   
   # Fetch the root tree view
   controller.trigger("root")
-  

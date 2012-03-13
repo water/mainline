@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307214249) do
+ActiveRecord::Schema.define(:version => 20120313161140) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -116,6 +116,14 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
     t.integer  "department_id"
   end
 
+  create_table "default_deadlines", :force => true do |t|
+    t.datetime "at"
+    t.integer  "lab_id"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "departments", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -165,6 +173,14 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
     t.integer "given_course_id"
   end
 
+  create_table "extended_deadlines", :force => true do |t|
+    t.integer  "lab_id"
+    t.integer  "lab_group_id"
+    t.datetime "at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
   create_table "favorites", :force => true do |t|
     t.integer  "user_id"
     t.string   "watchable_type"
@@ -188,9 +204,9 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
 
   create_table "given_courses", :force => true do |t|
     t.integer  "course_id"
-    t.integer  "when_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "study_period_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "group_has_users", :force => true do |t|
@@ -228,6 +244,11 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
 
   add_index "hooks", ["repository_id"], :name => "index_hooks_on_repository_id"
 
+  create_table "initial_lab_commit_for_labs", :id => false, :force => true do |t|
+    t.integer "initial_lab_commit_id"
+    t.integer "lab_id"
+  end
+
   create_table "initial_lab_commits", :force => true do |t|
     t.string   "commit_hash"
     t.integer  "repository_id"
@@ -242,25 +263,17 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "lab_default_deadlines", :force => true do |t|
-    t.datetime "at"
-    t.integer  "lab_id"
-    t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
   create_table "lab_descriptions", :force => true do |t|
     t.string   "description"
     t.string   "title"
-    t.integer  "when_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "study_period_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.string   "commit_hash"
   end
 
   create_table "lab_groups", :force => true do |t|
-    t.integer  "identification"
+    t.integer  "number"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.integer  "given_course_id"
@@ -269,6 +282,11 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
   create_table "lab_groups_registered_courses", :id => false, :force => true do |t|
     t.integer "lab_group_id"
     t.integer "registered_course_id"
+  end
+
+  create_table "lab_groups_student_registered_for_courses", :id => false, :force => true do |t|
+    t.integer "lab_group_id"
+    t.integer "student_registered_for_course_id"
   end
 
   create_table "lab_has_groups", :force => true do |t|
@@ -293,9 +311,9 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
     t.integer  "lab_commit_id"
     t.integer  "given_course_id"
     t.integer  "lab_description_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-    t.integer  "description_id"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.boolean  "active",             :default => false
   end
 
   create_table "memberships", :force => true do |t|
@@ -517,6 +535,13 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "study_periods", :force => true do |t|
+    t.integer  "year"
+    t.integer  "period"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "submissions", :force => true do |t|
     t.string   "commit_hash"
     t.integer  "lab_has_group_id"
@@ -572,12 +597,5 @@ ActiveRecord::Schema.define(:version => 20120307214249) do
   add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["password_key"], :name => "index_users_on_password_key"
   add_index "users", ["ssh_key_id"], :name => "index_users_on_ssh_key_id"
-
-  create_table "whens", :force => true do |t|
-    t.integer  "year"
-    t.integer  "study_period"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
 
 end

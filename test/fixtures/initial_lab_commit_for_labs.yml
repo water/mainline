@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  initial_lab_commit_id: 1
+  lab_id: 1
+
+two:
+  initial_lab_commit_id: 1
+  lab_id: 1

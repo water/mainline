@@ -5,7 +5,9 @@ module ApplicationHelper
   include UsersHelper
   include BreadcrumbsHelper
 
-  GREETINGS = ["Hello", "Hi", "Greetings", "Howdy", "Heya", "G'day"]
+  unless defined?(GREETINGS)
+    GREETINGS = ["Hello", "Hi", "Greetings", "Howdy", "Heya", "G'day"]
+  end
 
   def random_greeting
     GREETINGS[rand(GREETINGS.length)]
@@ -268,7 +270,7 @@ module ApplicationHelper
     '.gif' => 'image-file',
     'jpeg' => 'image-file',
     '.zip' => 'compressed-file',
-    '.gz' => 'compressed-file'}
+    '.gz' => 'compressed-file'} unless defined?(FILE_EXTN_MAPPINGS)
 
   def class_for_filename(filename)
     return FILE_EXTN_MAPPINGS[File.extname(filename)] || 'file'

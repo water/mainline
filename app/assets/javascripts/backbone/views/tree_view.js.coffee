@@ -5,7 +5,6 @@ class Water.TreeView extends Backbone.View
     @model.on("start_fetch", @render_loading)
     
   render_tree: () =>
-    console.log("View says: Did fetch! This: ", this)
     $("#indicator").hide()
     @$el.hide()
     @$el.html @model.get("data")

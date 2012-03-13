@@ -4,16 +4,20 @@ class Repository < ActiveRecord::Base
   include ActiveMessaging::MessageSender
   include Watchable
 
-  KIND_PROJECT_REPO = 0
-  KIND_WIKI = 1
-  KIND_TEAM_REPO = 2
-  KIND_USER_REPO = 3
-  KIND_TRACKING_REPO = 4
-  KINDS_INTERNAL_REPO = [KIND_WIKI, KIND_TRACKING_REPO]
+  unless defined?(KIND_PROJECT_REPO)
+    KIND_PROJECT_REPO = 0
+    KIND_WIKI = 1
+    KIND_TEAM_REPO = 2
+    KIND_USER_REPO = 3
+    KIND_TRACKING_REPO = 4
+    KINDS_INTERNAL_REPO = [KIND_WIKI, KIND_TRACKING_REPO]
 
-  WIKI_NAME_SUFFIX = "-gitorious-wiki"
-  WIKI_WRITABLE_EVERYONE = 0
-  WIKI_WRITABLE_PROJECT_MEMBERS = 1
+    WIKI_NAME_SUFFIX = "-gitorious-wiki"
+    WIKI_WRITABLE_EVERYONE = 0
+    WIKI_WRITABLE_PROJECT_MEMBERS = 1
+    
+    NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
+  end
 
   belongs_to  :user
   belongs_to  :owner, :polymorphic => true
@@ -27,7 +31,6 @@ class Repository < ActiveRecord::Base
   has_many :hooks, :dependent => :destroy
   belongs_to :lab_has_group
 
-  NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
   validates_presence_of :user_id, :name, :owner_id
   validates_format_of :name, :with => /^#{NAME_FORMAT}$/i, 
     :message => "is invalid, must match something like /[a-z0-9_\\-]+/"

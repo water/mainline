@@ -4,14 +4,16 @@ class CommitRequestsController < ApplicationController
   end
 
   def create
-    #fixme COMPLETLY UNTESTED!!!!
     @commit_request = CommitRequest.new(params)
-    logger.info("Params look like this: " + params.inspect)
+    #TODO: Get directory from Upload or somewhere
+    directory = "/tmp/"
+    params[:files].each{ |file|
+      file[:data] = open(directory + file[:id], "rb") {|io| io.read }
+    }
     respond_to do |format|
       if @commit_request.save
         format.json { render json: {success: "true"} }
       else
-        p @commit_request.errors
         format.json { render json: {success: "false", errors: @commit_request.errors} }
       end
     end
