@@ -76,7 +76,7 @@ module BlobsHelper
   end
   
   def markdown? (string)
-    WaterConfig["markdown_file_extensions"].include?(File.extname(string))
+    APP_CONFIG["markdown_file_extensions"].include?(File.extname(string))
   end
 
   def too_big_to_render?(size)
