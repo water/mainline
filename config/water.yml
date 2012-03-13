@@ -2,3 +2,6 @@ production:
   
 development:
   markdown_file_extensions: [".md", ".markdown", ".mdown", ".mdwn"]
+  faye: 
+    token: "ebd165407dc6187e46159cbf1cf6350b606529fb"
+    port: 9291
