@@ -1,5 +1,4 @@
 production:
-  salt: "ee8201c790b65bfe26b83482ab2ee1fd9335fff4"
 development:
   markdown_file_extensions: [".md", ".markdown", ".mdown", ".mdwn"]
   faye: 
