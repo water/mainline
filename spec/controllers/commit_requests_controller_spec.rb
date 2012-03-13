@@ -1,13 +1,33 @@
 describe CommitRequestsController do
-  describe "POST create" do
-   it "should create a commitrequest" do
-     lab_group = Factory.create(:lab_group)
-     lab = Factory.create(:lab)
-     student = Factory.create(:student)
-     Factory.create(:student_registered_for_course, lab_groups: [lab_group], student: student)
-     repo = Factory.create(:lab_has_group, lab_group: lab_group, lab: lab).repository
+  let(:content) { JSON.parse(response.body) }
+  let(:repository) { Factory.create(:repository) }
 
-     post :create, :repository => repo.id, command: "add", files: [{id: 123,to: "/path/to/file"}], user: student.id, branch: "master"
+  describe "POST create" do
+    it "should respond with 201 on valid request" do
+      post(:create, { 
+        format: "json", 
+        repository_id: repository.id, 
+        commit_request: {
+          user: create(:administrator).user.id,
+          command: "add",
+          repository: repository.id,
+          branch: "master"
+        }
+      })
+
+      response.status.should eq(201)
+      content.keys.should_not include("errors")
+    end
+
+    it "should respond with 422 on invalid request" do
+      CommitRequest.any_instance.stubs(:valid?).returns(false)
+      post(:create, { 
+        format: "json", 
+        repository_id: repository.id, 
+        commit_request: {}
+      })
+      response.status.should equal(422)
+      content.keys.should include("errors")
     end
   end
 end
