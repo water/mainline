@@ -72,10 +72,24 @@ ilc = Factory.create(:initial_lab_commit, {
   repository: repository
 })
 
+#### StudyPeriod
+study_period = Factory.create(:study_period, {
+  study_period: 3,
+  year: 2012
+})
+
+#### LabDescription
+ld = Factory(:lab_description, {
+  study_period: study_period,
+  description: "This is my description",
+  title: "My title"
+})
+
 #### Lab
 labs << Factory.create(:lab, {
   active: true,
-  initial_lab_commit: ilc
+  initial_lab_commit: ilc,
+  lab_description: ld
 })
 
 labs << Factory.create(:lab, active: false)
@@ -112,12 +126,6 @@ labs.each_with_index do |lab, i|
     at: ((i + 1) * 5).days.from_now
   })
 end
-
-#### StudyPeriod
-study_period = Factory.create(:study_period, {
-  study_period: 3,
-  year: 2012
-})
 
 #### GivenCourse
 given_course = Factory.create(:given_course, {
