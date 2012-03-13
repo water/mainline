@@ -1,6 +1,5 @@
 class Water.TreeView extends Backbone.View
   initialize: () ->
-    console.log("View contructed", @model)
     @model.on("change:data", @render_tree)
     @model.on("start_fetch", @render_loading)
     
