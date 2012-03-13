@@ -59,8 +59,25 @@ course = Factory.create(:course, {
   course_codes_attributes: [{ code: "TDA123" }, { code: "EDA331" }]
 })
 
+#### Repository
+repository = Factory.create(:repository, {
+  user: user, 
+  owner: user,
+  name: "repo1"
+})
+
+#### InitialLabCommit
+ilc = Factory.create(:initial_lab_commit, {
+  commit_hash: commits.first,
+  repository: repository
+})
+
 #### Lab
-labs << Factory.create(:lab, active: true)
+labs << Factory.create(:lab, {
+  active: true,
+  initial_lab_commit: ilc
+})
+
 labs << Factory.create(:lab, active: false)
 
 ### DefaultDeadline
@@ -104,13 +121,6 @@ given_course = Factory.create(:given_course, {
   students: [student],
   lab_groups: [lab_group],
   labs: labs
-})
-
-#### Repository
-repository = Factory.create(:repository, {
-  user: user, 
-  owner: user,
-  name: "repo1"
 })
 
 sleep(10) # Wait for repository to be created
