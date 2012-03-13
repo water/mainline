@@ -54,6 +54,34 @@ describe CommitRequest do
         @value[:repository] = repo2.id
       end 
     end
+
+    it "should send message to front end using faye" do
+      faye = mock(Object.new)
+      config = APP_CONFIG["faye"]
+      SecureFaye::Connect.
+        should_receive(:new).
+        and_return(faye)
+
+      faye.should_receive(:message).
+        with({status: 200}.to_json).
+        and_return(faye)
+
+      faye.should_receive(:token).
+        with(config["token"]).
+        and_return(faye)
+
+      faye.should_receive(:server).
+        with("http://0.0.0.0:#{config["port"]}/faye").
+        and_return(faye)
+
+      faye.should_receive(:channel).
+        with("/users/#{@value["token"]}").
+        and_return(faye)
+
+      faye.should_receive(:send!)
+
+      CommitRequest.notify_user(@value.stringify_keys!)
+    end
   end
 
   describe "commit_message generation" do

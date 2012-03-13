@@ -81,7 +81,13 @@ class CommitRequest
   # @options Hash See @remove, @add and @move
   #
   def self.notify_user(options)
-    # TODO: Send @options[:token] to user
+    config = APP_CONFIG["faye"]
+    SecureFaye::Connect.new.
+      message({status: 200}.to_json).
+      token(config["token"]).
+      server("http://0.0.0.0:#{config["port"]}/faye").
+      channel("/users/#{options["token"]}").
+      send!
   end
 
 private 
