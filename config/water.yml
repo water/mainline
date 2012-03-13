@@ -1,9 +1,8 @@
-production:
-development:
+development: &dev
   markdown_file_extensions: [".md", ".markdown", ".mdown", ".mdwn"]
   faye: 
     token: "ebd165407dc6187e46159cbf1cf6350b606529fb"
     port: 9291
   salt: "ee8201c790b65bfe26b83482ab2ee1fd9335fff4"
-test:
-  salt: "ee8201c790b65bfe26b83482ab2ee1fd9335fff4"
+test: *dev
+production: *dev
