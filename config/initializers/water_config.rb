@@ -1,1 +1,0 @@
-WaterConfig = YAML::load_file(File.join(Rails.root,"config/water.yml"))[Rails.env]
