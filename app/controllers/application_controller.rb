@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   #include ExceptionNotifiable
   
   before_filter :public_and_logged_in
+  before_filter :dummy_login
   
   after_filter :mark_flash_status
 
@@ -32,6 +33,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def dummy_login
+    current_user ||= User.first
+  end
+  
   def render(options = {}, extra_options = {}, &block)
     options[:layout] ||= ! params[:bare]
     super(options, extra_options, &block)
