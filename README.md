@@ -22,7 +22,7 @@ Core web application written in Rails 3
 6. Rename ```gitorious.sample.yml``` to ```gitorious.yml``` and change hosts and usernames to suit your system
 7. Create the db and migrate it `bundle exec rake db:create db:migrate`.
 8. Start [poller](https://github.com/water/mainline/blob/master/script/poller), git-daemon beanstalkd and [spork](http://railscasts.com/episodes/285-spork) by running `foreman start`
-9. Seed the db `bundle exec rake db:seed`
+9. Seed the db `CLEAR=1 bundle exec rake db:seed`
 10. Start server, `rails s`
 11. Navigate to [localhost:3000](http://localhost:3000)
 12. Login using the information from `db/seeds.rb`.
