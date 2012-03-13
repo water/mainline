@@ -10,7 +10,16 @@ class SessionsController < ApplicationController
   # renders_in_site_specific_context
   before_filter :ssl_required, :only => [:new, :create, :destroy]
   
-  def new; end
+  def new
+    if User.find_by_email("admin@popfizzle.com")
+      password_authentication("admin@popfizzle.com", "abc123")
+    else
+      flash.now.alert = %q{
+        Database is not popularise, 
+        run seed script using CLEAR=1 rake db:seed
+      }
+    end
+  end
 
   def create
     password_authentication(params[:email], params[:password])
