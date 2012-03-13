@@ -15,6 +15,7 @@ end
 # @return String Console output
 #
 def populize(repository)
+  puts  repository.full_repository_path.red
   paths = repository.full_repository_path.split("/")
   path = paths[0..-2].join("/")
   git = paths.last
@@ -74,7 +75,7 @@ ilc = Factory.create(:initial_lab_commit, {
 
 #### StudyPeriod
 study_period = Factory.create(:study_period, {
-  study_period: 3,
+  period: 3,
   year: 2012
 })
 
