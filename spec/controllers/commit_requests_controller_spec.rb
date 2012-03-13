@@ -4,13 +4,13 @@ describe CommitRequestsController do
 
   describe "POST create" do
     it "should respond with 201 on valid request" do
+      user = create(:administrator).user
       post(:create, { 
         format: "json", 
         repository_id: repository.id, 
         commit_request: {
-          user: create(:administrator).user.id,
+          user: user.id,
           command: "add",
-          repository: repository.id,
           branch: "master"
         }
       })

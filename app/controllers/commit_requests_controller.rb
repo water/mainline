@@ -6,7 +6,10 @@ class CommitRequestsController < ApplicationController
   end
 
   def create
-    @commit_request = CommitRequest.new(params[:commit_request])
+    @commit_request = CommitRequest.new(params[:commit_request].merge({
+      repository: params[:repository_id]
+    }))
+    
     flash[:notice] = "Commit request was created" if @commit_request.valid?
     respond_with(repository, @commit_request)
   end
