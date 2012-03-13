@@ -2,10 +2,10 @@ class CommitRequest
   include ActiveAttr::Model
   include ActiveMessaging::MessageSender
 
-  attr_accessor :user, :command, :repository, :branch, :files, :paths
-  attr_writer :commit_message
+  attr_accessor :user, :command, :repository, :branch,:files,  :records
+  attr_writer :commit_message, :files
 
-  validates_presence_of :user,:command, :repository, :branch, :commit_message, :files
+  validates_presence_of :user,:command, :repository, :branch, :commit_message
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
   validate :existence_of_user, :existence_of_repository, :commit_access
@@ -24,7 +24,7 @@ class CommitRequest
   #    from: "old/path",
   #    to: "new/path"
   #  }],
-  #  files: [{
+  #  records: [{
   #    from: "path/to/file.txt",
   #    to: "path/to/new_file.txt"
   #  }]
@@ -48,11 +48,7 @@ class CommitRequest
   #   repository: 123,
   #   branch: "master",
   #   commit_message: "A commit message",
-  #   files: [
-  #     "path/to/file1.txt", 
-  #     "path/to/file2.txt"
-  #   ],
-  #   paths: [
+  #   records: [
   #     "path/to/dir1",
   #     "path/to/dir2",
   #   ]

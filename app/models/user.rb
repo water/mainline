@@ -312,8 +312,16 @@ class User < ActiveRecord::Base
       end
     end
   end
-
-
+  
+  #
+  # @return String A token that is unique to the user
+  # N.B.: The string is based on the user's email. This can potentially change
+  #
+  def token
+    string = "#{self.email}#{self.id}#{self.created_at}"
+    string = string + APP_CONFIG["salt"]
+    Digest::SHA1.hexdigest(string)
+  end
   
   #
   # @role Symbol Role for the given user
