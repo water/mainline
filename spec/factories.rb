@@ -136,7 +136,7 @@ FactoryGirl.define do
 
   factory :study_period do
     sequence(:year) { |n| 1950 + (n % 101) }
-    sequence(:study_period)
+    sequence(:period)
   end
 
   factory :group do
