@@ -5,7 +5,7 @@ class CommitRequest
   attr_accessor :user, :command, :repository, :branch,:files,  :records
   attr_writer :commit_message, :files
 
-  validates_presence_of :user,:command, :repository, :branch, :commit_message
+  validates_presence_of :user, :command, :repository, :branch, :commit_message
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
   validate :existence_of_user, :existence_of_repository, :commit_access
