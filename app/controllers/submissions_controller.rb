@@ -27,5 +27,7 @@ class SubmissionsController < ApplicationController
     gon.repository_path = repository_path(@repository)
     gon.ref = "master"
     gon.repository_id = @repository.id
+    gon.faye_port = APP_CONFIG["faye_port"]
+    gon.user_token = current_user.token
   end
 end

@@ -2,6 +2,7 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require jquery.cookie
+//= require faye-browser
 //= require prettify
 //= require twitter/bootstrap
 //= require underscore

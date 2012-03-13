@@ -11,6 +11,10 @@ window.Water =
   Views: {}
   
 $ ->
+  
+  #
+  # Setup Backbone models, router and views
+  #
   fetcher = window.tree_fetcher = new Water.TreeFetcher(repository_path: gon.repository_path, ref: gon.ref)
   tree_view = window.tree_view = new Water.TreeView(el: $("#spine"), model: window.tree_fetcher)
   breadcrumb_set = window.Water.breadcrumb_set = new Water.BreadcrumbSet()
@@ -23,6 +27,12 @@ $ ->
   window.Water.commit_request = new Water.CommitRequest(breadcrumbs: breadcrumb_set)
 
   Backbone.history.start()
+  
+  # Setup Faye
+  faye_client = new Faye.Client(gon.faye_port)
+  host = "http://" + window.location.hostname
+  subscription_path = [host, "users", gon.user_token].join("/")
+  subscription = faye_client.subscribe(subscription_path, (message) -> console.log("Faye message: ", message))
   
   # Fetch the root tree view
   controller.trigger("root")
