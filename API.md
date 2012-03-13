@@ -27,11 +27,11 @@
 ### GET /courses/:course_id/groups/:group_id/labs
 
 - Student
-  - En lista med labbar som en student ska göra/gjort med en viss grupp
+  - En lista med labbar som inte är avklarade för en grupp användaren är med i
 - Assistant 
-  - En lista med labbar som ska/är rättas/rättade för en grupp som blivit tilldelade assistenten
+  - En lista med labbar som ska rättas för en grupp som användaren blivit tilldelad
 - Examiner
-  - En lista med alla labbar för en grupp
+  - En lista med alla labbar för en grupp användaren är examinator i
 - Administrator
   - Alla labbar för en viss grupp
 
