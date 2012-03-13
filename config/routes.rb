@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  resources :labs,:registered_courses, :dashboards, :students
+  resources :labs, :registered_courses, :dashboards, :students
   resources :lab_deadlines, :study_periods, :course_codes
 
   
