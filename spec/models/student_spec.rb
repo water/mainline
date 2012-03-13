@@ -21,6 +21,27 @@ describe Student do
       create(:student_registered_for_course, lab_groups: [group], student: student)
       student.should have(1).lab_groups
     end
+
+    it "should have a list of labs" do
+      student.should have(0).labs
+      srfc = Factory.create(:student_registered_for_course, {
+        student: student
+      })
+
+      lab_group = Factory.create(:lab_group)
+      lab = Factory.create(:lab, {
+        active: true
+      })
+
+      srfc.lab_groups << lab_group
+
+      Factory.create(:lab_has_group, {
+        lab: lab,
+        lab_group: lab_group
+      })
+
+      student.should have(1).labs
+    end
   end
 
   describe "validation" do
