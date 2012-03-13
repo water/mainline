@@ -16,13 +16,13 @@
 ### GET /courses/:course_id/labs
 
 - Student
-  - En lista med labbar på en viss kurs som ska göras/gjorts
+  - En lista med labbar som inte är avklarade
 - Assistant
-  - En lista med labbar på en viss kurs som ska/är rättas/rättade
+  - En lista med labbar som inte är rättade
 - Examiner
-  - En lista med alla labbar på en kurs där usern är examiner
+  - En lista med alla labbar där användaren är examinator
 - Administrator
-  - En lista med alla labbar på en kurs
+  - En lista med alla labbar för en kurs
 
 ### GET /courses/:course_id/groups/:group_id/labs
 
