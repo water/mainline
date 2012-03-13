@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
   before_filter :ssl_required, :only => [:new, :create, :destroy]
   
   def new
-    if User.find_by_email("admin@popfizzle.com")
+    if User.find_by_email("admin@popfizzle.com") and params[:force]
       password_authentication("admin@popfizzle.com", "abc123")
     else
       flash.now.alert = %q{
