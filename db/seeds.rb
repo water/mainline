@@ -4,7 +4,8 @@ require "factory_girl"
 require "yaml"
 
 if ENV["CLEAR"]
-  puts "Clear database, hold on".yellow
+  puts "Are you sure you want to wipe the entire database? [y|n]".red
+  abort("Abort") unless $stdin.gets =~ /y/
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.clean
 end
