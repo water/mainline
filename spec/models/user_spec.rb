@@ -22,4 +22,20 @@ describe User do
     admin = create(:administrator)
     admin.user.should be_admin
   end
+  
+  describe "token" do
+    it "should exist" do
+      user = create(:user)
+      user.token.should_not be_nil
+    end
+  
+    it "should be valid" do
+      user = create(:user)
+      user.token.should match(/[a-f0-9]{40}/)
+    end
+    
+    it "should be unique" do
+      create(:user).token.should_not equal(create(:user).token)
+    end
+  end
 end
