@@ -113,6 +113,12 @@ labs.each_with_index do |lab, i|
   })
 end
 
+#### StudyPeriod
+study_period = Factory.create(:study_period, {
+  study_period: 3,
+  year: 2012
+})
+
 #### GivenCourse
 given_course = Factory.create(:given_course, {
   course: course, 
@@ -120,7 +126,8 @@ given_course = Factory.create(:given_course, {
   assistants: [assistant],
   students: [student],
   lab_groups: [lab_group],
-  labs: labs
+  labs: labs,
+  study_period: study_period
 })
 
 sleep(10) # Wait for repository to be created
