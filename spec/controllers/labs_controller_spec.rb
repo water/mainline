@@ -53,8 +53,8 @@ describe LabsController do
 
         labs.each do |lab|
           Factory.create(:lab_has_group, {
-            #lab: lab,
-            #lab_group: lab_group
+            lab: lab,
+            lab_group: lab_group
           })
         end
 
