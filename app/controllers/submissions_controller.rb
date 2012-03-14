@@ -21,7 +21,7 @@ class SubmissionsController < ApplicationController
     @repository = Repository.find(1)
   end
   def add_paths_to_gon
-    gon.commit_request_path = repository_commit_request_path(@repository.id)
+    gon.commit_request_path = repository_commit_requests_path(@repository.id)
     # TODO Make this nicer!
     gon.tree_root_path = repository_tree_path(@repository, "master", bare: 1)
     gon.repository_path = repository_path(@repository)
