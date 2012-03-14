@@ -53,8 +53,8 @@ describe LabsController do
 
         labs.each do |lab|
           Factory.create(:lab_has_group, {
-            #lab: lab,
-            #lab_group: lab_group
+            lab: lab,
+            lab_group: lab_group
           })
         end
 
@@ -63,6 +63,7 @@ describe LabsController do
         page.should have_content("Lab 1")
         page.should_not have_content("Lab 2")
         page.should_not have_content("Lab 3")
+        page.should have_content(labs.first.description)
       end
     end
   end

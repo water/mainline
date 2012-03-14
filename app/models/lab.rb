@@ -18,6 +18,17 @@ class Lab < ActiveRecord::Base
 
   default_scope where("labs.active = ?", true)
 
+  #
+  # Implements #title and #description
+  #
+  def method_missing(meth, *args, &blk)
+    if lab_description and lab_description.respond_to?(meth)
+      return lab_description.send(meth, *args)
+    end
+
+    super
+  end
+
   private
     def presence_of_deadlines
       unless default_deadlines.any?

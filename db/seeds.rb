@@ -10,23 +10,6 @@ if ENV["CLEAR"]
   DatabaseCleaner.clean
 end
 
-#
-# Populates the given repo 
-# @repository Repository
-# @return String Console output
-#
-def populize(repository)
-  puts  repository.full_repository_path.red
-  paths = repository.full_repository_path.split("/")
-  path = paths[0..-2].join("/")
-  git = paths.last
-  %x{
-    cd #{path} && 
-    rm -rf #{git} &&
-    git clone --bare git://github.com/water/grack.git #{git}
-  } unless git =~ /^\//
-end
-
 FactoryGirl.reload
 labs = []
 # Nothing special
@@ -62,7 +45,7 @@ course = Factory.create(:course, {
 })
 
 #### Repository
-repository = Factory.create(:repository, {
+repository = Factory.create(:repo_with_data, {
   user: user, 
   owner: user,
   name: "repo1"
@@ -111,7 +94,8 @@ lab_group = Factory.create(:lab_group)
 labs.each_with_index do |lab, index|
   lhg = Factory.create(:lab_has_group, {
     lab: lab, 
-    lab_group: lab_group
+    lab_group: lab_group,
+    repository: Factory.create(:repo_with_data)
   })
 
   Factory.create(:submission, {
@@ -139,8 +123,3 @@ given_course = Factory.create(:given_course, {
   labs: labs,
   study_period: study_period
 })
-
-sleep(10) # Wait for repository to be created
-lab_group.lab_has_groups.each do |lhg|
-  puts populize(lhg.repository).yellow
-end
