@@ -90,6 +90,48 @@ describe Lab do
     end
   end
 
+  describe "#not_finished/#finished" do
+    before(:each) do
+      @labs = []
+      @labs << create(:active_lab)
+      @labs << create(:active_lab)
+    end
+
+    it "should only return non finished labs" do      
+      # Not finished
+      create(:lab_has_group, {
+        lab: @labs.first,
+        grade: nil
+      })
+
+      # Finished
+      create(:lab_has_group, {
+        lab: @labs.last,
+        grade: "a"
+      })
+
+      Lab.not_finished.count.should eq(1)
+      Lab.not_finished.should include(@labs.first)
+    end
+
+    it "should only return finished labs" do      
+      # Not finished
+      create(:lab_has_group, {
+        lab: @labs.first,
+        grade: nil
+      })
+
+      # Finished
+      create(:lab_has_group, {
+        lab: @labs.last,
+        grade: "a"
+      })
+
+      Lab.finished.count.should eq(1)
+      Lab.finished.should include(@labs.last)
+    end
+  end
+
   describe "lab description" do
     let(:lab) { create(:lab, active: true) }
 

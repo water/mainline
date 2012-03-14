@@ -12,6 +12,9 @@ class Lab < ActiveRecord::Base
 
   validates_presence_of :lab_description, :given_course, :number
   validates_uniqueness_of :lab_description_id, scope: :given_course_id
+  scope :not_finished, joins(:lab_has_groups).where("lab_has_groups.grade IS NULL")
+  scope :finished, joins(:lab_has_groups).where("lab_has_groups.grade IS NOT NULL")
+  
   #validate :presence_of_deadlines
 
   acts_as_list scope: :given_course, column: :number
