@@ -98,7 +98,7 @@ describe Lab do
     end
 
     it "should have a lab description based on #lab_description.description" do
-      lab.description.should eq(lab.lab_description.description)      
+      lab.description.should eq(lab.lab_description.description)
     end
   end
 end

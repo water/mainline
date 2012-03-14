@@ -18,7 +18,6 @@ class Lab < ActiveRecord::Base
 
   default_scope where("labs.active = ?", true)
 
-
   #
   # Implements #title and #description
   #
