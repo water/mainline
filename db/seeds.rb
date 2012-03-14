@@ -45,13 +45,11 @@ course = Factory.create(:course, {
 })
 
 #### Repository
-repository = Factory.create(:repository, {
+repository = Factory.create(:repo_with_data, {
   user: user, 
   owner: user,
   name: "repo1"
 })
-
-puts populize(repository).red
 
 #### InitialLabCommit
 ilc = Factory.create(:initial_lab_commit, {
@@ -96,7 +94,8 @@ lab_group = Factory.create(:lab_group)
 labs.each_with_index do |lab, index|
   lhg = Factory.create(:lab_has_group, {
     lab: lab, 
-    lab_group: lab_group
+    lab_group: lab_group,
+    repository: Factory.create(:repo_with_data)
   })
 
   Factory.create(:submission, {
