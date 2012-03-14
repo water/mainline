@@ -89,4 +89,16 @@ describe Lab do
       labs.should include(lab)
     end
   end
+
+  describe "lab description" do
+    let(:lab) { create(:lab, active: true) }
+
+    it "should have a lab title based on #lab_description.title" do
+      lab.title.should eq(lab.lab_description.title)
+    end
+
+    it "should have a lab description based on #lab_description.description" do
+      lab.description.should eq(lab.lab_description.description)      
+    end
+  end
 end
