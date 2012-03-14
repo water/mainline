@@ -31,7 +31,6 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  ActiveSupport::Dependencies.clear
   ActiveRecord::Base.instantiate_observers
   load "#{Rails.root}/config/routes.rb"
   Dir["#{Rails.root}/app/**/*.rb"].each { |f| load f }

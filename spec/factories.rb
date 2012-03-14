@@ -140,7 +140,7 @@ FactoryGirl.define do
   end
 
   factory :group do
-    name "b-team"
+    sequence(:name) { |n| "b-team_#{n}" }
     creator { Factory.create(:user) }
   end
 

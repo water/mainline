@@ -51,6 +51,7 @@ class ApplicationController < ActionController::Base
   # RAILS3FAIL
   def ssl_required
     return if Rails.env.development? and ENV["Rails.env"] != "test"
+    return if Rails.env.test? # for now
     
     unless request.ssl? and request.respond_to?(:request_uri)
       redirect_to "https://" + request.host + request.fullpath
@@ -300,6 +301,13 @@ class ApplicationController < ActionController::Base
       @tree = @git.tree(@commit.tree.id, path)
       expires_in 30.seconds
     end
+  end
+
+  #
+  # @return [Examiner, Administrator, Student]
+  #
+  def current_role
+    Student.find_by_user_id(current_user.try(:id))
   end
 
   private  

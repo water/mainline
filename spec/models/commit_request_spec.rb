@@ -13,8 +13,8 @@ describe CommitRequest do
       branch: "master",
       commit_message: "A commit message",
       files: [{
-      from: "path/to/file.txt",
-      to: "path/to/newfile.text"
+        from: "path/to/file.txt",
+        to: "path/to/newfile.text"
       }]
     }
   end
@@ -81,6 +81,12 @@ describe CommitRequest do
       faye.should_receive(:send!)
 
       CommitRequest.notify_user(@value.stringify_keys!)
+    end
+
+    it "should be able to generate proper error messages" do
+      cr = CommitRequest.new(@value.merge(user: nil))
+      cr.save
+      cr.errors.should_not be_empty
     end
   end
 

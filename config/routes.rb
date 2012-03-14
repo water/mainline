@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  resources :labs,:registered_courses, :dashboards, :students
+  resources :labs, :registered_courses, :dashboards, :students
   resources :lab_deadlines, :study_periods, :course_codes
 
   
@@ -30,7 +30,7 @@ Gitorious::Application.routes.draw do
     match "blobs/*branch_and_path" => "blobs#show", as: :blob, format: false
     match "blobs/history/*branch_and_path" => "blobs#history", as: :blob_history, format: false
     match "commit/:id(.:format)" => "commits#show", as: :commit
-    post "/commit_requests" => "commit_requests#create", as: :commit_request
+    resources :commit_requests, only: [:create]
   end
   
   extend Gitorious::RepositoryRoutes

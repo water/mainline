@@ -1,21 +1,21 @@
 class CommitRequestsController < ApplicationController
+  respond_to :json
+
   def new
     @commit_request = CommitRequest.new
   end
 
   def create
-    @commit_request = CommitRequest.new(params)
-    #TODO: Get directory from Upload or somewhere
-    directory = "/tmp/"
-    params[:files].each{ |file|
-      file[:data] = open(directory + file[:id], "rb") {|io| io.read }
-    }
-    respond_to do |format|
-      if @commit_request.save
-        format.json { render json: {success: "true"} }
-      else
-        format.json { render json: {success: "false", errors: @commit_request.errors} }
-      end
-    end
+    @commit_request = CommitRequest.new(params[:commit_request].merge({
+      repository: params[:repository_id]
+    }))
+    
+    flash[:notice] = "Commit request was created" if @commit_request.valid?
+    respond_with(repository, @commit_request)
+  end
+
+  private
+  def repository
+    Repository.find(params[:repository_id])
   end
 end

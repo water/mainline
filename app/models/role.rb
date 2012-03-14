@@ -1,8 +1,10 @@
 # encoding: utf-8
 class Role < ActiveRecord::Base
-  KIND_ADMIN = 0
-  KIND_MEMBER = 1
-  
+  unless defined?(KIND_ADMIN)
+    KIND_ADMIN = 0
+    KIND_MEMBER = 1
+  end
+    
   include Comparable
   
   # TODO: use this when we upgrade to rails 2.3, and nuke the ::all override

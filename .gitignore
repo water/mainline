@@ -32,7 +32,7 @@ log/*
 
 # Water-specific rails
 ######################
-tmp/uploads
+tmp/
 
 # gitorious
 ###################
@@ -81,3 +81,4 @@ nbproject
 *.esproj
 *.sublime-project
 *.sublime-workspace
+tags

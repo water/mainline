@@ -1,10 +1,17 @@
 class LabsController < ApplicationController
   respond_to :html
   
-  # /lab_groups/:group_id/labs/
+  #
+  # GET /labs
+  # GET /lab_groups/:group_id/labs
+  #
   def index
-    @group = LabGroup.find(params[:group_id])
-    @labs = Lab.find_by_group(@group)
+    if id = params[:group_id]
+      @labs = LabGroup.includes(:labs).find(id).labs
+    else
+      @labs = current_role.labs
+    end
+
     respond_with(@labs)
   end
   

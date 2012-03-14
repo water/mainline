@@ -4,7 +4,8 @@ require "factory_girl"
 require "yaml"
 
 if ENV["CLEAR"]
-  puts "Clear database, hold on".yellow
+  puts "Are you sure you want to wipe the entire database? [y|n]".red
+  abort("Abort") unless $stdin.gets =~ /y/
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.clean
 end
@@ -15,6 +16,7 @@ end
 # @return String Console output
 #
 def populize(repository)
+  puts  repository.full_repository_path.red
   paths = repository.full_repository_path.split("/")
   path = paths[0..-2].join("/")
   git = paths.last
@@ -74,7 +76,7 @@ ilc = Factory.create(:initial_lab_commit, {
 
 #### StudyPeriod
 study_period = Factory.create(:study_period, {
-  study_period: 3,
+  period: 3,
   year: 2012
 })
 
