@@ -74,6 +74,13 @@ FactoryGirl.define do
     factory :merge_request_repository do
       kind Repository::KIND_TRACKING_REPO
     end
+    after_create do |r|
+      Repository.create_git_repository(r.real_gitdir)
+      dir = File.join(Rails.root, "spec/fixtures/git-repo")
+      Dir.chdir(dir) do
+        Kernel.system "git push #{r.full_repository_path} master"
+      end
+    end
   end
 
   factory :given_course do

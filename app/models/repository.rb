@@ -176,11 +176,11 @@ class Repository < ActiveRecord::Base
   end
 
   def self.git_backend
-    Rails.env == "test" ? MockGitBackend : GitBackend
+    GitBackend
   end
 
   def git_backend
-    Rails.env == "test" ? MockGitBackend : GitBackend
+    GitBackend
   end
 
   def to_param
