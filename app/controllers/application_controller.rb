@@ -297,6 +297,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  #
+  # @return [Examiner, Administrator, Student]
+  #
+  def current_role
+    Student.find_by_user_id(current_user.try(:id))
+  end
+
   private  
     def unshifted_polymorphic_path(repo, path_spec)
       if path_spec[0].is_a?(Symbol)
