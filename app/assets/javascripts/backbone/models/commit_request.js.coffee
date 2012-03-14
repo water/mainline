@@ -42,6 +42,7 @@ class Water.CommitRequest extends Backbone.Model
       
   # Triggered when all files have been uploaded, sends the commit_request
   send: (request) =>
+    @trigger("sending_commit_request")
     $.ajax gon.commit_request_path, 
       type: "POST"
       data: commit_request: request

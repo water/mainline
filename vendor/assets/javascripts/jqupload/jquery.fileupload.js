@@ -110,7 +110,7 @@
             // object (for XHR file uploads), or a simple object.
             // The form of the first fileInput is given as parameter to the function:
             formData: function (form) {
-                return form.serializeArray();
+              return form.serializeArray();
             },
 
             // The add callback is invoked as soon as files are added to the fileupload
