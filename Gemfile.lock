@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: git://github.com/smartinez87/exception_notification.git
-  revision: 63d9d483fab05340dd5392269c3a6f5b08721267
+  revision: 363efb0cf37a691a67a3f095088d080f7ae84525
   specs:
     exception_notification (2.5.2)
       actionmailer (>= 3.0.4)
@@ -137,7 +137,7 @@ GEM
       execjs
     eco-source (1.1.0.rc.1)
     ejs (1.0.0)
-    em-http-request (1.0.1)
+    em-http-request (1.0.2)
       addressable (>= 2.2.3)
       cookiejar
       em-socksify
@@ -187,7 +187,7 @@ GEM
     hike (1.2.1)
     hirb (0.6.1)
     hodel_3000_compliant_logger (0.1.0)
-    hoe (2.16.0)
+    hoe (2.16.1)
       rake (~> 0.8)
     http_parser.rb (0.5.3)
     i18n (0.6.0)
@@ -215,7 +215,7 @@ GEM
     less-rails (2.1.7)
       actionpack (>= 3.1)
       less (~> 2.0.7)
-    less-rails-bootstrap (2.0.6)
+    less-rails-bootstrap (2.0.8)
       less-rails (~> 2.1.0)
     libv8 (3.3.10.4)
     linecache19 (0.5.12)
@@ -284,19 +284,19 @@ GEM
       mime-types (>= 1.16)
     restful-authentication (1.2.1)
     riddle (1.5.1)
-    rspec (2.8.0)
-      rspec-core (~> 2.8.0)
-      rspec-expectations (~> 2.8.0)
-      rspec-mocks (~> 2.8.0)
-    rspec-core (2.8.0)
-    rspec-expectations (2.8.0)
-      diff-lcs (~> 1.1.2)
-    rspec-mocks (2.8.0)
-    rspec-rails (2.8.1)
+    rspec (2.9.0.rc2)
+      rspec-core (= 2.9.0.rc2)
+      rspec-expectations (= 2.9.0.rc2)
+      rspec-mocks (= 2.9.0.rc2)
+    rspec-core (2.9.0.rc2)
+    rspec-expectations (2.9.0.rc2)
+      diff-lcs (~> 1.1.3)
+    rspec-mocks (2.9.0.rc2)
+    rspec-rails (2.9.0.rc2)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
-      rspec (~> 2.8.0)
+      rspec (= 2.9.0.rc2)
     ruby-debug-base19 (0.11.25)
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
@@ -339,7 +339,7 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     state_machine (1.1.2)
-    stomp (1.2.0)
+    stomp (1.2.1)
     term-ansicolor (1.0.7)
     therubyracer (0.9.10)
       libv8 (~> 3.3.10)
@@ -418,8 +418,8 @@ DEPENDENCIES
   redcarpet
   restful-authentication (= 1.2.1)
   riddle
-  rspec
-  rspec-rails
+  rspec (= 2.9.0.rc2)
+  rspec-rails (= 2.9.0.rc2)
   ruby-debug19
   ruby-openid (= 2.1.8)
   ruby-yadis
@@ -427,7 +427,7 @@ DEPENDENCIES
   secure_faye!
   selenium
   shoulda
-  spork (= 0.9.0)
+  spork (~> 0.9.0)
   spork-testunit!
   state_machine
   stomp
