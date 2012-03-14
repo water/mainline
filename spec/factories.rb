@@ -75,6 +75,10 @@ FactoryGirl.define do
       kind Repository::KIND_TRACKING_REPO
     end
   end
+  
+  # TODO: implement
+  factory :populated_repository do
+  end
 
   factory :given_course do
     course { Factory.create(:course_with_course_code) }
