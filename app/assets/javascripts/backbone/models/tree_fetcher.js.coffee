@@ -16,7 +16,10 @@ class Water.TreeFetcher extends Backbone.Model
       
   data_did_fetch: (data) =>
     @set(data: data)
-    
+  
+  #
+  # TODO: fancy error handling
+  #
   error: (jqXHR, status, error) =>
     @set(data: status)
     

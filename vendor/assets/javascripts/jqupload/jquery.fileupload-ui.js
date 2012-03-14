@@ -102,9 +102,6 @@
             // Callback for the start of each file upload request:
             send: function (e, data) {
                 window.App.pendingUploads += data.files.length;
-                _.each(data.files, function (file) {
-                  window.Water.commit_request.addFile(file.fileName);
-                });
                 var that = $(this).data('fileupload');
                 if (!data.isValidated) {
                     if (!data.isAdjusted) {
@@ -141,12 +138,8 @@
                         var file = ($.isArray(data.result) &&
                                 data.result[index]) || {error: 'emptyResult'};
                         if (file.error) {
-                          window.Water.commit_request.errorForFile(file.name, file.error);
                           that._adjustMaxNumberOfFiles(1);
-                        } else {
-                          window.Water.commit_request.uploadSuccessful(file.name, file.id);
                         }
-                        
                         
                         that._transition($(this)).done(
                             function () {

@@ -183,9 +183,9 @@ class Repository < ActiveRecord::Base
     GitBackend
   end
 
-  def to_param
-    name
-  end
+#  def to_param
+#    name
+#  end
 
   def to_xml(opts = {})
     info_proc = Proc.new do |options|

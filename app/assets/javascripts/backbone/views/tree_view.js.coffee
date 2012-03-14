@@ -1,6 +1,5 @@
 class Water.TreeView extends Backbone.View
   initialize: () ->
-    console.log("View contructed", @model)
     @model.on("change:data", @render_tree)
     @model.on("start_fetch", @render_loading)
     
@@ -11,6 +10,6 @@ class Water.TreeView extends Backbone.View
     @$el.fadeIn("slow")
   
   render_loading: () =>
-    loading_indicator = $("<div />").attr("id", "indicator")
+    loading_indicator = $("<div />").attr("class", "indicator")
     @$el.html(loading_indicator)
     loading_indicator.activity()

@@ -10,9 +10,7 @@ Gitorious::Application.routes.draw do
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
   resources :lab_groups do
     resources :labs, only: [:index, :show, :join] do
-      resources :submissions, only: [:index, :show] do
-        match "trees/*branch_and_path" => "trees#show", as: "trees"
-      end
+      resources :submissions, only: [:index, :show]
     end
   end
   

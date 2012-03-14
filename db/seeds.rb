@@ -51,6 +51,8 @@ repository = Factory.create(:repository, {
   name: "repo1"
 })
 
+puts populize(repository).red
+
 #### InitialLabCommit
 ilc = Factory.create(:initial_lab_commit, {
   commit_hash: commits.first,
