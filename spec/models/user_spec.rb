@@ -38,4 +38,13 @@ describe User do
       create(:user).token.should_not equal(create(:user).token)
     end
   end
+
+  describe "dependent destroy" do
+    it "should not be possible for a student to exist without a user" do
+      user = Factory.create(:user)
+      s = Factory.create(:student, user: user)
+      user.destroy
+      lambda{s.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end

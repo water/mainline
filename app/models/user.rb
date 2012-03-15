@@ -4,6 +4,7 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   include UrlLinting
+  has_one  :student, dependent: :destroy
   has_many :student_registered_for_courses, through: :students
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
@@ -15,9 +16,9 @@ class User < ActiveRecord::Base
   has_many :ssh_keys, :order => "id desc", :dependent => :destroy
   has_many :comments
   has_many :email_aliases, :class_name => "Email", :dependent => :destroy
-  has_many :events, :order => "events.created_at asc", :dependent => :destroy
-  has_many :events_as_target, :class_name => "Event", :as => :target
-  has_many :favorites, :dependent => :destroy
+  #has_many :events, :order => "events.created_at asc", :dependent => :destroy
+  #has_many :events_as_target, :class_name => "Event", :as => :target
+  #has_many :favorites, :dependent => :destroy
   has_one :administrator
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :current_password
@@ -379,6 +380,3 @@ class User < ActiveRecord::Base
     end
 end                             
 
-class User
-  has_one :student
-end
