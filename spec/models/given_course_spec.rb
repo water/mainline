@@ -46,4 +46,13 @@ describe GivenCourse do
       create(:given_course, labs: [create(:lab)]).should have_at_least(1).labs      
     end
   end
+
+  describe "dependant destroy" do
+    it "should no be possible for a student_registered_for_course to exist without a given_course" do
+      gc = Factory.create(:given_course)
+      str = Factory.create(:student_registered_for_course, given_course: gc)
+      gc.destroy
+      lambda{str.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
