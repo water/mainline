@@ -38,4 +38,23 @@ describe User do
       create(:user).token.should_not equal(create(:user).token)
     end
   end
+
+  describe "relations" do
+    it "should have a student" do
+      create(:student).user.student.should_not be_nil
+    end
+
+    it "should have a examiner" do
+      create(:examiner).user.examiner.should_not be_nil
+
+    end
+
+    it "should have a administrator" do
+      create(:administrator).user.administrator.should_not be_nil
+    end
+
+    it "should have a assistant" do
+      create(:assistant).user.assistant.should_not be_nil
+    end
+  end
 end
