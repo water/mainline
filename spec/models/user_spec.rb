@@ -46,5 +46,12 @@ describe User do
       user.destroy
       lambda{s.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "should not be possible for a examiner to exist without a user" do
+      user = Factory.create(:user)
+      exa = Factory.create(:examiner, user: user)
+      user.destroy
+      lambda{exa.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end
