@@ -29,7 +29,7 @@ gem "oauth2"
 gem "cancan"
 
 # Database
-gem "mysql2", "0.3.10"
+gem "pg"
 
 # View
 gem "will_paginate"
