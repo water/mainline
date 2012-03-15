@@ -167,5 +167,12 @@ describe LabsController do
         page.should have_content("Lab 2")
       end
     end
+
+    describe "unknown" do
+      it "should not be authorized when not logged in" do
+        visit labs_path({role: "administrator"})
+        current_path.should eq("/sessions/new")
+      end
+    end
   end
 end

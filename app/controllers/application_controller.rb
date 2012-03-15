@@ -19,7 +19,11 @@ class ApplicationController < ActionController::Base
   rescue_from AbstractController::ActionNotFound, :with => :render_not_found
   rescue_from Grit::GitRuby::Repository::NoSuchPath, :with => :render_not_found
   rescue_from Grit::Git::GitTimeout, :with => :render_git_timeout
-  
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:error] = "Access denied."
+    redirect_to root_url
+  end
+
   def rescue_action(exception)
     return super if Rails.env != "production"
     
@@ -307,9 +311,9 @@ class ApplicationController < ActionController::Base
   # @return [Examiner, Administrator, Student]
   #
   def current_role
-    if role = current_user.send(params[:role])
+    if current_user != :false and role = current_user.send(params[:role])
     else
-      raise "not authorized"
+      raise CanCan::AccessDenied
     end
 
     return role
