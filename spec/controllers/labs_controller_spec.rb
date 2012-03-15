@@ -14,7 +14,7 @@ describe LabsController do
     describe "student" do
       let(:student) { Factory.create(:student) }
 
-      it "should return all not finished labs" do
+      it "should return all non finished labs" do
         login_as(student)
 
         srfc = Factory.create(:student_registered_for_course, {
@@ -63,7 +63,7 @@ describe LabsController do
     describe "examiner" do
       let(:examiner) { Factory.create(:examiner) }
 
-      it "should return all not finished labs" do
+      it "should return all non finished labs" do
         login_as(examiner)
 
         given_course = create(:given_course, examiners: [examiner])
@@ -91,6 +91,44 @@ describe LabsController do
         end
 
         visit labs_path({role: "examiner"})
+
+        page.should have_content("Lab 1")
+        page.should_not have_content("Lab 2")
+        page.should have_content(labs.first.description)
+      end
+    end
+
+    describe "examiner" do
+      let(:assistant) { Factory.create(:assistant) }
+
+      it "should return all non finished labs" do
+        login_as(assistant)
+
+        given_course = create(:given_course, assistants: [assistant])
+        labs = []
+
+        # Active lab
+        labs << Factory.create(:lab, {
+          lab_description: Factory.create(:lab_description, title: "Lab 1"),
+          active: true,
+          given_course: given_course
+        })
+
+        # Non acitve lab
+        labs << Factory.create(:lab, {
+          lab_description: Factory.create(:lab_description, title: "Lab 2"),
+          active: false,
+          given_course: given_course
+        })
+
+        labs.each do |lab|
+          Factory.create(:lab_has_group, {
+            lab: lab,
+            grade: nil
+          })
+        end
+
+        visit labs_path({role: "assistant"})
 
         page.should have_content("Lab 1")
         page.should_not have_content("Lab 2")
