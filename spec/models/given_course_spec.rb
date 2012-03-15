@@ -54,5 +54,12 @@ describe GivenCourse do
       gc.destroy
       lambda{str.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "should not be possible for a lab_group to exist without a given_course" do
+      gc = Factory.create(:given_course)
+      lg = Factory.create(:lab_group, given_course: gc)
+      gc.destroy
+      lambda{lg.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end
