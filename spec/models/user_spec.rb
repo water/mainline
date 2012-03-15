@@ -46,7 +46,6 @@ describe User do
 
     it "should have a examiner" do
       create(:examiner).user.examiner.should_not be_nil
-
     end
 
     it "should have a administrator" do

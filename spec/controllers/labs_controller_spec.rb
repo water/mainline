@@ -51,7 +51,7 @@ describe LabsController do
           })
         end
 
-        visit labs_path
+        visit labs_path({role: "student"})
 
         page.should have_content("Lab 1")
         page.should_not have_content("Lab 2")

@@ -307,7 +307,12 @@ class ApplicationController < ActionController::Base
   # @return [Examiner, Administrator, Student]
   #
   def current_role
-    Student.find_by_user_id(current_user.try(:id))
+    if role = current_user.send(params[:role])
+    else
+      raise "not authorized"
+    end
+
+    return role
   end
 
   private  
