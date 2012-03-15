@@ -11,7 +11,10 @@ class LabsController < ApplicationController
     if id = params[:group_id]
       @labs = LabGroup.includes(:labs).find(id).labs
     else
-      @labs = current_role.labs
+      @labs = current_role.
+        labs.
+        includes(:lab_description).
+        not_finished
     end
 
     respond_with(@labs)
