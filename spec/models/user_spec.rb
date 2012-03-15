@@ -53,5 +53,12 @@ describe User do
       user.destroy
       lambda{exa.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "should not be possible for a assistant to exist without a user" do
+      user = Factory.create(:user)
+      assistant = Factory.create(:assistant, user: user)
+      user.destroy
+      lambda{assistant.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end

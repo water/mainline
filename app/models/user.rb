@@ -4,6 +4,7 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   include UrlLinting
+  has_one  :assistant, dependent: :destroy
   has_one  :examiner, dependent: :destroy
   has_one  :student, dependent: :destroy
   has_many :student_registered_for_courses, through: :students
