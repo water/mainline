@@ -4,20 +4,7 @@ class Repository < ActiveRecord::Base
   include ActiveMessaging::MessageSender
   include Watchable
 
-  unless defined?(KIND_PROJECT_REPO)
-    KIND_PROJECT_REPO = 0
-    KIND_WIKI = 1
-    KIND_TEAM_REPO = 2
-    KIND_USER_REPO = 3
-    KIND_TRACKING_REPO = 4
-    KINDS_INTERNAL_REPO = [KIND_WIKI, KIND_TRACKING_REPO]
-
-    WIKI_NAME_SUFFIX = "-gitorious-wiki"
-    WIKI_WRITABLE_EVERYONE = 0
-    WIKI_WRITABLE_PROJECT_MEMBERS = 1
-    
-    NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
-  end
+  NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
 
   belongs_to  :user
   belongs_to  :owner, :polymorphic => true
@@ -42,22 +29,20 @@ class Repository < ActiveRecord::Base
   after_create :post_repo_creation_message
   after_destroy :post_repo_deletion_message
 
-  scope :by_users,  :conditions => { :kind => KIND_USER_REPO } do
+#  scope :by_users,  :conditions => { :kind => KIND_USER_REPO } do
+  scope :by_users do
     def fresh(limit = 10)
       find(:all, :order => "last_pushed_at DESC", :limit => limit)
     end
   end
-  scope :by_groups, :conditions => { :kind => KIND_TEAM_REPO } do
+
+#  scope :by_groups, :conditions => { :kind => KIND_TEAM_REPO } do
+# TODO: This shall be removed and replaced by lab_groups
+  scope :by_groups do
     def fresh(limit=10)
       find(:all, :order => "last_pushed_at DESC", :limit => limit)
     end
   end
-  scope :clones,    :conditions => ["kind in (?) and parent_id is not null",
-                                          [KIND_TEAM_REPO, KIND_USER_REPO]]
-  # scope :mainlines, :conditions => { :kind => KIND_PROJECT_REPO }
-
-  scope :regular, :conditions => ["kind in (?)", [KIND_TEAM_REPO, KIND_USER_REPO,
-                                                       KIND_PROJECT_REPO]]
 
   def self.human_name
     I18n.t("activerecord.models.repository")
@@ -119,10 +104,9 @@ class Repository < ActiveRecord::Base
       find(:all, :limit => limit,
         :select => 'distinct repositories.id, repositories.*, count(events.id) as event_count',
         :order => "event_count desc", :group => "repositories.id",
-        :conditions => ["events.created_at > ? and kind in (?)",
-                        7.days.ago, [KIND_USER_REPO, KIND_TEAM_REPO]],
+        :conditions => ["events.created_at > ?", 7.days.ago],
         :joins => :events)
-    end
+      end
   end
 
   # Finds all repositories that might be due for a gc, starting with
@@ -190,8 +174,7 @@ class Repository < ActiveRecord::Base
   def to_xml(opts = {})
     info_proc = Proc.new do |options|
       builder = options[:builder]
-      builder.owner(owner.to_param, :kind => (owned_by_group? ? "Team" : "User"))
-      builder.kind(["mainline", "wiki", "team", "user"][self.kind])
+      builder.owner(owner.to_param)
     end
 
     super({
@@ -245,7 +228,7 @@ class Repository < ActiveRecord::Base
 
   # changes the owner to +another_owner+, removes the old owner as committer
   # and adds +another_owner+ as committer
-  def change_owner_to!(another_owner)
+"  def change_owner_to!(another_owner)
     unless owned_by_group?
       transaction do
         if existing = committerships.find_by_committer_id_and_committer_type(owner.id, owner.class.name)
@@ -267,7 +250,7 @@ class Repository < ActiveRecord::Base
         reload
       end
     end
-  end
+  end "
 
   def post_repo_creation_message
     return if tracking_repo?
@@ -382,18 +365,6 @@ class Repository < ActiveRecord::Base
     cloners.create(:ip => ip, :date => Time.now.utc, :country_code => country_code, :country => country_name, :protocol => protocol)
   end
 
-  def wiki?
-    kind == KIND_WIKI
-  end
-
-  def user_repo?
-    kind == KIND_USER_REPO
-  end
-
-  def tracking_repo?
-    kind == KIND_TRACKING_REPO
-  end
-
   # returns an array of users who have commit bits to this repository either
   # directly through the owner, or "indirectly" through the associated groups
   def committers
@@ -426,11 +397,7 @@ class Repository < ActiveRecord::Base
   # Is this repo writable by +a_user+, eg. does he have push permissions here
   # NOTE: this may be context-sensitive depending on the kind of repo
   def writable_by?(a_user)
-    if wiki?
-      wiki_writable_by?(a_user)
-    else
-      committers.include?(a_user)
-    end
+    committers.include?(a_user)
   end
 
   def owned_by_group?
@@ -513,26 +480,6 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def build_tracking_repository
-    result = Repository.new(:parent => self, :user => user, :owner => owner, :kind => KIND_TRACKING_REPO, :name => "tracking_repository_for_#{id}")
-    return result
-  end
-
-  def create_tracking_repository
-    result = build_tracking_repository
-    result.save!
-    return result
-  end
-
-  def tracking_repository
-    self.class.find(:first, :conditions => {:parent_id => self, :kind => KIND_TRACKING_REPO})
-  end
-
-  def has_tracking_repository?
-    !tracking_repository.nil?
-  end
-
-
   # Fallback when the real sequence number is taken
 
 
@@ -591,19 +538,13 @@ class Repository < ActiveRecord::Base
       WHERE repositories.#{key}=#{value}
       AND (repositories.name LIKE :q OR repositories.description LIKE :q OR groups.name LIKE :q)
       AND repositories.owner_type='Group'
-      AND kind in (:kinds)
       UNION ALL
       SELECT repositories.* from repositories
       INNER JOIN users on repositories.user_id=users.id
       INNER JOIN users owners on repositories.owner_id=owners.id
       WHERE repositories.#{key}=#{value}
       AND (repositories.name LIKE :q OR repositories.description LIKE :q OR owners.login LIKE :q)
-      AND repositories.owner_type='User'
-      AND kind in (:kinds)"
-    self.find_by_sql([sql, {:q => "%#{term}%",
-                        :id => value,
-                        :kinds =>
-                        [KIND_TEAM_REPO, KIND_USER_REPO, KIND_PROJECT_REPO]}])
+      AND repositories.owner_type='User'"
   end
 
   protected
