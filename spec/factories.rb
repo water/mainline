@@ -71,6 +71,7 @@ FactoryGirl.define do
     user
     owner { user }
     kind Repository::KIND_PROJECT_REPO
+    ready true
     factory :merge_request_repository do
       kind Repository::KIND_TRACKING_REPO
     end
