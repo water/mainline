@@ -105,7 +105,7 @@ FactoryGirl.define do
   end
 
   factory :examiner do
-    user { Factory.create(:user) }
+    user
   end
 
   factory :lab_group do

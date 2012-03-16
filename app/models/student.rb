@@ -1,5 +1,5 @@
 class Student < ActiveRecord::Base
-  belongs_to :user, class_name: "User"
+  belongs_to :user
   has_many :student_registered_for_courses
   has_many :lab_groups, through: :student_registered_for_courses
   has_many :labs, through: :lab_groups

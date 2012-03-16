@@ -19,6 +19,9 @@ class User < ActiveRecord::Base
   has_many :events_as_target, :class_name => "Event", :as => :target
   has_many :favorites, :dependent => :destroy
   has_one :administrator
+  has_one :examiner
+  has_one :assistant
+  has_one :student
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :current_password
 

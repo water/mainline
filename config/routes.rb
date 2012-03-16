@@ -1,9 +1,12 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  resources :labs, :registered_courses, :dashboards, :students
+  resources :registered_courses, :dashboards, :students
   resources :lab_deadlines, :study_periods, :course_codes
 
+  scope ":role", containsts: { role: /examiner|student|administrator|assistant|/ } do
+    resources :labs
+  end
   
   post "upload" => "uploads#upload"
 
