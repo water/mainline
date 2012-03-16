@@ -70,13 +70,13 @@ FactoryGirl.define do
     sequence(:name) { |i| "repo_#{i}" }
     user
     owner { user }
-    kind Repository::KIND_PROJECT_REPO
-    factory :merge_request_repository do
-      kind Repository::KIND_TRACKING_REPO
-    end
+#    kind Repository::KIND_PROJECT_REPO
+#    factory :merge_request_repository do
+#      kind Repository::KIND_TRACKING_REPO
+#    end
     factory :repo_with_data do
       after_create do |r|
-        Repository.should_receive(:create_hooks)
+#        Repository.should_receive(:create_hooks)
         Repository.create_git_repository(r.real_gitdir)
         dir = File.join(Rails.root, "spec/fixtures/git-repo")
         Dir.chdir(dir) do
