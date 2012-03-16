@@ -5,7 +5,7 @@ class Lab < ActiveRecord::Base
   has_many :lab_has_groups
   has_many :lab_groups, through: :lab_has_groups
   has_many :submissions
-  has_many :default_deadlines
+  has_many :default_deadlines, dependent: :destroy
 
   has_one :initial_lab_commit_for_lab
   has_one :initial_lab_commit, through: :initial_lab_commit_for_lab

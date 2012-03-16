@@ -143,4 +143,13 @@ describe Lab do
       lab.description.should eq(lab.lab_description.description)
     end
   end
+
+  describe "Dependent destroy" do
+    it "should not be possible for a lab_default_dealine to exist without a lab" do
+      lab = Factory.create(:lab)
+      ldd = Factory.create(:default_deadline, lab: lab)
+      lab.destroy
+      lambda{ldd.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
