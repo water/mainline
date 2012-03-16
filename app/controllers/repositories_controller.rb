@@ -26,7 +26,7 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = Repository.find_by_name(params[:id])
+    @repository = Repository.find(params[:repository_id])
     @root = @repository
     # @events = @repository.events.top.page(params[:page]).order("created_at desc")
     # @atom_auto_discovery_url = repo_owner_path(@repository, :project_repository_path,
