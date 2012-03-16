@@ -7,7 +7,7 @@ class GivenCourse < ActiveRecord::Base
   has_many :student_registered_for_courses, dependent: :destroy
   has_many :students, through: :student_registered_for_courses
 
-  has_many :assistant_registered_to_given_courses
+  has_many :assistant_registered_to_given_courses, dependent: :destroy
   has_many :assistants, through: :assistant_registered_to_given_courses
   
   has_many :lab_groups, dependent: :destroy

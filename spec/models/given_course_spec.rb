@@ -61,5 +61,12 @@ describe GivenCourse do
       gc.destroy
       lambda{lg.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "should not be possible for a assistant_registered_to_given_course to exist without a given_course" do
+      gc = Factory.create(:given_course)
+      argc = Factory.create(:assistant_registered_to_given_course, given_course: gc)
+      gc.destroy
+      lambda{argc.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end
