@@ -144,12 +144,19 @@ describe Lab do
     end
   end
 
-  describe "Dependent destroy" do
+  describe "dependent destroy" do
     it "should not be possible for a lab_default_dealine to exist without a lab" do
       lab = Factory.create(:lab)
       ldd = Factory.create(:default_deadline, lab: lab)
       lab.destroy
       lambda{ldd.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "should not be possible for a lab_has_group to exist without a lab" do
+      lab = Factory.create(:lab)
+      lhg = Factory.create(:lab_has_group, lab: lab)
+      lab.destroy
+      lambda{lhg.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
