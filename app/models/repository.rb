@@ -253,7 +253,6 @@ class Repository < ActiveRecord::Base
   end "
 
   def post_repo_creation_message
-    return if tracking_repo?
     options = {:target_class => self.class.name, :target_id => self.id}
     options[:command] = parent ? 'clone_git_repository' : 'create_git_repository'
     options[:arguments] = parent ? [real_gitdir, parent.real_gitdir] : [real_gitdir]
