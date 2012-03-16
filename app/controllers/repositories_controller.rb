@@ -43,13 +43,11 @@ class RepositoriesController < ApplicationController
   def new
     @repository = Repository.new()
     # @root = Breadcrumb::NewRepository.new(@project)
-    @repository.kind = Repository::KIND_USER_REPO
   end
 
   def create
     @repository = Repository.new(params[:repository])
     # @root = Breadcrumb::NewRepository.new(@project)
-    @repository.kind = Repository::KIND_USER_REPO
     @repository.owner = current_user
     @repository.user = current_user
 
@@ -97,10 +95,8 @@ class RepositoriesController < ApplicationController
     case params[:repository][:owner_type]
     when "User"
       @repository.owner = current_user
-      @repository.kind = Repository::KIND_USER_REPO
     when "Group"
       @repository.owner = current_user.groups.find(params[:repository][:owner_id])
-      @repository.kind = Repository::KIND_TEAM_REPO
     end
 
     respond_to do |format|
