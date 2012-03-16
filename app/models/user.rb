@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   #has_many :events, :order => "events.created_at asc", :dependent => :destroy
   #has_many :events_as_target, :class_name => "Event", :as => :target
   #has_many :favorites, :dependent => :destroy
-  has_one :administrator
+  has_one :administrator, dependent: :destroy
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :current_password
 

@@ -60,5 +60,13 @@ describe User do
       user.destroy
       lambda{assistant.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "should not be possible for a administrator to exist without a user" do
+      user = Factory.create(:user)
+      admin = Factory.create(:administrator, user: user)
+      user.destroy
+      lambda{admin.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
   end
+
 end
