@@ -4,8 +4,9 @@ describe BlobsController do
   
   # Test dependent on the fact that the default repo_with_data contains a Gemfile
   describe "GET blob root" do
-    it "doesn't crash" do
-      visit repository_blob_path(repository, "master/Rakefiler", bare: 1)
+    it "has a blob marker" do
+      visit repository_blob_path(repository, "master/Rakefile", bare: 1)
+      page.should have_selector(".blob_marker")
     end
   end
 end
