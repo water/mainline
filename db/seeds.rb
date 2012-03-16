@@ -2,6 +2,7 @@ require "colorize"
 require "database_cleaner"
 require "factory_girl"
 require "yaml"
+require "rspec"
 
 if ENV["CLEAR"]
   puts "Are you sure you want to wipe the entire database? [y|n]".red
@@ -9,6 +10,8 @@ if ENV["CLEAR"]
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.clean
 end
+
+Rspec::Mocks::setup Repository
 
 FactoryGirl.reload
 labs = []
