@@ -18,14 +18,15 @@ Core web application written in Rails 3
 2. Checkout the master branch. `git checkout master`
 3. Navigate to the *config* folder, create a file called `database.yml` with the your mysql credentials. [Example credentials](https://gist.github.com/a5cf8cb41bc6643e0d84)
 4. Install all dependencies using `bundle install`
-5. Create two empty log files, just in case rails complains about it, `touch log/development.log log/test.log`
-6. Rename ```gitorious.sample.yml``` to ```gitorious.yml``` and change hosts and usernames to suit your system
-7. Create the db and migrate it `bundle exec rake db:create db:migrate`.
-8. Start [poller](https://github.com/water/mainline/blob/master/script/poller), git-daemon beanstalkd and [spork](http://railscasts.com/episodes/285-spork) by running `foreman start`
-9. Seed the db `CLEAR=1 bundle exec rake db:seed`
-10. Start server, `rails s`
-11. Navigate to [localhost:3000](http://localhost:3000)
-12. Login using the information from `db/seeds.rb`.
+5. Run `rails g cucumber:install --spork` to set up cucumber. It will modify your `database.yml`.
+6. Create two empty log files, just in case rails complains about it, `touch log/development.log log/test.log`
+7. Rename ```gitorious.sample.yml``` to ```gitorious.yml``` and change hosts and usernames to suit your system
+8. Create the db and migrate it `bundle exec rake db:create db:migrate`.
+9. Start [poller](https://github.com/water/mainline/blob/master/script/poller), git-daemon beanstalkd and [spork](http://railscasts.com/episodes/285-spork) by running `foreman start`
+10. Seed the db `CLEAR=1 bundle exec rake db:seed`
+12. Start server, `rails s`
+13. Navigate to [localhost:3000](http://localhost:3000)
+14. Login using the information from `db/seeds.rb`.
 
 ### Install MySQL
 
