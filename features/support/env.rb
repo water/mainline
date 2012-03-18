@@ -4,6 +4,7 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
+
 require 'rubygems'
 require 'spork'
  
@@ -16,6 +17,18 @@ Spork.prefork do
   # prefer to use XPath just remove this line and adjust any selectors in your
   # steps to use the XPath syntax.
   Capybara.default_selector = :css
+  
+  ENV["Rails.env"] = "test"
+  require File.expand_path("../../../config/environment", __FILE__)
+  require "colorize"
+  require "shoulda"
+  require "factory_girl"
+  require "rails/test_help"
+  require "turn"
+  require "factory_girl_rails"
+  require "database_cleaner"
+  
+  DatabaseCleaner.strategy = :truncation
 
 end
  
@@ -40,7 +53,7 @@ Spork.each_run do
   # Remove/comment out the lines below if your app doesn't have a database.
   # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
   begin
-    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.strategy = :truncation
   rescue NameError
     raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
   end
@@ -64,5 +77,7 @@ Spork.each_run do
   # The :transaction strategy is faster, but might give you threading problems.
   # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
   Cucumber::Rails::Database.javascript_strategy = :truncation
-
+  
+  DatabaseCleaner.clean
+  FactoryGirl.reload
 end
