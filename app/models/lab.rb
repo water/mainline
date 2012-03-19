@@ -5,7 +5,7 @@ class Lab < ActiveRecord::Base
   has_many :lab_has_groups
   has_many :lab_groups, through: :lab_has_groups
   has_many :submissions
-  has_many :default_deadlines
+  has_many :default_deadlines, inverse_of: :lab
 
   has_one :initial_lab_commit_for_lab
   has_one :initial_lab_commit, through: :initial_lab_commit_for_lab
@@ -15,7 +15,8 @@ class Lab < ActiveRecord::Base
   scope :not_finished, joins(:lab_has_groups).where("lab_has_groups.grade IS NULL")
   scope :finished, joins(:lab_has_groups).where("lab_has_groups.grade IS NOT NULL")
   
-  #validate :presence_of_deadlines
+  accepts_nested_attributes_for :default_deadlines, update_only: true
+  validates_presence_of :default_deadlines
 
   acts_as_list scope: :given_course, column: :number
 
@@ -31,11 +32,4 @@ class Lab < ActiveRecord::Base
 
     super
   end
-
-  private
-    def presence_of_deadlines
-      unless default_deadlines.any?
-        errors[:default_deadlines] << "required"
-      end
-    end
 end
