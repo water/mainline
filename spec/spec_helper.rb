@@ -28,6 +28,7 @@ Spork.prefork do
     config.mock_with :rspec
     config.include Factory::Syntax::Methods
     config.include LoginHelper
+    config.include UrlHelper
     config.order = "random"
   end
 end

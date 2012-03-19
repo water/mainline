@@ -7,11 +7,9 @@ class User < ActiveRecord::Base
   has_many :student_registered_for_courses, through: :students
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
-  has_many :repositories, :as => :owner, :conditions => ["kind != ?", Repository::KIND_WIKI],
-   :dependent => :destroy
+  has_many :repositories, :as => :owner, :dependent => :destroy
   has_many :committerships, :as => :committer, :dependent => :destroy
-  has_many :commit_repositories, :through => :committerships, :source => :repository,
-  :conditions => ["repositories.kind NOT IN (?)", Repository::KINDS_INTERNAL_REPO]
+  has_many :commit_repositories, :through => :committerships, :source => :repository
   has_many :ssh_keys, :order => "id desc", :dependent => :destroy
   has_many :comments
   has_many :email_aliases, :class_name => "Email", :dependent => :destroy
@@ -19,6 +17,9 @@ class User < ActiveRecord::Base
   has_many :events_as_target, :class_name => "Event", :as => :target
   has_many :favorites, :dependent => :destroy
   has_one :administrator
+  has_one :examiner
+  has_one :assistant
+  has_one :student
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :current_password
 
