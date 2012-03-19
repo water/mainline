@@ -26,6 +26,7 @@ gem "rack-openid"
 gem "ruby-openid", "2.1.8", :require => "openid"
 gem "oauth", "0.4.4"
 gem "oauth2"
+gem "cancan"
 
 # Database
 gem "mysql2", "0.3.10"

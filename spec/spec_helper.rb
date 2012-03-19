@@ -23,10 +23,13 @@ Spork.prefork do
     config.before(:suite) { DatabaseCleaner.strategy = :truncation }
     config.before(:each) { DatabaseCleaner.start }
     config.after(:each) { DatabaseCleaner.clean }
+    config.after(:each) { teardown }
     config.infer_base_class_for_anonymous_controllers = false
     config.mock_with :rspec
     config.include Factory::Syntax::Methods
     config.include LoginHelper
+    config.include UrlHelper
+    config.include SetupHelper
     config.order = "random"
   end
 end

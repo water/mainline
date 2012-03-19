@@ -2,6 +2,7 @@ require "colorize"
 require "database_cleaner"
 require "factory_girl"
 require "yaml"
+require "rspec"
 
 if ENV["CLEAR"]
   puts "Are you sure you want to wipe the entire database? [y|n]".red
@@ -10,14 +11,16 @@ if ENV["CLEAR"]
   DatabaseCleaner.clean
 end
 
+Rspec::Mocks::setup Repository
+
 FactoryGirl.reload
 labs = []
 # Nothing special
 # just copied from https://github.com/water/grack/commits
 commits = %w{
-  096277ba49b8db927f7d4ba9d3cf08b68dfc98f6
-  33877b2e102baf6f4f9f152e8169cebe889477d4
-  6a15f482779e43935622beb5a47cfc82e47005d5
+  6707a957d6ebe1b3df580343b9d57cc3c758cc9e
+  af27fd809ebdbb745c0080fbe3192a3c6bda6aa7
+  276de2e8d73f772c5017b10f8e44e6a74605a8b1
 }
 
 #### User
