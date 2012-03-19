@@ -4,7 +4,7 @@ Gitorious::Application.routes.draw do
   resources :registered_courses, :dashboards, :students
   resources :lab_deadlines, :study_periods, :course_codes
 
-  scope ":role", containsts: { role: /examiner|student|administrator|assistant|/ } do
+  scope ":role", constraints: { role: /examiner|student|administrator|assistant|/ } do
     resources :labs
   end
   
@@ -12,7 +12,8 @@ Gitorious::Application.routes.draw do
 
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
   resources :lab_groups do
-    resources :labs, only: [:index, :show, :join] do
+    resources :labs, only: [:index, :show] do
+      match "join" => "labs#join"
       resources :submissions, only: [:index, :show]
     end
   end
@@ -22,7 +23,9 @@ Gitorious::Application.routes.draw do
   # /courses/2/labs/3 # <= Shows all submissions for particular lab?
   resources :courses do
     post "/courses/:course_id/upload" => "uploads#upload"
-    resources :labs, only: [:index, :show]
+    resources :labs, only: [:index, :show] do
+      get "uploads" => "labs#uploads"
+    end
   end
   resources :submissions, only: [:index, :show, :create, :new]
   
