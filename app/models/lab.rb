@@ -15,7 +15,7 @@ class Lab < ActiveRecord::Base
   scope :not_finished, joins(:lab_has_groups).where("lab_has_groups.grade IS NULL")
   scope :finished, joins(:lab_has_groups).where("lab_has_groups.grade IS NOT NULL")
   
-  accepts_nested_attributes_for :default_deadlines, update_only: true
+  accepts_nested_attributes_for :default_deadlines
   validates_presence_of :default_deadlines
 
   acts_as_list scope: :given_course, column: :number
