@@ -33,25 +33,32 @@ class LabsController < ApplicationController
 
   def new
   end
-
+  
+  # /lab_groups/:group_id/labs/1/join
   def join
     @group = LabGroup.find(params[:group_id])
-    @repository = Repository.new(:user_id => current_user, :name => "test", :owner_id => "123")
-    @labhasgroup = LabHasGroup.new(:lab_group_id => @group, 
-    :lab_id => params[:lab_id], :repository => @repository_id)
+    @lab = Lab.find(params[:lab_id])
+    @lab.add_group(@lab)
     respond_with(@lab)
   end
 
   def create
   end
   
+  # /courses/:course_id/labs/1/uploads
   def upload
+    
   end
   
   protected
+  
   def find_repo
-    @repository = Repository.find_by_user_and_lab(current_user, params[:lab_id])
+    # TODO: I suspect we should test for student before we even get this far.
+    if current_user.student
+      @repository = Repository.find_by_student_and_lab(current_user.student, params[:lab_id])
+    end
   end
+  
   def add_paths_to_gon
     gon.commit_request_path = repository_commit_requests_path(@repository.id)
     # TODO Make this nicer!

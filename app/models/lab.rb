@@ -21,6 +21,15 @@ class Lab < ActiveRecord::Base
 
   default_scope where("labs.active = ?", true)
 
+  def add_group(lab_group)
+    @repository = Repository.create()
+    @lab_has_group = LabHasGroup.create(
+      lab_group: lab_group, 
+      lab: self, 
+      :repository => @repository
+    )
+  end
+
   #
   # Implements #title and #description
   #
