@@ -11,7 +11,7 @@ class GivenCourse < ActiveRecord::Base
   has_many :assistants, through: :assistant_registered_to_given_courses
   
   has_many :lab_groups, dependent: :destroy
-  has_many :labs
+  has_many :labs, dependent: :destroy
 
   validates_presence_of :course, :examiners, :study_period
 end

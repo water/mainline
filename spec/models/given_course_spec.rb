@@ -68,5 +68,12 @@ describe GivenCourse do
       gc.destroy
       lambda{argc.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "should remove lab when self is destroyed" do
+      lab = create(:lab, active: true)
+      gc = create(:given_course, labs: [lab])
+      gc.destroy
+      lambda{lab.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end
