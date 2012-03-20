@@ -17,7 +17,7 @@ describe LabGroup do
     end
 
     it "should have a list of labs" do
-      lab = create(:active_lab)
+      lab = create(:active_lab, given_course: group.given_course)
       create(:lab_has_group, lab: lab, lab_group: group)
       group.should have(1).labs
     end
