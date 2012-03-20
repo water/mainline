@@ -16,7 +16,6 @@ class TreesController < ApplicationController
     @repository = Repository.find(params[:repository_id])
     @git = @repository.git
     @ref, @path = branch_and_path(params[:branch_and_path], @git)
-    debugger
     unless @commit = @git.commit(@ref)
       handle_missing_tree_sha and return
     end
