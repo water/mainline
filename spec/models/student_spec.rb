@@ -1,7 +1,6 @@
 describe Student do
+  let(:student) { Factory.create(:student) }
   describe "relations" do
-    let(:student) { Factory.create(:student) }
-
     it "should have a user" do
       student.user.should be_instance_of(User)
     end
@@ -51,6 +50,42 @@ describe Student do
 
     it "should have a user" do
       Factory.build(:student, user: nil).should_not be_valid
+    end
+  end
+
+  describe "#register" do
+    it "should register to course" do
+      student.register!({
+        course: create(:given_course)
+      })
+
+      student.should have(1).given_courses
+    end
+
+    it "should register to a lab group" do
+      gc = create(:given_course)
+      group = create(:lab_group, given_course: gc)
+
+      # Register student to course
+      student.register!({
+        course: gc
+      })
+
+      # Register student to lab group
+      student.register!({
+        group: group
+      })
+
+      student.should have(1).lab_groups
+    end
+
+    it "should raise RecordNotFound if student isnt registered to course" do
+
+      lambda {
+        student.register!({
+          group: create(:lab_group)
+        })
+      }.should raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

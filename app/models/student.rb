@@ -5,4 +5,33 @@ class Student < ActiveRecord::Base
   has_many :labs, through: :lab_groups
   has_and_belongs_to_many :given_courses, join_table: "student_registered_for_courses"
   validates_presence_of :user
+
+  #
+  # Register student to a:
+  #  - given course
+  #  - lab group 
+  # @options[:course] GivenCourse
+  # @options[:group] LabGroup
+  #
+  def register!(options)
+    # Register student to course
+    if options[:course]
+      StudentRegisteredForCourse.create!({
+        student: self,
+        given_course: options[:course]
+      })
+
+    # Register student to lab group
+    elsif options[:group]
+      srfc = self.student_registered_for_courses.where({
+        given_course_id: options[:group].given_course.id
+      }).first
+
+      if srfc
+        srfc.lab_groups << options[:group] 
+      else
+        raise ActiveRecord::RecordNotFound
+      end
+    end
+  end
 end
