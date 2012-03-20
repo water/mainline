@@ -36,4 +36,20 @@ describe StudentRegisteredForCourse do
       srfc.should have(1).lab_has_groups
     end
   end
+
+  describe "#lab_groups" do
+    it "should remove duplicate lab groups" do
+      srfc = create(:student_registered_for_course)
+      lab_group = create(:lab_group)
+
+      # Add two different labs to the same student and group
+      2.times do
+        srfc.lab_has_groups << create(:lab_has_group, {
+          lab_group: lab_group
+        })
+      end
+
+      srfc.reload.should have(1).lab_groups
+    end
+  end
 end
