@@ -143,4 +143,17 @@ describe Lab do
       lab.description.should eq(lab.lab_description.description)
     end
   end
+  describe "add a group" do
+    let(:lab) { create(:lab, active: true) }
+    
+    it "should be able to add a group with the correct given course" do
+      lab_group_correct_course = Factory.create(:lab_group, given_course: lab.given_course)
+      lambda { lab.add_group(lab_group_correct_course) }.should_not raise_error
+    end
+    
+    it "should not be able to add a group with an incorrect given course" do
+      lab_group_incorrect_course = Factory.create(:lab_group)
+      lambda { lab.add_group(lab_group_incorrect_course) }.should raise_error
+    end
+  end
 end
