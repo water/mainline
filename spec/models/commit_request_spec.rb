@@ -3,8 +3,17 @@ describe CommitRequest do
     lab = create(:lab)
     student = create(:student)
     lab_group = create(:lab_group)
-    create(:student_registered_for_course, lab_groups: [lab_group], student: student)
-    repo = create(:lab_has_group, lab_group: lab_group, lab: lab).repository
+
+    srfc = create(:student_registered_for_course, {
+      student: student
+    })
+
+    srfc.lab_has_groups << create(:lab_has_group, {
+      lab_group: lab_group, 
+      lab: lab
+    })
+
+    repository = srfc.lab_has_groups.first.repository
 
     @value = {
       command: "move",
@@ -22,6 +31,7 @@ describe CommitRequest do
   describe "validation" do 
     it "validates a commit request" do
       cr = CommitRequest.new(@value)
+      cr.save
       cr.should be_valid
       cr.should_receive(:publish)
       cr.save

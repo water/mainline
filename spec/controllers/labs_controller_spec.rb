@@ -17,7 +17,7 @@ describe LabsController do
       it "should return all non finished labs" do
         login_as(student)
 
-        srfc = Factory.create(:student_registered_for_course, {
+        srfc = Factory  .create(:student_registered_for_course, {
           student: student
         })
 
@@ -42,10 +42,8 @@ describe LabsController do
           active: true
         })
 
-        srfc.lab_groups << lab_group
-
         labs.each do |lab|
-          Factory.create(:lab_has_group, {
+          srfc.lab_has_groups << Factory.create(:lab_has_group, {
             lab: lab,
             lab_group: lab_group
           })
