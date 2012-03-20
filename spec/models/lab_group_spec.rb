@@ -19,7 +19,7 @@ describe LabGroup do
     it "should have a list of labs" do
       lab = create(:active_lab)
       create(:lab_has_group, lab: lab, lab_group: group)
-      group.should have(1).labs
+      group.should have_at_least(1).labs
     end
   end
 

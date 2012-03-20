@@ -39,7 +39,7 @@ describe Student do
         lab_group: lab_group
       })
 
-      student.should have(1).labs
+      student.should have_at_least(1).labs
     end
   end
 
