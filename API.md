@@ -120,7 +120,7 @@
 
 ## Uploads
 
-### GET /courses/:course_id/labs/:lab_id/uploads
+### GET /courses/:course_id/groups/:group_id/labs/:lab_id/uploads
 
 - Student
   - Visar uppladdningsformuläret
