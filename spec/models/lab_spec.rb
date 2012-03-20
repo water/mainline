@@ -62,7 +62,7 @@ describe Lab do
 
     it "should have a list of lab groups" do
       lab = create(:lab)
-      group = create(:lab_group)
+      group = create(:lab_group, given_course: lab.given_course)
       lhg = create(:lab_has_group, lab_group: group, lab: lab)
       lab.should have(1).lab_groups
     end
