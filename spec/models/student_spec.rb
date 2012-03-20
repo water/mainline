@@ -15,9 +15,17 @@ describe Student do
       student.should have(1).given_courses
     end
 
-    it "should have a list of lab groups" do
+    it "should have a list of unique lab groups" do
       group = create(:lab_group)
-      create(:student_registered_for_course, lab_groups: [group], student: student)
+      srfc = create(:student_registered_for_course, {
+        student: student
+      })
+
+      2.times do
+        srfc.lab_has_groups << create(:lab_has_group, {
+          lab_group: group
+        })
+      end
       student.should have(1).lab_groups
     end
 
