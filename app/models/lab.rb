@@ -28,7 +28,7 @@ class Lab < ActiveRecord::Base
   #
   def add_group(lab_group)
     @repository = Repository.create()
-    @lab_has_group = LabHasGroup.create(
+    @lab_has_group = LabHasGroup.create!(
       lab_group: lab_group, 
       lab: self, 
       repository: @repository
