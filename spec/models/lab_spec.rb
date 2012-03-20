@@ -156,5 +156,10 @@ describe Lab do
       lab_group_incorrect_course = Factory.create(:lab_group)
       lambda { lab.add_group(lab_group_incorrect_course) }.should raise_error
     end
+    
+    it "should have a group" do
+      lab.add_group(Factory.create(:lab_group, given_course: lab.given_course))
+      lab.should have(1).lab_groups
+    end
   end
 end
