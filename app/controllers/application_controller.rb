@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
 
   layout :pick_layout_based_on_site
   
+  helper_method :repo_owner_path
+
   rescue_from ActiveRecord::RecordNotFound, :with => :render_not_found
   rescue_from ActionController::UnknownController, :with => :render_not_found
   rescue_from AbstractController::ActionNotFound, :with => :render_not_found
@@ -70,27 +72,12 @@ class ApplicationController < ActionController::Base
     # if +path_spec+ is an array (and no +args+ given) it'll use that as the 
     # polymorphic-url-style (eg [@project, @repo, @foo])
     def repo_owner_path(repo, path_spec, *args)
-      # if repo.team_repo?
-      #   if path_spec.is_a?(Symbol)
-      #     return send("group_#{path_spec}", *args.unshift(repo.owner))
-      #   else
-      #     return *unshifted_polymorphic_path(repo, path_spec)
-      #   end
-      if repo.user_repo?
-        if path_spec.is_a?(Symbol)
-          return send("user_#{path_spec}", *args.unshift(repo.owner))
-        else
-          return *unshifted_polymorphic_path(repo, path_spec)
-        end
+      if path_spec.is_a?(Symbol)
+        return send(path_spec, *args)
       else
-        if path_spec.is_a?(Symbol)
-          return send(path_spec, *args)
-        else
-          return *path_spec
-        end
+        return *path_spec
       end
     end
-    helper_method :repo_owner_path
   
     def require_user_has_ssh_keys
       unless current_user.ssh_keys.count > 0
