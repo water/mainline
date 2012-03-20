@@ -35,10 +35,18 @@ FactoryGirl.define do
   factory :lab_has_group do
     repository
     lab do |lhg| 
-      Factory.create(:lab)
+      if lhg.lab_group
+        Factory.create(:lab, given_course: lhg.lab_group.given_course)
+      else
+        Factory.create(:lab)
+      end
     end
     lab_group do |lhg|
-      Factory.create(:lab_group, given_course: lhg.lab.given_course)
+      if lhg.lab
+        Factory.create(:lab_group, given_course: lhg.lab.given_course)
+      else
+        Factory.create(:lab_group)
+      end
     end
   end
 
