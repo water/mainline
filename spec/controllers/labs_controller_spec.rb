@@ -16,30 +16,36 @@ describe LabsController do
 
       it "should return all non finished labs" do
         login_as(student)
+        
+        given_course = Factory.create(:given_course)
 
         srfc = Factory.create(:student_registered_for_course, {
-          student: student
+          student: student,
+          given_course: given_course
         })
 
-        lab_group = Factory.create(:lab_group)
+        lab_group = Factory.create(:lab_group, given_course: given_course)
         labs = []
 
         # Active lab
         labs << Factory.create(:lab, {
           lab_description: Factory.create(:lab_description, title: "Lab 1"),
-          active: true
+          active: true,
+          given_course: given_course
         })
 
         # Non acitve lab
         labs << Factory.create(:lab, {
           lab_description: Factory.create(:lab_description, title: "Lab 2"),
-          active: false
+          active: false,
+          given_course: given_course
         })
 
         # Non related lab
         Factory.create(:lab, {
           lab_description: Factory.create(:lab_description, title: "Lab 3"),
-          active: true
+          active: true,
+          given_course: given_course
         })
 
         srfc.lab_groups << lab_group

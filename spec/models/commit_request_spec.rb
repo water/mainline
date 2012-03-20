@@ -2,7 +2,7 @@ describe CommitRequest do
   before (:each) do
     lab = create(:lab)
     student = create(:student)
-    lab_group = create(:lab_group)
+    lab_group = create(:lab_group, given_course: lab.given_course)
     create(:student_registered_for_course, lab_groups: [lab_group], student: student)
     repo = create(:lab_has_group, lab_group: lab_group, lab: lab).repository
 
