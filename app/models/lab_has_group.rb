@@ -10,4 +10,11 @@ class LabHasGroup < ActiveRecord::Base
   validates_presence_of :lab, :lab_group, :repository
   validates_uniqueness_of :lab_id, scope: :lab_group_id
   validates_uniqueness_of :repository_id
+  validate :given_courses_match
+  
+  def given_courses_match
+    if lab.given_course != lab_group.given_course
+      errors[:base] << "Given courses for lab and lab group do not match"
+    end
+  end
 end
