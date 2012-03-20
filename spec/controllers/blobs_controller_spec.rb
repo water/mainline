@@ -5,7 +5,7 @@ describe BlobsController do
   # Test dependent on the fact that the default repo_with_data contains a Gemfile
   describe "GET blob root" do
     before :each do
-      visit repository_blob_path(repository, "master/Rakefile", bare: 1)
+      visit repository_blob_path(repository, "master/README.md", bare: 1)
     end
     
     it "doesn't crash" do
