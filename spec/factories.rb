@@ -112,6 +112,12 @@ FactoryGirl.define do
 
   factory :lab_group do
     given_course
+    after_create do |group|
+      Factory.create(:lab_has_group, {
+        lab: Factory.create(:active_lab),
+        lab_group: group
+      })
+    end
   end
 
   factory :department do
