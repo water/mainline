@@ -224,33 +224,6 @@ class Repository < ActiveRecord::Base
     admin?(candidate)
   end
 
-  # Can +a_user+ request a merge from this repository
-
-  # changes the owner to +another_owner+, removes the old owner as committer
-  # and adds +another_owner+ as committer
-"  def change_owner_to!(another_owner)
-    unless owned_by_group?
-      transaction do
-        if existing = committerships.find_by_committer_id_and_committer_type(owner.id, owner.class.name)
-          existing.destroy
-        end
-        self.owner = another_owner
-        if self.kind != KIND_PROJECT_REPO
-          case another_owner
-          when Group
-            self.kind = KIND_TEAM_REPO
-          when User
-            self.kind = KIND_USER_REPO
-          end
-        end
-        unless committerships.any?{|c|c.committer == another_owner}
-          committerships.create_for_owner!(self.owner)
-        end
-        save!
-        reload
-      end
-    end
-  end "
 
   def post_repo_creation_message
     options = {:target_class => self.class.name, :target_id => self.id}
