@@ -40,11 +40,9 @@ describe Student do
         active: true
       })
 
-      srfc.lab_groups << lab_group
-
-      Factory.create(:lab_has_group, {
-        lab: lab,
-        lab_group: lab_group
+      srfc.lab_has_groups << create(:lab_has_group, {
+        lab_group: lab_group,
+        lab: lab
       })
 
       student.should have_at_least(1).labs

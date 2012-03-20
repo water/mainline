@@ -28,7 +28,9 @@ class Student < ActiveRecord::Base
       }).first
 
       if srfc
-        srfc.lab_groups << options[:group] 
+        options[:group].lab_has_groups.each do |lhg|
+          lhg.student_registered_for_courses << srfc
+        end
       else
         raise ActiveRecord::RecordNotFound
       end
