@@ -1,6 +1,3 @@
-[submodule "vendor/plugins/gitorious_sites"]
-	path = vendor/plugins/gitorious_sites
-	url = ../gitorious_sites_plugin.git
 [submodule "spec/fixtures/git-repo"]
 	path = spec/fixtures/git-repo
-	url = git://github.com/water/gash.git
+	url = git://github.com/blueimp/jQuery-File-Upload.git 

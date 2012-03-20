@@ -9,6 +9,7 @@ describe BlobsController do
     end
     
     it "doesn't crash" do
+      visit repository_blob_path(repository, "master/README.md", bare: 1)
       page.status_code.should eq(200)
     end
     it "has a blob marker" do

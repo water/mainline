@@ -21,7 +21,9 @@ class BlobsController < ApplicationController
         (params[:branch_and_path].is_a?(Array) ? params[:branch_and_path].join : params[:branch_and_path] )), 
         @commit.committed_date.utc)
       @blob = @git.tree(@commit.tree.id, ["#{@path.join("/")}"]).contents.first
+
       render_not_found and return unless @blob
+
       unless @blob.respond_to?(:data) # it's a tree
         redirect_to repo_owner_path(@repository, :repository_tree_path, @repository, params[:branch_and_path])
       end
@@ -88,7 +90,13 @@ class BlobsController < ApplicationController
   
   protected
     def redirect_to_head
-      redirect_to repository_blob_path(@repository, 
-                    branch_with_tree("HEAD", @path))
+      redirect_to repository_blob_path(
+        @repository, 
+        branch_with_tree("HEAD", @path)
+      )
+    end
+
+    def find_repository
+      @repository = Repository.find(params[:repository_id])
     end
 end

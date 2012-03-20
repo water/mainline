@@ -1,7 +1,7 @@
 # encoding: utf-8
 class MessagesController < ApplicationController
   before_filter :login_required
-  before_filter :ssl_required
+  force_ssl
   renders_in_global_context
   
   def index

@@ -48,12 +48,18 @@ FactoryGirl.define do
     factory :active_lab do
       active true
     end
+
+    default_deadlines_attributes do 
+      [Factory.attributes_for(:default_deadline_without_lab)]
+    end
   end
 
-  factory :default_deadline do
-    lab
+  factory :default_deadline_without_lab, class: "DefaultDeadline" do
     sequence(:at) { |n| ((n + 1)*2).days.from_now }
     description "Lorem ipsum dolor sit amet"
+    factory :default_deadline do
+      lab
+    end
   end
 
   factory :lab_description do
@@ -75,6 +81,7 @@ FactoryGirl.define do
     user
     owner { user }
     factory :repo_with_data do
+      ready true
       after_create do |r|
         Repository.should_receive(:create_hooks)
         Repository.create_git_repository(r.real_gitdir)

@@ -1,5 +1,5 @@
 class DefaultDeadline < ActiveRecord::Base
-  belongs_to :lab
+  belongs_to :lab, inverse_of: :default_deadlines
 
   validates_presence_of :lab, :at
   validate :time_difference, :time_span

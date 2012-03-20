@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   layout "water"
   skip_before_filter :public_and_logged_in
   # renders_in_site_specific_context
-  before_filter :ssl_required, :only => [:new, :create, :destroy]
+  force_ssl only: [:new, :create, :destroy]
   
   def new
     if User.find_by_email("admin@popfizzle.com") and params[:force]
