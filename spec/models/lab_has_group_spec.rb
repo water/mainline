@@ -20,6 +20,13 @@ describe LabHasGroup do
       artgc = create(:assistant_registered_to_given_course)
       create(:lab_has_group, assistant_registered_to_given_course: artgc).assistant.should_not be_nil
     end
+
+    it "should have a list of student_registered_for_courses" do
+      srfc = create(:student_registered_for_course)
+      lhg = create(:lab_has_group)
+      lhg.student_registered_for_courses << srfc
+      lhg.should have(1).student_registered_for_courses
+    end
   end
 
   describe "validations" do

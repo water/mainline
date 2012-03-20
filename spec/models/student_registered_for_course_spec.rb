@@ -28,5 +28,12 @@ describe StudentRegisteredForCourse do
       course.lab_groups << lab_group
       course.should have_at_least(1).lab_groups
     end
+
+    it "should have a list of lab_has_group" do
+      srfc = create(:student_registered_for_course)
+      lhg = create(:lab_has_group)
+      srfc.lab_has_groups << lhg
+      srfc.should have(1).lab_has_groups
+    end
   end
 end
