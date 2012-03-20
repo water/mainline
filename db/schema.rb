@@ -228,6 +228,7 @@ ActiveRecord::Schema.define(:version => 20120320201048) do
     t.datetime "avatar_updated_at"
   end
 
+  add_index "groups", ["name"], :name => "index_groups_on_name_and_public"
   add_index "groups", ["user_id"], :name => "index_groups_on_user_id"
 
   create_table "hooks", :force => true do |t|
@@ -378,7 +379,7 @@ ActiveRecord::Schema.define(:version => 20120320201048) do
     t.integer  "sequence_number"
   end
 
-  add_index "merge_requests", ["sequence_number", "target_repository_id"], :name => "merge_requests_sntr", :unique => true
+  add_index "merge_requests", ["sequence_number", "target_repository_id"], :name => "index_merge_requests_on_sequence_number_and_target_repository_id", :unique => true
   add_index "merge_requests", ["source_repository_id"], :name => "index_merge_requests_on_source_repository_id"
   add_index "merge_requests", ["status"], :name => "index_merge_requests_on_status"
   add_index "merge_requests", ["target_repository_id"], :name => "index_merge_requests_on_target_repository_id"
