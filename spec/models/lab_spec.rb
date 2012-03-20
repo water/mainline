@@ -143,6 +143,7 @@ describe Lab do
       lab.description.should eq(lab.lab_description.description)
     end
   end
+  
   describe "add a group" do
     let(:lab) { create(:lab, active: true) }
     
