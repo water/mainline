@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120313161140) do
+ActiveRecord::Schema.define(:version => 20120321153606) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -174,11 +174,10 @@ ActiveRecord::Schema.define(:version => 20120313161140) do
   end
 
   create_table "extended_deadlines", :force => true do |t|
-    t.integer  "lab_id"
-    t.integer  "lab_group_id"
     t.datetime "at"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "lab_has_group_id"
   end
 
   create_table "favorites", :force => true do |t|
