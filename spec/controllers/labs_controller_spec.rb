@@ -73,6 +73,10 @@ describe LabsController do
         login_as(examiner)
 
         given_course = create(:given_course, examiners: [examiner])
+        group = create(:lab_group, {
+          given_course: given_course
+        })
+
         labs = []
 
         # Active lab
@@ -92,6 +96,7 @@ describe LabsController do
         labs.each do |lab|
           Factory.create(:lab_has_group, {
             lab: lab,
+            lab_group: group, 
             grade: nil
           })
         end
@@ -112,6 +117,9 @@ describe LabsController do
 
         given_course = create(:given_course, assistants: [assistant])
         labs = []
+        group = create(:lab_group, {
+          given_course: given_course
+        })
 
         # Active lab
         labs << Factory.create(:lab, {
@@ -130,6 +138,7 @@ describe LabsController do
         labs.each do |lab|
           Factory.create(:lab_has_group, {
             lab: lab,
+            lab_group: group,
             grade: nil
           })
         end
@@ -148,21 +157,29 @@ describe LabsController do
       it "should return all non finished labs" do
         login_as(admin)
         labs = []
+        gc = create(:given_course)
+        group = create(:lab_group, {
+          given_course: gc
+        })
+
         # Active lab
         labs << Factory.create(:lab, {
           lab_description: Factory.create(:lab_description, title: "Lab 1"),
-          active: true
+          active: true,
+          given_course: gc
         })
 
         # Non acitve lab
         labs << Factory.create(:lab, {
           lab_description: Factory.create(:lab_description, title: "Lab 2"),
-          active: false
+          active: false,
+          given_course: gc
         })
 
         labs.each do |lab|
           Factory.create(:lab_has_group, {
             lab: lab,
+            lab_group: group,
             grade: nil
           })
         end
