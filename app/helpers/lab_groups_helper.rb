@@ -1,0 +1,2 @@
+module LabGroupsHelper
+end
