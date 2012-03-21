@@ -8,7 +8,7 @@ class LabsController < ApplicationController
   # GET /lab_groups/:group_id/labs
   #
   def index
-    if id = params[:group_id]
+    if id = params[:lab_group_id]
       @labs = LabGroup.includes(:labs).find(id).labs
     else
       @labs = current_role.
