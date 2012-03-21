@@ -52,4 +52,13 @@ describe LabHasGroup do
       build(:lab_has_group, repository: r).should_not be_valid
     end
   end
+
+  describe "dependent destroy" do
+    it "should not be possible for a extended_deadline to exist without a lab_has_group" do
+      lhg = Factory.create(:lab_has_group)
+      ee = Factory.create(:extended_deadline, lab_has_group: lhg)
+      lhg.destroy
+      lambda{ee.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
