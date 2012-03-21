@@ -7,9 +7,17 @@ describe LabGroup do
     end
 
     it "should have a list of submissions" do
-      s = 2.times.map { create(:submission, lab_group: group) }
-      s.first.lab_group.should eq(group)
-      group.should have(2).submissions
+      lab = create(:lab, {given_course: group.given_course})
+      lhg = create(:lab_has_group, {
+        lab_group: group,
+        lab: lab
+      })
+
+      2.times { create(:submission, {
+        lab_has_group: lhg
+      })}
+
+      group.reload.should have(2).submissions
     end
 
     it "should have a list of students" do

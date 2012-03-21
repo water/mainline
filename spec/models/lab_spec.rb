@@ -57,8 +57,20 @@ describe Lab do
     end
 
     it "should have a list of lab_has_groups" do
-      lab = create(:lab)
-      lab.lab_has_groups << create(:lab_has_group, lab: lab)
+      gc = create(:given_course)
+      group = create(:lab_group, {
+        given_course: gc
+      })
+
+      lab = create(:lab, {
+        given_course: gc
+      })
+
+      lab.lab_has_groups << create(:lab_has_group, {
+        lab: lab,
+        lab_group: group
+      })
+      
       lab.should have(1).lab_has_groups
     end
 
