@@ -2,11 +2,12 @@ class CoursesController < ApplicationController
   layout "water"
   respond_to :html
   def index
-    respond_with(@courses = Course.all)
+    @courses = current_role.given_courses
+    respond_with(@courses)
   end
 
   def show
-    respond_with(@course = Course.find(params[:course_id]))
+    respond_with(@course = GivenCourse.find(params[:given_course_id]))
   end
   
   def edit
