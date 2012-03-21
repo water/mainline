@@ -440,7 +440,6 @@ class Repository < ActiveRecord::Base
   def matches_regexp?(term)
     return user.login =~ term ||
       name =~ term ||
-      (owned_by_group? ? owner.name =~ term : false) ||
       description =~ term
   end
 
