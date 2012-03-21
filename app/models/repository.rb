@@ -18,14 +18,10 @@ class Repository < ActiveRecord::Base
   has_many :hooks, :dependent => :destroy
   belongs_to :lab_has_group
 
-  validates_presence_of :user_id, :name, :owner_id
-  validates_format_of :name, :with => /^#{NAME_FORMAT}$/i, 
-    :message => "is invalid, must match something like /[a-z0-9_\\-]+/"
   validates_uniqueness_of :hashed_path, :case_sensitive => false
 
   before_validation :downcase_name
   before_create :set_repository_hash
-  after_create :create_initial_committership
   after_create :post_repo_creation_message
   after_destroy :post_repo_deletion_message
 
@@ -552,10 +548,6 @@ class Repository < ActiveRecord::Base
       second = h[3,3]
       last = h[-34, 34]
       "#{first}/#{second}/#{last}"
-    end
-
-    def create_initial_committership
-      self.committerships.create_for_owner!(self.owner)
     end
 
     def self.full_path_from_partial_path(path)
