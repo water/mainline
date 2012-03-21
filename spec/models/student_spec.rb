@@ -101,7 +101,7 @@ describe Student do
         })
       end
 
-      group = create(:lab_group, {
+      group = create(:lab_group_without_link, {
         given_course: gc
       })
 
