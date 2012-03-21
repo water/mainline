@@ -35,18 +35,17 @@ FactoryGirl.define do
   factory :lab_has_group do
     repository
     lab do |lhg| 
-      if lhg.lab_group
-        Factory.create(:lab, given_course: lhg.lab_group.given_course)
-      else
-        Factory.create(:lab)
-      end
+      c = lhg.lab_group.try(:given_course) || Factory.create(:given_course)
+      Factory.create(:active_lab, {
+        given_course: c
+      })
     end
+
     lab_group do |lhg|
-      if lhg.lab
-        Factory.create(:lab_group, given_course: lhg.lab.given_course)
-      else
-        Factory.create(:lab_group)
-      end
+      c = lhg.lab.try(:given_course) || Factory.create(:given_course)
+      Factory.create(:lab_group, {
+        given_course: c
+      })
     end
   end
 
@@ -79,9 +78,8 @@ FactoryGirl.define do
 
   factory :submission do
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
-    lab_group
+    lab_has_group
     repository
-    lab { Factory.create(:active_lab) }
   end
 
    factory :repository do
