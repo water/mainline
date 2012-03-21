@@ -7,7 +7,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    respond_with(@course = GivenCourse.find(params[:given_course_id]))
+    respond_with(@course = GivenCourse.find(params[:id]))
   end
   
   def edit
