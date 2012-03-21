@@ -6,6 +6,14 @@ Gitorious::Application.routes.draw do
 
   scope ":role", constraints: { role: /examiner|student|administrator|assistant|/ } do
     resources :labs
+    resources :courses do
+      post "/courses/:course_id/upload" => "uploads#upload"
+      resources :lab_groups do
+        resources :labs, only: [:index, :show] do
+          get "uploads" => "labs#uploads"
+        end
+      end
+    end
   end
   
   post "upload" => "uploads#upload"
@@ -17,18 +25,7 @@ Gitorious::Application.routes.draw do
       resources :submissions, only: [:index, :show]
     end
   end
-  
-  # This is perhaps useful for an assistant?
-  # Example:
-  # /courses/2/labs/3 # <= Shows all submissions for particular lab?
-  resources :courses do
-    post "/courses/:course_id/upload" => "uploads#upload"
-    resources :lab_groups do
-      resources :labs, only: [:index, :show] do
-        get "uploads" => "labs#uploads"
-      end
-    end
-  end
+
   resources :submissions, only: [:index, :show, :create, :new]
   
   resources :repositories do
