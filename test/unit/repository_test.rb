@@ -785,12 +785,12 @@ class RepositoryTest < ActiveSupport::TestCase
   context "find_by_name_in_project" do
     should "find with a project" do
       Repository.expects(:find_by_name_and_project_id!).with(repositories(:johans).name, projects(:johans).id).once
-      Repository.find_by_name_in_project!(repositories(:johans).name, projects(:johans))
+      Repository.find_by_name!(repositories(:johans).name, projects(:johans))
     end
 
     should "find without a project" do
       Repository.expects(:find_by_name!).with(repositories(:johans).name).once
-      Repository.find_by_name_in_project!(repositories(:johans).name)
+      Repository.find_by_name!(repositories(:johans).name)
     end
   end
 

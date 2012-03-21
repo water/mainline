@@ -541,7 +541,7 @@ class RepositoriesControllerTest < ActionController::TestCase
     should "GET projects/1/repositories/3/clone is successful" do
       Project.expects(:find_by_slug!).with(@project.slug).returns(@project)
       @repository.stubs(:has_commits?).returns(true)
-      @project.repositories.expects(:find_by_name_in_project!).with(@repository.name, nil).returns(@repository)
+      @project.repositories.expects(:find_by_name!).with(@repository.name, nil).returns(@repository)
       do_clone_get
       assert_equal nil, flash[:error]
       assert_response :success
@@ -561,7 +561,7 @@ class RepositoriesControllerTest < ActionController::TestCase
       login_as :johan
       Project.expects(:find_by_slug!).with(@project.slug).returns(@project)
       @repository.stubs(:has_commits?).returns(false)
-      @project.repositories.expects(:find_by_name_in_project!).with(@repository.name, nil).returns(@repository)
+      @project.repositories.expects(:find_by_name!).with(@repository.name, nil).returns(@repository)
       do_clone_get
       assert_redirected_to(project_repository_path(@project, @repository))
       assert_match(/can't clone an empty/i, flash[:error])
@@ -589,7 +589,7 @@ class RepositoriesControllerTest < ActionController::TestCase
     should "post projects/1/repositories/3/create_clone is successful" do
       Project.expects(:find_by_slug!).with(@project.slug).returns(@project)
       @repository.stubs(:has_commits?).returns(true)
-      @project.repositories.expects(:find_by_name_in_project!).with(@repository.name, nil).returns(@repository)
+      @project.repositories.expects(:find_by_name!).with(@repository.name, nil).returns(@repository)
       do_create_clone_post(:name => "foo-clone")
       assert_response :redirect
     end
@@ -597,7 +597,7 @@ class RepositoriesControllerTest < ActionController::TestCase
     should "post projects/1/repositories/3/create_clone is successful sets the owner to the user" do
       Project.expects(:find_by_slug!).with(@project.slug).returns(@project)
       @repository.stubs(:has_commits?).returns(true)
-      @project.repositories.expects(:find_by_name_in_project!).with(@repository.name, nil).returns(@repository)
+      @project.repositories.expects(:find_by_name!).with(@repository.name, nil).returns(@repository)
       do_create_clone_post(:name => "foo-clone", :owner_type => "User")
       assert_response :redirect
       assert_equal users(:johan), assigns(:repository).owner
@@ -608,7 +608,7 @@ class RepositoriesControllerTest < ActionController::TestCase
       groups(:team_thunderbird).add_member(users(:johan), Role.admin)
       Project.expects(:find_by_slug!).with(@project.slug).returns(@project)
       @repository.stubs(:has_commits?).returns(true)
-      @project.repositories.expects(:find_by_name_in_project!).with(@repository.name, nil).returns(@repository)
+      @project.repositories.expects(:find_by_name!).with(@repository.name, nil).returns(@repository)
       do_create_clone_post(:name => "foo-clone", :owner_type => "Group", :owner_id => groups(:team_thunderbird).id)
       assert_response :redirect
       assert_equal groups(:team_thunderbird), assigns(:repository).owner
@@ -626,7 +626,7 @@ class RepositoriesControllerTest < ActionController::TestCase
       login_as :johan
       Project.expects(:find_by_slug!).with(@project.slug).returns(@project)
       @repository.stubs(:has_commits?).returns(false)
-      @project.repositories.expects(:find_by_name_in_project!).with(@repository.name, nil).returns(@repository)
+      @project.repositories.expects(:find_by_name!).with(@repository.name, nil).returns(@repository)
       do_create_clone_post(:name => "foobar")
       assert_redirected_to(project_repository_path(@project, @repository))
       assert_match(/can't clone an empty/i, flash[:error])
@@ -651,7 +651,7 @@ class RepositoriesControllerTest < ActionController::TestCase
     should "post projects/1/repositories/3/create_copy is successful" do
       Project.expects(:find_by_slug!).with(@project.slug).returns(@project)
       @repository.stubs(:has_commits?).returns(true)
-      @project.repositories.expects(:find_by_name_in_project!).with(@repository.name, nil).returns(@repository)
+      @project.repositories.expects(:find_by_name!).with(@repository.name, nil).returns(@repository)
       do_create_clone_post(:name => "foo-clone")
       assert_response 201
     end
@@ -659,7 +659,7 @@ class RepositoriesControllerTest < ActionController::TestCase
     should "renders text if repos can't be cloned" do
       Project.expects(:find_by_slug!).with(@project.slug).returns(@project)
       @repository.stubs(:has_commits?).returns(false)
-      @project.repositories.expects(:find_by_name_in_project!).with(@repository.name, nil).returns(@repository)
+      @project.repositories.expects(:find_by_name!).with(@repository.name, nil).returns(@repository)
       do_create_clone_post(:name => "foobar")
       assert_response 422
       assert_match(/can't clone an empty/i, @response.body)
