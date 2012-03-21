@@ -78,6 +78,7 @@ group :test do
   gem "shoulda"
   gem "factory_girl_rails"
   gem "minitest"
+  gem "cucumber"
   gem "spork", "~> 0.9.0"
   gem "mocha", require: false
   gem "rspec", "2.9.0.rc2"
@@ -87,5 +88,6 @@ group :test do
   gem "rspec-rails", "2.9.0.rc2"
   gem "turn"
   gem "database_cleaner"
+  gem "cucumber-rails"
   gem "fakefs", :require => "fakefs/safe"
 end

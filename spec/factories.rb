@@ -110,8 +110,16 @@ FactoryGirl.define do
     user
   end
 
-  factory :lab_group do
+  factory :lab_group_without_link, class: "LabGroup" do
     given_course
+    factory :lab_group do
+      after_create do |group|
+        Factory.create(:lab_has_group, {
+          lab: Factory.create(:active_lab),
+          lab_group: group
+        })
+      end
+    end
   end
 
   factory :department do

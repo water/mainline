@@ -1,7 +1,6 @@
 describe Student do
+  let(:student) { Factory.create(:student) }
   describe "relations" do
-    let(:student) { Factory.create(:student) }
-
     it "should have a user" do
       student.user.should be_instance_of(User)
     end
@@ -16,9 +15,17 @@ describe Student do
       student.should have(1).given_courses
     end
 
-    it "should have a list of lab groups" do
+    it "should have a list of unique lab groups" do
       group = create(:lab_group)
-      create(:student_registered_for_course, lab_groups: [group], student: student)
+      srfc = create(:student_registered_for_course, {
+        student: student
+      })
+
+      2.times do
+        srfc.lab_has_groups << create(:lab_has_group, {
+          lab_group: group
+        })
+      end
       student.should have(1).lab_groups
     end
 
@@ -33,14 +40,12 @@ describe Student do
         active: true
       })
 
-      srfc.lab_groups << lab_group
-
-      Factory.create(:lab_has_group, {
-        lab: lab,
-        lab_group: lab_group
+      srfc.lab_has_groups << create(:lab_has_group, {
+        lab_group: lab_group,
+        lab: lab
       })
 
-      student.should have(1).labs
+      student.should have_at_least(1).labs
     end
   end
 
@@ -51,6 +56,67 @@ describe Student do
 
     it "should have a user" do
       Factory.build(:student, user: nil).should_not be_valid
+    end
+  end
+
+  describe "#register" do
+    it "should register to course" do
+      student.register!({
+        course: create(:given_course)
+      })
+
+      student.should have(1).given_courses
+    end
+
+    it "should register to a lab group" do
+      gc = create(:given_course)
+      group = create(:lab_group, given_course: gc)
+
+      # Register student to course
+      student.register!({
+        course: gc
+      })
+
+      # Register student to lab group
+      student.register!({
+        group: group
+      })
+
+      student.should have(1).lab_groups
+    end
+
+    it "should raise RecordNotFound if student isnt registered to course" do
+      lambda {
+        student.register!({
+          group: create(:lab_group)
+        })
+      }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "should have a list of labs" do
+      gc = create(:given_course)
+      3.times do
+        create(:active_lab, {
+          given_course: gc
+        })
+      end
+
+      group = create(:lab_group_without_link, {
+        given_course: gc
+      })
+
+      # Register student to course
+      student.register!({
+        course: gc
+      })
+
+      # Register student to lab group
+      student.register!({
+        group: group
+      })
+
+      student.should have(1).lab_groups
+      student.should have(3).labs
     end
   end
 end
