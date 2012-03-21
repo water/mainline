@@ -20,10 +20,13 @@ class LabsController < ApplicationController
     respond_with(@labs)
   end
   
-  # /lab_groups/:group_id/labs/1
+  # GET /courses/:given_course_id/lab_groups/:lab_group_id/labs/:lab_id
   def show
     @lab = Lab.find(params[:lab_id])
-    @submissions = @lab.submissions_for_group(params[:group_id])
+    @lab_has_group = @lab.lab_has_groups.where(lab_group_id: params[:lab_group_id]).first
+    @submissions = @lab_has_group.submissions
+    @repository = @lab_has_group.repository
+    add_paths_to_gon
     respond_with(@lab)
   end
   
@@ -51,13 +54,6 @@ class LabsController < ApplicationController
   end
   
   protected
-  
-  def find_repo
-    # TODO: I suspect we should test for student before we even get this far.
-    if current_user.student
-      @repository = Repository.find_by_student_and_lab(current_user.student, params[:lab_id])
-    end
-  end
   
   def add_paths_to_gon
     gon.commit_request_path = repository_commit_requests_path(@repository.id)
