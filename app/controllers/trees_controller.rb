@@ -13,8 +13,7 @@ class TreesController < ApplicationController
   end
   
   def show
-    # @repository = Repository.find_by_group_and_lab(params[:group_id], params[:lab_id])
-    @repository = Repository.find(1)
+    @repository = Repository.find(params[:repository_id])
     @git = @repository.git
     @ref, @path = branch_and_path(params[:branch_and_path], @git)
     unless @commit = @git.commit(@ref)

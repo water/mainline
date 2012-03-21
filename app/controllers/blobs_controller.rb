@@ -1,14 +1,18 @@
 # encoding: utf-8
 
 class BlobsController < ApplicationController
-  before_filter :find_repository
+  before_filter :setup
   before_filter :check_repository_for_commits
   renders_in_site_specific_context
 
-  def show
+  def setup
+    @repository = Repository.find(params[:repository_id])
     @git = @repository.git
     @ref, @path = branch_and_path(params[:branch_and_path], @git)
     @commit = @git.commit(@ref)
+  end
+
+  def show
     unless @commit
       redirect_to_head and return
     end
@@ -31,9 +35,6 @@ class BlobsController < ApplicationController
   end
 
   def raw
-    @git = @repository.git
-    @ref, @path = branch_and_path(params[:branch_and_path], @git)
-    @commit = @git.commit(@ref)
     unless @commit
       redirect_to project_repository_raw_blob_path(@project, @repository, 
                     branch_with_tree("HEAD", @path)) and return
@@ -54,9 +55,6 @@ class BlobsController < ApplicationController
   end
   
   def history
-    @git = @repository.git
-    @ref, @path = branch_and_path(params[:branch_and_path], @git)
-    @commit = @git.commit(@ref)
     unless @commit
       redirect_to_head and return
     end

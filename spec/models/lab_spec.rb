@@ -57,12 +57,26 @@ describe Lab do
     end
 
     it "should have a list of lab_has_groups" do
-      create(:lab, lab_has_groups: [create(:lab_has_group)]).should have(1).lab_has_groups
+      gc = create(:given_course)
+      group = create(:lab_group, {
+        given_course: gc
+      })
+
+      lab = create(:lab, {
+        given_course: gc
+      })
+
+      lab.lab_has_groups << create(:lab_has_group, {
+        lab: lab,
+        lab_group: group
+      })
+      
+      lab.should have(1).lab_has_groups
     end
 
     it "should have a list of lab groups" do
       lab = create(:lab)
-      group = create(:lab_group)
+      group = create(:lab_group, given_course: lab.given_course)
       lhg = create(:lab_has_group, lab_group: group, lab: lab)
       lab.should have(1).lab_groups
     end
@@ -141,6 +155,25 @@ describe Lab do
 
     it "should have a lab description based on #lab_description.description" do
       lab.description.should eq(lab.lab_description.description)
+    end
+  end
+  
+  describe "add a group" do
+    let(:lab) { create(:lab, active: true) }
+    
+    it "should be able to add a group with the correct given course" do
+      lab_group_correct_course = Factory.create(:lab_group, given_course: lab.given_course)
+      lambda { lab.add_group(lab_group_correct_course) }.should_not raise_error
+    end
+    
+    it "should not be able to add a group with an incorrect given course" do
+      lab_group_incorrect_course = Factory.create(:lab_group)
+      lambda { lab.add_group(lab_group_incorrect_course) }.should raise_error
+    end
+    
+    it "should have a group" do
+      lab.add_group(Factory.create(:lab_group, given_course: lab.given_course))
+      lab.should have(1).lab_groups
     end
   end
 end

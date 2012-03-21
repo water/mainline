@@ -1,3 +1,4 @@
+%a.blob_marker
 - if textual?(@blob) && !too_big_to_render?(@blob.size)
   - help_box(:center, :error, :style => "display:none", :id => "long-file") do
     %p
