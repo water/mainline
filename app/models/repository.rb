@@ -49,10 +49,6 @@ class Repository < ActiveRecord::Base
     new(:parent => other,  :name => suggested_name)
   end
 
-  def self.find_by_name_in_project!(name)
-      find_by_name!(name)
-  end
-
   def self.find_by_path(path)
     base_path = path.gsub(/^#{Regexp.escape(GitoriousConfig['repository_base_path'])}/, "")
     path_components = base_path.split("/").reject{|p| p.blank? }
@@ -220,34 +216,6 @@ class Repository < ActiveRecord::Base
     admin?(candidate)
   end
 
-  # Can +a_user+ request a merge from this repository
-
-  # changes the owner to +another_owner+, removes the old owner as committer
-  # and adds +another_owner+ as committer
-"  def change_owner_to!(another_owner)
-    unless owned_by_group?
-      transaction do
-        if existing = committerships.find_by_committer_id_and_committer_type(owner.id, owner.class.name)
-          existing.destroy
-        end
-        self.owner = another_owner
-        if self.kind != KIND_PROJECT_REPO
-          case another_owner
-          when Group
-            self.kind = KIND_TEAM_REPO
-          when User
-            self.kind = KIND_USER_REPO
-          end
-        end
-        unless committerships.any?{|c|c.committer == another_owner}
-          committerships.create_for_owner!(self.owner)
-        end
-        save!
-        reload
-      end
-    end
-  end "
-
   def post_repo_creation_message
     options = {:target_class => self.class.name, :target_id => self.id}
     options[:command] = parent ? 'clone_git_repository' : 'create_git_repository'
@@ -395,41 +363,8 @@ class Repository < ActiveRecord::Base
     committers.include?(a_user)
   end
 
-  def owned_by_group?
-    owner === Group
-  end
-
-  def breadcrumb_parent
-    owner
-  end
-
-  def title
-    name
-  end
-
-  def owner_title
-    owner.title
-  end
-
-  # returns the project if it's a KIND_PROJECT_REPO, otherwise the owner
-  def project_or_owner
-    owner
-  end
-
   def full_hashed_path
     hashed_path || set_repository_hash
-  end
-
-  # Returns a list of users being either the owner (if User) or each admin member (if Group)
-  def owners
-    result = if owned_by_group?
-      owner.members.select do |member|
-        owner.admin?(member)
-      end
-    else
-      [owner]
-    end
-    return result
   end
 
   def set_repository_hash
