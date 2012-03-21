@@ -171,9 +171,21 @@ describe Lab do
       lambda { lab.add_group(lab_group_incorrect_course) }.should raise_error
     end
     
-    it "should have a group" do
-      lab.add_group(Factory.create(:lab_group, given_course: lab.given_course))
-      lab.should have(1).lab_groups
+    describe "check entities after adding group" do
+      before(:each) do
+        lab.add_group(Factory.create(:lab_group, given_course: lab.given_course))
+      end
+      it "should have a group" do
+        lab.should have(1).lab_groups
+      end
+    
+      it "should have a lab_has_group after adding a lab group" do
+        lab.should have(1).lab_has_groups
+      end
+      
+      it "should have a created a repo for the LabHasGroup" do
+        lab.lab_has_groups.first.repository.should_not be_nil
+      end
     end
   end
 end
