@@ -1,2 +1,13 @@
-%h1 Courses#index
-%p Find me in app/views/courses/index.html.haml
+.hero-unit
+  %h1 The courses you are registered for!
+  
+%table
+  %thead
+    %th Course code
+    %th Examiner email
+  %tbody
+    - @courses.each do |course|
+      %tr
+        %td= course.course.course_codes.first.code
+        %td= course.examiners.first.user.email
+  

@@ -21,6 +21,19 @@ class Lab < ActiveRecord::Base
   acts_as_list scope: :given_course, column: :number
 
   default_scope where("labs.active = ?", true)
+  
+  #
+  # Adds a lab-group to the lab
+  # Creates lab_has_group and repository
+  #
+  def add_group(lab_group)
+    @repository = Repository.create!()
+    @lab_has_group = LabHasGroup.create!(
+      lab_group: lab_group, 
+      lab: self, 
+      repository: @repository
+    )
+  end
 
   #
   # Implements #title and #description

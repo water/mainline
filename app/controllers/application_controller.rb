@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   
   after_filter :mark_flash_status
 
-  layout :pick_layout_based_on_site
+  layout "water"
   
   helper_method :repo_owner_path
 
@@ -279,7 +279,7 @@ class ApplicationController < ActionController::Base
       expires_in 30.seconds
     end
   end
-
+  
   #
   # @return [Examiner, Administrator, Student]
   #
@@ -291,6 +291,7 @@ class ApplicationController < ActionController::Base
 
     return role
   end
+  helper_method :current_role
 
   private  
     def unshifted_polymorphic_path(repo, path_spec)

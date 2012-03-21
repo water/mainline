@@ -41,7 +41,7 @@ describe LabHasGroup do
 
     it "should not have more than one lab for each group" do
       group = create(:lab_group)
-      lab = create(:lab)
+      lab = create(:lab, given_course: group.given_course)
       create(:lab_has_group, lab_group: group, lab: lab).should be_valid
       build(:lab_has_group, lab_group: group, lab: lab).should_not be_valid
     end
@@ -50,6 +50,14 @@ describe LabHasGroup do
       r = create(:repository)
       create(:lab_has_group, repository: r).should be_valid
       build(:lab_has_group, repository: r).should_not be_valid
+    end
+    
+    it "should not accept labs and lab groups with conflicting given courses" do
+      given_course_1 = create(:given_course)
+      given_course_2 = create(:given_course)
+      group = create(:lab_group, given_course: given_course_1)
+      lab = create(:lab, given_course: given_course_2)
+      build(:lab_has_group, lab: lab, lab_group: group).should_not be_valid
     end
   end
 

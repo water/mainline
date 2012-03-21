@@ -120,10 +120,10 @@
 
 ## Uploads
 
-### POST /courses/:course_id/uploads
+### GET /courses/:course_id/groups/:group_id/labs/:lab_id/uploads
 
-- Administrator/Examiner
-  - Skapar en uppladdning för en kurs, så att studenter kan ladda upp filer till repos osv
+- Student
+  - Visar uppladdningsformuläret
 
 ## CommitRequests
 

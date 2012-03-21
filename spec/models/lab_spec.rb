@@ -57,12 +57,26 @@ describe Lab do
     end
 
     it "should have a list of lab_has_groups" do
-      create(:lab, lab_has_groups: [create(:lab_has_group)]).should have(1).lab_has_groups
+      gc = create(:given_course)
+      group = create(:lab_group, {
+        given_course: gc
+      })
+
+      lab = create(:lab, {
+        given_course: gc
+      })
+
+      lab.lab_has_groups << create(:lab_has_group, {
+        lab: lab,
+        lab_group: group
+      })
+      
+      lab.should have(1).lab_has_groups
     end
 
     it "should have a list of lab groups" do
       lab = create(:lab)
-      group = create(:lab_group)
+      group = create(:lab_group, given_course: lab.given_course)
       lhg = create(:lab_has_group, lab_group: group, lab: lab)
       lab.should have(1).lab_groups
     end
@@ -144,6 +158,7 @@ describe Lab do
     end
   end
 
+
   describe "dependent destroy" do
     it "should not be possible for a lab_default_dealine to exist without a lab" do
       lab = Factory.create(:lab)
@@ -157,6 +172,38 @@ describe Lab do
       lhg = Factory.create(:lab_has_group, lab: lab)
       lab.destroy
       lambda{lhg.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  
+  describe "add a group" do
+    let(:lab) { create(:lab, active: true) }
+    
+    it "should be able to add a group with the correct given course" do
+      lab_group_correct_course = Factory.create(:lab_group, given_course: lab.given_course)
+      lambda { lab.add_group(lab_group_correct_course) }.should_not raise_error
+    end
+    
+    it "should not be able to add a group with an incorrect given course" do
+      lab_group_incorrect_course = Factory.create(:lab_group)
+      lambda { lab.add_group(lab_group_incorrect_course) }.should raise_error
+    end
+    
+    describe "check entities after adding group" do
+      before(:each) do
+        lab.add_group(Factory.create(:lab_group, given_course: lab.given_course))
+      end
+      it "should have a group" do
+        lab.should have(1).lab_groups
+      end
+    
+      it "should have a lab_has_group after adding a lab group" do
+        lab.should have(1).lab_has_groups
+      end
+      
+      it "should have a created a repo for the LabHasGroup" do
+        lab.lab_has_groups.first.repository.should_not be_nil
+      end
     end
   end
 end

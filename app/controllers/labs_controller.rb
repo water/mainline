@@ -1,14 +1,14 @@
 class LabsController < ApplicationController
   respond_to :html
   before_filter :find_repo, only: [:upload]
-  before_filter :add_paths_to_gon, only: [:upload]
+  before_filter :add_data_to_gon, only: [:upload]
   
   #
   # GET /labs
   # GET /lab_groups/:group_id/labs
   #
   def index
-    if id = params[:group_id]
+    if id = params[:lab_group_id]
       @labs = LabGroup.includes(:labs).find(id).labs
     else
       @labs = current_role.
@@ -20,10 +20,13 @@ class LabsController < ApplicationController
     respond_with(@labs)
   end
   
-  # /lab_groups/:group_id/labs/1
+  # GET /courses/:given_course_id/lab_groups/:lab_group_id/labs/:lab_id
   def show
-    @lab = Lab.find(params[:lab_id])
-    @submissions = @lab.submissions_for_group(params[:group_id])
+    @lab = Lab.find(params[:id])
+    @lab_has_group = @lab.lab_has_groups.where(lab_group_id: params[:lab_group_id]).first
+    @submissions = @lab_has_group.submissions
+    @repository = @lab_has_group.repository
+    add_data_to_gon
     respond_with(@lab)
   end
   
@@ -33,26 +36,29 @@ class LabsController < ApplicationController
 
   def new
   end
-
+  
+  # /lab_groups/:group_id/labs/1/join
   def join
     @group = LabGroup.find(params[:group_id])
-    @repository = Repository.new(:user_id => current_user, :name => "test", :owner_id => "123")
-    @labhasgroup = LabHasGroup.new(:lab_group_id => @group, 
-    :lab_id => params[:lab_id], :repository => @repository_id)
+    @lab = Lab.find(params[:lab_id])
+    @lab.add_group(@lab)
     respond_with(@lab)
   end
 
   def create
   end
   
+  # /courses/:course_id/labs/1/uploads
   def upload
+    
   end
   
   protected
-  def find_repo
-    @repository = Repository.find_by_user_and_lab(current_user, params[:lab_id])
-  end
-  def add_paths_to_gon
+  
+  #
+  # Adds data to the gon-object, which is accessible through javascript in the client
+  # 
+  def add_data_to_gon
     gon.commit_request_path = repository_commit_requests_path(@repository.id)
     # TODO Make this nicer!
     gon.tree_root_path = repository_tree_path(@repository, "master", bare: 1)
