@@ -44,5 +44,20 @@ describe LabGroup do
 
       list2.should eq(list1)
     end
+
+    it "should connect each lab for a given course to a group" do
+      gc = create(:given_course)
+      2.times do
+        create(:active_lab, {
+          given_course: gc
+        })
+      end
+
+      group = create(:lab_group, {
+        given_course: gc,
+      })
+
+      group.should have_at_least(2).labs
+    end
   end
 end

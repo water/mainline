@@ -86,12 +86,37 @@ describe Student do
     end
 
     it "should raise RecordNotFound if student isnt registered to course" do
-
       lambda {
         student.register!({
           group: create(:lab_group)
         })
       }.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "should have a list of labs" do
+      gc = create(:given_course)
+      3.times do
+        create(:active_lab, {
+          given_course: gc
+        })
+      end
+
+      group = create(:lab_group, {
+        given_course: gc
+      })
+
+      # Register student to course
+      student.register!({
+        course: gc
+      })
+
+      # Register student to lab group
+      student.register!({
+        group: group
+      })
+
+      student.should have(1).lab_groups
+      student.should have(3).labs
     end
   end
 end
