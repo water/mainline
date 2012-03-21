@@ -23,8 +23,10 @@ Gitorious::Application.routes.draw do
   # /courses/2/labs/3 # <= Shows all submissions for particular lab?
   resources :courses do
     post "/courses/:course_id/upload" => "uploads#upload"
-    resources :labs, only: [:index, :show] do
-      get "uploads" => "labs#uploads"
+    resources :lab_groups do
+      resources :labs, only: [:index, :show] do
+        get "uploads" => "labs#uploads"
+      end
     end
   end
   resources :submissions, only: [:index, :show, :create, :new]
