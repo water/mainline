@@ -1,7 +1,7 @@
 class LabsController < ApplicationController
   respond_to :html
   before_filter :find_repo, only: [:upload]
-  before_filter :add_paths_to_gon, only: [:upload]
+  before_filter :add_data_to_gon, only: [:upload]
   
   #
   # GET /labs
@@ -26,7 +26,7 @@ class LabsController < ApplicationController
     @lab_has_group = @lab.lab_has_groups.where(lab_group_id: params[:lab_group_id]).first
     @submissions = @lab_has_group.submissions
     @repository = @lab_has_group.repository
-    add_paths_to_gon
+    add_data_to_gon
     respond_with(@lab)
   end
   
@@ -55,7 +55,10 @@ class LabsController < ApplicationController
   
   protected
   
-  def add_paths_to_gon
+  #
+  # Adds data to the gon-object, which is accessible through javascript in the client
+  # 
+  def add_data_to_gon
     gon.commit_request_path = repository_commit_requests_path(@repository.id)
     # TODO Make this nicer!
     gon.tree_root_path = repository_tree_path(@repository, "master", bare: 1)
