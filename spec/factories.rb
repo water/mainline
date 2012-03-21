@@ -35,16 +35,25 @@ FactoryGirl.define do
   factory :lab_has_group do
     repository
     lab do |lhg| 
-      c = lhg.lab_group.try(:given_course) || Factory.create(:given_course)
+      if lab_group_id = lhg.attributes["lab_group_id"]
+        gc = LabGroup.find_by_id(lab_group_id).try(:given_course)
+      end
+
+      gc ||= Factory.create(:given_course)
+
       Factory.create(:active_lab, {
-        given_course: c
+        given_course: gc
       })
     end
 
     lab_group do |lhg|
-      c = lhg.lab.try(:given_course) || Factory.create(:given_course)
+      if lab_id = lhg.attributes["lab_id"]
+        gc = Lab.find_by_id(lab_id).try(:given_course)
+      end
+
+      gc ||= Factory.create(:given_course)
       Factory.create(:lab_group, {
-        given_course: c
+        given_course: gc
       })
     end
   end
