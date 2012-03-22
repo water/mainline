@@ -37,6 +37,15 @@ describe CommitRequest do
         cr.errors.should_not be_empty
       end
 
+      it "should fail with an invalid filename" do
+           @value[:command] = "add"
+           @value[:files] = [
+            {id: 123, to: "src/main\0.cpp"},
+            {id: 124, to: "src/lib<hej>.h"},
+            {id: 125, to: "src/lib|?.cpp"}
+           ]
+      end
+
       it "should fail with an invalid command" do
         @value[:command] = "fiskpinne"
       end

@@ -8,7 +8,7 @@ class CommitRequest
   validates_presence_of :user, :command, :repository, :branch, :commit_message
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
-  validate :existence_of_user, :existence_of_repository, :commit_access , :correct_branch
+  validate :existence_of_user, :existence_of_repository, :commit_access , :correct_branch, :path_names
 
   publishes_to :commit
 
@@ -94,7 +94,16 @@ class CommitRequest
       send!
   end
 
-private 
+private
+  def path_names
+    if @command == 'add'
+        @files.each { |file|
+          if not (file[:to] =~ /[\\\0:<>"|?*"]/ ).nil?
+              errors[:files] << "Invalid filename"
+          end
+        }
+    end
+  end
   def existence_of_user
     unless User.exists?(user)
       errors[:user] << "does not exist"
