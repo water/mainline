@@ -6,7 +6,8 @@ class CommitRequestsController < ApplicationController
   end
 
   def create
-    @commit_request = CommitRequest.new(params[:commit_request].merge({
+    request = ActiveSupport::JSON.decode(params[:commit_request])
+    @commit_request = CommitRequest.new(request.merge({
       repository: params[:repository_id]
     }))
     
