@@ -49,10 +49,6 @@ class Repository < ActiveRecord::Base
     new(:parent => other,  :name => suggested_name)
   end
 
-  def self.find_by_name_in_project!(name)
-      find_by_name!(name)
-  end
-
   def self.find_by_path(path)
     base_path = path.gsub(/^#{Regexp.escape(GitoriousConfig['repository_base_path'])}/, "")
     path_components = base_path.split("/").reject{|p| p.blank? }
@@ -220,7 +216,6 @@ class Repository < ActiveRecord::Base
     admin?(candidate)
   end
 
-
   def post_repo_creation_message
     options = {:target_class => self.class.name, :target_id => self.id}
     options[:command] = parent ? 'clone_git_repository' : 'create_git_repository'
@@ -368,41 +363,8 @@ class Repository < ActiveRecord::Base
     committers.include?(a_user)
   end
 
-  def owned_by_group?
-    owner === Group
-  end
-
-  def breadcrumb_parent
-    owner
-  end
-
-  def title
-    name
-  end
-
-  def owner_title
-    owner.title
-  end
-
-  # returns the project if it's a KIND_PROJECT_REPO, otherwise the owner
-  def project_or_owner
-    owner
-  end
-
   def full_hashed_path
     hashed_path || set_repository_hash
-  end
-
-  # Returns a list of users being either the owner (if User) or each admin member (if Group)
-  def owners
-    result = if owned_by_group?
-      owner.members.select do |member|
-        owner.admin?(member)
-      end
-    else
-      [owner]
-    end
-    return result
   end
 
   def set_repository_hash
@@ -478,7 +440,6 @@ class Repository < ActiveRecord::Base
   def matches_regexp?(term)
     return user.login =~ term ||
       name =~ term ||
-      (owned_by_group? ? owner.name =~ term : false) ||
       description =~ term
   end
 
