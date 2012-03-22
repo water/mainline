@@ -64,27 +64,45 @@ $ ->
           commit_request.commit_request_failed
     )
   
+  
+  fileupload = $("#fileupload")
   #
   # Bind to the submit event of the uploads plugin
   # Add the files to the commit_request pending array
   # Get identifying hashes for the files
   # and send them with the upload request
   #
-  $("#fileupload").bind("fileuploadsubmit", (e, data) => 
+  fileupload.bind("fileuploadsubmit", (e, data) => 
     hashes = (commit_request.addFile(file.fileName) for file in data.files)
     data.formData = {hashes: JSON.stringify(hashes)}
   )
   
   #
   # Bind to the done event of the uploads plugin
-  # 
+  # Notify commit request of success
   #
-  $("#fileupload").bind("fileuploaddone", (e, data) =>
+  fileupload.bind("fileuploaddone", (e, data) =>
     response  = data.result
     commit_request.uploadSuccessful({id: result.id, hash: result.clientside_hash}) for result in response
-  )
+    )
   
+  #
+  # Bind to the fail event of the uploads plugin
+  # Notify commit_request of failure
+  #
+  fileupload.bind("fileuploadfail", (e, data) =>
+    
+    )
   # Fetch the root tree view
   controller.trigger("root")
   
+  $("#scroll_to_uploads").on("click", (event) -> 
+    event.preventDefault()
+    $.scrollTo("#fileupload", 500, easing: "easeInOutSine")
+    )
+    
+  #
+  # Append the CR loading dialog to the document body
+  #
   $("body").append(JST['backbone/templates/commit_request_loading_template'])
+  

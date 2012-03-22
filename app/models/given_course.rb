@@ -14,4 +14,8 @@ class GivenCourse < ActiveRecord::Base
   has_many :labs
 
   validates_presence_of :course, :examiners, :study_period
+  
+  def register_student(student)
+    StudentRegisteredForCourse.create!(student: student, given_course: self)
+  end
 end
