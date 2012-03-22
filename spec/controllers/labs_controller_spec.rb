@@ -9,16 +9,46 @@ describe LabsController do
       post :join, lab_group: group.id, lab_id: lab.id
     end
   end
+  
+  describe "GET /show" do
+    describe "student" do
+      let(:student) { Factory.create(:student) }
+      
+      it "has breadcrumbs" do
+        given_course = Factory.create(:given_course)
+        srfc = Factory.create(:student_registered_for_course, {
+          student: student,
+          given_course: given_course
+        })
+
+        lab = Factory.create(:active_lab, given_course: given_course)
+        group = Factory.create(:lab_group, given_course: given_course)
+
+        Factory.create(:lab_has_group, {
+          lab: lab,
+          lab_group: group, 
+          grade: nil
+        })
+
+        login_as(student)
+        visit '/lab_groups/' + group.id.to_s + '/labs/' + lab.id.to_s
+        page.should have_selector('div.breadcrumbs')
+      end
+    
+      it "doesn't crash" do
+        login_as(student)
+        page.status_code.should eq(200)
+      end
+    end
+  end
 
   describe "GET /labs" do
     describe "student" do
       let(:student) { Factory.create(:student) }
-
+      
       it "should return all non finished labs" do
         login_as(student)
-        
         given_course = Factory.create(:given_course)
-
         srfc = Factory.create(:student_registered_for_course, {
           student: student,
           given_course: given_course
