@@ -72,6 +72,11 @@ class CommitRequest
   #
   def save
     return false unless valid?
+    if @command == 'add'
+      @files.each{ |file|
+        file[:data] = open(APP_CONFIG['tmp_upload_directory'] + file[:id], "rb") { |io| io.read }
+      }
+    end
     publish :commit, (@options || {}).merge({
       callback: {
         class: "CommitRequest",
