@@ -61,12 +61,23 @@ $ ->
     )
   
   #
-  # Debug
+  # Bind to the submit event of the uploads plugin
+  # Add the files to the commit_request pending array
+  # Get identifying hashes for the files
+  # and send them with the upload request
   #
-  $("#fileupload").bind("fileuploadsend", (e, data) => 
-    console.log("data.files is: ", data.files)
-    data.files = ({index: file} for file, index in (data.files))
-    console.log("And now it is: ", data.files))
+  $("#fileupload").bind("fileuploadsubmit", (e, data) => 
+    hashes = (commit_request.addFile(file.fileName) for file in data.files)
+    data.formData = {hashes: JSON.stringify(hashes)}
+  )
+  
+  #
+  # Bind to the done event of the uploads plugin
+  # 
+  #
+  $("#fileupload").bind("fileuploaddone", (e, data) =>
+    
+  )
   
   # Fetch the root tree view
   controller.trigger("root")
