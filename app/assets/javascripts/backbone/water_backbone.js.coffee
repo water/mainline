@@ -96,6 +96,11 @@ $ ->
   # Fetch the root tree view
   controller.trigger("root")
   
+  $("#scroll_to_uploads").on("click", (event) -> 
+    event.preventDefault()
+    $.scrollTo("#fileupload", 500, easing: "easeInOutSine")
+    )
+    
   #
   # Append the CR loading dialog to the document body
   #
