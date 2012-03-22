@@ -1,2 +1,15 @@
-%h1 LabGroups#show
-%p Find me in app/views/lab_groups/show.html.haml
+.hero-unit
+  %h1
+    Group
+    = @lab_group.number
+  %p
+    A list of your labs for this course
+
+
+%table
+  %thead
+    %th Lab title
+  %tbody
+    - @labs.each do |lab|
+      %tr
+        %td= lab.title
