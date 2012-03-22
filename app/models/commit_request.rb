@@ -59,7 +59,11 @@ class CommitRequest
   # @return String Commit message provided by frontend
   #
   def commit_message
-    @commit_message || "WebCommit: #{@command}"
+    if (defined?(@commit_message)).nil?
+        @commit_message = "WebCommit: #{$command}"
+    else
+        @commit_message = @commit_message.length < 5 || @commit_message.length > 96 ? "WebCommit: #{@command}" : @commit_message
+    end
   end
 
   #

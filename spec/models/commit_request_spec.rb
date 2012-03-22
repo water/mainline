@@ -95,10 +95,24 @@ describe CommitRequest do
   end
 
   describe "commit_message generation" do
-    it "should not generate a commit_message" do
+    it "should overwrite the commit_message for being to short" do
       @value[:commit_message] = "CM"
       cr = CommitRequest.new(@value)
-      cr.commit_message.should == "CM"
+      cr.commit_message[0,10].should == "WebCommit:"
+    end
+
+    it "should overwrite the commit_message for being to long" do
+      @value[:commit_message] = "This is a long commit_message,
+      in fact it is to long for the commit_request model to validate.
+      This will cause the model to overwrite it with a default commitmessage"
+      cr = CommitRequest.new(@value)
+      cr.commit_message[0,10].should == "WebCommit:"
+    end
+
+    it "should not generate a commit_message" do
+      @value[:commit_message] = "A Commit Message"
+      cr = CommitRequest.new(@value)
+      cr.commit_message.should == "A Commit Message"
     end
 
     it "should generate a commit_message" do
