@@ -48,7 +48,7 @@ class Water.CommitRequest extends Backbone.Model
     @trigger("sending_commit_request")
     $.ajax gon.commit_request_path, 
       type: "POST"
-      data: commit_request: request
+      data: commit_request: JSON.stringify(request)
       success: (data) => @success(data)
       error: (jqXHR, textStatus, errorThrown) => 
         console.log("Error: ", jqXHR, textStatus, errorThrown)
