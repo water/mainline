@@ -14,11 +14,12 @@ class Water.CommitRequest extends Backbone.Model
 
   # Triggered when (and only when) an upload was successful. 
   # Removes the file from @pendingFiles and adds it to @processedFiles.
-  uploadSuccessful: (filename, id, hash) => 
+  uploadSuccessful: (options) => 
     for pendingFile in @pendingFiles
-      if pendingFile.clientside_hash is hash
-        @processedfiles.push(id: id, to: @breadcrumbs.path + "/" + pendingFile.filename)
-    @pendingFiles = (pendingFile for pendingFile in @pendingFiles when pendingFile.clientside_hash isnt hash)
+      if pendingFile.clientside_hash is options.hash
+        @processedfiles.push(id: options.id, to: @breadcrumbs.path + "/" + pendingFile.filename)
+    @pendingFiles = 
+      (pendingFile for pendingFile in @pendingFiles when pendingFile.clientside_hash isnt options.hash)
     console.log("CommitRequest says: files: ", @pendingFiles)
     @checkStatus()
     
@@ -49,6 +50,8 @@ class Water.CommitRequest extends Backbone.Model
       type: "POST"
       data: commit_request: request
       success: (data) => @success(data)
+      error: (jqXHR, textStatus, errorThrown) => 
+        console.log("Error: ", jqXHR, textStatus, errorThrown)
       
   # Triggered when the commit request has been received.
   # TODO: handle errors
