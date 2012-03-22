@@ -31,17 +31,21 @@ $ ->
   # Setup ui-locking when committing
   #
   commit_request.on("sending_commit_request", 
-    () -> $("#fileupload").fileupload('disable')
-    dialog = $("#commit_dialog")
-    dialog.modal('show')
-    dialog.bind('shown', () -> $(".indicator").activity())
+    () -> 
+      $("#fileupload").fileupload('disable')
+      dialog = $("#commit_dialog")
+      dialog.modal('show')
+      dialog.bind('shown', () -> $(".indicator").activity())
   )
   
   #
   # Release UI lock after commit is cleared
   #
   commit_request.on("commit_request_done", 
-    () -> $("#fileupload").fileupload('enable'))
+    () -> 
+      $("#fileupload").fileupload('enable')
+      $("#commit_dialog").modal('hide')
+  )
   
   #
   # Setup Faye
@@ -76,7 +80,8 @@ $ ->
   # 
   #
   $("#fileupload").bind("fileuploaddone", (e, data) =>
-    
+    response  = data.result
+    commit_request.uploadSuccessful({id: result.id, hash: result.clientside_hash}) for result in response
   )
   
   # Fetch the root tree view
