@@ -8,7 +8,7 @@ class CommitRequest
   validates_presence_of :user, :command, :repository, :branch, :commit_message
   validates_numericality_of :user, :repository
   validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
-  validate :existence_of_user, :existence_of_repository, :commit_access
+  validate :existence_of_user, :existence_of_repository, :commit_access , :correct_branch
 
   publishes_to :commit
 
@@ -103,6 +103,13 @@ private
     end
   end
 
+  def correct_branch
+      unless branch == APP_CONFIG['default_branch']
+      errors[:correct_branch] << %q{
+        Permission denied, invalid branch
+      }
+    end
+  end
   def commit_access
     unless user_can_commit?
       errors[:user_can_commit] << %q{

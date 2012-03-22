@@ -41,6 +41,10 @@ describe CommitRequest do
         @value[:command] = "fiskpinne"
       end
 
+      it "should fail with an invalid branch" do
+        @value[:branch] = "fiskpinne"
+      end
+
       it "should fail with an invalid user" do
         @value[:user] = 456 #random number
       end 
