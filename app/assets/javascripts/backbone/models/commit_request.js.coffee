@@ -6,27 +6,29 @@ class Water.CommitRequest extends Backbone.Model
     @breadcrumbs = @get("breadcrumbs")
   
   # Triggered when an upload is started, saves the filename and the target path for future reference
+  # Returns a hash to identify the file
   addFile: (filename) =>
-    @pendingFiles.push(filename: filename, path: @breadcrumbs.path)
-    console.log("CommitRequest says: files: ", @pendingFiles)
-  
+    clientside_hash = (filename + (new Date()).toString()).hashCode()
+    @pendingFiles.push(filename: filename, path: @breadcrumbs.path, clientside_hash: clientside_hash)
+    return clientside_hash
+
   # Triggered when (and only when) an upload was successful. 
   # Removes the file from @pendingFiles and adds it to @processedFiles.
-  uploadSuccessful: (filename, id) => 
+  uploadSuccessful: (filename, id, hash) => 
     for pendingFile in @pendingFiles
-      if pendingFile.filename is filename
+      if pendingFile.clientside_hash is hash
         @processedfiles.push(id: id, to: @breadcrumbs.path + "/" + pendingFile.filename)
-    @pendingFiles = (pendingFile for pendingFile in @pendingFiles when pendingFile.filename isnt filename)
+    @pendingFiles = (pendingFile for pendingFile in @pendingFiles when pendingFile.clientside_hash isnt hash)
     console.log("CommitRequest says: files: ", @pendingFiles)
     @checkStatus()
     
   # Triggered when an upload is completed with an error. 
   # TODO: do something useful with the information  
-  errorForFile: (filename, error) =>
+  errorForFile: (hash, error) =>
     for pendingFile in @pendingFiles
-      if pendingFile.filename is filename
-        @errorFiles.push(id: id, filename: filename)
-    @pendingFiles = (pendingFile for pendingFile in @pendingFiles when pendingFile.filename isnt filename)
+      if pendingFile.clientside_hash is filename
+        @errorFiles.push(filename: filename)
+    @pendingFiles = (pendingFile for pendingFile in @pendingFiles when pendingFile.clientside_hash isnt hash)
     @checkStatus()
   
   # Checks whether all @pendingFiles have been processed.
