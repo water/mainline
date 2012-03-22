@@ -21,13 +21,13 @@
 // ###################### HEADER ENDS ########################
 
 .hero-unit
-  %h1 Submission
+  %h1= @lab.title
   %p 
-    Before you submit your submission you upload files to it.
+    This is the current state of your lab
     %br
     Upload files to specific folders by navigating to them in the tree view.
     %br
-    When you are satisfied with the submission, push the submit button to submit it.
+    When you are satisfied with the submission, click the submit button to submit it.
   %p
     %a.btn.btn-primary.btn-large#scroll_to_uploads{href: "#"}
       Upload files
