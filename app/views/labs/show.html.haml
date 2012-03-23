@@ -32,9 +32,19 @@
     %a.btn.btn-primary.btn-large#scroll_to_uploads{href: "#"}
       Upload files
 
+.well
+  %h1
+    Submissions
 
-.breadcrumbs
-#spine
-.breadcrumbs
+.well
+  %h1 Current state of the lab
+  %br
+  .breadcrumbs
+  #spine
+  .breadcrumbs
+.well
+  =render "upload"
 
-=render "upload"
+.btn.btn-large.btn-danger
+  %h1
+    Submit!
