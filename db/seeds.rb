@@ -4,6 +4,11 @@ require "factory_girl"
 require "yaml"
 require "rspec"
 
+#
+# Urls that works
+# http://localhost:3000/student/courses/1/lab_groups/3/labs/1
+#
+
 if ENV["CLEAR"]
   puts "Are you sure you want to wipe the entire database? [y|n]".red
   abort("Abort") unless $stdin.gets =~ /y/
