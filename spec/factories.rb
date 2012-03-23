@@ -34,25 +34,23 @@ FactoryGirl.define do
 
   factory :lab_has_group do
     repository
-    lab do |lhg| 
-      if lab_group_id = lhg.attributes["lab_group_id"]
-        gc = LabGroup.find_by_id(lab_group_id).try(:given_course)
+
+    after_build do |lhg|
+      if lab_group = lhg.lab_group
+        gc ||= lab_group.try(:given_course)
+      end
+
+      if lab = lhg.lab
+        gc ||= lab.try(:given_course)
       end
 
       gc ||= Factory.create(:given_course)
 
-      Factory.create(:active_lab, {
+      lhg.lab ||= Factory.create(:active_lab, {
         given_course: gc
       })
-    end
 
-    lab_group do |lhg|
-      if lab_id = lhg.attributes["lab_id"]
-        gc = Lab.find_by_id(lab_id).try(:given_course)
-      end
-
-      gc ||= Factory.create(:given_course)
-      Factory.create(:lab_group, {
+      lhg.lab_group  ||= Factory.create(:lab_group, {
         given_course: gc
       })
     end
@@ -88,10 +86,9 @@ FactoryGirl.define do
   factory :submission do
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
     lab_has_group
-    repository
   end
 
-   factory :repository do
+  factory :repository do
     sequence(:name) { |i| "repo_#{i}" }
     user
     owner { user }

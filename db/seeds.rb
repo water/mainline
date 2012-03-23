@@ -4,6 +4,11 @@ require "factory_girl"
 require "yaml"
 require "rspec"
 
+#
+# Urls that works
+# http://localhost:3000/student/courses/1/lab_groups/3/labs/1
+#
+
 if ENV["CLEAR"]
   puts "Are you sure you want to wipe the entire database? [y|n]".red
   abort("Abort") unless $stdin.gets =~ /y/
@@ -73,14 +78,28 @@ ld = Factory(:lab_description, {
   title: "My title"
 })
 
+
+#### GivenCourse
+given_course = Factory.create(:given_course, {
+  course: course, 
+  examiners: [examiner],
+  assistants: [assistant],
+  students: [student],
+  study_period: study_period
+})
+
 #### Lab
 labs << Factory.create(:lab, {
   active: true,
   initial_lab_commit: ilc,
-  lab_description: ld
+  lab_description: ld,
+  given_course: given_course
 })
 
-labs << Factory.create(:lab, active: false)
+labs << Factory.create(:lab, {
+  active: false,
+  given_course: given_course
+})
 
 ### DefaultDeadline
 labs.each_with_index do |lab, i|
@@ -91,7 +110,9 @@ labs.each_with_index do |lab, i|
 end
 
 #### LabGroup
-lab_group = Factory.create(:lab_group)
+lab_group = Factory.create(:lab_group, {
+  given_course: given_course
+})
 
 #### LabHasGroup
 labs.each_with_index do |lab, index|
@@ -115,14 +136,3 @@ labs.each_with_index do |lab, i|
     at: ((i + 1) * 5).days.from_now
   })
 end
-
-#### GivenCourse
-given_course = Factory.create(:given_course, {
-  course: course, 
-  examiners: [examiner],
-  assistants: [assistant],
-  students: [student],
-  lab_groups: [lab_group],
-  labs: labs,
-  study_period: study_period
-})
