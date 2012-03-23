@@ -88,7 +88,7 @@ FactoryGirl.define do
     lab_has_group
   end
 
-   factory :repository do
+  factory :repository do
     sequence(:name) { |i| "repo_#{i}" }
     user
     owner { user }
