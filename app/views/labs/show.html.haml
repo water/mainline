@@ -35,6 +35,22 @@
 .well
   %h1
     Submissions
+  %table.table
+    %thead
+      %th
+        Submissions commit hash
+      %th
+        Submission time
+      %th
+        Status
+    - @lab.submissions.each do |submission|
+      %tr
+        %td
+          = submission.commit_hash
+        %td
+          = submission.created_at
+        %td
+          No status in model
 
 .well
   %h1 Current state of the lab
@@ -47,4 +63,4 @@
 
 .btn.btn-large.btn-danger
   %h1
-    Submit!
+    =link_to "Submit!", course_lab_group_lab_submissions_path(current_role.class.name.downcase, @course_id, @lab_group_id, @lab), method: :post
