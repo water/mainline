@@ -3,10 +3,12 @@ describe LabsController do
   describe "POST join" do
     it "should test join action" do
       student = Factory.create(:student)
-      group = Factory.create(:lab_group)
-      lab = Factory.create(:lab)
-      labhasgroup = Factory.create(:lab_has_group)
-      post :join, lab_group: group.id, lab_id: lab.id
+      course = Factory.create(:given_course)
+      group = Factory.create(:lab_group, given_course: course)
+      lab = Factory.create(:lab, given_course: course, active: true)
+      login_as(student)
+      post :join, lab_group_id: group.id, lab_id: lab.id
+      response.status.should eq(302)
     end
   end
   

@@ -86,10 +86,9 @@ FactoryGirl.define do
   factory :submission do
     commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
     lab_has_group
-    repository
   end
 
-   factory :repository do
+  factory :repository do
     sequence(:name) { |i| "repo_#{i}" }
     user
     owner { user }
