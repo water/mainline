@@ -20,12 +20,24 @@ class LabsController < ApplicationController
     respond_with(@labs)
   end
   
+  #
   # GET /courses/:given_course_id/lab_groups/:lab_group_id/labs/:lab_id
+  #
   def show
-    @lab = Lab.find(params[:id])
-    @lab_has_group = @lab.lab_has_groups.where(lab_group_id: params[:lab_group_id]).first
-    @submissions = @lab_has_group.submissions
-    @repository = @lab_has_group.repository
+    # Logic should be moved into the lab model
+    @lab = Lab.
+      includes(:submissions, {
+        lab_groups: { 
+          lab_has_groups: :repository 
+        }
+      }).
+      where({
+        lab_groups: { id: params[:lab_group_id] }
+      }).
+      find(params[:id])
+
+    @repository = @lab.lab_has_groups.first.repository
+
     add_data_to_gon
     respond_with(@lab)
   end
