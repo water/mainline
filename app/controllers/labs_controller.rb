@@ -51,10 +51,10 @@ class LabsController < ApplicationController
   
   # /lab_groups/:group_id/labs/1/join
   def join
-    @group = LabGroup.find(params[:group_id])
+    @group = LabGroup.find(params[:lab_group_id])
     @lab = Lab.find(params[:lab_id])
-    @lab.add_group(@lab)
-    respond_with(@lab)
+    @lab.add_group(@group)
+    respond_with(@group)
   end
 
   def create
