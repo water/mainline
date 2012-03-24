@@ -18,12 +18,12 @@ class Submission < ActiveRecord::Base
   #
   # @arg options, a hash containing options you would normally pass to #create!
   #
-  def self.create_from_latest_commit!(args)
+  def self.create_at_latest_commit!(args)
     if lhg = args[:lab_has_group]
-      args[:commit_hash] ||= lhg.repository.head_candidate.commit
+      args[:commit_hash] = lhg.repository.head_candidate.commit
       Submission.create!(args)
     else
-      raise(ArgumentException, "No LabHasGroup was provided.")
+      raise ArgumentError.new("No LabHasGroup was provided.")
     end
   end
   
