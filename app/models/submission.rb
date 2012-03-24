@@ -9,14 +9,24 @@ class Submission < ActiveRecord::Base
   validate :lab_access
   validate :commit_hash_exists
 
-  before_validation :fetch_commit, :if=>lambda {|a| a.commit_hash.nil?}
-
   alias_method :repo, :repository
-
-  def fetch_commit
-    @temp = lab_has_group.repository.head_candidate.commit
-    define_singleton_method(:commit_hash) { @temp } # FIXME: fulhack :)
+  
+  #
+  # Looks for a LabHasGroup
+  # Fetches the latest commit for the repo connectet to the LabHasGroup
+  # Creates a submission with the commit hash
+  #
+  # @arg options, a hash containing options you would normally pass to #create!
+  #
+  def self.create_from_latest_commit!(args)
+    if lhg = args[:lab_has_group]
+      args[:commit_hash] ||= lhg.repository.head_candidate.commit
+      Submission.create!(args)
+    else
+      raise(ArgumentException, "No LabHasGroup was provided.")
+    end
   end
+  
 
   private
     def lab_access
