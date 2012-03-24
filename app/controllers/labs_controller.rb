@@ -9,7 +9,8 @@ class LabsController < ApplicationController
   #
   def index
     if id = params[:lab_group_id]
-      @labs = LabGroup.includes(:labs).find(id).labs
+      @lab_group = LabGroup.includes(:labs).find(id)
+      @labs = @lab_group.labs
     else
       @labs = current_role.
         labs.
