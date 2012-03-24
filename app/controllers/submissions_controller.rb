@@ -8,9 +8,12 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-    lab_group = LabGroup.find(params[:lab_group_id])
-    lhg = lab_group.lab_has_groups.where(lab_id: params[:lab_id]).first
-    if Submission.create!(lab_has_group: lhg)
+    lhg = LabHasGroup.where(
+      lab_id: params[:lab_id], 
+      lab_group_id: params[:lab_group_id])
+      .includes(:repository)
+      .first
+    if Submission.create_from_latest_commit!(lab_has_group: lhg)
       flash[:notice] = "Submission successful"
     else
       flash[:error] = "Submissions failed"

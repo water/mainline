@@ -24,23 +24,16 @@ describe Submission do
   end
 
   describe "automatic commit_hash" do
-    it "does not crash without lab_has_group" do
-      lambda {
-        Submission.new
-      }.should_not raise_error
+    before(:each) do
+      @repo = create(:repo_with_data)
+      @lhg = create(:lab_has_group, repository: @repo)
     end
-
+    it "should fail if no LabHasGroup is given" do
+      lambda { s = Submission.create_at_latest_commit!(nil) }.should raise_error
+    end
     it "should fetch latest commit" do
-      repo = create(:repo_with_data)
-      s = create(:submission, repository: repo, commit_hash: nil)
-      s.commit_hash.should == repo.head_candidate.commit
-    end
-
-    it "should not fetch commit when provided one" do
-      h = "abcdabcdabcdabcdabcdabcdabcdabcdabcdabcd"
-      repo = create(:repo_with_data)
-      s = create(:submission, repository: repo, commit_hash: h)
-      s.commit_hash.should == h
+      s = Submission.create_at_latest_commit!(lab_has_group: @lhg)
+      s.commit_hash.should equal(@repo.head_candidate.commit)
     end
   end
 
