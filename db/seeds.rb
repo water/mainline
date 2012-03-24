@@ -78,7 +78,6 @@ ld = Factory(:lab_description, {
   title: "My title"
 })
 
-
 #### GivenCourse
 given_course = Factory.create(:given_course, {
   course: course, 
