@@ -23,7 +23,7 @@ describe Course do
     it "should have a list of course codes" do
       Course.create!({
         course_codes_attributes: [{ code: "TDA123" }],
-        department_attributes: { name: "IT" }
+        department_attributes: { name: "IT 2" }
       }).should_not be_nil
 
       CourseCode.find_by_code("TDA123").should_not be_nil
