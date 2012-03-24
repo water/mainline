@@ -28,4 +28,13 @@ class LabGroupsController < ApplicationController
       redirect_to root_path
     end
   end
+
+  def join
+    @lab_group = LabGroup.find(params[:id])
+    student = Student.find(params[:user_id])
+
+    @lab_group.add_student(student)
+    redirect_to root_path
+
+  end
 end
