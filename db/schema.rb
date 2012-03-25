@@ -482,7 +482,6 @@ ActiveRecord::Schema.define(:version => 20120325101212) do
 
   add_index "repositories", ["hashed_path"], :name => "index_repositories_on_hashed_path", :unique => true
   add_index "repositories", ["kind"], :name => "index_repositories_on_kind"
-  add_index "repositories", ["owner_type"], :name => "index_repositories_on_owner_type_and_owner_id"
   add_index "repositories", ["parent_id"], :name => "index_repositories_on_parent_id"
   add_index "repositories", ["project_id", "kind"], :name => "index_repositories_on_project_id_and_kind"
   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id"
