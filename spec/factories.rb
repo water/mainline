@@ -32,7 +32,7 @@ FactoryGirl.define do
     user
   end
 
-  factory :lab_has_group do
+  factory :lab_has_group do    
     repository
 
     after_build do |lhg|
@@ -84,7 +84,7 @@ FactoryGirl.define do
   end
 
   factory :submission do
-    commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
+    commit_hash "6707a957d6ebe1b3df580343b9d57cc3c758cc9e"
     lab_has_group
   end
 

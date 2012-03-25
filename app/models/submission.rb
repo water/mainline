@@ -7,16 +7,11 @@ class Submission < ActiveRecord::Base
   validates_format_of :commit_hash, with: /^[a-f0-9]{40}$/
   validates_presence_of :commit_hash, :lab_has_group
   validate :lab_access
-  validate :commit_hash_exists
+  validate :existence_of_commit_hash
 
   before_validation :fetch_commit, :if=>lambda {|a| a.commit_hash.nil?}
 
   alias_method :repo, :repository
-
-  def fetch_commit
-    @temp = lab_has_group.repository.head_candidate.commit
-    define_singleton_method(:commit_hash) { @temp } # FIXME: fulhack :)
-  end
 
   private
     def lab_access
@@ -25,7 +20,17 @@ class Submission < ActiveRecord::Base
       end
     end
 
-    def commit_hash_exists
-      # TODO: define
+    def fetch_commit
+      @temp = lab_has_group.repository.head_candidate.commit
+      define_singleton_method(:commit_hash) { @temp } # FIXME: fulhack :)
+    end
+
+    def existence_of_commit_hash
+      path = lab_has_group.repository.try(:full_repository_path)
+      Dir.chdir(path) do
+        unless system "git rev-list HEAD..#{commit_hash}"
+          errors[:commit_hash] << "does not exist"
+        end
+      end if File.exists?(path)
     end
 end
