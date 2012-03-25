@@ -33,6 +33,18 @@ describe Submission do
       create(:submission).repository.should_not be_nil
     end
 
+    it "should be possible to manualy set #repository" do
+      repository = create(:repo_with_data)
+
+      lhg = create(:lab_has_group, {
+        repository: repository
+      })
+
+      build(:submission, {
+        lab_has_group: lhg
+      }).repository.should_not be_nil
+    end
+
     it "should only be valid if #lab is active" do
       build(:submission, lab: build(:lab, active: false)).should_not be_valid
     end

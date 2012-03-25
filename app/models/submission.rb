@@ -25,14 +25,14 @@ class Submission < ActiveRecord::Base
     # Use last commit from {repository} as {commit_hash}
     #
     def fetch_commit
-      self.commit_hash ||= lab_has_group.repository.head_candidate.commit
+      self.commit_hash ||= repository.try(:head_candidate).try(:commit)
     end
 
     #
     # Does the given commit {commit_hash} exist?
     #
     def existence_of_commit_hash
-      path = lab_has_group.repository.try(:full_repository_path)
+      path = repository.try(:full_repository_path)
       Dir.chdir(path) do
         unless system "git rev-list HEAD..#{commit_hash}"
           errors[:commit_hash] << "does not exist"
