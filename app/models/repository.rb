@@ -6,12 +6,9 @@ class Repository < ActiveRecord::Base
 
   NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
 
-  belongs_to  :user
-  belongs_to  :owner, :polymorphic => true
   has_many    :committerships, :dependent => :destroy
   belongs_to  :parent, :class_name => "Repository"
-  has_many    :clones, :class_name => "Repository", :foreign_key => "parent_id",
-    :dependent => :nullify
+  has_many    :clones, :class_name => "Repository", :foreign_key => "parent_id", :dependent => :nullify
   has_many    :comments, :as => :target, :dependent => :destroy
   has_many    :cloners, :dependent => :destroy
   has_many    :events, :as => :target, :dependent => :destroy
@@ -20,10 +17,9 @@ class Repository < ActiveRecord::Base
 
   validates_uniqueness_of :hashed_path, :case_sensitive => false
 
-  before_validation :downcase_name
-  before_create :set_repository_hash
   after_create :post_repo_creation_message
   after_destroy :post_repo_deletion_message
+  before_create :set_repository_hash
 
 #  scope :by_users,  :conditions => { :kind => KIND_USER_REPO } do
   scope :by_users do
@@ -370,7 +366,6 @@ class Repository < ActiveRecord::Base
   def set_repository_hash
     self.hashed_path ||= begin
       string = [
-        owner.to_param,
         self.to_param,
         Time.now.to_f.to_s,
         SecureRandom.hex
@@ -486,10 +481,6 @@ class Repository < ActiveRecord::Base
 
     def self.full_path_from_partial_path(path)
       File.expand_path(File.join(GitoriousConfig["repository_base_path"], path))
-    end
-
-    def downcase_name
-      name.downcase! if name
     end
     
     # TODO: this method is a stub!!!

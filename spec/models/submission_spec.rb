@@ -31,9 +31,17 @@ describe Submission do
     end
 
     it "should fetch latest commit" do
-      repo = create(:repo_with_data)
-      s = create(:submission, repository: repo, commit_hash: nil)
-      s.commit_hash.should == repo.head_candidate.commit
+      repository = create(:repo_with_data)
+      lhg = create(:lab_has_group, {
+        repository: repository
+      })
+
+      s = create(:submission, {
+        commit_hash: nil,
+        lab_has_group: lhg
+      })
+      
+      s.commit_hash.should == repository.head_candidate.commit
     end
 
     it "should not fetch commit when provided one" do

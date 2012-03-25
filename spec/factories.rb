@@ -89,9 +89,6 @@ FactoryGirl.define do
   end
 
   factory :repository do
-    sequence(:name) { |i| "repo_#{i}" }
-    user
-    owner { user }
     factory :repo_with_data do
       ready true
       after_create do |r|
