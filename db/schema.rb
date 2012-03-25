@@ -297,14 +297,6 @@ ActiveRecord::Schema.define(:version => 20120325101212) do
     t.string   "grade"
   end
 
-  create_table "lab_has_groups_student_registered_for_courses", :id => false, :force => true do |t|
-    t.integer "lab_has_group_id"
-    t.integer "student_registered_for_course_id"
-  end
-
-  add_index "lab_has_groups_student_registered_for_courses", ["lab_has_group_id"], :name => "lhgsrfc_lab_has_group_id"
-  add_index "lab_has_groups_student_registered_for_courses", ["student_registered_for_course_id"], :name => "lhgsrfc_student_registered_for_course_id"
-
   create_table "lab_has_registered_assistants", :force => true do |t|
     t.integer  "assistant_registered_to_given_course_id"
     t.integer  "lab_id"
