@@ -13,7 +13,7 @@ class SubmissionsController < ApplicationController
       lab_group_id: params[:lab_group_id])
       .includes(:repository)
       .first
-    if Submission.create_from_latest_commit!(lab_has_group: lhg)
+    if Submission.create_at_latest_commit!(lab_has_group: lhg)
       flash[:notice] = "Submission successful"
     else
       flash[:error] = "Submissions failed"
