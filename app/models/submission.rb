@@ -9,9 +9,7 @@ class Submission < ActiveRecord::Base
   validate :lab_access
   validate :existence_of_commit_hash
 
-  before_validation :fetch_commit, :if=>lambda {|a| a.commit_hash.nil?}
-
-  alias_method :repo, :repository
+  before_validation :fetch_commit
 
   private
     #
