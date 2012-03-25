@@ -60,9 +60,10 @@ describe LabGroup do
     it "should be possible to add a student" do
       lab = create(:active_lab, given_course: group.given_course)
       create(:lab_has_group, lab: lab, lab_group: group)
-      student = create(:student, given_courses: [group.given_course])
+      student = create(:student)
+      group.given_course.register_student(student)
       group.add_student(student)
-      lab.should have(1).students
+      group.should have(1).students
     end
   end
 end
