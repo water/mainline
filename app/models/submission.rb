@@ -21,8 +21,7 @@ class Submission < ActiveRecord::Base
     end
 
     def fetch_commit
-      @temp = lab_has_group.repository.head_candidate.commit
-      define_singleton_method(:commit_hash) { @temp } # FIXME: fulhack :)
+      self.commit_hash ||= lab_has_group.repository.head_candidate.commit
     end
 
     def existence_of_commit_hash
