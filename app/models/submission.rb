@@ -10,6 +10,21 @@ class Submission < ActiveRecord::Base
   validate :existence_of_commit_hash
 
   before_validation :fetch_commit
+  #
+  # Looks for a LabHasGroup
+  # Fetches the latest commit for the repo connectet to the LabHasGroup
+  # Creates a submission with the commit hash
+  #
+  # @arg options, a hash containing options you would normally pass to #create!
+  #
+  def self.create_at_latest_commit!(args)
+    if lhg = args[:lab_has_group]
+      args[:commit_hash] = lhg.repository.head_candidate.commit
+      Submission.create!(args)
+    else
+      raise ArgumentError.new("No LabHasGroup was provided.")
+    end
+  end
 
   private
     #

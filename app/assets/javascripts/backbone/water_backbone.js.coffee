@@ -41,7 +41,7 @@ $ ->
   #
   # Release UI lock after commit is cleared
   #
-  commit_request.on("commit_request_done", 
+  commit_request.on("commit_request_completed", 
     () -> 
       $("#fileupload").fileupload('enable')
       $("#commit_dialog").modal('hide')
@@ -59,7 +59,7 @@ $ ->
       (message) ->
         message = JSON.parse(message)
         if message.status is 200
-          commit_request.commit_request_successful
+          commit_request.commit_request_completed
         else
           commit_request.commit_request_failed
     )

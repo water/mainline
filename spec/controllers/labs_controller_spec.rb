@@ -33,7 +33,7 @@ describe LabsController do
         })
 
         login_as(student)
-        visit '/lab_groups/' + group.id.to_s + '/labs/' + lab.id.to_s
+        visit course_lab_group_lab_path("student", given_course, group, lab)
         page.should have_selector('div.breadcrumbs')
       end
     
