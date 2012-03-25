@@ -14,16 +14,25 @@ class Submission < ActiveRecord::Base
   alias_method :repo, :repository
 
   private
+    #
+    # The given lab {lab} must be active
+    #
     def lab_access
       if lab and not lab.active?
         errors[:lab_access]  << "failed, lab not accessible"
       end
     end
 
+    #
+    # Use last commit from {repository} as {commit_hash}
+    #
     def fetch_commit
       self.commit_hash ||= lab_has_group.repository.head_candidate.commit
     end
 
+    #
+    # Does the given commit {commit_hash} exist?
+    #
     def existence_of_commit_hash
       path = lab_has_group.repository.try(:full_repository_path)
       Dir.chdir(path) do
