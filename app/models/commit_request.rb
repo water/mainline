@@ -36,7 +36,7 @@ class CommitRequest
   #  branch: "master",
   #  commit_message: "A commit message",
   #  files: [{
-  #    raw: !Binary,
+  #    from: "/full/path/to/file",
   #    to: "path/to/dir"
   #  }]
   # }
@@ -75,8 +75,7 @@ class CommitRequest
     return false unless valid?
     if @command == "add"
       @files.each do |file|
-        file_name = File.join(Rails.root, APP_CONFIG['tmp_upload_directory'], file["id"])
-        file[:raw] = File.read(file_name)
+        file[:from] = File.join(Rails.root, APP_CONFIG['tmp_upload_directory'], file["id"])
       end
     end
 
@@ -89,7 +88,7 @@ class CommitRequest
       files: @files
     }
 
-    @@cache[@options.to_s] ||= publish :commit, (@options || {}).merge({
+    @@cache[@options.to_s] ||= publish :commit, @options.merge({
       callback: {
         class: "CommitRequest",
         method: "notify_user"
