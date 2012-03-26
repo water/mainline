@@ -12,6 +12,7 @@ describe User do
   end
   
   it "should validate against a given course" do
+    DatabaseCleaner.clean
     student = create(:student)
     given_course = create(:given_course)
     create(:student_registered_for_course, student: student, given_course: given_course)

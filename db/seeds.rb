@@ -53,11 +53,7 @@ course = Factory.create(:course, {
 })
 
 #### Repository
-repository = Factory.create(:repo_with_data, {
-  user: user, 
-  owner: user,
-  name: "repo1"
-})
+repository = Factory.create(:repo_with_data)
 
 #### InitialLabCommit
 ilc = Factory.create(:initial_lab_commit, {
@@ -77,7 +73,6 @@ ld = Factory(:lab_description, {
   description: "This is my description",
   title: "My title"
 })
-
 
 #### GivenCourse
 given_course = Factory.create(:given_course, {

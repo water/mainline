@@ -1,7 +1,6 @@
 class CommitRequest 
   include ActiveAttr::Model
   include ActiveMessaging::MessageSender
-
   attr_accessor :user, :command, :repository, :branch,:files,  :records
   attr_writer :commit_message, :files
 
@@ -11,6 +10,7 @@ class CommitRequest
   validate :existence_of_user, :existence_of_repository, :commit_access , :correct_branch, :path_names
 
   publishes_to :commit
+
 
   #
   # Performs the the action given by @options
@@ -77,7 +77,8 @@ class CommitRequest
         file[:data] = open(APP_CONFIG['tmp_upload_directory'] + file[:id], "rb") { |io| io.read }
       }
     end
-    publish :commit, (@options || {}).merge({
+    @options = {:command => @command, :user => @user, :repository => @repository, :branch => @branch, :commit_message => @commit_message, :files => @files}
+    @@cache[@options.to_s] ||= publish :commit, (@options || {}).merge({
       callback: {
         class: "CommitRequest",
         method: "notify_user"
@@ -100,6 +101,9 @@ class CommitRequest
   end
 
 private
+
+ @@cache = {}
+
   def path_names
     if @command == 'add'
         @files.each { |file|

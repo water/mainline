@@ -1,7 +1,7 @@
 describe CommitRequestProcessor do
   let(:processor) { CommitRequestProcessor.new }
   let(:user) { Factory.create(:user) }
-  let(:repository) { Factory.create(:repository, user: user, owner: user) }
+  let(:repository) { Factory.create(:repository) }
 
   def content_for(branch = "master")
     `cd #{@destintation} && git checkout #{branch} --quiet; git show --name-status --format=fuller`

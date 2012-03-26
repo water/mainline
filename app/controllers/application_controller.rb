@@ -292,6 +292,14 @@ class ApplicationController < ActionController::Base
     return role
   end
   helper_method :current_role
+  
+  #
+  # @return ["examiner", "administrator", "student"]
+  #
+  def current_role_name
+    current_role.class.name.downcase
+  end
+  helper_method :current_role_name
 
   private  
     def unshifted_polymorphic_path(repo, path_spec)
