@@ -102,11 +102,12 @@ class CommitRequest
   #
   def self.notify_user(options)
     config = APP_CONFIG["faye"]
+    token = User.find(options["user"]).token
     SecureFaye::Connect.new.
       message({status: 200}.to_json).
       token(config["token"]).
       server("http://0.0.0.0:#{config["port"]}/faye").
-      channel("/users/#{options["token"]}").
+      channel("/users/#{token}").
       send!
   end
 
