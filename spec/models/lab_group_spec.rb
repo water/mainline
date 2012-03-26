@@ -53,4 +53,17 @@ describe LabGroup do
       list2.should eq(list1)
     end
   end
+  
+  describe "adding a student" do
+    let(:group) { create(:lab_group) }
+    
+    it "should be possible to add a student" do
+      lab = create(:active_lab, given_course: group.given_course)
+      create(:lab_has_group, lab: lab, lab_group: group)
+      student = create(:student)
+      group.given_course.register_student(student)
+      group.add_student(student)
+      group.should have(1).students
+    end
+  end
 end

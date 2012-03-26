@@ -29,6 +29,15 @@ Core web application written in Rails 3
 
 ### Install PostgreSQL
 
+#### Linux
+1. Install PostgreSQL, use your favorite package manager or download src from http://www.postgresql.org/download/
+2. Start the server deamon, the precompiled binary packages comes with init-scripts (eg `rc.d start postgresql` || `service postgresql start`) or you can run `pg_ctl start `
+3. Create a user
+  - `sudo su postgres`
+  - `psql`
+  - `CREATE ROLE username WITH SUPERUSER CREATEDB CREATEROLE PASSWORD 'password' LOGIN`
+4. (optional) Add postgres to autostart using distro-specific methods eg (`chkconfig postgresql on` || add it to runlevel 5 init-scripts, run-level 3 for servers)
+
 #### Ubuntu
 
 1. ???
@@ -37,6 +46,11 @@ Core web application written in Rails 3
 
 1. `brew install postgresql`
 2. `pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start`
+
+OR
+
+1.  Get the binary from http://www.postgresql.org/download/macosx/
+The binary includes the pgAdmin program which may aid in development and debugging.
 
 ### Install beanstalkd
 

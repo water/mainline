@@ -109,6 +109,8 @@ lab_group = Factory.create(:lab_group, {
   given_course: given_course
 })
 
+lab_group.add_student(student)
+
 #### LabHasGroup
 labs.each_with_index do |lab, index|
   lhg = Factory.create(:lab_has_group, {
