@@ -35,8 +35,9 @@ Core web application written in Rails 3
 3. Create a user
   - `sudo su postgres`
   - `psql`
-  - `CREATE ROLE username WITH SUPERUSE CREATEDB CREATEROLE PASSWORD 'password' LOGIN`
+  - `CREATE ROLE username WITH SUPERUSER CREATEDB CREATEROLE PASSWORD 'password' LOGIN`
   - (optional) Add postgres to autostart using distro-specific methods eg (`chkconfig postgresql on` || add it to runlevel 5 init-scripts, run-level 3 for servers)
+
 #### Ubuntu
 
 1. ???
