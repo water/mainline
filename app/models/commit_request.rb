@@ -11,7 +11,6 @@ class CommitRequest
 
   publishes_to :commit
 
-
   #
   # Performs the the action given by @options
   # @move {
@@ -86,7 +85,7 @@ class CommitRequest
       user: @user, 
       repository: @repository, 
       branch: @branch, 
-      commit_message: @commit_message, 
+      commit_message: commit_message, 
       files: @files
     }
 
@@ -114,15 +113,15 @@ class CommitRequest
 
 private
 
- @@cache = {}
+  @@cache = {}
 
   def path_names
     if @command == 'add'
-        @files.each { |file|
-          if not (file[:to] =~ /[\\\0:<>"|?*"]/ ).nil?
-              errors[:files] << "Invalid filename"
-          end
-        }
+      @files.each do |file|
+        if not (file[:to] =~ /[\\\0:<>"|?*"]/ ).nil?
+          errors[:files] << "Invalid filename"
+        end
+      end
     end
   end
   def existence_of_user
@@ -138,12 +137,13 @@ private
   end
 
   def correct_branch
-      unless branch == APP_CONFIG['default_branch']
+    unless branch == APP_CONFIG['default_branch']
       errors[:correct_branch] << %q{
         Permission denied, invalid branch
       }
     end
   end
+
   def commit_access
     unless user_can_commit?
       errors[:user_can_commit] << %q{
