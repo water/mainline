@@ -5,7 +5,7 @@ class StudentRegisteredForCourse < ActiveRecord::Base
   
   validates_uniqueness_of :student_id, scope: [:given_course_id]
   validates_presence_of :student, :given_course
-
+  
   #
   # Gets the StudentRegisteredForCourse object 
   # for a combination of a student and a given course

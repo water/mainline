@@ -11,7 +11,6 @@ class CommitRequest
 
   publishes_to :commit
 
-
   #
   # Performs the the action given by @options
   # @move {
@@ -59,25 +58,37 @@ class CommitRequest
   # @return String Commit message provided by frontend
   #
   def commit_message
-    if (defined?(@commit_message)).nil?
-        @commit_message = "WebCommit: #{$command}"
+    if @commit_message.to_s.length.between?(6, 96)
+      @commit_message
     else
-        @commit_message = @commit_message.length < 5 || @commit_message.length > 96 ? "WebCommit: #{@command}" : @commit_message
+      "WebCommit: #{@command}"
     end
   end
 
   #
   # Ads @options to beanstalkd
-  # @return Boolean True if all validations passes
+  # @return Boolean
+  #   false when validation fails or @options has been pushed
+  #   true when data has been pushed to beanstalkd
   #
   def save
     return false unless valid?
-    if @command == 'add'
-      @files.each{ |file|
-        file[:data] = open(APP_CONFIG['tmp_upload_directory'] + file[:id], "rb") { |io| io.read }
-      }
+    if @command == "add"
+      @files.each do |file|
+        file_name = File.join(APP_CONFIG['tmp_upload_directory'], file["id"])
+        file[:raw] = File.read(file_name)
+      end
     end
-    @options = {:command => @command, :user => @user, :repository => @repository, :branch => @branch, :commit_message => @commit_message, :files => @files}
+
+    @options = {
+      command: @command, 
+      user: @user, 
+      repository: @repository, 
+      branch: @branch, 
+      commit_message: commit_message, 
+      files: @files
+    }
+
     @@cache[@options.to_s] ||= publish :commit, (@options || {}).merge({
       callback: {
         class: "CommitRequest",
@@ -102,15 +113,15 @@ class CommitRequest
 
 private
 
- @@cache = {}
+  @@cache = {}
 
   def path_names
     if @command == 'add'
-        @files.each { |file|
-          if not (file[:to] =~ /[\\\0:<>"|?*"]/ ).nil?
-              errors[:files] << "Invalid filename"
-          end
-        }
+      @files.each do |file|
+        if not (file[:to] =~ /[\\\0:<>"|?*"]/ ).nil?
+          errors[:files] << "Invalid filename"
+        end
+      end
     end
   end
   def existence_of_user
@@ -126,12 +137,13 @@ private
   end
 
   def correct_branch
-      unless branch == APP_CONFIG['default_branch']
+    unless branch == APP_CONFIG['default_branch']
       errors[:correct_branch] << %q{
         Permission denied, invalid branch
       }
     end
   end
+
   def commit_access
     unless user_can_commit?
       errors[:user_can_commit] << %q{
