@@ -1,5 +1,6 @@
 class Course < ActiveRecord::Base
   has_many :course_codes, inverse_of: :course
+  has_many :given_courses, dependent: :destroy
   belongs_to :department, inverse_of: :courses
 
   validate :course_codes_exists
