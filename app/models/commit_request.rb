@@ -75,7 +75,7 @@ class CommitRequest
     return false unless valid?
     if @command == "add"
       @files.each do |file|
-        file_name = File.join(APP_CONFIG['tmp_upload_directory'], file["id"])
+        file_name = File.join(Rails.root, APP_CONFIG['tmp_upload_directory'], file["id"])
         file[:raw] = File.read(file_name)
       end
     end
