@@ -12,6 +12,21 @@ window.Water =
   
 $ ->
   #
+  # Setup jqfileupload
+  #
+  $('#fileupload').fileupload()
+
+  # Enable iframe cross-domain access via redirect option:
+  $('#fileupload').fileupload(
+      'option',
+      'redirect',
+      window.location.href.replace(
+          /\/[^\/]*$/,
+          '/cors/result.html?%s'
+      )
+  )
+  
+  #
   # Setup Backbone models, router and views
   #
   fetcher = new Water.TreeFetcher(repository_path: gon.repository_path, ref: gon.ref)
