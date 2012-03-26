@@ -8,7 +8,7 @@ Core web application written in Rails 3
 
 1. Make sure you run ruby 1.9.2 or above using `ruby -v`, otherwise [install it](http://railscasts.com/episodes/310-getting-started-with-rails).
 2. Install [beanstalkd](http://kr.github.com/beanstalkd/), used for internal messaging.
-3. Install and start `mysql`, pg will be used later in the development process. See below for instructions.
+3. Install and start PostgreSQL.
 4. Install [foreman](http://railscasts.com/episodes/281-foreman) using `gem install foreman`
 5. Make sure you have some kind of ```sshd``` installed
 
@@ -16,7 +16,7 @@ Core web application written in Rails 3
 
 1. Clone project using `git clone git@github.com:water/mainline.git water`
 2. Checkout the master branch. `git checkout master`
-3. Navigate to the *config* folder, create a file called `database.yml` with the your mysql credentials. [Example credentials](https://gist.github.com/a5cf8cb41bc6643e0d84)
+3. Navigate to the *config* folder, create a file called `database.yml` with the your mysql credentials. [Example credentials](https://gist.github.com/c748f0b78d35c3298efd)
 4. Install all dependencies using `bundle install`
 5. Create two empty log files, just in case rails complains about it, `touch log/development.log log/test.log`
 6. Rename ```gitorious.sample.yml``` to ```gitorious.yml``` and change hosts and usernames to suit your system
@@ -27,19 +27,16 @@ Core web application written in Rails 3
 11. Navigate to [localhost:3000](http://localhost:3000)
 12. Login using the information from `db/seeds.rb`.
 
-### Install MySQL
+### Install PostgreSQL
 
 #### Ubuntu
 
-1. `sudo apt-get install mysql-common mysql-server libmysqlclient-dev`
+1. ???
 
 #### OS X
 
-Make sure you use the correct version of mysql in the path below. `5.5.14` is used in the example.
-
-1. `brew install mysql`
-2. `bundle config build.mysql2 --with-mysql-config=/usr/local/Cellar/mysql/5.5.14/bin/mysql_config`
-3. `gem install mysql2 -- --with-mysql-config=/usr/local/Cellar/mysql/5.5.14/bin/mysql_config`
+1. `brew install postgresql`
+2. `pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start`
 
 ### Install beanstalkd
 
