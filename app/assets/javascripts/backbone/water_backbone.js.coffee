@@ -65,7 +65,7 @@ $ ->
   # Setup Faye
   #
   host = "http://" + window.location.hostname
-  window.faye_client = new Faye.Client("http://127.0.0.1:9291/faye")
+  window.faye_client = new Faye.Client([host, gon.faye_port].join(":") + "/faye")
   channel = "/users/" + gon.user_token
   subscription = 
     faye_client.subscribe(channel, (message) ->
