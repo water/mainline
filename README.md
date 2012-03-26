@@ -47,6 +47,11 @@ Core web application written in Rails 3
 1. `brew install postgresql`
 2. `pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start`
 
+OR
+
+1.  Get the binary from http://www.postgresql.org/download/macosx/
+The binary includes the pgAdmin program which may aid in development and debugging.
+
 ### Install beanstalkd
 
 #### Ubuntu
