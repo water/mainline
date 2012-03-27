@@ -84,7 +84,7 @@ $ ->
   # and send them with the upload request
   #
   fileupload.bind("fileuploadsubmit", (e, data) => 
-    hashes = (commit_request.addFile(file.fileName) for file in data.files)
+    hashes = (commit_request.addFile(file.name) for file in data.files)
     data.formData = {hashes: JSON.stringify(hashes)}
   )
   
