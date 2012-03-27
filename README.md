@@ -40,9 +40,9 @@ Core web application written in Rails 3
 
 #### Ubuntu
 
-1. sudo apt-get install postgresql postgresql-server-dev-9.1
+1. `sudo apt-get install postgresql postgresql-server-dev-9.1`
 2. Follow the Linux guidelines above about creating a user
-3. sudo /etc/init.d/postgresql restart
+3. `sudo service postgresql restart`
 
 #### OS X
 
