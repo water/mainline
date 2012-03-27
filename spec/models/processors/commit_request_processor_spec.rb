@@ -1,8 +1,8 @@
 describe CommitRequestProcessor do
   let(:processor) { CommitRequestProcessor.new }
   let(:user) { Factory.create(:user) }
-  let(:repository) { Factory.create(:repository, user: user, owner: user) }
-
+  let(:repository) { Factory.create(:repository) }
+  let(:example_file) { File.join(Rails.root, "spec/fixtures/git-repo/README.md") }
   def content_for(branch = "master")
     `cd #{@destintation} && git checkout #{branch} --quiet; git show --name-status --format=fuller`
   end
@@ -48,7 +48,7 @@ describe CommitRequestProcessor do
         branch: "master",
         commit_message: "A commit message",
         files: [{
-          raw: "Raw data",
+          from: example_file,
           to: "path/file"
         }]
       }
@@ -63,7 +63,7 @@ describe CommitRequestProcessor do
       processor.on_message(@options.merge({
         branch: "stable",
         files: [{
-          data: "Raw data",
+          from: example_file,
           to: "stable"
         }]
       }).to_json)
@@ -74,7 +74,7 @@ describe CommitRequestProcessor do
       processor.on_message(@options.merge({
         branch: "master",
         files: [{
-          data: "Raw data",
+          from: example_file,
           to: "master"
         }]
       }).to_json)

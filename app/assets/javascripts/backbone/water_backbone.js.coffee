@@ -12,6 +12,21 @@ window.Water =
   
 $ ->
   #
+  # Setup jqfileupload
+  #
+  $('#fileupload').fileupload()
+
+  # Enable iframe cross-domain access via redirect option:
+  $('#fileupload').fileupload(
+      'option',
+      'redirect',
+      window.location.href.replace(
+          /\/[^\/]*$/,
+          '/cors/result.html?%s'
+      )
+  )
+  
+  #
   # Setup Backbone models, router and views
   #
   fetcher = new Water.TreeFetcher(repository_path: gon.repository_path, ref: gon.ref)
@@ -41,29 +56,25 @@ $ ->
   #
   # Release UI lock after commit is cleared
   #
-  commit_request.on("commit_request_done", 
-    () -> 
-      $("#fileupload").fileupload('enable')
-      $("#commit_dialog").modal('hide')
+  commit_request.on("commit_request_completed", -> 
+    $("#fileupload").fileupload('enable')
+    $("#commit_dialog").modal('hide')
   )
   
   #
   # Setup Faye
   #
   host = "http://" + window.location.hostname
-  console.log([host, gon.faye_port].join(":"))
-  window.faye_client = new Faye.Client([host, gon.faye_port].join(":"))
+  window.faye_client = new Faye.Client([host, gon.faye_port].join(":") + "/faye")
   channel = "/users/" + gon.user_token
   subscription = 
-    faye_client.subscribe(channel, 
-      (message) ->
-        message = JSON.parse(message)
-        if message.status is 200
-          commit_request.commit_request_successful
-        else
-          commit_request.commit_request_failed
+    faye_client.subscribe(channel, (message) ->
+      message = JSON.parse(message)
+      if message.status is 200
+        commit_request.commit_request_completed()
+      else
+        commit_request.commit_request_failed()
     )
-  
   
   fileupload = $("#fileupload")
   #

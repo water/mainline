@@ -1,10 +1,22 @@
 describe CommitRequest do
   before (:each) do
+    DatabaseCleaner.clean
     lab = create(:lab)
     student = create(:student)
-    lab_group = create(:lab_group, given_course: lab.given_course)
-    create(:student_registered_for_course, lab_groups: [lab_group], student: student)
-    repo = create(:lab_has_group, lab_group: lab_group, lab: lab).repository
+
+    lab_group = create(:lab_group, {
+      given_course: lab.given_course
+    })
+
+    create(:student_registered_for_course, {
+      lab_groups: [lab_group], 
+      student: student
+    })
+
+    repo = create(:lab_has_group, {
+      lab_group: lab_group, 
+      lab: lab
+    }).repository
 
     @value = {
       command: "move",
@@ -38,12 +50,12 @@ describe CommitRequest do
       end
 
       it "should fail with an invalid filename" do
-           @value[:command] = "add"
-           @value[:files] = [
-            {id: 123, to: "src/main\0.cpp"},
-            {id: 124, to: "src/lib<hej>.h"},
-            {id: 125, to: "src/lib|?.cpp"}
-           ]
+        @value[:command] = "add"
+        @value[:files] = [
+          {id: 123, to: "src/main\0.cpp"},
+          {id: 124, to: "src/lib<hej>.h"},
+          {id: 125, to: "src/lib|?.cpp"}
+        ]
       end
 
       it "should fail with an invalid command" do

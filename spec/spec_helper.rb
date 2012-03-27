@@ -21,8 +21,8 @@ Spork.prefork do
     config.mock_with :rspec
     config.use_transactional_fixtures = false
     config.before(:suite) { DatabaseCleaner.strategy = :truncation }
-    config.before(:each) { DatabaseCleaner.start }
-    config.after(:each) { DatabaseCleaner.clean }
+    config.before(:all) { DatabaseCleaner.start }
+    config.after(:all) { DatabaseCleaner.clean }
     config.after(:all) { teardown }
     config.infer_base_class_for_anonymous_controllers = false
     config.mock_with :rspec

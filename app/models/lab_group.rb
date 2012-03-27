@@ -9,6 +9,10 @@ class LabGroup < ActiveRecord::Base
   acts_as_list scope: :given_course, column: :number
   accepts_nested_attributes_for :lab_has_groups
   
+  #
+  # Adds a student to a lab group.
+  # Checks that the student is registered to the correct course.
+  #
   def add_student(student)
     @registration = StudentRegisteredForCourse.reg_for_student_and_course(student, self.given_course)
     if @registration

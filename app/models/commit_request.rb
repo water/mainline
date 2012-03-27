@@ -1,7 +1,6 @@
 class CommitRequest 
   include ActiveAttr::Model
   include ActiveMessaging::MessageSender
-
   attr_accessor :user, :command, :repository, :branch,:files,  :records
   attr_writer :commit_message, :files
 
@@ -37,7 +36,7 @@ class CommitRequest
   #  branch: "master",
   #  commit_message: "A commit message",
   #  files: [{
-  #    raw: !Binary,
+  #    from: "/full/path/to/file",
   #    to: "path/to/dir"
   #  }]
   # }
@@ -59,25 +58,38 @@ class CommitRequest
   # @return String Commit message provided by frontend
   #
   def commit_message
-    if (defined?(@commit_message)).nil?
-        @commit_message = "WebCommit: #{$command}"
+    if @commit_message.to_s.length.between?(6, 96)
+      @commit_message
     else
-        @commit_message = @commit_message.length < 5 || @commit_message.length > 96 ? "WebCommit: #{@command}" : @commit_message
+      "WebCommit: #{@command}"
     end
   end
 
   #
   # Ads @options to beanstalkd
-  # @return Boolean True if all validations passes
+  # @return Boolean
+  #   false when validation fails or @options has been pushed
+  #   true when data has been pushed to beanstalkd
   #
   def save
     return false unless valid?
-    if @command == 'add'
-      @files.each{ |file|
-        file[:data] = open(APP_CONFIG['tmp_upload_directory'] + file[:id], "rb") { |io| io.read }
-      }
+    if @command == "add"
+      @files.each do |file|
+        file["from"] = File.join(Rails.root, APP_CONFIG['tmp_upload_directory'], file["id"])
+        file["to"] = file["to"].gsub(/^\//, "") # Remove first slash
+      end
     end
-    publish :commit, (@options || {}).merge({
+
+    @options = {
+      command: @command, 
+      user: @user, 
+      repository: @repository, 
+      branch: @branch, 
+      commit_message: commit_message, 
+      files: @files
+    }
+
+    @@cache[@options.to_s] ||= publish :commit, @options.merge({
       callback: {
         class: "CommitRequest",
         method: "notify_user"
@@ -91,22 +103,26 @@ class CommitRequest
   #
   def self.notify_user(options)
     config = APP_CONFIG["faye"]
+    token = User.find(options["user"]).token
     SecureFaye::Connect.new.
       message({status: 200}.to_json).
       token(config["token"]).
       server("http://0.0.0.0:#{config["port"]}/faye").
-      channel("/users/#{options["token"]}").
+      channel("/users/#{token}").
       send!
   end
 
 private
+
+  @@cache = {}
+
   def path_names
     if @command == 'add'
-        @files.each { |file|
-          if not (file[:to] =~ /[\\\0:<>"|?*"]/ ).nil?
-              errors[:files] << "Invalid filename"
-          end
-        }
+      @files.each do |file|
+        if not (file[:to] =~ /[\\\0:<>"|?*"]/ ).nil?
+          errors[:files] << "Invalid filename"
+        end
+      end
     end
   end
   def existence_of_user
@@ -122,12 +138,13 @@ private
   end
 
   def correct_branch
-      unless branch == APP_CONFIG['default_branch']
+    unless branch == APP_CONFIG['default_branch']
       errors[:correct_branch] << %q{
         Permission denied, invalid branch
       }
     end
   end
+
   def commit_access
     unless user_can_commit?
       errors[:user_can_commit] << %q{

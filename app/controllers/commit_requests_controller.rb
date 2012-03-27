@@ -6,13 +6,15 @@ class CommitRequestsController < ApplicationController
   end
 
   def create
-    request = ActiveSupport::JSON.decode(params[:commit_request])
+    request = JSON.parse(params[:commit_request])
     @commit_request = CommitRequest.new(request.merge({
       repository: params[:repository_id],
       user: current_user.id
     }))
-    
-    flash[:notice] = "Commit request was created" if @commit_request.valid?
+
+    if @commit_request.save
+      flash[:notice] = "Commit request was created"
+    end
     respond_with(repository, @commit_request)
   end
 

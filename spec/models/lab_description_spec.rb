@@ -4,10 +4,6 @@ describe LabDescription do
       create(:lab_description).should be_valid
     end
 
-    it "must have a valid commit hash" do
-      build(:lab_description, commit_hash: "not valid").should_not be_valid
-    end
-
     it "must have title with length >= 2" do
       build(:lab_description, title: "a").should_not be_valid
     end
@@ -21,7 +17,7 @@ describe LabDescription do
     end
   end
 
-  describe "realtions" do
+  describe "relations" do
     it "should have a study period" do
       create(:lab_description).study_period.should_not be_nil
     end

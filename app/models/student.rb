@@ -10,7 +10,7 @@ class Student < ActiveRecord::Base
   # Checks whether a student is registered for a given course.
   #
   def registered_for_course?(given_course)
-    StudentRegisteredForCourse.reg_for_student_and_course.exists?
+    StudentRegisteredForCourse.reg_for_student_and_course(self, given_course).exists?
   end
 
   #

@@ -1,7 +1,12 @@
 class RenameLicenseAgreementVersionToTosAccepted < ActiveRecord::Migration
   def self.up
-    rename_column :users, :accepted_license_agreement_version, :terms_of_use
-    change_column :users, :terms_of_use, :boolean
+    add_column :users, :terms_of_use, :boolean
+    User.all.each do |u|
+      u.update_attributes({
+        terms_of_use: !! u.accepted_license_agreement_version
+      })
+    end
+    remove_column :users, :accepted_license_agreement_version
     User.update_all(["terms_of_use = ?", false])
   end
 

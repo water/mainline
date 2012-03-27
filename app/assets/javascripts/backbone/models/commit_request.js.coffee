@@ -17,7 +17,7 @@ class Water.CommitRequest extends Backbone.Model
   uploadSuccessful: (options) => 
     for pendingFile in @pendingFiles
       if pendingFile.clientside_hash is options.hash
-        @processedfiles.push(id: options.id, to: @breadcrumbs.path + "/" + pendingFile.filename)
+        @processedfiles.push(id: options.id, to: @breadcrumbs.path + pendingFile.filename)
     @pendingFiles = 
       (pendingFile for pendingFile in @pendingFiles when pendingFile.clientside_hash isnt options.hash)
     console.log("CommitRequest says: files: ", @pendingFiles)
@@ -49,15 +49,22 @@ class Water.CommitRequest extends Backbone.Model
     $.ajax gon.commit_request_path, 
       type: "POST"
       data: commit_request: JSON.stringify(request)
-      success: (data) => @success(data)
-      error: (jqXHR, textStatus, errorThrown) => 
+      success: (data) => @request_success(data)
+      error: (jqXHR, textStatus, errorThrown) =>
         console.log("Error: ", jqXHR, textStatus, errorThrown)
       
   # Triggered when the commit request has been received.
   # TODO: handle errors
-  success: (data) =>
+  request_success: (data) =>
     @pendingFiles = []
     @processedfiles = []
     @errorFiles = []
     console.log("Shit was successful!!!!", data)
+    @trigger("commit_request_process_started")
+    
+  commit_request_completed: () =>
+    @trigger("commit_request_completed")
+    
+  requestCompleted: () =>
+    @trigger("commit_request_completed")
   

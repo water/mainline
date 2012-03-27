@@ -1,4 +1,5 @@
 describe Lab do
+  before(:each) do; DatabaseCleaner.clean; end
   describe 'validation' do
     it "defaults to valid" do
       Factory.build(:lab).should be_valid
