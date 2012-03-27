@@ -6,7 +6,7 @@ class Water.BreadcrumbSet extends Backbone.Model
   
   # Take a path and constructs an array of breadcrumbs containing names and hrefs
   set_path: (path) =>
-    @path = path
+    @path = if path.length is 0 then path else (path + "/")
     split_path = (path for path in path.split("/") when path)
     @head = split_path.pop()
     @crumbs = ({name: node, href: "#/tree/" + split_path[0..i].join("/")} for node, i in split_path)
