@@ -1,5 +1,7 @@
 describe LabHasGroup do
   describe "relations" do
+    before(:each) { DatabaseCleaner.clean }
+    
     it "should have a lab group" do
       create(:lab_has_group).lab_group.should_not be_nil
     end
@@ -13,7 +15,9 @@ describe LabHasGroup do
     end
 
     it "should have a list of submissions" do
-      create(:lab_has_group, submissions: [create(:submission)]).should have(1).submissions
+      lhg = create(:lab_has_group)
+      s = create(:submission, lab_has_group: lhg)
+      lhg.should have(1).submissions
     end
 
     it "should have one assistant" do
