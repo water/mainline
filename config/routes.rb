@@ -13,6 +13,9 @@ Gitorious::Application.routes.draw do
           resources :submissions, only: [:create]
         end
       end
+
+      resources :labs
+      resources :groups
     end
   end
   

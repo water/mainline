@@ -19,4 +19,14 @@ class LabGroup < ActiveRecord::Base
       self.student_registered_for_courses << @registration
     end
   end
+
+  #
+  # @params[:course_id] Integer GivenCourse#id
+  # @params[:group_id] Integer LabGroup#number
+  # @return ActiveRecord::Relation
+  #
+  def self.find_by_course_and_group(params)
+    where("lab_groups.given_course_id = ?", params[:course_id]).
+    where("lab_groups.number = ?", params[:group_id])
+  end
 end
