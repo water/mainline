@@ -7,6 +7,7 @@ require "rspec"
 #
 # Urls that works
 # http://localhost:3000/student/courses/1/lab_groups/3/labs/1
+# http://localhost:3000/student/courses/4/groups/1
 #
 
 if ENV["CLEAR"]
