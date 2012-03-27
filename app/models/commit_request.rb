@@ -76,7 +76,6 @@ class CommitRequest
     if @command == "add"
       @files.each do |file|
         file["from"] = File.join(Rails.root, APP_CONFIG['tmp_upload_directory'], file["id"])
-        file["to"] = file["to"].gsub(/^\//, "") # Remove first slash
       end
     end
 
