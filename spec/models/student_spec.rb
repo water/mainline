@@ -58,6 +58,16 @@ describe Student do
     end
   end
 
+
+  describe "Dependent destroy" do
+    it "should not be possible for student_registered_for_course to exist without a student" do
+      student = Factory.create(:student)
+      src = Factory.create(:student_registered_for_course, student: student)
+      student.destroy
+      lambda{src.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
   describe "#register" do
     it "should register to course" do
       student.register!({

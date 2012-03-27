@@ -21,7 +21,7 @@ describe LabDescription do
     end
   end
 
-  describe "realtions" do
+  describe "relations" do
     it "should have a study period" do
       create(:lab_description).study_period.should_not be_nil
     end

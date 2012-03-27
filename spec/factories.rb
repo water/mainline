@@ -19,8 +19,7 @@ FactoryGirl.define do
 
   factory :extended_deadline do
     at 3.days.from_now
-    lab_group
-    lab
+    lab_has_group
   end
 
   factory :student_registered_for_course do
@@ -32,7 +31,7 @@ FactoryGirl.define do
     user
   end
 
-  factory :lab_has_group do
+  factory :lab_has_group do    
     repository
 
     after_build do |lhg|
@@ -84,15 +83,11 @@ FactoryGirl.define do
   end
 
   factory :submission do
-    commit_hash "6ff87c4664981e4397625791c8ea3bbb5f2279a3"
+    commit_hash "6707a957d6ebe1b3df580343b9d57cc3c758cc9e"
     lab_has_group
-    repository
   end
 
-   factory :repository do
-    sequence(:name) { |i| "repo_#{i}" }
-    user
-    owner { user }
+  factory :repository do
     factory :repo_with_data do
       ready true
       after_create do |r|

@@ -10,7 +10,7 @@ Gitorious::Application.routes.draw do
       post "/courses/:course_id/upload" => "uploads#upload"
       resources :lab_groups do
         resources :labs, only: [:index, :show] do
-          get "uploads" => "labs#uploads"
+          resources :submissions, only: [:create]
         end
       end
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120313161140) do
+ActiveRecord::Schema.define(:version => 20120325101212) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -174,11 +174,10 @@ ActiveRecord::Schema.define(:version => 20120313161140) do
   end
 
   create_table "extended_deadlines", :force => true do |t|
-    t.integer  "lab_id"
-    t.integer  "lab_group_id"
     t.datetime "at"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "lab_has_group_id"
   end
 
   create_table "favorites", :force => true do |t|
@@ -454,16 +453,13 @@ ActiveRecord::Schema.define(:version => 20120313161140) do
   add_index "registered_course_has_lab_groups", ["registered_course_id"], :name => "index_registered_course_has_lab_groups_on_registered_course_id"
 
   create_table "repositories", :force => true do |t|
-    t.string   "name"
     t.integer  "project_id"
-    t.integer  "user_id"
     t.datetime "created_at",                                                :null => false
     t.datetime "updated_at",                                                :null => false
     t.integer  "parent_id"
     t.boolean  "ready",                                  :default => false
     t.integer  "kind",                                   :default => 0
     t.string   "owner_type"
-    t.integer  "owner_id"
     t.string   "hashed_path"
     t.text     "description"
     t.datetime "last_pushed_at"
@@ -478,13 +474,11 @@ ActiveRecord::Schema.define(:version => 20120313161140) do
 
   add_index "repositories", ["hashed_path"], :name => "index_repositories_on_hashed_path", :unique => true
   add_index "repositories", ["kind"], :name => "index_repositories_on_kind"
-  add_index "repositories", ["name"], :name => "index_repositories_on_name"
-  add_index "repositories", ["owner_type", "owner_id"], :name => "index_repositories_on_owner_type_and_owner_id"
+  add_index "repositories", ["owner_type"], :name => "index_repositories_on_owner_type_and_owner_id"
   add_index "repositories", ["parent_id"], :name => "index_repositories_on_parent_id"
   add_index "repositories", ["project_id", "kind"], :name => "index_repositories_on_project_id_and_kind"
   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id"
   add_index "repositories", ["ready"], :name => "index_repositories_on_ready"
-  add_index "repositories", ["user_id"], :name => "index_repositories_on_user_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name"
