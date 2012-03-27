@@ -102,4 +102,89 @@ describe LabHasGroup do
       end.should_not raise_error(ActiveRecord::RecordInvalid)
     end
   end
+
+  describe "state machine" do
+    let(:lhg) { build(:lab_has_group) }
+
+    it "should start with state initialized" do
+      lhg.should be_initialized
+    end
+
+    it "should be able to change state from initialized to pending" do
+      lhg.pending!
+      lhg.should be_pending
+    end
+
+    it "should be able to change state from pending to reviewing via pending" do
+      lhg.pending!
+      lhg.reviewing!
+      lhg.should be_reviewing
+    end
+
+    it "should be able to change state from pending to accepted via reviewing" do
+      lhg.pending!
+      lhg.reviewing!
+      lhg.accepted!
+      lhg.should be_accepted
+    end
+
+    it "should be able to change state from pending to rejected via reviewing" do
+      lhg.pending!
+      lhg.reviewing!
+      lhg.rejected!
+      lhg.should be_rejected
+    end
+
+    it "should not be possible change state from initialized to rejected" do
+      lambda {
+        lhg.rejected!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from initialized to accepted" do
+      lambda {
+        lhg.accepted!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from initialized to reviewing" do
+      lambda {
+        lhg.reviewing!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from pending to accepted" do
+      lhg.pending!
+      lambda {
+        lhg.accepted!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from pending to rejected" do
+      lhg.pending!
+      lambda {
+        lhg.rejected!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from reviewing to pending" do
+      lhg.pending!
+      lhg.reviewing!
+      lambda {
+        lhg.pending!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from accepted to anything" do
+      lhg.pending!
+      lhg.reviewing!
+      lhg.accepted!
+
+      ["pending", "rejected", "reviewing", "accepted"].each do |s|
+        lambda {
+          lhg.send("#{s}!")
+        }.should raise_error(StateMachine::InvalidTransition)
+      end
+    end
+  end
 end
