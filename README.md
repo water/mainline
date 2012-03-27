@@ -80,7 +80,7 @@ wrongly writes to stdin rather than stderr.
 1. Migrate test database `RAILS_ENV=test bundle exec rake db:create db:migrate`
 2. Start the DRb server ([spork](http://railscasts.com/episodes/285-spork)) by running `foreman start`.
 3. Wait until it says *Spork is ready and listening on 8988!*, which takes about ~20 sec.
-4. Download fixtures using `git submodule init && git submodule update`
+4. Download fixtures using `git submodule update --init`
 5. Run a test
   - a specific test file `rspec spec/my_spec.rb`
   - all specs `rspec spec/`
