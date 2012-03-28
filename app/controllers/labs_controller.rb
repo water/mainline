@@ -38,6 +38,7 @@ class LabsController < ApplicationController
       find(params[:id])
     @lab_group_id = params[:lab_group_id]
     @course_id = params[:course_id]
+    @lhg = @lab.lab_has_groups.where(lab_group_id: @lab_group_id).first
     @repository = @lab.lab_has_groups.first.repository
 
     add_data_to_gon
