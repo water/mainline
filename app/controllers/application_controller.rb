@@ -280,6 +280,13 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def setup_gon_for_tree_view(options)
+    gon.repository_path = repository_path(@repository)
+    options[:ref] ||= "master"
+    gon.ref = options[:ref]
+    gon.repository_id = @repository.id
+  end
+  
   #
   # @return [Examiner, Administrator, Student]
   #

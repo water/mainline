@@ -26,6 +26,10 @@ class SubmissionsController < ApplicationController
   end
 
   def new
-    @group = LabGroup.find(params[:lab_group_id])
+    @group = LabGroup.includes(:lab_has_groups).find(params[:lab_group_id])
+    @course_id = params[:course_id]
+    @lab_id = params[:lab_id]
+    @repository = @group.lab_has_groups.where(lab_id: params[:lab_id]).first.repository
+    setup_gon_for_tree_view(ref: @repository.head_candidate.commit)
   end
 end
