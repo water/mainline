@@ -13,11 +13,9 @@ describe LabGroup do
         lab: lab
       })
 
-      2.times { create(:submission, {
-        lab_has_group: lhg
-      })}
+      create(:submission, lab_has_group: lhg)
 
-      group.reload.should have(2).submissions
+      group.should have(1).submissions
     end
 
     it "should have a list of students" do

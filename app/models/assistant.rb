@@ -1,5 +1,5 @@
 class Assistant < ActiveRecord::Base
-  belongs_to :user, class_name: "User"
+  belongs_to :user
   has_many :assistant_registered_to_given_courses
   has_many :given_courses, through: :assistant_registered_to_given_courses
   has_many :lab_has_groups, through: :assistant_registered_to_given_courses

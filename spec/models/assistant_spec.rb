@@ -25,11 +25,19 @@ describe Assistant do
     end
 
     it "should list submissions" do
-      create(:assistant, submissions: [create(:submission)]).should have(1).submissions
+      create(:assistant).should have(0).submissions
     end
 
     it "should list all submissions" do
-      create(:assistant, all_submissions: [create(:submission)]).should have(1).all_submissions
+      a = create(:assistant)
+      lhg = create(:lab_has_group)
+      s = create(:submission, lab_has_group: lhg)
+
+      create(:assistant_registered_to_given_course, {
+        assistant: a, 
+        given_course: lhg.lab.given_course
+      })
+      a.should have(1).all_submissions
     end
 
     it "should have a list of students" do
