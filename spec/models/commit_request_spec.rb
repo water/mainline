@@ -1,10 +1,22 @@
 describe CommitRequest do
+  let(:student) { create(:student) }
   before (:each) do
+    DatabaseCleaner.clean
     lab = create(:lab)
-    student = create(:student)
-    lab_group = create(:lab_group, given_course: lab.given_course)
-    create(:student_registered_for_course, lab_groups: [lab_group], student: student)
-    repo = create(:lab_has_group, lab_group: lab_group, lab: lab).repository
+
+    lab_group = create(:lab_group, {
+      given_course: lab.given_course
+    })
+
+    create(:student_registered_for_course, {
+      lab_groups: [lab_group], 
+      student: student
+    })
+
+    repo = create(:lab_has_group, {
+      lab_group: lab_group, 
+      lab: lab
+    }).repository
 
     @value = {
       command: "move",
@@ -37,8 +49,21 @@ describe CommitRequest do
         cr.errors.should_not be_empty
       end
 
+      it "should fail with an invalid filename" do
+        @value[:command] = "add"
+        @value[:files] = [
+          {id: 123, to: "src/main\0.cpp"},
+          {id: 124, to: "src/lib<hej>.h"},
+          {id: 125, to: "src/lib|?.cpp"}
+        ]
+      end
+
       it "should fail with an invalid command" do
         @value[:command] = "fiskpinne"
+      end
+
+      it "should fail with an invalid branch" do
+        @value[:branch] = "fiskpinne"
       end
 
       it "should fail with an invalid user" do
@@ -75,7 +100,7 @@ describe CommitRequest do
         and_return(faye)
 
       faye.should_receive(:channel).
-        with("/users/#{@value["token"]}").
+        with("/users/#{student.user.token}").
         and_return(faye)
 
       faye.should_receive(:send!)
@@ -91,10 +116,24 @@ describe CommitRequest do
   end
 
   describe "commit_message generation" do
-    it "should not generate a commit_message" do
+    it "should overwrite the commit_message for being to short" do
       @value[:commit_message] = "CM"
       cr = CommitRequest.new(@value)
-      cr.commit_message.should == "CM"
+      cr.commit_message[0,10].should == "WebCommit:"
+    end
+
+    it "should overwrite the commit_message for being to long" do
+      @value[:commit_message] = "This is a long commit_message,
+      in fact it is to long for the commit_request model to validate.
+      This will cause the model to overwrite it with a default commitmessage"
+      cr = CommitRequest.new(@value)
+      cr.commit_message[0,10].should == "WebCommit:"
+    end
+
+    it "should not generate a commit_message" do
+      @value[:commit_message] = "A Commit Message"
+      cr = CommitRequest.new(@value)
+      cr.commit_message.should == "A Commit Message"
     end
 
     it "should generate a commit_message" do

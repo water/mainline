@@ -11,8 +11,8 @@ describe Student do
     end
 
     it "should have a list of given courses" do
-      student = create(:student, given_courses: [create(:given_course)])
-      student.should have(1).given_courses
+    student = create(:student, student_registered_for_courses: [create(:student_registered_for_course)])
+    student.should have(1).given_courses
     end
 
     it "should have a list of lab groups" do

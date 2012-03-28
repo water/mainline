@@ -6,27 +6,29 @@ class Water.CommitRequest extends Backbone.Model
     @breadcrumbs = @get("breadcrumbs")
   
   # Triggered when an upload is started, saves the filename and the target path for future reference
+  # Returns a hash to identify the file
   addFile: (filename) =>
-    @pendingFiles.push(filename: filename, path: @breadcrumbs.path)
-    console.log("CommitRequest says: files: ", @pendingFiles)
-  
+    clientside_hash = (filename + (new Date()).toString()).hashCode()
+    @pendingFiles.push(filename: filename, path: @breadcrumbs.path, clientside_hash: clientside_hash)
+    return clientside_hash
+
   # Triggered when (and only when) an upload was successful. 
   # Removes the file from @pendingFiles and adds it to @processedFiles.
-  uploadSuccessful: (filename, id) => 
+  uploadSuccessful: (options) => 
     for pendingFile in @pendingFiles
-      if pendingFile.filename is filename
-        @processedfiles.push(id: id, to: @breadcrumbs.path + "/" + pendingFile.filename)
-    @pendingFiles = (pendingFile for pendingFile in @pendingFiles when pendingFile.filename isnt filename)
-    console.log("CommitRequest says: files: ", @pendingFiles)
+      if pendingFile.clientside_hash is options.hash
+        @processedfiles.push(id: options.id, to: @breadcrumbs.path + pendingFile.filename)
+    @pendingFiles = 
+      (pendingFile for pendingFile in @pendingFiles when pendingFile.clientside_hash isnt options.hash)
     @checkStatus()
     
   # Triggered when an upload is completed with an error. 
   # TODO: do something useful with the information  
-  errorForFile: (filename, error) =>
+  errorForFile: (hash, error) =>
     for pendingFile in @pendingFiles
-      if pendingFile.filename is filename
-        @errorFiles.push(id: id, filename: filename)
-    @pendingFiles = (pendingFile for pendingFile in @pendingFiles when pendingFile.filename isnt filename)
+      if pendingFile.clientside_hash is filename
+        @errorFiles.push(filename: filename)
+    @pendingFiles = (pendingFile for pendingFile in @pendingFiles when pendingFile.clientside_hash isnt hash)
     @checkStatus()
   
   # Checks whether all @pendingFiles have been processed.
@@ -45,14 +47,22 @@ class Water.CommitRequest extends Backbone.Model
     @trigger("sending_commit_request")
     $.ajax gon.commit_request_path, 
       type: "POST"
-      data: commit_request: request
-      success: (data) => @success(data)
+      data: commit_request: JSON.stringify(request)
+      success: (data) => @request_success(data)
+      error: (jqXHR, textStatus, errorThrown) =>
+        console.log("Error: ", jqXHR, textStatus, errorThrown)
       
   # Triggered when the commit request has been received.
   # TODO: handle errors
-  success: (data) =>
+  request_success: (data) =>
     @pendingFiles = []
     @processedfiles = []
     @errorFiles = []
-    console.log("Shit was successful!!!!", data)
+    @trigger("commit_request_process_started")
+    
+  commit_request_completed: () =>
+    @trigger("commit_request_completed")
+    
+  requestCompleted: () =>
+    @trigger("commit_request_completed")
   

@@ -9,6 +9,7 @@
 //= require init
 //= require jquery.activity-indicator-1.0.0
 //= require jquery.scrollto
+//= require simple_hash
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink

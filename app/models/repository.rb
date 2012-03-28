@@ -6,12 +6,9 @@ class Repository < ActiveRecord::Base
 
   NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
 
-  belongs_to  :user
-  belongs_to  :owner, :polymorphic => true
   has_many    :committerships, :dependent => :destroy
   belongs_to  :parent, :class_name => "Repository"
-  has_many    :clones, :class_name => "Repository", :foreign_key => "parent_id",
-    :dependent => :nullify
+  has_many    :clones, :class_name => "Repository", :foreign_key => "parent_id", :dependent => :nullify
   has_many    :comments, :as => :target, :dependent => :destroy
   has_many    :cloners, :dependent => :destroy
   has_many    :events, :as => :target, :dependent => :destroy
@@ -20,10 +17,9 @@ class Repository < ActiveRecord::Base
 
   validates_uniqueness_of :hashed_path, :case_sensitive => false
 
-  before_validation :downcase_name
-  before_create :set_repository_hash
   after_create :post_repo_creation_message
   after_destroy :post_repo_deletion_message
+  before_create :set_repository_hash
 
 #  scope :by_users,  :conditions => { :kind => KIND_USER_REPO } do
   scope :by_users do
@@ -47,10 +43,6 @@ class Repository < ActiveRecord::Base
   def self.new_by_cloning(other, username=nil)
     suggested_name = username ? "#{username}s-#{other.name}" : nil
     new(:parent => other,  :name => suggested_name)
-  end
-
-  def self.find_by_name_in_project!(name)
-      find_by_name!(name)
   end
 
   def self.find_by_path(path)
@@ -220,34 +212,6 @@ class Repository < ActiveRecord::Base
     admin?(candidate)
   end
 
-  # Can +a_user+ request a merge from this repository
-
-  # changes the owner to +another_owner+, removes the old owner as committer
-  # and adds +another_owner+ as committer
-"  def change_owner_to!(another_owner)
-    unless owned_by_group?
-      transaction do
-        if existing = committerships.find_by_committer_id_and_committer_type(owner.id, owner.class.name)
-          existing.destroy
-        end
-        self.owner = another_owner
-        if self.kind != KIND_PROJECT_REPO
-          case another_owner
-          when Group
-            self.kind = KIND_TEAM_REPO
-          when User
-            self.kind = KIND_USER_REPO
-          end
-        end
-        unless committerships.any?{|c|c.committer == another_owner}
-          committerships.create_for_owner!(self.owner)
-        end
-        save!
-        reload
-      end
-    end
-  end "
-
   def post_repo_creation_message
     options = {:target_class => self.class.name, :target_id => self.id}
     options[:command] = parent ? 'clone_git_repository' : 'create_git_repository'
@@ -395,47 +359,13 @@ class Repository < ActiveRecord::Base
     committers.include?(a_user)
   end
 
-  def owned_by_group?
-    owner === Group
-  end
-
-  def breadcrumb_parent
-    owner
-  end
-
-  def title
-    name
-  end
-
-  def owner_title
-    owner.title
-  end
-
-  # returns the project if it's a KIND_PROJECT_REPO, otherwise the owner
-  def project_or_owner
-    owner
-  end
-
   def full_hashed_path
     hashed_path || set_repository_hash
-  end
-
-  # Returns a list of users being either the owner (if User) or each admin member (if Group)
-  def owners
-    result = if owned_by_group?
-      owner.members.select do |member|
-        owner.admin?(member)
-      end
-    else
-      [owner]
-    end
-    return result
   end
 
   def set_repository_hash
     self.hashed_path ||= begin
       string = [
-        owner.to_param,
         self.to_param,
         Time.now.to_f.to_s,
         SecureRandom.hex
@@ -505,7 +435,6 @@ class Repository < ActiveRecord::Base
   def matches_regexp?(term)
     return user.login =~ term ||
       name =~ term ||
-      (owned_by_group? ? owner.name =~ term : false) ||
       description =~ term
   end
 
@@ -552,10 +481,6 @@ class Repository < ActiveRecord::Base
 
     def self.full_path_from_partial_path(path)
       File.expand_path(File.join(GitoriousConfig["repository_base_path"], path))
-    end
-
-    def downcase_name
-      name.downcase! if name
     end
     
     # TODO: this method is a stub!!!

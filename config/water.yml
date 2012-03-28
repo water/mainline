@@ -5,5 +5,6 @@ development: &dev
     port: 9291
   salt: "ee8201c790b65bfe26b83482ab2ee1fd9335fff4"
   default_branch: "master"
+  tmp_upload_directory: "tmp/uploads"
 test: *dev
 production: *dev

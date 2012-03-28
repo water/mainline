@@ -1,5 +1,7 @@
 describe LabHasGroup do
   describe "relations" do
+    before(:each) { DatabaseCleaner.clean }
+    
     it "should have a lab group" do
       create(:lab_has_group).lab_group.should_not be_nil
     end
@@ -13,7 +15,9 @@ describe LabHasGroup do
     end
 
     it "should have a list of submissions" do
-      create(:lab_has_group, submissions: [create(:submission)]).should have(1).submissions
+      lhg = create(:lab_has_group)
+      s = create(:submission, lab_has_group: lhg)
+      lhg.should have(1).submissions
     end
 
     it "should have one assistant" do
@@ -23,20 +27,42 @@ describe LabHasGroup do
   end
 
   describe "validations" do
+    describe "custom" do
+      before(:each) do
+        gc = create(:given_course)
+
+        lab = create(:lab, {
+          given_course: gc
+        })
+
+        group = create(:lab_group, {
+          given_course: gc
+        })
+
+        repository = create(:repository)
+
+        @attr = attributes_for(:lab_has_group).merge({
+          lab: lab,
+          lab_group: group,
+          repository: repository
+        })
+      end
+
+      it "should have a lab" do
+        LabHasGroup.new(@attr.merge(lab: nil)).should_not be_valid
+      end
+
+      it "should have a lab group" do
+        LabHasGroup.new(@attr.merge(lab_group: nil)).should_not be_valid
+      end
+
+      it "should have a repository" do
+        LabHasGroup.new(@attr.merge(repository: nil)).should_not be_valid
+      end
+    end
+
     it "defaults to valid" do
       build(:lab_has_group).should be_valid
-    end
-
-    it "should have a lab" do
-      build(:lab_has_group, lab: nil).should_not be_valid
-    end
-
-    it "should have a lab group" do
-      build(:lab_has_group, lab_group: nil).should_not be_valid
-    end
-
-    it "should have a repository" do
-      build(:lab_has_group, repository: nil).should_not be_valid
     end
 
     it "should not have more than one lab for each group" do
@@ -61,12 +87,118 @@ describe LabHasGroup do
     end
   end
 
+
   describe "dependent destroy" do
     it "should not be possible for a extended_deadline to exist without a lab_has_group" do
       lhg = Factory.create(:lab_has_group)
       ee = Factory.create(:extended_deadline, lab_has_group: lhg)
       lhg.destroy
       lambda{ee.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe "factories" do
+    it "should not raise error when group is set" do
+      group = Factory.create(:lab_group)
+      lambda do
+        lhg = Factory.create(:lab_has_group, {
+          lab_group: group
+        })
+      end.should_not raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it "should not raise error when lab is set" do
+      lab = Factory.create(:lab)
+      lambda do
+        lhg = Factory.create(:lab_has_group, {
+          lab: lab
+        })
+      end.should_not raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
+
+  describe "state machine" do
+    let(:lhg) { build(:lab_has_group) }
+
+    it "should start with state initialized" do
+      lhg.should be_initialized
+    end
+
+    it "should be able to change state from initialized to pending" do
+      lhg.pending!
+      lhg.should be_pending
+    end
+
+    it "should be able to change state from pending to reviewing via pending" do
+      lhg.pending!
+      lhg.reviewing!
+      lhg.should be_reviewing
+    end
+
+    it "should be able to change state from pending to accepted via reviewing" do
+      lhg.pending!
+      lhg.reviewing!
+      lhg.accepted!
+      lhg.should be_accepted
+    end
+
+    it "should be able to change state from pending to rejected via reviewing" do
+      lhg.pending!
+      lhg.reviewing!
+      lhg.rejected!
+      lhg.should be_rejected
+    end
+
+    it "should not be possible change state from initialized to rejected" do
+      lambda {
+        lhg.rejected!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from initialized to accepted" do
+      lambda {
+        lhg.accepted!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from initialized to reviewing" do
+      lambda {
+        lhg.reviewing!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from pending to accepted" do
+      lhg.pending!
+      lambda {
+        lhg.accepted!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from pending to rejected" do
+      lhg.pending!
+      lambda {
+        lhg.rejected!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from reviewing to pending" do
+      lhg.pending!
+      lhg.reviewing!
+      lambda {
+        lhg.pending!
+      }.should raise_error(StateMachine::InvalidTransition)
+    end
+
+    it "should not be possible change state from accepted to anything" do
+      lhg.pending!
+      lhg.reviewing!
+      lhg.accepted!
+
+      ["pending", "rejected", "reviewing", "accepted"].each do |s|
+        lambda {
+          lhg.send("#{s}!")
+        }.should raise_error(StateMachine::InvalidTransition)
+      end
     end
   end
 end

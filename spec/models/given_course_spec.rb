@@ -76,4 +76,14 @@ describe GivenCourse do
       lambda{lab.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
+  describe "#register_student" do
+    let(:student) { create(:student) }
+    let(:given_course) { create(:given_course) }
+    it "should have a list of students" do
+      given_course.register_student(student)
+      given_course.should have(1).students
+    end
+  end
 end
+

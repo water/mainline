@@ -7,7 +7,11 @@ class CoursesController < ApplicationController
   end
 
   def show
-    respond_with(@course = GivenCourse.find(params[:id]))
+    @course = GivenCourse.find(params[:id])
+    if current_role.class == Student
+      @labs = current_role.labs.where(given_course_id: @course.id)
+    end
+    respond_with(@course)
   end
   
   def edit

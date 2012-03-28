@@ -9,7 +9,8 @@ class LabsController < ApplicationController
   #
   def index
     if id = params[:lab_group_id]
-      @labs = LabGroup.includes(:labs).find(id).labs
+      @lab_group = LabGroup.includes(:labs).find(id)
+      @labs = @lab_group.labs
     else
       @labs = current_role.
         labs.
@@ -20,12 +21,26 @@ class LabsController < ApplicationController
     respond_with(@labs)
   end
   
+  #
   # GET /courses/:given_course_id/lab_groups/:lab_group_id/labs/:lab_id
+  #
   def show
-    @lab = Lab.find(params[:id])
-    @lab_has_group = @lab.lab_has_groups.where(lab_group_id: params[:lab_group_id]).first
-    @submissions = @lab_has_group.submissions
-    @repository = @lab_has_group.repository
+    # Logic should be moved into the lab model
+    @lab = Lab.
+      includes(:submissions, {
+        lab_groups: { 
+          lab_has_groups: :repository 
+        }
+      }).
+      where({
+        lab_groups: { id: params[:lab_group_id] }
+      }).
+      find(params[:id])
+    @lab_group_id = params[:lab_group_id]
+    @course_id = params[:course_id]
+    @lhg = @lab.lab_has_groups.where(lab_group_id: @lab_group_id).first
+    @repository = @lab.lab_has_groups.first.repository
+
     add_data_to_gon
     respond_with(@lab)
   end
@@ -39,10 +54,10 @@ class LabsController < ApplicationController
   
   # /lab_groups/:group_id/labs/1/join
   def join
-    @group = LabGroup.find(params[:group_id])
+    @group = LabGroup.find(params[:lab_group_id])
     @lab = Lab.find(params[:lab_id])
-    @lab.add_group(@lab)
-    respond_with(@lab)
+    @lab.add_group(@group)
+    respond_with(@group)
   end
 
   def create

@@ -1,13 +1,14 @@
 .hero-unit
   %h1 The courses you are registered for!
   
-%table
+%table.table.table-bordered.table-striped
   %thead
     %th Course code
     %th Examiner email
   %tbody
     - @courses.each do |course|
       %tr
-        %td= course.course.course_codes.first.code
+        %td= link_to course.course.course_codes.first.code,
+          course_path("student", course)
         %td= course.examiners.first.user.email
   

@@ -3,22 +3,54 @@ describe LabsController do
   describe "POST join" do
     it "should test join action" do
       student = Factory.create(:student)
-      group = Factory.create(:lab_group)
-      lab = Factory.create(:lab)
-      labhasgroup = Factory.create(:lab_has_group)
-      post :join, lab_group: group.id, lab_id: lab.id
+      course = Factory.create(:given_course)
+      group = Factory.create(:lab_group, given_course: course)
+      lab = Factory.create(:lab, given_course: course, active: true)
+      login_as(student)
+      post :join, lab_group_id: group.id, lab_id: lab.id
+      response.status.should eq(302)
+    end
+  end
+  
+  describe "GET /show" do
+    describe "student" do
+      let(:student) { Factory.create(:student) }
+      
+      it "has breadcrumbs" do
+        given_course = Factory.create(:given_course)
+        srfc = Factory.create(:student_registered_for_course, {
+          student: student,
+          given_course: given_course
+        })
+
+        lab = Factory.create(:active_lab, given_course: given_course)
+        group = Factory.create(:lab_group, given_course: given_course)
+
+        Factory.create(:lab_has_group, {
+          lab: lab,
+          lab_group: group, 
+          grade: nil
+        })
+
+        login_as(student)
+        visit course_lab_group_lab_path("student", given_course, group, lab)
+        page.should have_selector('div.breadcrumbs')
+      end
+    
+      it "doesn't crash" do
+        login_as(student)
+        page.status_code.should eq(200)
+      end
     end
   end
 
   describe "GET /labs" do
     describe "student" do
       let(:student) { Factory.create(:student) }
-
+      
       it "should return all non finished labs" do
         login_as(student)
-        
         given_course = Factory.create(:given_course)
-
         srfc = Factory.create(:student_registered_for_course, {
           student: student,
           given_course: given_course
