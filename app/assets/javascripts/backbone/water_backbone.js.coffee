@@ -3,6 +3,7 @@
 #= require_tree ./models
 #= require_tree ./views
 #= require_tree ./routers
+#= require_tree ./applications
 
 window.Water =
   Models: {}
@@ -27,20 +28,10 @@ $ ->
   )
   
   #
-  # Setup Backbone models, router and views
+  # Setup Tree Viewer and Commit Request
   #
-  fetcher = new Water.TreeFetcher(repository_path: gon.repository_path, ref: gon.ref)
-  tree_view = new Water.TreeView(el: $("#tree-view"), model: fetcher)
-  breadcrumb_set = window.Water.breadcrumb_set = new Water.BreadcrumbSet()
-  breadcrumb_view = window.Water.breadcrumb_view  = new Water.BreadcrumbView(
-    el: $(".breadcrumbs")
-    model: breadcrumb_set
-    template: JST['backbone/templates/breadcrumb_template']
-  )
-  controller = window.tcl = new Water.TreesController(fetcher: fetcher, breadcrumbs: breadcrumb_set)
-  commit_request = window.commit_request = new Water.CommitRequest(breadcrumbs: breadcrumb_set)
-
-  Backbone.history.start()
+  tree_view = new Water.TreeViewer()
+  commit_request = new Water.CommitRequest(breadcrumbs: tree_view.breadcrumb_set)
   
   #
   # Setup ui-locking when committing
@@ -59,7 +50,7 @@ $ ->
   commit_request.on("commit_request_completed", -> 
     $("#fileupload").fileupload('enable')
     $("#commit_dialog").modal('hide')
-    fetcher.refetch()
+    tree_view.fetcher.refetch()
   )
   
   #
@@ -105,8 +96,9 @@ $ ->
   fileupload.bind("fileuploadfail", (e, data) =>
     
     )
+    
   # Fetch the root tree view
-  controller.trigger("root")
+  tree_view.controller.trigger("root")
   
   $("#scroll_to_uploads").on("click", (event) -> 
     event.preventDefault()
