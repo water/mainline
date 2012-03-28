@@ -86,4 +86,33 @@ describe Submission do
       s.commit_hash.should equal(@repo.head_candidate.commit)
     end
   end
+
+  describe "states" do
+    it "should not be possible to create a submission when LabHasGroup is in state 'accepted'" do
+      lhg = build(:lab_has_group, state: "accepted")
+      build(:submission, lab_has_group: lhg).should_not be_valid
+    end
+
+    it "should not be possible to create a submission when LabHasGroup is in state 'reviewing'" do
+      lhg = build(:lab_has_group, state: "reviewing")
+      build(:submission, lab_has_group: lhg).should_not be_valid
+    end
+
+    it "should change LabHasGroup state from 'initialized' to 'pending'" do
+      lhg = create(:lab_has_group)
+      create(:submission, lab_has_group: lhg)
+      lhg.should be_pending
+    end
+
+    it "should change LabHasGroup state from 'rejected' to 'pending'" do
+      lhg = create(:lab_has_group, state: "rejected")
+      create(:submission, lab_has_group: lhg)
+      lhg.should be_pending
+    end
+
+    it "should not be possible to create a submission when LabHasGroup is in state 'pending'" do
+      lhg = build(:lab_has_group, state: "pending")
+      build(:submission, lab_has_group: lhg).should_not be_valid
+    end
+  end
 end

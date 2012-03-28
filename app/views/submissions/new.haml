@@ -1,0 +1,15 @@
+.hero-unit
+  %h1 New submission
+  %h2 
+    Submitting for Group
+    = @group.number
+  %h2 Students:
+  - @group.students.each do |student|
+    %p= student.user.email
+  %br
+  
+.well
+  %h1 The state that will be submitted
+  .breadcrumbs
+  #tree-view
+  .breadcrumbs

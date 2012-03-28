@@ -11,7 +11,7 @@ Gitorious::Application.routes.draw do
       resources :lab_groups do
         post "join" => "lab_groups#join", on: :collection
         resources :labs, only: [:index, :show] do
-          resources :submissions, only: [:create]
+          resources :submissions, only: [:create, :new]
         end
       end
     end

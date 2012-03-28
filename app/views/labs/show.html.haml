@@ -21,7 +21,12 @@
 // ###################### HEADER ENDS ########################
 
 .hero-unit
-  %h1= @lab.title
+  %h1
+    = @lab.title
+    \-
+    Status:
+    %span{class: @lhg.state}= @lhg.state
+    
   %p 
     This is the current state of your lab
     %br
@@ -35,28 +40,30 @@
 .well
   %h1
     Submissions
-  %table.table
+  %table.table.table-striped.table-bordered
     %thead
-      %th
-        Submissions commit hash
-      %th
-        Submission time
-      %th
-        Status
-    - @lab.submissions.each do |submission|
       %tr
+        %th
+          Name
+        %th
+          Submission commit hash
+        %th
+          Submission time
+    - @lab.submissions.each_with_index do |submission, index|
+      %tr
+        %td
+          Submission
+          = index + 1
         %td
           = submission.commit_hash
         %td
           = submission.created_at
-        %td
-          No status in model
 
 .well
   %h1 Current state of the lab
   %br
   .breadcrumbs
-  #spine
+  #tree-view
   .breadcrumbs
 .well
   =render "upload"

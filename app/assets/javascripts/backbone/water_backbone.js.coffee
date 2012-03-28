@@ -30,7 +30,7 @@ $ ->
   # Setup Backbone models, router and views
   #
   fetcher = new Water.TreeFetcher(repository_path: gon.repository_path, ref: gon.ref)
-  tree_view = new Water.TreeView(el: $("#spine"), model: fetcher)
+  tree_view = new Water.TreeView(el: $("#tree-view"), model: fetcher)
   breadcrumb_set = window.Water.breadcrumb_set = new Water.BreadcrumbSet()
   breadcrumb_view = window.Water.breadcrumb_view  = new Water.BreadcrumbView(
     el: $(".breadcrumbs")
@@ -59,6 +59,7 @@ $ ->
   commit_request.on("commit_request_completed", -> 
     $("#fileupload").fileupload('enable')
     $("#commit_dialog").modal('hide')
+    fetcher.refetch()
   )
   
   #
@@ -84,7 +85,7 @@ $ ->
   # and send them with the upload request
   #
   fileupload.bind("fileuploadsubmit", (e, data) => 
-    hashes = (commit_request.addFile(file.fileName) for file in data.files)
+    hashes = (commit_request.addFile(file.name) for file in data.files)
     data.formData = {hashes: JSON.stringify(hashes)}
   )
   

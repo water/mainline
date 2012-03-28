@@ -20,6 +20,7 @@ gem "hodel_3000_compliant_logger", "0.1.0"
 gem "restful-authentication", "1.2.1"
 gem "acts_as_list"
 gem "thin"
+gem "state_machine"
 
 # Authentication
 gem "rack-openid"

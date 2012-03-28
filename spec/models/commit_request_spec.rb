@@ -1,8 +1,8 @@
 describe CommitRequest do
+  let(:student) { create(:student) }
   before (:each) do
     DatabaseCleaner.clean
     lab = create(:lab)
-    student = create(:student)
 
     lab_group = create(:lab_group, {
       given_course: lab.given_course
@@ -100,7 +100,7 @@ describe CommitRequest do
         and_return(faye)
 
       faye.should_receive(:channel).
-        with("/users/#{@value["token"]}").
+        with("/users/#{student.user.token}").
         and_return(faye)
 
       faye.should_receive(:send!)

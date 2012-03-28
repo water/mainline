@@ -1,5 +1,6 @@
 describe User do
   it "should respond to both examiner and assistent" do
+    DatabaseCleaner.clean
     examiner = create(:examiner)
     given_course = create(:given_course, examiners: [examiner])
     user = examiner.user
@@ -7,8 +8,8 @@ describe User do
     create(:assistant_registered_to_given_course, assistant: assistant, given_course: given_course)
 
     user.role_for_given_course?(:examiner, given_course).should be_true
-    user.role_for_given_course?(:assistent, given_course).should be_true
     user.role_for_given_course?(:student, given_course).should be_false
+    user.role_for_given_course?(:assistent, given_course).should be_true
   end
   
   it "should validate against a given course" do
