@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ ->
-  if $("body.labs")
+  if $("body.labs").length
     #
     # Setup jqfileupload
     #

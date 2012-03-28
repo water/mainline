@@ -1,4 +1,3 @@
 $ ->
-  if $("body.submissions")
-    console.log("Submissions!")
-    # Do stuff
+  if $("body.submissions").length
+    tree_view = new Water.TreeViewer
