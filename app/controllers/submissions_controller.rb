@@ -26,5 +26,6 @@ class SubmissionsController < ApplicationController
   end
 
   def new
+    @group = LabGroup.find(params[:lab_group_id])
   end
 end
