@@ -9,13 +9,14 @@ Gitorious::Application.routes.draw do
     resources :courses do
       post "/courses/:course_id/upload" => "uploads#upload"
       resources :lab_groups do
+        post "join" => "lab_groups#join", on: :collection
         resources :labs, only: [:index, :show] do
           resources :submissions, only: [:create]
         end
       end
     end
   end
-  
+ 
   post "upload" => "uploads#upload"
 
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
