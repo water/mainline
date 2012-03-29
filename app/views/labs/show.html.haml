@@ -20,8 +20,14 @@
 
 // ###################### HEADER ENDS ########################
 
-.hero-unit
-  %h1= @lab.title
+.hero-unit{class: @lhg.state}
+  %h1
+    Lab title:
+    = @lab.title
+  %h1
+    Status:
+    %span{class: @lhg.state}= @lhg.state
+    
   %p 
     This is the current state of your lab
     %br
@@ -35,35 +41,40 @@
 .well
   %h1
     Submissions
-  %table.table
+  %table.table.table-striped.table-bordered
     %thead
-      %th
-        Submissions commit hash
-      %th
-        Submission time
-      %th
-        Status
-    - @lab.submissions.each do |submission|
+      %tr
+        %th
+          Name
+        %th
+          Submission commit hash
+        %th
+          Submission time
+    - @lab.submissions.each_with_index do |submission, index|
       %tr
         %td
-          = submission.commit_hash
+          = link_to "Submission #{index + 1}", 
+            course_lab_group_lab_submission_path(current_role_name,
+              @course_id,
+              @lab_group_id,
+              @lab,
+              submission)
+        %td
+          = submission.commit_hash[0..6]
         %td
           = submission.created_at
-        %td
-          No status in model
 
 .well
   %h1 Current state of the lab
   %br
   .breadcrumbs
-  #spine
+  #tree-view
   .breadcrumbs
 .well
   =render "upload"
   =link_to "Submit!", 
-    course_lab_group_lab_submissions_path(current_role_name, 
+    new_course_lab_group_lab_submission_path(current_role_name, 
     @course_id, 
     @lab_group_id, 
     @lab),
-    class: "btn btn-large btn-danger",
-    method: :post
+    class: "btn btn-large btn-danger"
