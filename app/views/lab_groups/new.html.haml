@@ -9,7 +9,7 @@
       .center
         %br
         %h3
-          = link_to 'Create a Lab Group', course_lab_groups_path
+          = link_to 'Create a Lab Group', course_lab_groups_path("student", params[:course_id]), method: 'post'
         %br
         %h5 When created you will be able to share your group code with the classmates you want to collaborate with.
   .span6
