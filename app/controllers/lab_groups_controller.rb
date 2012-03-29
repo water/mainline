@@ -1,11 +1,9 @@
 class LabGroupsController < ApplicationController
   layout "water"
   respond_to :html
-#  before_filter :verify_course_and_lab_group
+  before_filter :verify_course_and_lab_group, :only => [:show, :join]
   def index
-#    @srfc = StudentRegisteredForCourse.find(current_user)
-#    @lab_groups = @srfc.lab_groups
-    @lab_groups = LabGroup.find(:all)
+    @lab_groups = current_role.lab_groups.where(given_course_id: params[:course_id])
     respond_with(@lab_groups) 
   end
 
@@ -25,11 +23,11 @@ class LabGroupsController < ApplicationController
   end
 
   def create
-    @lab_group = LabGroup.new(params[:course_id])
+    @lab_group = LabGroup.new(given_course_id: params[:course_id])
     respond_to do |format|
       if @lab_group.save
-        format.html { redirect_to(@lab_group, 
-          :notice => "Lab Grop was successfully created") }
+        format.html { redirect_to(course_lab_group_path("student", params[:course_id], @lab_group), 
+          :notice => "Lab Group was successfully created") }
         format.json { render :json => @lab_group, 
           :status => :created, :location => @lab_group }
       else
@@ -44,7 +42,7 @@ class LabGroupsController < ApplicationController
   end
   
   def verify_course_and_lab_group
-    course = GivenCourse.find(params[:given_course_id])
+    course = GivenCourse.find(params[:given_course_id]) 
     lab_group = LabGroup.find(params[:lab_group_id])
     if course != lab_group.given_course
       flash[:error] = "Lab group not registered for course"
