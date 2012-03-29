@@ -17,7 +17,7 @@ class LabGroup < ActiveRecord::Base
   #
   after_create do |group|
     group.given_course.labs.each do |lab|
-      lab.add_group!(group)
+      # lab.add_group!(group)
     end
   end
 

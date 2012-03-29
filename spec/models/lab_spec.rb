@@ -113,16 +113,15 @@ describe Lab do
     end
 
     it "should only return non finished labs" do      
-      # Not finished
       create(:lab_has_group, {
         lab: @labs.first,
-        grade: nil
+        state: "accepted"
       })
 
       # Finished
       create(:lab_has_group, {
         lab: @labs.last,
-        grade: "a"
+        state: "rejected"
       })
 
       Lab.not_finished.count.should >= 1
