@@ -18,7 +18,14 @@ class Submission < ActiveRecord::Base
   after_save do |submission|
     submission.lab_has_group.pending!
   end
-
+  
+  #
+  # @return the index for the submission in the context of the lab_has_group
+  #
+  def number
+    self.lab_has_group.submissions.order(:created_at).index(self) + 1
+  end
+  
   #
   # Looks for a LabHasGroup
   # Fetches the latest commit for the repo connectet to the LabHasGroup

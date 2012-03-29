@@ -14,3 +14,4 @@
 //= require backbone_rails_sync
 //= require backbone_datalink
 //= require backbone/water_backbone
+//= require_tree ./controllers

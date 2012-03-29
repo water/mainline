@@ -113,6 +113,7 @@ describe LabHasGroup do
       ee = Factory.create(:extended_deadline, lab_has_group: lhg)
       lhg.destroy
       lambda{ee.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
   
   describe "state machine" do
     let(:lhg) { build(:lab_has_group) }
@@ -196,7 +197,6 @@ describe LabHasGroup do
           lhg.send("#{s}!")
         }.should raise_error(StateMachine::InvalidTransition)
       end
->>>>>>> origin/master
     end
   end
 end

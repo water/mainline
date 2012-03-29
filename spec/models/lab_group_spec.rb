@@ -51,7 +51,7 @@ describe LabGroup do
       list2.should eq(list1)
     end
   end
-  
+
   describe "adding a student" do
     let(:group) { create(:lab_group) }
     
