@@ -59,7 +59,26 @@ class Water.CommitRequest extends Backbone.Model
     @processedfiles = []
     @errorFiles = []
     @trigger("commit_request_process_started")
-    
+  
+  #
+  # Removes a file
+  #
+  remove: (file_path) =>
+    console.log "Remove!"
+    if @pendingFiles.length isnt 0
+      return
+    request = 
+      {
+        command: "remove",
+        branch: gon.ref,
+        commit_message: null,
+        files: [
+          file_path
+        ]
+      }
+    @send(request)
+  
+  
   commit_request_completed: () =>
     @trigger("commit_request_completed")
     
