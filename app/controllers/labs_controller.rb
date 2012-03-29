@@ -76,10 +76,7 @@ class LabsController < ApplicationController
   def add_data_to_gon
     gon.commit_request_path = repository_commit_requests_path(@repository.id)
     # TODO Make this nicer!
-    gon.tree_root_path = repository_tree_path(@repository, "master", bare: 1)
-    gon.repository_path = repository_path(@repository)
-    gon.ref = "master"
-    gon.repository_id = @repository.id
+    setup_gon_for_tree_view(ref: "master")
     gon.faye_port = APP_CONFIG["faye"]["port"]
     gon.user_token = current_user.token
   end

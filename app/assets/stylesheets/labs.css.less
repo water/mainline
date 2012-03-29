@@ -1,19 +1,41 @@
 // Place all the styles related to the Labs controller here.
 
 @import 'twitter/bootstrap';
+@import "twitter/bootstrap/variables";
+@import "twitter/bootstrap/mixins";
 
-.pending,
-.reviewing
+@alpha: 0.15;
+
+span.pending,
+span.reviewing,
+span.initialized
 {
   color: @warningText;
 }
 
-.approved
+span.accepted
 {
   color: @successText;
 }
 
-.rejected
+span.rejected
 {
   color: @errorText;
+}
+
+.hero-unit.pending,
+.hero-unit.reviewing,
+.hero-unit.initialized
+{
+  #translucent > .background(@warningText, @alpha);
+}
+
+.hero-unit.accepted
+{
+  #translucent > .background(@successText, @alpha);
+}
+
+.hero-unit.rejected
+{
+  #translucent > .background(@errorText, @alpha);
 }
