@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
   has_many :student_registered_for_courses, through: :students
   has_many :memberships, :dependent => :destroy
   has_many :groups, :through => :memberships
-  has_many :repositories, :as => :owner, :dependent => :destroy
   has_many :committerships, :as => :committer, :dependent => :destroy
   has_many :commit_repositories, :through => :committerships, :source => :repository
   has_many :ssh_keys, :order => "id desc", :dependent => :destroy
