@@ -74,7 +74,7 @@ describe LabHasGroup do
 
     it "should exist only one repository for each LabHasGroup" do
       r = create(:repository)
-      create(:lab_has_group, repository: r).should be_valid
+      create(:lab_has_group, repository: r)
       build(:lab_has_group, repository: r).should_not be_valid
     end
     
