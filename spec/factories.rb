@@ -35,23 +35,23 @@ FactoryGirl.define do
     repository
 
     after_build do |lhg|
-      # if lab_group = lhg.lab_group
-      #   gc ||= lab_group.try(:given_course)
-      # end
+      if lab_group = lhg.lab_group
+        gc ||= lab_group.try(:given_course)
+      end
 
-      # if lab = lhg.lab
-      #   gc ||= lab.try(:given_course)
-      # end
+      if lab = lhg.lab
+        gc ||= lab.try(:given_course)
+      end
 
-      # gc ||= Factory.create(:given_course)
+      gc ||= Factory.create(:given_course)
 
-      # lhg.lab_group ||= Factory.create(:lab_group, {
-      #   given_course: gc
-      # })
+      lhg.lab_group ||= Factory.create(:lab_group, {
+        given_course: gc
+      })
 
-      # lhg.lab ||= Factory.create(:active_lab, {
-      #   given_course: gc
-      # })
+      lhg.lab ||= Factory.create(:active_lab, {
+        given_course: gc
+      })
     end
   end
 
