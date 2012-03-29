@@ -127,13 +127,10 @@ labs.each_with_index do |lab, index|
     commit_hash: commits[index],
     lab_has_group: lhg
   })
-end
 
-#### ExtendedDeadline
-labs.each_with_index do |lab, i|
+  #### ExtendedDeadline
   Factory.create(:extended_deadline, {
-    lab_group: lab_group,
-    lab: lab,
-    at: ((i + 1) * 5).days.from_now
+    lab_has_group: lhg,
+    at: ((index + 1) * 5).days.from_now
   })
 end
