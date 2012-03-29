@@ -5,6 +5,10 @@ class SubmissionsController < ApplicationController
   end
 
   def show
+    @submission = Submission.find(params[:id])
+    @group = LabGroup.includes(:lab_has_groups).find(params[:lab_group_id])
+    @repository = @submission.lab_has_group.repository
+    setup_gon_for_tree_view(ref: @submission.commit_hash)
   end
 
   def create
