@@ -52,6 +52,16 @@ describe LabGroup do
     end
   end
 
+
+  describe "dependent destroy" do
+    it "should not be possible for a lab_has_group to exist without a lab_group" do
+      lg = Factory.create(:lab_group)
+      lhg = Factory.create(:lab_has_group, lab_group: lg)
+      lg.destroy
+      lambda{lhg.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+  
   describe "adding a student" do
     let(:group) { create(:lab_group) }
     
@@ -62,14 +72,6 @@ describe LabGroup do
       group.given_course.register_student(student)
       group.add_student(student)
       group.should have(1).students
-
-  describe "dependent destroy" do
-    it "should not be possible for a lab_has_group to exist without a lab_group" do
-      lg = Factory.create(:lab_group, id: 3)
-      lhg = Factory.create(:lab_has_group, lab_group: lg)
-      lg.destroy
-      lambda{lhg.reload}.should raise_error(ActiveRecord::RecordNotFound)
-
     end
   end
 end

@@ -85,8 +85,6 @@ describe GivenCourse do
       lambda{lab.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
   end
-<<<<<<< HEAD
-=======
 
   describe "#register_student" do
     let(:student) { create(:student) }
@@ -96,6 +94,5 @@ describe GivenCourse do
       given_course.should have(1).students
     end
   end
->>>>>>> master
 end
 
