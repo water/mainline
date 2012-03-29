@@ -16,15 +16,8 @@ class LabGroup < ActiveRecord::Base
   # and LabGroup using LabHasGroup
   #
   after_create do |group|
-    labs = group.lab_has_groups.
-      includes(:lab).map(&:lab)
     group.given_course.labs.each do |lab|
-      next if labs.include?(lab)
-      LabHasGroup.create!({
-        lab: lab,
-        lab_group: group,
-        repository: Repository.create!
-      })
+      lab.add_group!(group)
     end
   end
 

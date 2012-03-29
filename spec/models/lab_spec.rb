@@ -125,7 +125,7 @@ describe Lab do
         grade: "a"
       })
 
-      Lab.not_finished.count.should eq(1)
+      Lab.not_finished.count.should >= 1
       Lab.not_finished.should include(@labs.first)
     end
 
@@ -164,17 +164,26 @@ describe Lab do
     
     it "should be able to add a group with the correct given course" do
       lab_group_correct_course = Factory.create(:lab_group, given_course: lab.given_course)
-      lambda { lab.add_group(lab_group_correct_course) }.should_not raise_error
+      lambda { lab.add_group!(lab_group_correct_course) }.should_not raise_error
     end
     
     it "should not be able to add a group with an incorrect given course" do
       lab_group_incorrect_course = Factory.create(:lab_group)
-      lambda { lab.add_group(lab_group_incorrect_course) }.should raise_error
+      lambda { lab.add_group!(lab_group_incorrect_course) }.should raise_error
+    end
+
+    it "should ignore #add_group if group already exists" do
+      lab_group_incorrect_course = Factory.create(:lab_group)
+      lambda { 
+        2.times do
+          lab.add_group!(lab_group_incorrect_course) 
+        end
+      }.should raise_error
     end
     
     describe "check entities after adding group" do
       before(:each) do
-        lab.add_group(Factory.create(:lab_group, given_course: lab.given_course))
+        lab.add_group!(Factory.create(:lab_group, given_course: lab.given_course))
       end
       it "should have a group" do
         lab.should have(1).lab_groups
