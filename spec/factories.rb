@@ -46,13 +46,18 @@ FactoryGirl.define do
 
       gc ||= Factory.create(:given_course)
 
-      lhg.lab ||= Factory.create(:active_lab, {
+      lhg.lab ||= Factory.build(:active_lab, {
         given_course: gc
       })
 
-      lhg.lab_group  ||= Factory.create(:lab_group, {
+      lhg.lab_group  ||= Factory.build(:lab_group, {
         given_course: gc
       })
+    end
+
+    after_create do |lhg|
+      #       lhg.lab.save!
+      # lhg.lab_group.save!
     end
   end
 

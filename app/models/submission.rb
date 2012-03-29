@@ -16,7 +16,7 @@ class Submission < ActiveRecord::Base
   # Change LabHasGroup state to pending
   #
   after_save do |submission|
-    submission.lab_has_group.pending!
+    submission.lab_has_group.update_attribute(:state, "pending")
   end
 
   #

@@ -18,7 +18,6 @@ class LabGroup < ActiveRecord::Base
   after_create do |group|
     labs = group.lab_has_groups.
       includes(:lab).map(&:lab)
-
     group.given_course.labs.each do |lab|
       next if labs.include?(lab)
       LabHasGroup.create!({
