@@ -36,6 +36,7 @@
     When you are satisfied with the submission, click the submit button to submit it.
   %p
     %a.btn.btn-primary.btn-large#scroll_to_uploads{href: "#"}
+      %i.icon-arrow-up.icon-white
       Upload files
 
 .well
@@ -72,9 +73,10 @@
   .breadcrumbs
 .well
   =render "upload"
-  =link_to "Submit!", 
-    new_course_lab_group_lab_submission_path(current_role_name, 
+  %a.btn.btn-large.btn-danger{href:  new_course_lab_group_lab_submission_path(current_role_name, 
     @course_id, 
     @lab_group_id, 
     @lab),
-    class: "btn btn-large btn-danger"
+    class: "btn btn-large btn-danger"}
+    %i.icon-ok.icon-white
+    Submit!
