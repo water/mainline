@@ -72,7 +72,7 @@ class Water.CommitRequest extends Backbone.Model
         command: "remove",
         branch: gon.ref,
         commit_message: null,
-        files: [
+        records: [
           file_path
         ]
       }

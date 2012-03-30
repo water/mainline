@@ -24,6 +24,7 @@ $ ->
     #
     tree_view = new Water.TreeViewer()
     commit_request = new Water.CommitRequest(breadcrumbs: tree_view.breadcrumb_set)
+    tree_view.controller.on("remove", (path) => commit_request.remove(path))
 
     #
     # Setup ui-locking when committing
