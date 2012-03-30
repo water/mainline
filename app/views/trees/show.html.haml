@@ -36,10 +36,9 @@
         - else
           %td.meta
           %td.meta.commit_message
-        - if node.is_a? Grit::Tree
+        - if (node.is_a? Grit::Tree) or (node.is_a? Grit::Blob)
           %td
-            = link_to "Delete", hash_path(@ref, node.name, :remove)
-        - if node.is_a? Grit::Blob
-          %td
-            = link_to "Delete", hash_path(@ref, node.name, :remove)
+            %a.btn.btn-danger{href: hash_path(@ref, node.name, :remove)}
+              %i.icon-white.icon-trash
+              Delete
           
