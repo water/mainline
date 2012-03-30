@@ -1,13 +1,13 @@
 describe LabGroupsController do
   render_views
   describe "join" do
-    student = Factory.create(:student)
-    gc = Factory.create(:given_course)
-    lg = Factory.create(:lab_group, given_course: gc)
-    src = Factory.create(:student_registered_for_course, 
+    it "should be member of group" do
+      student = Factory.create(:student)
+      gc = Factory.create(:given_course)
+      lg = Factory.create(:lab_group, given_course: gc)
+      src = Factory.create(:student_registered_for_course, 
       given_course: gc, student: student)
 
-    it "should be member of group" do
       login_as(student)
       post :join, role: "student", given_course: gc, 
         lab_group: {id: lg.id}
