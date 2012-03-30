@@ -55,4 +55,44 @@ describe GivenCourse do
       given_course.should have(1).students
     end
   end
+
+  describe "dependant destroy" do
+    it "should no be possible for a student_registered_for_course to exist without a given_course" do
+      gc = Factory.create(:given_course)
+      str = Factory.create(:student_registered_for_course, given_course: gc)
+      gc.destroy
+      lambda{str.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "should not be possible for a lab_group to exist without a given_course" do
+      gc = Factory.create(:given_course)
+      lg = Factory.create(:lab_group, given_course: gc)
+      gc.destroy
+      lambda{lg.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "should not be possible for a assistant_registered_to_given_course to exist without a given_course" do
+      gc = Factory.create(:given_course)
+      argc = Factory.create(:assistant_registered_to_given_course, given_course: gc)
+      gc.destroy
+      lambda{argc.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "should remove lab when self is destroyed" do
+      lab = create(:lab, active: true)
+      gc = create(:given_course, labs: [lab])
+      gc.destroy
+      lambda{lab.reload}.should raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe "#register_student" do
+    let(:student) { create(:student) }
+    let(:given_course) { create(:given_course) }
+    it "should have a list of students" do
+      given_course.register_student(student)
+      given_course.should have(1).students
+    end
+  end
 end
+

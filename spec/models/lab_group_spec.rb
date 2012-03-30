@@ -13,11 +13,9 @@ describe LabGroup do
         lab: lab
       })
 
-      2.times { create(:submission, {
-        lab_has_group: lhg
-      })}
+      create(:submission, lab_has_group: lhg)
 
-      group.reload.should have(2).submissions
+      group.should have(1).submissions
     end
 
     it "should have a list of students" do
@@ -51,6 +49,16 @@ describe LabGroup do
       list2.uniq.count.should eq(3)
 
       list2.should eq(list1)
+    end
+  end
+
+
+  describe "dependent destroy" do
+    it "should not be possible for a lab_has_group to exist without a lab_group" do
+      lg = Factory.create(:lab_group)
+      lhg = Factory.create(:lab_has_group, lab_group: lg)
+      lg.destroy
+      lambda{lhg.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
   end
   

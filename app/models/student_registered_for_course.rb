@@ -10,7 +10,7 @@ class StudentRegisteredForCourse < ActiveRecord::Base
   # Gets the StudentRegisteredForCourse object 
   # for a combination of a student and a given course
   #
-  def self.reg_for_student_and_course(student, given_course)
-    self.where(student_id: student.id, given_course_id: given_course.id).limit(1)
+  def self.reg_for_student_and_course(student, course)
+    StudentRegisteredForCourse.where(student_id: student.id, given_course_id: course.id).limit(1)
   end
 end

@@ -19,8 +19,7 @@ FactoryGirl.define do
 
   factory :extended_deadline do
     at 3.days.from_now
-    lab_group
-    lab
+    lab_has_group
   end
 
   factory :student_registered_for_course do

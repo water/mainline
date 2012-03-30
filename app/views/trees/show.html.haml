@@ -1,8 +1,10 @@
+
 %table#tree-view.table.table-bordered.table-striped
   %thead
     %th File or directory
     %th Changed
     %th Comment
+    %th Actions
   - @tree.contents.sort_by{|c| force_utf8(c.name).downcase}.each do |node|
     %tr{:class => cycle("odd", "even")}
       - if node.is_a? Grit::Tree
@@ -34,4 +36,9 @@
         - else
           %td.meta
           %td.meta.commit_message
+        - if (node.is_a? Grit::Tree) or (node.is_a? Grit::Blob)
+          %td
+            %a.btn.btn-danger{href: hash_path(@ref, node.name, :remove)}
+              %i.icon-white.icon-trash
+              Delete
           

@@ -9,8 +9,23 @@ class Submission < ActiveRecord::Base
   validates_presence_of :commit_hash, :lab_has_group
   validate :lab_access
   validate :existence_of_commit_hash
-
+  validate :lab_has_group_state
   before_validation :fetch_commit
+
+  #
+  # Change LabHasGroup state to pending
+  #
+  after_save do |submission|
+    submission.lab_has_group.pending!
+  end
+  
+  #
+  # @return the index for the submission in the context of the lab_has_group
+  #
+  def number
+    self.lab_has_group.submissions.order(:created_at).index(self) + 1
+  end
+  
   #
   # Looks for a LabHasGroup
   # Fetches the latest commit for the repo connectet to the LabHasGroup
@@ -42,5 +57,32 @@ class Submission < ActiveRecord::Base
     #
     def fetch_commit
       self.commit_hash ||= repository.try(:head_candidate).try(:commit)
+    end
+
+    #
+    # Is it possible to create a submission
+    # for a given LabHasGroup?
+    # The following LabHasGroup#state's will result
+    # in a non valid submission object
+    # - accepted
+    # - reviewing
+    # - pending
+    #
+    def lab_has_group_state
+      return unless lab_has_group
+
+      if lab_has_group.accepted?
+        errors.add(:lab_has_group, %q{
+          The corresponding lab has already been accepted
+        })
+      elsif lab_has_group.reviewing?
+        errors.add(:lab_has_group, %q{
+          The corresponding lab is being reviewed
+        })
+      elsif lab_has_group.pending?
+        errors.add(:lab_has_group, %q{
+          A pending submission already exists
+        })
+      end
     end
 end

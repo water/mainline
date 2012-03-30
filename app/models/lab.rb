@@ -2,10 +2,11 @@ class Lab < ActiveRecord::Base
   belongs_to :lab_description
   belongs_to :given_course
 
-  has_many :lab_has_groups
+  has_many :lab_has_groups, dependent: :destroy
   has_many :lab_groups, through: :lab_has_groups
+  
   has_many :submissions, through: :lab_has_groups
-  has_many :default_deadlines, inverse_of: :lab
+  has_many :default_deadlines, dependent: :destroy, inverse_of: :lab
 
   has_one :initial_lab_commit_for_lab
   has_one :initial_lab_commit, through: :initial_lab_commit_for_lab

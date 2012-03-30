@@ -8,6 +8,7 @@ class Water.TreesController extends Backbone.Router
   routes:
     "/tree/*path" : "fetch_tree"
     "/blob/*path" : "fetch_blob"
+    "/remove/*path" : "remove"
     "*anything"   : "root"
     
   fetch_tree: (path) ->
@@ -16,6 +17,9 @@ class Water.TreesController extends Backbone.Router
   fetch_blob: (path) ->
     @breadcrumbs.set_path(path)
     @fetcher.fetch("blobs", path)
+  remove: (path) =>
+    @trigger("remove", path)
+    @navigate("/")
   root: () ->
     @breadcrumbs.root()
     @fetcher.fetch("trees", "")

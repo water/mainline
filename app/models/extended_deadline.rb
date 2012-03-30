@@ -1,8 +1,7 @@
 class ExtendedDeadline < ActiveRecord::Base
-  belongs_to :lab_group
-  belongs_to :lab
+  belongs_to :lab_has_group
 
-  validates_presence_of :lab, :lab_group, :at
+  validates_presence_of :lab_has_group, :at
   validate :time_span, :time_difference
 
   # What's the minimum time between 
@@ -18,7 +17,7 @@ private
 
   def time_difference
     in_valid = ExtendedDeadline.
-      where("extended_deadlines.lab_group_id = ?", lab_group_id).
+      where("extended_deadlines.lab_has_group_id = ?", lab_has_group_id).
       where("extended_deadlines.id != ?", id.to_i).
     any? do |d|
       (d.at.to_i - self.at.to_i).abs < MINIMUM_TIME_DIFFERENCE.to_i

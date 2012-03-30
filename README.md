@@ -1,6 +1,16 @@
 # Water
 
-Core web application written in Rails 3
+## What is water?
+Water is system for managing the hand-in and reviewing of programming assignments. It combines a git-based backend with an awesome web interface.
+
+### What is awesome about it?
+- Hand-ins can be made via the command line using a git push or via the awesome web interface
+- The web interface is awesome because you can:
+  - upload multiple files simultaneously
+  - see and manage the tree structure of your hand-in
+  - mix hand-ins via git and the web interface
+- Teachers and assistants can comment on specific lines of code
+- Hand-ins can be automatically checked for compliance with a set of technical requirements - no more waiting days just to be rejected because a mere technicality
 
 ## Setup
 
