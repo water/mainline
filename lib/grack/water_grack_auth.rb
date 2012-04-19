@@ -2,7 +2,7 @@ require 'rack/auth/abstract/handler'
 require 'rack/auth/abstract/request'
 require 'rack/auth/basic'
 
-require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path("../../../config/environment", __FILE__)
 
 class WaterGrackAuth < Rack::Auth::Basic
 
