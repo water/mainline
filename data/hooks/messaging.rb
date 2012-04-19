@@ -25,4 +25,9 @@ class Publisher
     connect unless @connected
     @connection.send '/queue/GitoriousPushEvent', message, {'persistent' => true}
   end
+
+  def create_submission(message)
+    connect unless @connected
+    @connection.send '/queue/Submission', message, {'persistent' => true}
+  end
 end

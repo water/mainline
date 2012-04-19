@@ -18,4 +18,5 @@ ActiveMessaging::Gateway.define do |s|
   s.destination :merge_request_version_deletion, '/queue/GitoriousMergeRequestVersionDeletion'
   s.destination :web_hook_notifications, '/queue/GitoriousPostReceiveWebHook'
   s.destination :commit, '/queue/CommitRequest'
+  s.destination :submission, '/queue/Submission'
 end
