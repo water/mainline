@@ -6,10 +6,18 @@ require File.expand_path("../../../config/environment", __FILE__)
 
 class WaterGrackAuth < Rack::Auth::Basic
 
-  def valid?(auth)
-    # TODO, do actual checking here
-    user, pass = auth.credentials[0,2]
-    return true
+  #
+  # @lhg LabHasGroup
+  # @return Boolean Does the user exists 
+  #   and can one push to the given repository
+  #
+  def authorized?(lab_has_group)
+    return false unless current_user
+    return lab_has_group.
+      lab_group.
+      students.
+      map(&:user).
+      include?(current_user)
   end
 
   #
@@ -20,6 +28,7 @@ class WaterGrackAuth < Rack::Auth::Basic
   end
 
   def call(env)
+    @env = env
     path_info = env["PATH_INFO"]
 
     values = {}
@@ -54,17 +63,26 @@ class WaterGrackAuth < Rack::Auth::Basic
 
     env["PATH_INFO"] = path_info.gsub(/^.*\.git/, repository.hashed_path + ".git")
 
-    # @env = env
-    # @req = Rack::Request.new(env) # TODO: do real auth request by uncommenting
+    @req = Rack::Request.new(env) # TODO: do real auth request by uncommenting
 
-    # TODO: the authorization stuff below
-    # auth = Request.new(env)
-    # return unauthorized unless auth.provided?
-    # return bad_request unless auth.basic?
-    # return unauthorized unless valid?(auth)
+    return unauthorized unless auth.provided?
+    return bad_request unless auth.basic?
+    return unauthorized unless authorized?(lhg)
 
     # env['REMOTE_USER'] = auth.username
     return @app.call(env)
+  end
+
+  #
+  # @return User
+  #
+  def current_user
+    login, password = auth.credentials[0,2]
+    User.authenticate(login, password)
+  end
+
+  def auth
+    Request.new(@env)
   end
 
   # Could be useful

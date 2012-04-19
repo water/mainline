@@ -31,7 +31,8 @@ commits = %w{
 #### User
 user = Factory.create(:user, {
   email: "admin@popfizzle.com",
-  password: "abc123"
+  password: "abc123",
+  login: "pelle"
 })
 
 #### Administrator

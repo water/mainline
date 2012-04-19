@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
   
   def new
     if User.find_by_email("admin@popfizzle.com") and params[:force]
-      password_authentication("admin@popfizzle.com", "abc123")
+      password_authentication("pelle", "abc123")
     else
       flash.now.alert = %q{
         Database is not popularise, 
@@ -64,8 +64,8 @@ class SessionsController < ApplicationController
     redirect_to login_path(:method => 'openid')
   end
 
-  def password_authentication(email, password)
-    self.current_user = User.authenticate(email, password)    
+  def password_authentication(login, password)
+    self.current_user = User.authenticate(login, password)    
     if logged_in?
       successful_login
     else
