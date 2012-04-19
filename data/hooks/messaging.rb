@@ -5,7 +5,7 @@ require 'yaml'
 
 print "=> Syncing Gitorious... "
 
-Rails.env = 'production'
+# Rails.env = 'production'
 
 class Publisher
   def connect

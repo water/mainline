@@ -1,24 +1,10 @@
-#!/usr/bin/env ruby
-
-incpath = File.dirname(__FILE__)
-$: << incpath
-
-require 'messaging'
-require 'json'
-
-
-@publisher = Publisher.new
-gitdir = File.expand_path(File.join(incpath, ".."))
-# Equivalent to the hash in the model
-hashed_dir = gitdir.split('/')[-3,3].join('/').split('.').first
-# compat with the old-style paths
-hashed_dir = hashed_dir.sub(/^repositories\//, "")
-
-
-while line = gets
-  message = JSON.unparse({:gitdir => hashed_dir, :message => line.chomp, :username => ENV['GITORIOUS_USER']})
-  @publisher.post_message(message)
-end
-
-puts "[OK]"
-
+#!/usr/bin/env bash
+if [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then
+  source "$HOME/.rvm/scripts/rvm"
+elif [[ -s "/usr/local/rvm/scripts/rvm" ]] ; then
+  # Then try to load from a root install
+  source "/usr/local/rvm/scripts/rvm"
+else
+  printf "ERROR: An RVM installation was not found.\n"
+fi
+ruby hooks/post-receive.rb
