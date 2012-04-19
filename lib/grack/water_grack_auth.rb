@@ -1,7 +1,7 @@
 require 'rack/auth/abstract/handler'
 require 'rack/auth/abstract/request'
 require 'rack/auth/basic'
-
+require "colorize"
 require File.expand_path("../../../config/environment", __FILE__)
 
 class WaterGrackAuth < Rack::Auth::Basic
@@ -12,18 +12,47 @@ class WaterGrackAuth < Rack::Auth::Basic
     return true
   end
 
+  #
+  # @message String Message to be send to user 
+  #
+  def halt(message)
+    $stderr.puts "Halt!: #{message}".red
+  end
+
   def call(env)
     path_info = env["PATH_INFO"]
-    res = path_info.scan(%r{/\d+/}).map { |x| x[1..-2].to_i }
-    p res
 
+    values = {}
+    path_info.scan(%r{\w+/\d+}) do |match| 
+      res = match.split("/")
+      values.merge!(res.first.to_sym => res.last.to_i)
+    end
+
+    # values => {:courses=>1, :lab_groups=>3, :labs=>1}
     # The code below should use all 3 of the pattern matched values.
-    course_id, lab_group_id, lab_id = res
-    lab = Lab.find(lab_id)
-    lhg = lab.lab_has_groups.first
-    repo = lhg.repository
+    lab = Lab.
+      includes({
+        lab_has_groups: :repository
+      }).
+      where("labs.given_course_id = ?", values[:courses]).
+      find_by_number(values[:labs])
 
-    env["PATH_INFO"] = path_info.gsub(/^.*\.git/, repo.hashed_path + ".git")
+    unless lab
+      halt("Lab not found")
+      return bad_request
+    end
+
+    unless lhg = lab.lab_has_groups.first
+      halt("Lab has group not found")
+      return bad_request
+    end
+
+    unless repository = lhg.repository
+      halt("Repository not found")
+      return bad_request
+    end
+
+    env["PATH_INFO"] = path_info.gsub(/^.*\.git/, repository.hashed_path + ".git")
 
     # @env = env
     # @req = Rack::Request.new(env) # TODO: do real auth request by uncommenting
