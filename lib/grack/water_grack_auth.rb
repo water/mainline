@@ -5,7 +5,6 @@ require "colorize"
 require File.expand_path("../../../config/environment", __FILE__)
 
 class WaterGrackAuth < Rack::Auth::Basic
-
   #
   # @lhg LabHasGroup
   # @return Boolean Does the user exists 
@@ -33,13 +32,13 @@ class WaterGrackAuth < Rack::Auth::Basic
     path_info = env["PATH_INFO"]
 
     values = {}
-    path_info.scan(%r{\w+/\d+}) do |match| 
+
+    # /channels/1/labs/2 => {:courses=>1, :labs=>2}
+    path_info.scan(%r{\w+/\d+}) do |match|
       res = match.split("/")
       values.merge!(res.first.to_sym => res.last.to_i)
     end
 
-    # values => {:courses=>1, :lab_groups=>3, :labs=>1}
-    # The code below should use all 3 of the pattern matched values.
     lab = Lab.
       includes({
         lab_has_groups: :repository
@@ -71,25 +70,14 @@ class WaterGrackAuth < Rack::Auth::Basic
     return unauthorized unless authorized?(lhg)
 
     # env['REMOTE_USER'] = auth.username
-    before = submit_commits_for(repository) if pushed?
-    status = @app.call(env)
-    after = submit_commits_for(repository) if pushed?
+    @app.call(env)
+  end
 
-    if pushed?# and before != after
-      after.each do |hash|
-      # (after - before).each do |hash|
-        submission = Submission.create({
-          lab_has_group: lhg,
-          commit_hash: hash
-        })
-
-        if submission.id
-          puts hash.green
-        end
-      end
+  def self.pushed!(c)
+    @@jobs.keys.each do |key|
+      @@jobs[key].call
+      puts "--------------".red
     end
-
-    return status
   end
 
   #
@@ -98,22 +86,6 @@ class WaterGrackAuth < Rack::Auth::Basic
   def current_user
     login, password = auth.credentials[0,2]
     User.authenticate(login, password)
-  end
-
-  #
-  # @return Boolean
-  #
-  def pushed?
-    true #!! @env["REQUEST_PATH"].match(/git-receive-pack/)
-  end
-
-  #
-  # @return Array<String> A list of commit hashes
-  #
-  def submit_commits_for(repository)
-    Dir.chdir(repository.full_repository_path) do
-      `git log master --grep "#submit" --format="%H"`.split("\n")
-    end
   end
 
   def auth
