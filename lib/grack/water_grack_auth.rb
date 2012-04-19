@@ -29,6 +29,7 @@ class WaterGrackAuth < Rack::Auth::Basic
 
   def call(env)
     @env = env
+
     path_info = env["PATH_INFO"]
 
     values = {}
@@ -63,14 +64,32 @@ class WaterGrackAuth < Rack::Auth::Basic
 
     env["PATH_INFO"] = path_info.gsub(/^.*\.git/, repository.hashed_path + ".git")
 
-    @req = Rack::Request.new(env) # TODO: do real auth request by uncommenting
+    @req = Rack::Request.new(env)
 
     return unauthorized unless auth.provided?
     return bad_request unless auth.basic?
     return unauthorized unless authorized?(lhg)
 
     # env['REMOTE_USER'] = auth.username
-    return @app.call(env)
+    before = submit_commits_for(repository) if pushed?
+    status = @app.call(env)
+    after = submit_commits_for(repository) if pushed?
+
+    if pushed?# and before != after
+      after.each do |hash|
+      # (after - before).each do |hash|
+        submission = Submission.create({
+          lab_has_group: lhg,
+          commit_hash: hash
+        })
+
+        if submission.id
+          puts hash.green
+        end
+      end
+    end
+
+    return status
   end
 
   #
@@ -79,6 +98,22 @@ class WaterGrackAuth < Rack::Auth::Basic
   def current_user
     login, password = auth.credentials[0,2]
     User.authenticate(login, password)
+  end
+
+  #
+  # @return Boolean
+  #
+  def pushed?
+    true #!! @env["REQUEST_PATH"].match(/git-receive-pack/)
+  end
+
+  #
+  # @return Array<String> A list of commit hashes
+  #
+  def submit_commits_for(repository)
+    Dir.chdir(repository.full_repository_path) do
+      `git log master --grep "#submit" --format="%H"`.split("\n")
+    end
   end
 
   def auth
