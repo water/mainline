@@ -12,7 +12,7 @@
   -if markdown?(current_path.last)
     .markdown= markdown(@blob.data)
   -else
-    %pre.prettyprint= markdown_if_markdown(@blob.data,current_path.last) # render_highlighted(@blob.data, current_path.last || "")
+    = Pygments.highlight(@blob.data, filename: current_path.last).html_safe
 - elsif textual?(@blob) && too_big_to_render?(@blob.size)
   %p
     = t("views.blobs.too_big").call(self, raw_blob_path(@commit.id, current_path))
