@@ -78,6 +78,19 @@ class Water.CommitRequest extends Backbone.Model
       }
     @send(request)
   
+  #
+  # Creates a directory
+  #
+  mkdir: (path) =>
+    console.log("mkdir")
+    request =
+      {
+        command: "mkdir",
+        branch: gon.ref,
+        commit_message: null,
+        
+      }
+  
   
   commit_request_completed: () =>
     @trigger("commit_request_completed")

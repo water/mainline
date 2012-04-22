@@ -9,17 +9,24 @@ class Water.TreesController extends Backbone.Router
     "/tree/*path" : "fetch_tree"
     "/blob/*path" : "fetch_blob"
     "/remove/*path" : "remove"
+    "/mkdir"      : "mkdir"
     "*anything"   : "root"
     
   fetch_tree: (path) ->
+    @entity = "tree"
     @breadcrumbs.set_path(path)
     @fetcher.fetch("trees", path)
   fetch_blob: (path) ->
+    @entity = "blob"
     @breadcrumbs.set_path(path)
     @fetcher.fetch("blobs", path)
   remove: (path) =>
     @trigger("remove", path)
-    @navigate("/")
+    @navigate(["/" + @entity, @breadcrumbs.path].join("/"))
+  mkdir: () =>
+    console.log("Mkdir")
+    @trigger("mkdir")
+    @navigate(["/" + @entity, @breadcrumbs.path].join("/"))
   root: () ->
     @breadcrumbs.root()
     @fetcher.fetch("trees", "")
