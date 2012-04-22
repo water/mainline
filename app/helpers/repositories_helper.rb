@@ -14,6 +14,7 @@ module RepositoriesHelper
     repo_owner_path(@repository, :repository_commit_path, @repository, objectish)
   end
   
+  # We want the hash paths to be without a leading slash
   def hash_path(ref, path, type)
     "#/#{type}/#{path}"
   end
