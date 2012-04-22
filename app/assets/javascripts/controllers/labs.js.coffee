@@ -8,7 +8,7 @@ $ ->
     # Setup jqfileupload
     #
     $('#fileupload').fileupload()
-
+    
     # Enable iframe cross-domain access via redirect option:
     $('#fileupload').fileupload(
         'option',
@@ -25,7 +25,9 @@ $ ->
     tree_view = new Water.TreeViewer()
     commit_request = new Water.CommitRequest(breadcrumbs: tree_view.breadcrumb_set)
     tree_view.controller.on("remove", (path) => commit_request.remove(path))
-    tree_view.controller.on("mkdir", () => commit_request.mkdir(tree_view.breadcrumb_set.path))
+    tree_view.controller.on("mkdir", 
+      () => commit_request.mkdir(tree_view.breadcrumb_set.path, $("#mkdir-input").val())
+      )
     
     #
     # Setup ui-locking when committing

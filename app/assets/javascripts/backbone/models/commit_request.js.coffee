@@ -42,7 +42,7 @@ class Water.CommitRequest extends Backbone.Model
         files: @processedfiles
       @send(request)
       
-  # Triggered when all files have been uploaded, sends the commit_request
+  # Sends a commit_request
   send: (request) =>
     @trigger("sending_commit_request")
     $.ajax gon.commit_request_path, 
@@ -81,16 +81,16 @@ class Water.CommitRequest extends Backbone.Model
   #
   # Creates a directory
   #
-  mkdir: (path) =>
-    console.log("mkdir")
+  mkdir: (path, dirname) =>
+    console.log("mkdir: ", [path, dirname].join("/"))
     request =
       {
         command: "mkdir",
         branch: gon.ref,
         commit_message: null,
-        
+        path: [path, dirname].join("/")
       }
-  
+    @send(request)
   
   commit_request_completed: () =>
     @trigger("commit_request_completed")
