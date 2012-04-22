@@ -7,10 +7,10 @@ class Water.TreesController extends Backbone.Router
     @breadcrumbs = params.breadcrumbs
     @entity = "tree"
   routes:
-    "/tree/*path" : "fetch_tree"
-    "/blob/*path" : "fetch_blob"
-    "/remove/*path" : "remove"
-    "/mkdir"      : "mkdir"
+    "tree/*path" : "fetch_tree"
+    "blob/*path" : "fetch_blob"
+    "remove/*path" : "remove"
+    "mkdir"      : "mkdir"
     "*anything"   : "root"
     
   fetch_tree: (path) ->
@@ -23,12 +23,11 @@ class Water.TreesController extends Backbone.Router
     @fetcher.fetch("blobs", path)
   remove: (path) =>
     @trigger("remove", path)
-    @navigate(["/" + @entity, @breadcrumbs.path].join("/"))
+    @navigate([@entity, @breadcrumbs.path].join("/"))
   mkdir: () =>
     console.log("Mkdir")
     @trigger("mkdir")
-    console.log("PAth:", ["/" + @entity, @breadcrumbs.path].join("/"))
-    @navigate(["/" + @entity, @breadcrumbs.path].join("/"))
+    @navigate([@entity, @breadcrumbs.path].join("/"))
   root: () ->
     @breadcrumbs.root()
     @fetcher.fetch("trees", "")
