@@ -334,6 +334,9 @@ GEM
       shoulda-matchers (~> 1.0.0)
     shoulda-context (1.0.0)
     shoulda-matchers (1.0.0)
+    simple_form (2.0.1)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     spork (0.9.0)
     sprockets (2.1.2)
       hike (~> 1.2)
@@ -429,6 +432,7 @@ DEPENDENCIES
   secure_faye!
   selenium
   shoulda
+  simple_form
   spork (~> 0.9.0)
   spork-testunit!
   state_machine
