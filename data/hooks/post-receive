@@ -7,4 +7,8 @@ elif [[ -s "/usr/local/rvm/scripts/rvm" ]] ; then
 else
   printf "ERROR: An RVM installation was not found.\n"
 fi
-ruby hooks/post-receive.rb
+
+while read oldrev newrev refname
+do
+  echo $oldrev $newrev $refname | ruby hooks/post-receive.rb 
+done
