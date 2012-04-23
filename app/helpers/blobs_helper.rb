@@ -48,6 +48,17 @@ module BlobsHelper
     end
   end
   
+  def pygmentize(args)
+    options = { :encoding => 'utf-8', :linenos => 'False' }
+    begin
+      logger.fatal(args[:filename])
+      Pygments.highlight args[:data], :filename => args[:filename], :options => options
+    rescue
+      logger.fatal("Shit went down")
+      Pygments.highlight args[:data], :lexer => :text, :options => options
+    end
+  end
+  
   # TODO PROBABLY NOT USED RIGHT NOW
   def render_highlighted(text, filename, code_theme_class = nil)
     out = []
