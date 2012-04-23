@@ -33,7 +33,7 @@ class WaterGrackAuth < Rack::Auth::Basic
 
     values = {}
 
-    # /channels/1/labs/2 => {:courses=>1, :labs=>2}
+    # /courses/1/labs/2 => {:courses=>1, :labs=>2}
     path_info.scan(%r{\w+/\d+}) do |match|
       res = match.split("/")
       values.merge!(res.first.to_sym => res.last.to_i)
