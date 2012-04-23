@@ -7,4 +7,4 @@ elif [[ -s "/usr/local/rvm/scripts/rvm" ]] ; then
 else
   printf "ERROR: An RVM installation was not found.\n"
 fi
-ruby hooks/pre-receive.rb
+# ruby hooks/pre-receive.rb
