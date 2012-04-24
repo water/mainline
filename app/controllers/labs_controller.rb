@@ -9,16 +9,15 @@ class LabsController < ApplicationController
   #
   def index
     if id = params[:lab_group_id]
-      @lab_group = LabGroup.includes(:labs).find(id)
-      @labs = @lab_group.labs
+      @lab_group = LabGroup.includes(:labs, :lab_has_groups).find(id)
+      @lab_has_groups = @lab_group.lab_has_groups
     else
-      @labs = current_role.
-        labs.
-        includes(:lab_description).
-        not_finished
+      @lab_has_groups = current_role.
+        lab_has_groups.
+        includes(:lab, :lab_group)
     end
 
-    respond_with(@labs)
+    respond_with(@lab_has_groups)
   end
   
   #
