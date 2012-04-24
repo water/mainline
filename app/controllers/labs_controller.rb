@@ -99,6 +99,6 @@ class LabsController < ApplicationController
      @submission = Submission.find(params[:id])
      @submission.lab_has_group.grade = params[:grade]
    end
-   redirect
+   redirect_to :controller => 'labs', :action => 'submissions'
   end
 end

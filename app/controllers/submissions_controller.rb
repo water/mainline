@@ -8,7 +8,7 @@ class SubmissionsController < ApplicationController
     if current_role == Assistant || current_role == Examiner
       Submission.find(params[:id]).notes = params[:notes]
     end
-    redirect
+    redirect_to :controller => 'submissions', :action => 'show'
   end
 
   def show
