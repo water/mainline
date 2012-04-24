@@ -95,8 +95,10 @@ class LabsController < ApplicationController
   end
 
   def grade
-    @submission = Submission.find(params[:id])
-    @submission.lab_has_group.grade = params[:grade]
-    redirect
+   if current_role == Assistant || current_role == Examiner
+     @submission = Submission.find(params[:id])
+     @submission.lab_has_group.grade = params[:grade]
+   end
+   redirect
   end
 end

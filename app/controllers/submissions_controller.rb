@@ -5,7 +5,9 @@ class SubmissionsController < ApplicationController
   end
 
   def notes
-    Submission.find(params[:id]).notes = params[:notes]
+    if current_role == Assistant || current_role == Examiner
+      Submission.find(params[:id]).notes = params[:notes]
+    end
     redirect
   end
 
