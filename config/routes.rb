@@ -102,6 +102,9 @@ Gitorious::Application.routes.draw do
   match "/about/faq" => "site#about", :as => :faq
   match "/contact" => "site#contact", :as => :contact
 
+  match "/submissions/:id/grade/:grade" => "labs#grade", :as => :grade, :via => :put
+  match "/submissions/:id/notes" => "submissions#notes", :as => :notes, :via => :post
+
   namespace :admin do
     resources :users do
       member do
