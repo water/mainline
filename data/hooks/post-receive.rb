@@ -22,6 +22,20 @@ unless submit_hash
   exit 0
 end
 
+puts %Q{
+
+
+       #    #    ##     #####  ######  #####
+       #    #   #  #      #    #       #    #
+       #    #  #    #     #    #####   #    #
+       # ## #  ######     #    #       #####
+       ##  ##  #    #     #    #       #   #
+       #    #  #    #     #    ######  #    #
+
+
+}
+
+
 # TODO: Implement
 puts "Ok, water tries to submit #{submit_hash} for you ..."
 
