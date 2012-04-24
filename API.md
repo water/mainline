@@ -2,6 +2,11 @@
 
 ## Labs
 
+### PUT /submissions/:id/grade/:grade
+
+- Assistant
+  - Sätter grade på en submission
+
 ### GET /labs
 
 - Student
@@ -117,6 +122,11 @@
    - En lista med alla submissions som gjorts av grupp, på dom kurser som usern är examiner
 - Administrator
   - En lista med alla submissions av en grupp
+
+### POST /submissions/:id/notes
+
+- Assistant
+  - param[:notes] ska innehålla handledarens anteckningar
 
 ## Uploads
 
