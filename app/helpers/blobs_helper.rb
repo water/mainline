@@ -49,7 +49,7 @@ module BlobsHelper
   end
   
   def pygmentize(args)
-    options = { :encoding => 'utf-8', :linenos => 'False' }
+    options = { :encoding => 'utf-8' }
     begin
       logger.fatal(args[:filename])
       Pygments.highlight args[:data], :filename => args[:filename], :options => options
