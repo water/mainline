@@ -4,12 +4,6 @@ class SubmissionsController < ApplicationController
   def index
   end
 
-  def grade
-    @submission = Submission.find(params[:id])
-    @submission.lab_has_group.grade = params[:grade]
-    redirect
-  end
-
   def notes
     Submission.find(params[:id]).notes = params[:notes]
     redirect

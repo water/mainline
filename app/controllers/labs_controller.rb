@@ -93,4 +93,10 @@ class LabsController < ApplicationController
     gon.faye_port = APP_CONFIG["faye"]["port"]
     gon.user_token = current_user.token
   end
+
+  def grade
+    @submission = Submission.find(params[:id])
+    @submission.lab_has_group.grade = params[:grade]
+    redirect
+  end
 end
