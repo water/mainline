@@ -11,15 +11,10 @@ commits = `git rev-list #{oldrev}..#{newrev}`.split("\n")
 submit_hash = nil
 commits.each { |commit_hash|
   msg = `git show --format=format:"%s" #{commit_hash}`.split("\n").first
-  # puts "I know #{commit_hash} has message #{msg}"
   submit_hash ||= commit_hash if msg.include? "#submit"
 }
 
-unless submit_hash
-  puts "We see that you didn't want to submit your code, so we don't"
-  exit 0
-end
-
+# I made this banner using the unix `banner` command
 puts %Q{
 
 
@@ -33,8 +28,19 @@ puts %Q{
 
 }
 
+unless submit_hash
+  puts %Q{
+We see that you didn't want to submit your code, so we don't. To submit include
+the token #submit in your commit message
+  }
+  exit 0
+end
 
-# TODO: Implement
-puts "Ok, water tries to submit #{submit_hash} for you ..."
+# TODO: Implement actual submission request
+puts %Q{
+Ok, water tries to submit #{submit_hash}
+for you.  A mail will be sent to you shortly wheter if the submission was sent
+sucessfully.
+}
 
 puts "Submission recieved sucessfully ... NOT!"
