@@ -1,8 +1,6 @@
 # A bit of ruby comments
 
-p Dir.pwd
 oldrev, newrev, refname = gets.split
-p [oldrev, newrev, refname]
 
 if refname.split("/").last != "master"
   puts "You did not push to master, so water doesn't process your commits"
