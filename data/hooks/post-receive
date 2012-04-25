@@ -10,5 +10,5 @@ fi
 
 while read oldrev newrev refname
 do
-  echo $oldrev $newrev $refname | ruby hooks/post-receive.rb 
+  echo $oldrev $newrev $refname | ruby hooks/post-receive.rb 2> /dev/null
 done
