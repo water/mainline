@@ -83,12 +83,13 @@ class Water.CommitRequest extends Backbone.Model
   #
   mkdir: (path, dirname) =>
     console.log("mkdir: ", [path, dirname].join("/"))
+    path = if path.length == 0 then dirname else [path, dirname].join("/")
     request =
       {
         command: "mkdir",
         branch: gon.ref,
         commit_message: null,
-        path: [path, dirname].join("/")
+        path: path
       }
     @send(request)
   
