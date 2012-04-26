@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "~> 3.2"
+gem "rails", "~> 3.2.3"
 gem "chronic"
 gem "geoip"
 gem "hoe", :require => false

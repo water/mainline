@@ -55,8 +55,8 @@ describe LabGroup do
 
   describe "dependent destroy" do
     it "should not be possible for a lab_has_group to exist without a lab_group" do
-      lg = Factory.create(:lab_group)
-      lhg = Factory.create(:lab_has_group, lab_group: lg)
+      lg = FactoryGirl.create(:lab_group)
+      lhg = FactoryGirl.create(:lab_has_group, lab_group: lg)
       lg.destroy
       lambda{lhg.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end

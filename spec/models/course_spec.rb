@@ -2,7 +2,7 @@ describe Course do
   describe "validation" do
     it "should have at least one course code" do
       Factory.build(:course, course_codes: []).should_not be_valid
-      Factory.create(:course_with_course_code).should_not be_nil
+      FactoryGirl.create(:course_with_course_code).should_not be_nil
     end
   end
 
@@ -32,8 +32,8 @@ describe Course do
 
   describe "dependent destroy" do
     it "should no be possible for a given_course to exist without a course" do
-      c = Factory.create(:course_with_course_code)
-      gc = Factory.create(:given_course, course: c)
+      c = FactoryGirl.create(:course_with_course_code)
+      gc = FactoryGirl.create(:given_course, course: c)
       c.destroy
       lambda{gc.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end

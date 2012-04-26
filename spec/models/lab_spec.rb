@@ -36,7 +36,7 @@ describe Lab do
     end
 
     it "should not accept non-unique given_course, number tuples" do
-      lab = Factory.create(:lab)
+      lab = FactoryGirl.create(:lab)
       Factory.build(:lab, {
         given_course: lab.given_course, 
         lab_description: lab.lab_description
@@ -162,15 +162,15 @@ describe Lab do
 
   describe "dependent destroy" do
     it "should not be possible for a lab_default_dealine to exist without a lab" do
-      lab = Factory.create(:lab)
-      ldd = Factory.create(:default_deadline, lab: lab)
+      lab = FactoryGirl.create(:lab)
+      ldd = FactoryGirl.create(:default_deadline, lab: lab)
       lab.reload.destroy
       lambda{ldd.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "should not be possible for a lab_has_group to exist without a lab" do
-      lab = Factory.create(:lab)
-      lhg = Factory.create(:lab_has_group, lab: lab)
+      lab = FactoryGirl.create(:lab)
+      lhg = FactoryGirl.create(:lab_has_group, lab: lab)
       lab.destroy
       lambda{lhg.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
@@ -181,18 +181,18 @@ describe Lab do
     let(:lab) { create(:lab, active: true) }
     
     it "should be able to add a group with the correct given course" do
-      lab_group_correct_course = Factory.create(:lab_group, given_course: lab.given_course)
+      lab_group_correct_course = FactoryGirl.create(:lab_group, given_course: lab.given_course)
       lambda { lab.add_group(lab_group_correct_course) }.should_not raise_error
     end
     
     it "should not be able to add a group with an incorrect given course" do
-      lab_group_incorrect_course = Factory.create(:lab_group)
+      lab_group_incorrect_course = FactoryGirl.create(:lab_group)
       lambda { lab.add_group(lab_group_incorrect_course) }.should raise_error
     end
     
     describe "check entities after adding group" do
       before(:each) do
-        lab.add_group(Factory.create(:lab_group, given_course: lab.given_course))
+        lab.add_group(FactoryGirl.create(:lab_group, given_course: lab.given_course))
       end
       it "should have a group" do
         lab.should have(1).lab_groups
