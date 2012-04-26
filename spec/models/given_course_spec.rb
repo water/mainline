@@ -49,22 +49,22 @@ describe GivenCourse do
 
   describe "dependant destroy" do
     it "should no be possible for a student_registered_for_course to exist without a given_course" do
-      gc = Factory.create(:given_course)
-      str = Factory.create(:student_registered_for_course, given_course: gc)
+      gc = FactoryGirl.create(:given_course)
+      str = FactoryGirl.create(:student_registered_for_course, given_course: gc)
       gc.destroy
       lambda{str.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "should not be possible for a lab_group to exist without a given_course" do
-      gc = Factory.create(:given_course)
-      lg = Factory.create(:lab_group, given_course: gc)
+      gc = FactoryGirl.create(:given_course)
+      lg = FactoryGirl.create(:lab_group, given_course: gc)
       gc.destroy
       lambda{lg.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "should not be possible for a assistant_registered_to_given_course to exist without a given_course" do
-      gc = Factory.create(:given_course)
-      argc = Factory.create(:assistant_registered_to_given_course, given_course: gc)
+      gc = FactoryGirl.create(:given_course)
+      argc = FactoryGirl.create(:assistant_registered_to_given_course, given_course: gc)
       gc.destroy
       lambda{argc.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end

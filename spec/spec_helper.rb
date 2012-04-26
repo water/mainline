@@ -26,7 +26,7 @@ Spork.prefork do
     config.after(:all) { teardown }
     config.infer_base_class_for_anonymous_controllers = false
     config.mock_with :rspec
-    config.include Factory::Syntax::Methods
+    config.include FactoryGirl::Syntax::Methods
     config.include LoginHelper
     config.include UrlHelper
     config.include SetupHelper
