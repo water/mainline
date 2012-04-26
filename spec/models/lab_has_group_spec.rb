@@ -202,3 +202,4 @@ describe LabHasGroup do
     end
   end
 end
+

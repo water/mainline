@@ -38,7 +38,11 @@ class LabHasGroup < ActiveRecord::Base
       # TODO: Notify assistant
     end
   end
-
+  
+  def submission_allowed?
+    ["initialized", "pending", "rejected"].include? self.state
+  end
+  
   private  
     def given_courses_match
       if lab.try(:given_course) != lab_group.try(:given_course)

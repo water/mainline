@@ -45,7 +45,7 @@ Water is system for managing the hand-in and reviewing of programming assignment
 3. Create a user
   - `sudo su postgres`
   - `psql`
-  - `CREATE ROLE username WITH SUPERUSER CREATEDB CREATEROLE PASSWORD 'password' LOGIN`
+  - `CREATE ROLE username WITH SUPERUSER CREATEDB CREATEROLE PASSWORD 'password' LOGIN;`
 4. (optional) Add postgres to autostart using distro-specific methods eg (`chkconfig postgresql on` || add it to runlevel 5 init-scripts, run-level 3 for servers)
 
 #### Ubuntu
