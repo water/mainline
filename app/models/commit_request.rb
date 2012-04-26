@@ -6,7 +6,7 @@ class CommitRequest
 
   validates_presence_of :user, :command, :repository, :branch, :commit_message
   validates_numericality_of :user, :repository
-  validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
+  validates_inclusion_of :command, in: %w( move add remove mkdir), message: "Is not an acceptable command" 
   validate :existence_of_user, :existence_of_repository, :commit_access , :correct_branch, :path_names
 
   publishes_to :commit
