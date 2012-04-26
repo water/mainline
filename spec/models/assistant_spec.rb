@@ -47,8 +47,8 @@ describe Assistant do
 
   describe "dependent destroy" do
     it "should no be possible for a assistant_registered_to_given_course to exist without a assistant" do
-      assis = Factory.create(:assistant)
-      ar = Factory.create(:assistant_registered_to_given_course, assistant: assis)
+      assis = FactoryGirl.create(:assistant)
+      ar = FactoryGirl.create(:assistant_registered_to_given_course, assistant: assis)
       assis.destroy
       lambda{ar.reload}.should  raise_error(ActiveRecord::RecordNotFound)
     end

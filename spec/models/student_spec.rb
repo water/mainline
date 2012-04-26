@@ -1,5 +1,5 @@
 describe Student do
-  let(:student) { Factory.create(:student) }
+  let(:student) { FactoryGirl.create(:student) }
   describe "relations" do
     it "should have a user" do
       student.user.should be_instance_of(User)
@@ -24,22 +24,22 @@ describe Student do
     it "should have a list of labs" do
       student.should have(0).labs
       gc = create(:given_course)
-      srfc = Factory.create(:student_registered_for_course, {
+      srfc = FactoryGirl.create(:student_registered_for_course, {
         student: student
       })
 
-      lab_group = Factory.create(:lab_group, {
+      lab_group = FactoryGirl.create(:lab_group, {
         given_course: gc
       })
       
-      lab = Factory.create(:lab, {
+      lab = FactoryGirl.create(:lab, {
         active: true,
         given_course: gc
       })
 
       srfc.lab_groups << lab_group
 
-      Factory.create(:lab_has_group, {
+      FactoryGirl.create(:lab_has_group, {
         lab: lab,
         lab_group: lab_group
       })
@@ -61,8 +61,8 @@ describe Student do
 
   describe "Dependent destroy" do
     it "should not be possible for student_registered_for_course to exist without a student" do
-      student = Factory.create(:student)
-      src = Factory.create(:student_registered_for_course, student: student)
+      student = FactoryGirl.create(:student)
+      src = FactoryGirl.create(:student_registered_for_course, student: student)
       student.destroy
       lambda{src.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end

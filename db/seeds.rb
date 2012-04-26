@@ -29,41 +29,41 @@ commits = %w{
 }
 
 #### User
-user = Factory.create(:user, {
+user = FactoryGirl.create(:user, {
   email: "admin@popfizzle.com",
   password: "abc123",
   login: "pelle"
 })
 
 #### Administrator
-Factory.create(:administrator, user: user)
+FactoryGirl.create(:administrator, user: user)
 
 #### Examiner
-examiner = Factory.create(:examiner, user: user)
+examiner = FactoryGirl.create(:examiner, user: user)
 
 #### Assistant
-assistant = Factory.create(:assistant, user: user)
+assistant = FactoryGirl.create(:assistant, user: user)
 
 #### Student
-student = Factory.create(:student, user: user)
+student = FactoryGirl.create(:student, user: user)
 
 #### Course
-course = Factory.create(:course, {
+course = FactoryGirl.create(:course, {
   department_attributes: { name: "IT" },
   course_codes_attributes: [{ code: "TDA123" }, { code: "EDA331" }]
 })
 
 #### Repository
-repository = Factory.create(:repo_with_data)
+repository = FactoryGirl.create(:repo_with_data)
 
 #### InitialLabCommit
-ilc = Factory.create(:initial_lab_commit, {
+ilc = FactoryGirl.create(:initial_lab_commit, {
   commit_hash: commits.first,
   repository: repository
 })
 
 #### StudyPeriod
-study_period = Factory.create(:study_period, {
+study_period = FactoryGirl.create(:study_period, {
   period: 3,
   year: 2012
 })
@@ -76,7 +76,7 @@ ld = Factory(:lab_description, {
 })
 
 #### GivenCourse
-given_course = Factory.create(:given_course, {
+given_course = FactoryGirl.create(:given_course, {
   course: course, 
   examiners: [examiner],
   assistants: [assistant],
@@ -85,28 +85,28 @@ given_course = Factory.create(:given_course, {
 })
 
 #### Lab
-labs << Factory.create(:lab, {
+labs << FactoryGirl.create(:lab, {
   active: true,
   initial_lab_commit: ilc,
   lab_description: ld,
   given_course: given_course
 })
 
-labs << Factory.create(:lab, {
+labs << FactoryGirl.create(:lab, {
   active: false,
   given_course: given_course
 })
 
 ### DefaultDeadline
 labs.each_with_index do |lab, i|
-  Factory.create(:default_deadline, {
+  FactoryGirl.create(:default_deadline, {
     lab: lab,
     at: ((i + 1) * 2).days.from_now
   })
 end
 
 #### LabGroup
-lab_group = Factory.create(:lab_group, {
+lab_group = FactoryGirl.create(:lab_group, {
   given_course: given_course
 })
 
@@ -114,18 +114,19 @@ lab_group.add_student(student)
 
 #### LabHasGroup
 labs.each_with_index do |lab, index|
-  lhg = Factory.create(:lab_has_group, {
+  lhg = FactoryGirl.create(:lab_has_group, {
     lab: lab, 
     lab_group: lab_group,
-    repository: Factory.create(:repo_with_data)
+    repository: FactoryGirl.create(:repo_with_data)
   })
 
-  Factory.create(:submission, {
+  FactoryGirl.create(:submission, {
     commit_hash: commits[index],
     lab_has_group: lhg
   })
 end
 
+<<<<<<< HEAD
 # #### ExtendedDeadline
 # labs.each_with_index do |lab, i|
 #   Factory.create(:extended_deadline, {
@@ -134,3 +135,14 @@ end
 #     at: ((i + 1) * 5).days.from_now
 #   })
 # end
+=======
+#### ExtendedDeadline
+labs.each do |lab|
+  lab.lab_has_groups.each_with_index do |lhg, i|
+    Factory.create(:extended_deadline, {
+      lab_has_group: lhg,
+      at: ((i + 1) * 5).days.from_now
+    })
+  end
+end
+>>>>>>> master

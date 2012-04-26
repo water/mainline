@@ -90,8 +90,8 @@ describe LabHasGroup do
 
   describe "dependent destroy" do
     it "should not be possible for a extended_deadline to exist without a lab_has_group" do
-      lhg = Factory.create(:lab_has_group)
-      ee = Factory.create(:extended_deadline, lab_has_group: lhg)
+      lhg = FactoryGirl.create(:lab_has_group)
+      ee = FactoryGirl.create(:extended_deadline, lab_has_group: lhg)
       lhg.destroy
       lambda{ee.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
@@ -99,18 +99,18 @@ describe LabHasGroup do
 
   describe "factories" do
     it "should not raise error when group is set" do
-      group = Factory.create(:lab_group)
+      group = FactoryGirl.create(:lab_group)
       lambda do
-        lhg = Factory.create(:lab_has_group, {
+        lhg = FactoryGirl.create(:lab_has_group, {
           lab_group: group
         })
       end.should_not raise_error(ActiveRecord::RecordInvalid)
     end
 
     it "should not raise error when lab is set" do
-      lab = Factory.create(:lab)
+      lab = FactoryGirl.create(:lab)
       lambda do
-        lhg = Factory.create(:lab_has_group, {
+        lhg = FactoryGirl.create(:lab_has_group, {
           lab: lab
         })
       end.should_not raise_error(ActiveRecord::RecordInvalid)
