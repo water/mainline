@@ -1,7 +1,7 @@
 class CommitRequest 
   include ActiveAttr::Model
   include ActiveMessaging::MessageSender
-  attr_accessor :user, :command, :repository, :branch,:files,  :records
+  attr_accessor :user, :command, :repository, :branch,:files, :records
   attr_writer :commit_message, :files
 
   validates_presence_of :user, :command, :repository, :branch, :commit_message
@@ -95,6 +95,12 @@ class CommitRequest
       commit_message: commit_message, 
       files: @files
     }
+
+    if @command == "remove"
+      @options.merge!({
+        records: @records
+      })
+    end
 
     @@cache[@options.to_s] ||= publish :commit, @options.merge({
       callback: {
