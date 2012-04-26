@@ -26,15 +26,27 @@ class CommitRequestProcessor < ApplicationProcessor
   #  branch: "master",
   #  commit_message: "A commit message",
   #  files: [{
-  #    data: !Binary,
+  #    from: "/full/path/to/file",
   #    to: "path/to/dir"
   #  }]
   # }
   #
   def add(options)
     options["files"].each do |source|
-      git[source["to"]] = source["data"]
+      git[source["to"]] = File.read(source["from"])
     end
+  end
+
+  # @options = {
+  #   command: "mkdir",
+  #   user: 1,
+  #   repository: 123,
+  #   branch: "master",
+  #   commit_message: "Antagligen inget meddelande tills vidare",
+  #   path: "path/to/dir"
+  # }
+  def mkdir(options)
+    git["#{options["path"]}/.gitkeep"] = ""
   end
 
   # @move = {

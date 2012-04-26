@@ -20,7 +20,11 @@ class ApplicationProcessor < ActiveMessaging::Processor
   # be aborted/rolled back, meaning that it can and should be retried
   # (idempotency matters here).  Retry logic varies by broker - see
   # individual adapter code and docs for how it will be treated
-  def on_error(err, message_body)
+  def on_error(*args)
+    if args.length < 2
+      $stderr.puts "Error: #{args.inspect}"; return
+    end
+    err, message_body = *args
     notify_on_error(err, message_body)
     if (err.kind_of?(StandardError))
       logger.error "#{self.class.name}::on_error for msg: #{message_body}: \n" + 

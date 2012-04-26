@@ -8,6 +8,7 @@
   %tbody
     - @courses.each do |course|
       %tr
-        %td= course.course.course_codes.first.code
+        %td= link_to course.course.course_codes.first.code,
+          course_path("student", course)
         %td= course.examiners.first.user.email
   

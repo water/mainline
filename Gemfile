@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "~> 3.2"
+gem "rails", "~> 3.2.3"
 gem "chronic"
 gem "geoip"
 gem "hoe", :require => false
@@ -20,6 +20,7 @@ gem "hodel_3000_compliant_logger", "0.1.0"
 gem "restful-authentication", "1.2.1"
 gem "acts_as_list"
 gem "thin"
+gem "state_machine"
 
 # Authentication
 gem "rack-openid"
@@ -29,7 +30,7 @@ gem "oauth2"
 gem "cancan"
 
 # Database
-gem "mysql2", "0.3.10"
+gem "pg"
 
 # View
 gem "will_paginate"
@@ -42,6 +43,7 @@ gem "redcarpet"
 gem "rails-backbone"
 gem "eco"
 gem "pygments.rb"
+gem "simple_form"
 
 # Git
 gem "grit", git: "git://github.com/water/grit.git"

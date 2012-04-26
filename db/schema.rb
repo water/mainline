@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120325101212) do
+ActiveRecord::Schema.define(:version => 20120327193409) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -174,11 +174,10 @@ ActiveRecord::Schema.define(:version => 20120325101212) do
   end
 
   create_table "extended_deadlines", :force => true do |t|
-    t.integer  "lab_id"
-    t.integer  "lab_group_id"
     t.datetime "at"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "lab_has_group_id"
   end
 
   create_table "favorites", :force => true do |t|
@@ -228,7 +227,6 @@ ActiveRecord::Schema.define(:version => 20120325101212) do
     t.datetime "avatar_updated_at"
   end
 
-  add_index "groups", ["name"], :name => "index_groups_on_name_and_public"
   add_index "groups", ["user_id"], :name => "index_groups_on_user_id"
 
   create_table "hooks", :force => true do |t|
@@ -269,7 +267,6 @@ ActiveRecord::Schema.define(:version => 20120325101212) do
     t.integer  "study_period_id"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
-    t.string   "commit_hash"
   end
 
   create_table "lab_groups", :force => true do |t|
@@ -296,15 +293,8 @@ ActiveRecord::Schema.define(:version => 20120325101212) do
     t.datetime "updated_at",    :null => false
     t.integer  "repository_id"
     t.string   "grade"
+    t.string   "state"
   end
-
-  create_table "lab_has_groups_student_registered_for_courses", :id => false, :force => true do |t|
-    t.integer "lab_has_group_id"
-    t.integer "student_registered_for_course_id"
-  end
-
-  add_index "lab_has_groups_student_registered_for_courses", ["lab_has_group_id"], :name => "lhgsrfc_lab_has_group_id"
-  add_index "lab_has_groups_student_registered_for_courses", ["student_registered_for_course_id"], :name => "lhgsrfc_student_registered_for_course_id"
 
   create_table "lab_has_registered_assistants", :force => true do |t|
     t.integer  "assistant_registered_to_given_course_id"
@@ -379,7 +369,7 @@ ActiveRecord::Schema.define(:version => 20120325101212) do
     t.integer  "sequence_number"
   end
 
-  add_index "merge_requests", ["sequence_number", "target_repository_id"], :name => "index_merge_requests_on_sequence_number_and_target_repository_id", :unique => true
+  add_index "merge_requests", ["sequence_number", "target_repository_id"], :name => "merge_requests_sntr", :unique => true
   add_index "merge_requests", ["source_repository_id"], :name => "index_merge_requests_on_source_repository_id"
   add_index "merge_requests", ["status"], :name => "index_merge_requests_on_status"
   add_index "merge_requests", ["target_repository_id"], :name => "index_merge_requests_on_target_repository_id"
@@ -483,7 +473,6 @@ ActiveRecord::Schema.define(:version => 20120325101212) do
 
   add_index "repositories", ["hashed_path"], :name => "index_repositories_on_hashed_path", :unique => true
   add_index "repositories", ["kind"], :name => "index_repositories_on_kind"
-  add_index "repositories", ["owner_type"], :name => "index_repositories_on_owner_type_and_owner_id"
   add_index "repositories", ["parent_id"], :name => "index_repositories_on_parent_id"
   add_index "repositories", ["project_id", "kind"], :name => "index_repositories_on_project_id_and_kind"
   add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id"

@@ -1,6 +1,6 @@
 describe CommitRequestsController do
   let(:content) { JSON.parse(response.body) }
-  let(:repository) { Factory.create(:repository) }
+  let(:repository) { FactoryGirl.create(:repository) }
 
   describe "POST create" do
     it "should respond with 201 on valid request" do

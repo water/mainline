@@ -19,7 +19,7 @@ describe Examiner do
     end
 
     it "should have a list of submissions" do
-      create(:examiner, submissions: [create(:submission)]).should have(1).submissions
+      create(:examiner).should have(0).submissions
     end
 
     it "should have a list of lab groups" do

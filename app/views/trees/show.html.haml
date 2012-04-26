@@ -1,25 +1,23 @@
+
 %table#tree-view.table.table-bordered.table-striped
   %thead
     %th File or directory
     %th Changed
     %th Comment
+    %th Actions
   - @tree.contents.sort_by{|c| force_utf8(c.name).downcase}.each do |node|
     %tr{:class => cycle("odd", "even")}
       - if node.is_a? Grit::Tree
         %td.node.folder
           %i.icon-folder-close
-          = link_to h(node.basename) + "/", 
-              hash_path(@ref, node.name, :tree), 
-              data: {url: tree_path(@ref, node.name, bare: 1)}
+          = link_to h(node.basename) + "/", hash_path(@ref, node.name, :tree)
       - elsif node.is_a? Grit::Submodule
         %td.node.submodule
           %a{:href => "#"}= h(node.basename)
       - else
         %td{:class => "node file #{class_for_filename(node.name)}"}
           %i.icon-file
-          = link_to h(node.basename),  
-              hash_path(@ref, node.name, :blob), 
-              data: {url: blob_path(@ref, node.name, bare: 1).gsub("%2F","/")}
+          = link_to h(node.basename), hash_path(@ref, node.name, :blob)
       - if node.is_a? Grit::Submodule
         %td.meta
         %td.meta.commit_message
@@ -34,4 +32,9 @@
         - else
           %td.meta
           %td.meta.commit_message
+        - if (node.is_a? Grit::Tree) or (node.is_a? Grit::Blob)
+          %td
+            %a.btn.btn-danger{href: hash_path(@ref, node.name, :remove)}
+              %i.icon-white.icon-trash
+              Delete
           

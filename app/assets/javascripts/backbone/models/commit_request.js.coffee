@@ -17,10 +17,9 @@ class Water.CommitRequest extends Backbone.Model
   uploadSuccessful: (options) => 
     for pendingFile in @pendingFiles
       if pendingFile.clientside_hash is options.hash
-        @processedfiles.push(id: options.id, to: @breadcrumbs.path + "/" + pendingFile.filename)
+        @processedfiles.push(id: options.id, to: @breadcrumbs.path + pendingFile.filename)
     @pendingFiles = 
       (pendingFile for pendingFile in @pendingFiles when pendingFile.clientside_hash isnt options.hash)
-    console.log("CommitRequest says: files: ", @pendingFiles)
     @checkStatus()
     
   # Triggered when an upload is completed with an error. 
@@ -43,7 +42,7 @@ class Water.CommitRequest extends Backbone.Model
         files: @processedfiles
       @send(request)
       
-  # Triggered when all files have been uploaded, sends the commit_request
+  # Sends a commit_request
   send: (request) =>
     @trigger("sending_commit_request")
     $.ajax gon.commit_request_path, 
@@ -59,9 +58,40 @@ class Water.CommitRequest extends Backbone.Model
     @pendingFiles = []
     @processedfiles = []
     @errorFiles = []
-    console.log("Shit was successful!!!!", data)
     @trigger("commit_request_process_started")
-    
+  
+  #
+  # Removes a file
+  #
+  remove: (file_path) =>
+    console.log "Remove!"
+    if @pendingFiles.length isnt 0
+      return
+    request = 
+      {
+        command: "remove",
+        branch: gon.ref,
+        commit_message: null,
+        records: [
+          file_path
+        ]
+      }
+    @send(request)
+  
+  #
+  # Creates a directory
+  #
+  mkdir: (path, dirname) =>
+    console.log("mkdir: ", [path, dirname].join("/"))
+    request =
+      {
+        command: "mkdir",
+        branch: gon.ref,
+        commit_message: null,
+        path: [path, dirname].join("/")
+      }
+    @send(request)
+  
   commit_request_completed: () =>
     @trigger("commit_request_completed")
     
