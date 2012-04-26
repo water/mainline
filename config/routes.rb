@@ -14,7 +14,12 @@ Gitorious::Application.routes.draw do
           post "create" => "lab_groups#create"
         end
         resources :labs, only: [:index, :show] do
-          resources :submissions, only: [:create, :new, :show]
+          resources :submissions, only: [:create, :new, :show] do
+            member do
+              match "/grade/:grade" => "labs#grade", :as => :grade, :via => :put
+              match "/notes" => "submissions#notes", :as => :notes, :via => :post
+            end
+          end
         end
       end
     end
@@ -101,9 +106,6 @@ Gitorious::Application.routes.draw do
   match "/about" => "site#about", :as => :about
   match "/about/faq" => "site#about", :as => :faq
   match "/contact" => "site#contact", :as => :contact
-
-  match "/submissions/:id/grade/:grade" => "labs#grade", :as => :grade, :via => :put
-  match "/submissions/:id/notes" => "submissions#notes", :as => :notes, :via => :post
 
   namespace :admin do
     resources :users do
