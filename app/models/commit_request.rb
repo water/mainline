@@ -1,12 +1,12 @@
 class CommitRequest 
   include ActiveAttr::Model
   include ActiveMessaging::MessageSender
-  attr_accessor :user, :command, :repository, :branch,:files,  :records
+  attr_accessor :user, :command, :repository, :branch,:files, :records
   attr_writer :commit_message, :files
 
   validates_presence_of :user, :command, :repository, :branch, :commit_message
   validates_numericality_of :user, :repository
-  validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
+  validates_inclusion_of :command, in: %w( move add remove mkdir), message: "Is not an acceptable command" 
   validate :existence_of_user, :existence_of_repository, :commit_access , :correct_branch, :path_names
 
   publishes_to :commit
@@ -95,6 +95,12 @@ class CommitRequest
       commit_message: commit_message, 
       files: @files
     }
+
+    if @command == "remove"
+      @options.merge!({
+        records: @records
+      })
+    end
 
     @@cache[@options.to_s] ||= publish :commit, @options.merge({
       callback: {
