@@ -37,6 +37,18 @@ class CommitRequestProcessor < ApplicationProcessor
     end
   end
 
+  # @options = {
+  #   command: "mkdir",
+  #   user: 1,
+  #   repository: 123,
+  #   branch: "master",
+  #   commit_message: "Antagligen inget meddelande tills vidare",
+  #   path: "path/to/dir"
+  # }
+  def mkdir(options)
+    git["#{options["path"]}/.gitkeep"] = ""
+  end
+
   # @move = {
   #  user: 1,
   #  repository: 123,

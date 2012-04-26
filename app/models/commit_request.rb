@@ -53,6 +53,14 @@ class CommitRequest
   #   ]
   # }
   #
+  # @mkdir {
+  #   command: "mkdir",
+  #   user: 1,
+  #   repository: 123,
+  #   branch: "master",
+  #   commit_message: "Antagligen inget meddelande tills vidare",
+  #   path: "path/to/dir"
+  # }
 
   #
   # @return String Commit message provided by frontend
@@ -104,7 +112,7 @@ class CommitRequest
     config = APP_CONFIG["faye"]
     token = User.find(options["user"]).token
     SecureFaye::Connect.new.
-      message({status: 200}.to_json).
+      message({status: 200, options: options}.to_json).
       token(config["token"]).
       server("http://0.0.0.0:#{config["port"]}/faye").
       channel("/users/#{token}").
