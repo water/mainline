@@ -24,6 +24,13 @@ class LabsController < ApplicationController
   # GET /courses/:given_course_id/lab_groups/:lab_group_id/labs/:lab_id
   #
   def show
+    @course_id = params[:course_id]
+    @lab_group = LabGroup.where(id: params[:lab_group_id], given_course_id: @course_id).first
+    
+    if not @lab_group
+      raise ActiveRecord::RecordNotFound
+    end
+    
     # Logic should be moved into the lab model
     @lab = Lab.
       includes(:submissions, {
@@ -35,11 +42,9 @@ class LabsController < ApplicationController
         lab_groups: { id: params[:lab_group_id] }
       }).
       find(params[:id])
-    @lab_group_id = params[:lab_group_id]
-    @course_id = params[:course_id]
-    @lhg = @lab.lab_has_groups.where(lab_group_id: @lab_group_id).first
-    @repository = @lab.lab_has_groups.first.repository
-
+    @lhg = @lab.lab_has_groups.where(lab_group_id: @lab_group.id).first
+    @repository = @lhg.repository
+    
     add_data_to_gon
     respond_with(@lab)
   end
