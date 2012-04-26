@@ -4,16 +4,6 @@ class SubmissionsController < ApplicationController
   def index
   end
 
-  def notes
-    p params
-    p Submission.find(params[:id]).notes
-    if current_role.is_a?(Assistant) or current_role.is_a?(Examiner)
-      puts "Starting"
-      Submission.find(params[:id]).update_attribute!(:notes, params[:notes]) 
-    end
-    redirect_to :controller => 'submissions', :action => 'show'
-  end
-
   def show
     @submission = Submission.find(params[:id])
     @group = LabGroup.includes(:lab_has_groups).find(params[:lab_group_id])
