@@ -5,8 +5,11 @@ class SubmissionsController < ApplicationController
   end
 
   def notes
-    if current_role == Assistant || current_role == Examiner
-      Submission.find(params[:id]).notes = params[:notes]
+    p params
+    p Submission.find(params[:id]).notes
+    if current_role.is_a?(Assistant) or current_role.is_a?(Examiner)
+      puts "Starting"
+      Submission.find(params[:id]).update_attribute!(:notes, params[:notes]) 
     end
     redirect_to :controller => 'submissions', :action => 'show'
   end
