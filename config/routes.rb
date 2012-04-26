@@ -16,8 +16,8 @@ Gitorious::Application.routes.draw do
         resources :labs, only: [:index, :show] do
           resources :submissions, only: [:create, :new, :show] do
             member do
-              match "/grade/:grade" => "labs#grade", :as => :grade, :via => :put
-              match "/notes" => "submissions#notes", :as => :notes, :via => :post
+              put "/grade/:grade" => "labs#grade", :as => :grade
+              put "/notes" => "submissions#notes", :as => :notes
             end
           end
         end
