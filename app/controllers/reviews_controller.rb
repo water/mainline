@@ -11,7 +11,7 @@ class ReviewsController < ApplicationController
   end
 
   def grade
-	  if current_role == Assistant || current_role == Examiner
+	  if current_role.is_a?(Assistant) or current_role.is_a?(Examiner)
 	    @submission = Submission.find(params[:id])
 	    @submission.lab_has_group.grade = params[:grade]
 	  end
@@ -19,7 +19,19 @@ class ReviewsController < ApplicationController
  	end
 
   def state
-    
+    if current_role.is_a?(Assistant) or current_role.is_a?(Examiner)
+      @submission = Submission.find(params[:id])
+      lhg = @submission.lab_has_group
+      if(params[:state] == 'accepted')
+        lhg.accepted!
+      else if(params[:state] == 'reviewing')
+        lhg.reviewing!
+      else if(params[:state] == 'rejected')
+        lhg.rejected!
+      else if(params[:state] == 'pending')
+        lhg.pending!
+      end
+    end
   end
 
 end
