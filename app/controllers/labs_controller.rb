@@ -93,12 +93,4 @@ class LabsController < ApplicationController
     gon.faye_port = APP_CONFIG["faye"]["port"]
     gon.user_token = current_user.token
   end
-
-  def grade
-   if current_role == Assistant || current_role == Examiner
-     @submission = Submission.find(params[:id])
-     @submission.lab_has_group.grade = params[:grade]
-   end
-   redirect_to :controller => 'labs', :action => 'submissions'
-  end
 end
