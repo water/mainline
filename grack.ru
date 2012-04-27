@@ -1,6 +1,5 @@
 use Rack::ShowExceptions
 
-require "yaml"
 require 'vendor/grack/lib/git_http.rb' # load from it's own submodule
 require 'lib/grack/water_grack_auth.rb' # From mainline
 
