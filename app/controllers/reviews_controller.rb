@@ -18,4 +18,8 @@ class ReviewsController < ApplicationController
    redirect_to :controller => 'labs', :action => 'submissions'
  	end
 
+  def state
+    
+  end
+
 end
