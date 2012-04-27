@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120423143725) do
+ActiveRecord::Schema.define(:version => 20120427144001) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -63,29 +63,6 @@ ActiveRecord::Schema.define(:version => 20120423143725) do
   add_index "cloners", ["date"], :name => "index_cloners_on_date"
   add_index "cloners", ["ip"], :name => "index_cloners_on_ip"
   add_index "cloners", ["repository_id"], :name => "index_cloners_on_repository_id"
-
-  create_table "comments", :force => true do |t|
-    t.integer  "user_id",           :null => false
-    t.integer  "target_id",         :null => false
-    t.string   "sha1"
-    t.text     "body"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.integer  "project_id"
-    t.string   "target_type"
-    t.string   "state_change"
-    t.string   "path"
-    t.string   "first_line_number"
-    t.integer  "number_of_lines"
-    t.text     "context"
-    t.string   "last_line_number"
-  end
-
-  add_index "comments", ["project_id"], :name => "index_comments_on_project_id"
-  add_index "comments", ["sha1"], :name => "index_comments_on_sha1"
-  add_index "comments", ["target_id", "target_type"], :name => "index_comments_on_target_id_and_target_type"
-  add_index "comments", ["target_id"], :name => "index_comments_on_repository_id"
-  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "committerships", :force => true do |t|
     t.integer  "committer_id"
