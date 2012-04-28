@@ -53,7 +53,9 @@ class Water.CommitRequest extends Backbone.Model
         console.log("Error: ", jqXHR, textStatus, errorThrown)
       
   # Triggered when the commit request has been received.
-  # TODO: handle errors
+  # The request is being processed and the client will wait
+  # for confirmation via Faye.
+  # Empties the variables used for file upload verification.
   request_success: (data) =>
     @pendingFiles = []
     @processedfiles = []
@@ -94,8 +96,5 @@ class Water.CommitRequest extends Backbone.Model
     @send(request)
   
   commit_request_completed: () =>
-    @trigger("commit_request_completed")
-    
-  requestCompleted: () =>
     @trigger("commit_request_completed")
   
