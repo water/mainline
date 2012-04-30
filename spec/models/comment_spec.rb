@@ -1,11 +1,11 @@
 describe Comment do
 	describe "relations" do
 		it "should be possible to create a comment" do
-			Factory.build(:comment).should be_valid
+			Factory.create(:comment).should be_valid
 		end
 
 		it "should be possible to update comments" do
-			comment = Factory.create(:comment, id: 1, body: "hej")	
+			comment = Factory.create(:comment, body: "hej")	
 			comment.body = "hej hej"
 			comment.save
 			comment.body.should eq("hej hej")

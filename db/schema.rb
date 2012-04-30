@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120427144001) do
+ActiveRecord::Schema.define(:version => 20120427144506) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -63,6 +63,17 @@ ActiveRecord::Schema.define(:version => 20120427144001) do
   add_index "cloners", ["date"], :name => "index_cloners_on_date"
   add_index "cloners", ["ip"], :name => "index_cloners_on_ip"
   add_index "cloners", ["repository_id"], :name => "index_cloners_on_repository_id"
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "modified_at"
+    t.text     "body"
+    t.string   "ancestry"
+  end
+
+  add_index "comments", ["ancestry"], :name => "index_comments_on_ancestry"
 
   create_table "committerships", :force => true do |t|
     t.integer  "committer_id"
@@ -516,7 +527,6 @@ ActiveRecord::Schema.define(:version => 20120427144001) do
     t.integer  "lab_has_group_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.text     "notes"
   end
 
   create_table "taggings", :force => true do |t|

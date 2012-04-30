@@ -19,6 +19,7 @@ FactoryGirl.define do
 
   factory :comment do
     user
+    body "This is a test"
   end
 
   factory :extended_deadline do
