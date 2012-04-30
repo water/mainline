@@ -128,7 +128,7 @@ end
 #### ExtendedDeadline
 labs.each do |lab|
   lab.lab_has_groups.each_with_index do |lhg, i|
-    Factory.create(:extended_deadline, {
+    FactoryGirl.create(:extended_deadline, {
       lab_has_group: lhg,
       at: ((i + 1) * 5).days.from_now
     })

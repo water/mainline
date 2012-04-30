@@ -7,7 +7,7 @@ class GroupTest < ActiveSupport::TestCase
   
   context "in general" do
     should "uses the name as to_param" do
-      group = Factory.build(:group)
+      group = build(:group)
       assert_equal group.name, group.to_param
     end
   end
@@ -75,12 +75,12 @@ class GroupTest < ActiveSupport::TestCase
   end
   
   should "has to_param_with_prefix" do
-    grp = Factory.build(:group, :name => 'webkit')
+    grp = build(:group, :name => 'webkit')
     assert_equal "+#{grp.to_param}", grp.to_param_with_prefix
   end
   
   should "has no breadcrumb parent" do
-    assert_equal nil, Factory.build(:group).breadcrumb_parent
+    assert_equal nil, build(:group).breadcrumb_parent
   end
   
   context 'Deleting groups' do
@@ -117,7 +117,7 @@ class GroupTest < ActiveSupport::TestCase
     end
     
     should " have a alphanumeric name" do
-      group = Factory.build(:group, :name => "fu bar")
+      group = build(:group, :name => "fu bar")
       assert !group.valid?, 'group.valid? should be false'
       assert_not_nil group.errors.on(:name)
     end

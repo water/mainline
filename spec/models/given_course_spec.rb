@@ -1,18 +1,18 @@
 describe GivenCourse do
   describe "validation" do
     it "requires a course" do
-      Factory.build(:given_course, course: nil).should_not be_valid
-      Factory.build(:given_course).should be_valid
+      build(:given_course, course: nil).should_not be_valid
+      build(:given_course).should be_valid
     end
     
     it "requires a study period" do
-      Factory.build(:given_course, study_period: nil).should_not be_valid
-      Factory.build(:given_course).should be_valid
+      build(:given_course, study_period: nil).should_not be_valid
+      build(:given_course).should be_valid
     end
     
     it "requires an examiner" do
-      Factory.build(:given_course, examiners: []).should_not be_valid
-      Factory.build(:given_course).should be_valid
+      build(:given_course, examiners: []).should_not be_valid
+      build(:given_course).should be_valid
     end
   end
   

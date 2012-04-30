@@ -50,11 +50,11 @@ describe Student do
 
   describe "validation" do
     it "should start with a valid student" do
-      Factory.build(:student).should be_valid
+      build(:student).should be_valid
     end
 
     it "should have a user" do
-      Factory.build(:student, user: nil).should_not be_valid
+      build(:student, user: nil).should_not be_valid
     end
   end
 

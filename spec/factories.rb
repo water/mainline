@@ -63,7 +63,7 @@ FactoryGirl.define do
     end
 
     default_deadlines_attributes do 
-      [Factory.attributes_for(:default_deadline_without_lab)]
+      [FactoryGirl.attributes_for(:default_deadline_without_lab)]
     end
   end
 
