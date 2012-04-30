@@ -14,14 +14,13 @@ class ReviewsController < ApplicationController
       lhg = @submission.lab_has_group
       if(params[:state] == 'accepted')
         lhg.accepted!
-      else if(params[:state] == 'reviewing')
+      elsif(params[:state] == 'reviewing')
         lhg.reviewing!
-      else if(params[:state] == 'rejected')
+      elsif(params[:state] == 'rejected')
         lhg.rejected!
-      else if(params[:state] == 'pending')
+      elsif(params[:state] == 'pending')
         lhg.pending!
       end
     end
   end
-
 end
