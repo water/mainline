@@ -17,6 +17,10 @@ FactoryGirl.define do
     user
   end
 
+  factory :comment do
+    user
+  end
+
   factory :extended_deadline do
     at 3.days.from_now
     lab_has_group
