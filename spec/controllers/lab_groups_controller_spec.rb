@@ -17,8 +17,8 @@ describe LabGroupsController do
   end
 
   describe "POST /create" do
-    student = create(:student)
-    gc = create(:given_course)
+    student = FactoryGirl.create(:student)
+    gc = FactoryGirl.create(:given_course)
     it "success notice is being shown" do
       login_as(student)
       post :create, role: "student", course_id: gc
@@ -27,8 +27,8 @@ describe LabGroupsController do
   end
 
   describe "GET /new" do
-    student = create(:student)
-    gc = create(:given_course)
+    student = FactoryGirl.create(:student)
+    gc = FactoryGirl.create(:given_course)
     it "should see a link to 'Create a Lab Group'" do
       login_as(student)
       visit new_course_lab_group_path("student", gc.id)
