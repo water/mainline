@@ -18,4 +18,12 @@ class GivenCourse < ActiveRecord::Base
   def register_student(student)
     StudentRegisteredForCourse.create!(student: student, given_course: self)
   end
+
+  #
+  # @current_user User
+  # @return String Current role for @current_user
+  #
+  def role_for_user(current_user)
+    "student"
+  end
 end

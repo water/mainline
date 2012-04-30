@@ -517,4 +517,46 @@ module ApplicationHelper
       return currently == :git ? 'checked="checked"' : ""
     end
   end
+
+  #
+  # Adds {params[:role]} to every path 
+  # that ends with _path and starts with _role
+  # If no role is found in the given url, try to
+  # find a role in any of the given arguments ({args})
+  #
+  # Example 1:
+  #  Current url: /student/labs
+  #  role_course_lab_group_labs_path(course, group)
+  #  => "/student/courses/1/lab_groups/1/labs"
+  #
+  # Example 2:
+  #  Current url: /examiner/labs
+  #  role_course_lab_group_labs_path(course, group)
+  #  => "/examiner/courses/1/lab_groups/1/labs"
+  #
+  # Example 3: (User is a student in {course}):
+  #  Current url: /labs
+  #  role_course_lab_group_labs_path(course, group)
+  #  => "/student/courses/1/lab_groups/1/labs"
+  #
+  # @method Symbol Non existing path
+  # @args Array<?> A list of arguments
+  # @return String Absolute path (wihout current host) to {method}
+  # @todo Write some specs
+  #
+  def method_missing(method, *args, &block)
+    return super unless method =~ /^role.+_path$/
+
+    # Do we have a role?
+    # If not, does any of the given arguments contain one?
+    params[:role] ||= args.select{ |a| a.is_a?(GivenCourse) }.first.
+      try(:role_for_user, current_user)
+
+    unless params[:role]
+      raise "I'm not sure what to do"
+    end
+
+    # Remove _role in front of {method} and call helper method
+    send(method.to_s.gsub(/^role_/, ""), params[:role], *args)
+  end
 end
