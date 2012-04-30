@@ -35,6 +35,8 @@ Gitorious::Application.routes.draw do
     end
   end
 
+  resources :comments
+
   resources :submissions, only: [:index, :show, :create, :new]
   
   resources :repositories do
