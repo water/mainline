@@ -16,30 +16,39 @@ describe LabsController do
     describe "student" do
       let(:student) { FactoryGirl.create(:student) }
       
-      it "has breadcrumbs" do
-        given_course = FactoryGirl.create(:given_course)
-        srfc = FactoryGirl.create(:student_registered_for_course, {
+      before :all do 
+        @given_course = Factory.create(:given_course)
+        @srfc = Factory.create(:student_registered_for_course, {
           student: student,
-          given_course: given_course
+          given_course: @given_course
         })
 
-        lab = FactoryGirl.create(:active_lab, given_course: given_course)
-        group = FactoryGirl.create(:lab_group, given_course: given_course)
+        @lab = Factory.create(:active_lab, given_course: @given_course)
+        @group = Factory.create(:lab_group, given_course: @given_course)
 
-        FactoryGirl.create(:lab_has_group, {
-          lab: lab,
-          lab_group: group, 
+        Factory.create(:lab_has_group, {
+          lab: @lab,
+          lab_group: @group, 
           grade: nil
         })
 
         login_as(student)
-        visit course_lab_group_lab_path("student", given_course, group, lab)
+      end
+      
+      it "doesn't crash" do
+        visit course_lab_group_lab_path("student", @given_course, @group, @lab)
+        page.status_code.should eq(200)
+      end
+      
+      it "has breadcrumbs" do
+        visit course_lab_group_lab_path("student", @given_course, @group, @lab)
         page.should have_selector('div.breadcrumbs')
       end
-    
-      it "doesn't crash" do
-        login_as(student)
-        page.status_code.should eq(200)
+      
+      it "gives an error if the lab group doesn't exist in the course" do
+        given_course2 = Factory.create(:given_course)
+        visit course_lab_group_lab_path("student", given_course2, @group, @lab)  
+        page.status_code.should eq(404)
       end
     end
   end

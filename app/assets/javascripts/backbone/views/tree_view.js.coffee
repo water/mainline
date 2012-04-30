@@ -6,6 +6,7 @@ class Water.TreeView extends Backbone.View
   
   # Re-renders the tree whenever the data in the model changes
   render_tree: () =>
+    console.log("Render_tree")
     # Hide the activity indicator
     $("#indicator").hide()
     
