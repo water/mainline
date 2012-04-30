@@ -19,11 +19,8 @@ describe LabsController do
       before :all do 
         @given_course = Factory.create(:given_course)
         @srfc = Factory.create(:student_registered_for_course, {
-      it "has breadcrumbs" do
-        given_course = FactoryGirl.create(:given_course)
-        srfc = FactoryGirl.create(:student_registered_for_course, {
           student: student,
-          given_course: given_course
+          given_course: @given_course
         })
 
         @lab = Factory.create(:active_lab, given_course: @given_course)
