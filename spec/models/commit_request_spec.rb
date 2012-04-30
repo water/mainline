@@ -88,7 +88,7 @@ describe CommitRequest do
         and_return(faye)
 
       faye.should_receive(:message).
-        with({status: 200}.to_json).
+        with({status: 200}.merge({options: @value}).to_json).
         and_return(faye)
 
       faye.should_receive(:token).
