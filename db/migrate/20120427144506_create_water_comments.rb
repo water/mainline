@@ -3,12 +3,13 @@ class CreateWaterComments < ActiveRecord::Migration
  	create_table :comments do |t|
  		t.integer :id
  		t.integer :user_id
- 		t.integer :parent_id
  		t.string :type
  		t.datetime :created_at
  		t.datetime :modified_at
  		t.text :body
+        t.string :ancestry
  	end
+    add_index :comments, :ancestry
  end
 
  	def down

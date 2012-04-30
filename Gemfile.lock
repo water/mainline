@@ -91,6 +91,8 @@ GEM
     acts_as_list (0.1.5)
     addressable (2.2.7)
     allison (2.0.3)
+    ancestry (1.2.5)
+      activerecord (>= 2.2.2)
     ansi (1.4.2)
     archive-tar-minitar (0.5.2)
     arel (3.0.2)
@@ -375,6 +377,7 @@ DEPENDENCIES
   active_attr
   activemessaging!
   acts_as_list
+  ancestry
   beanstalk-client
   builder
   cancan
