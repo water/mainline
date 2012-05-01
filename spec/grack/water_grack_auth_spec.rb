@@ -30,10 +30,13 @@ describe "WaterGrackAuth" do
   let(:student) { create(:student) }
   let(:user) { student.user }
   let(:given_course) { lab_group.given_course }
-  let(:url) { %W{courses/#{given_course.id}/
+  let(:url) { make_url(given_course, lab) }
+
+  def make_url(given_course, lab)
+    %W{courses/#{given_course.id}/
                  labs/#{lab.number}/.git
     }.join ""
-  }
+  end
 
   before(:each) do
     given_course.register_student(student)
@@ -84,6 +87,14 @@ describe "WaterGrackAuth" do
     end
 
     def head_for(user)
+      head_general(user, url)
+    end
+
+    def head_at(url)
+      head_general(user, url)
+    end
+
+    def head_general(user, url)
       auth user
       get "#{url}/HEAD"
       r.body
@@ -103,7 +114,9 @@ describe "WaterGrackAuth" do
 
     it "gives students in different groups different repos" do
       repository_2 = create(:repo_with_data) 
-      lab_has_group_2 = create(:lab_has_group, { repository: repository_2, lab: lab }) 
+      lab_has_group_2 = create(:lab_has_group,
+                               repository: repository_2,
+                               lab: lab ) 
       lab_group_2 = lab_has_group_2.lab_group
       lab_group_2.add_student(student_2)
       Dir.chdir(repository.full_repository_path) do
@@ -112,6 +125,41 @@ describe "WaterGrackAuth" do
       head_for(user).should =~ /my_branch/
       head_for(student_2.user).should =~ /master/
     end
+
+    it "redirects to correct repo when there are many labs" do
+      repository_2 = create(:repo_with_data) 
+      lab_2 = create(:active_lab, given_course: given_course)
+      lab_has_group_2 = create(
+          :lab_has_group,
+          repository: repository_2,
+          lab: lab_2,
+          lab_group: lab_group 
+        ) 
+      Dir.chdir(repository.full_repository_path) do
+        `echo "ref: refs/heads/my_branch" > HEAD`
+      end
+      head_at(make_url(given_course, lab)).should =~ /my_branch/
+      head_at(make_url(given_course, lab_2)).should =~ /master/
+    end
+
+    it "redirect to correct repo throughout courses" do
+      repository_2 = create(:repo_with_data) 
+      given_course_2 = create(:given_course)
+      lab_2 = create(:active_lab, given_course: given_course_2)
+      lab_has_group_2 = create(
+          :lab_has_group,
+          repository: repository_2,
+          lab: lab_2
+        ) 
+      lab_group_2 = lab_has_group_2.lab_group
+      lab_group_2.add_student(student)
+      Dir.chdir(repository.full_repository_path) do
+        `echo "ref: refs/heads/my_branch" > HEAD`
+      end
+      head_at(make_url(given_course, lab)).should =~ /my_branch/
+      head_at(make_url(given_course_2, lab_2)).should =~ /master/
+    end
+
   end
 end
 
