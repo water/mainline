@@ -1,11 +1,13 @@
 class ReviewsController < ApplicationController
+  layout "water"
+  respond_to :html
 
   def grade
 	  if current_role.is_a?(Assistant) or current_role.is_a?(Examiner)
 	    @submission = Submission.find(params[:id])
 	    @submission.lab_has_group.update_attribute(:grade,params[:grade])
 	  end
-   redirect_to :controller => 'labs', :action => 'submissions'
+    redirect_to :controller => 'labs', :action => 'submissions'
  	end
 
   def state
@@ -22,5 +24,6 @@ class ReviewsController < ApplicationController
         lhg.pending!
       end
     end
+    respond_with(@submission)
   end
 end
