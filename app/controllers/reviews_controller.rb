@@ -14,18 +14,8 @@ class ReviewsController < ApplicationController
 
   def state
     if current_role.is_a?(Assistant) or current_role.is_a?(Examiner)
-      @submission = Submission.find(params[:id])
       if can?(:state, @submission)
-        lhg = @submission.lab_has_group
-        if(params[:state] == 'accepted')
-          lhg.accepted!
-        elsif(params[:state] == 'reviewing')
-          lhg.reviewing!
-        elsif(params[:state] == 'rejected')
-          lhg.rejected!
-        elsif(params[:state] == 'pending')
-          lhg.pending!
-        end
+        Submission.find(params[:id]).lab_has_group.send("#{params[:state]}!")
       end
     end  
     respond_with(@submission)
