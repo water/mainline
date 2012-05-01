@@ -51,6 +51,7 @@ class WaterGrackAuth < Rack::Auth::Basic
       return bad_request
     end
 
+# TODO: fix query, it should not pick first, rather based on credentials
     unless lhg = lab.lab_has_groups.first
       halt("Lab has group not found")
       return bad_request
@@ -61,7 +62,7 @@ class WaterGrackAuth < Rack::Auth::Basic
       return bad_request
     end
 
-    env["PATH_INFO"] = path_info.gsub(/^.*\.git/, repository.hashed_path + ".git")
+    env["PATH_INFO"] = path_info.gsub(/^.*\.git/, "/" + repository.hashed_path + ".git")
 
     @req = Rack::Request.new(env)
 
