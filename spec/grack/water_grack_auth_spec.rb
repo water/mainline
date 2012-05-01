@@ -83,24 +83,22 @@ describe "WaterGrackAuth" do
       given_course.register_student(student_2)
     end
 
-    it "allows collaboration in same group" do
-      lab_group.add_student(student_2)
+    def head_for(user)
       auth user
       get "#{url}/HEAD"
-      r.body.should =~ /master/
-      auth student_2.user
-      get "#{url}/HEAD"
-      r.body.should =~ /master/
+      r.body
+    end
+
+    it "allows collaboration in same group" do
+      lab_group.add_student(student_2)
+      head_for(user).should =~ /master/
+      head_for(student_2.user).should =~ /master/
 
       Dir.chdir(repository.full_repository_path) do
         `echo "ref: refs/heads/my_branch" > HEAD`
       end
-      auth user
-      get "#{url}/HEAD"
-      r.body.should =~ /my_branch/
-      auth student_2.user
-      get "#{url}/HEAD"
-      r.body.should =~ /my_branch/
+      head_for(user).should =~ /my_branch/
+      head_for(student_2.user).should =~ /my_branch/
     end
 
     it "gives students in different groups different repos" do
@@ -111,12 +109,8 @@ describe "WaterGrackAuth" do
       Dir.chdir(repository.full_repository_path) do
         `echo "ref: refs/heads/my_branch" > HEAD`
       end
-      auth user
-      get "#{url}/HEAD"
-      r.body.should =~ /my_branch/
-      auth student_2.user
-      get "#{url}/HEAD"
-      r.body.should =~ /master/
+      head_for(user).should =~ /my_branch/
+      head_for(student_2.user).should =~ /master/
     end
   end
 end
