@@ -8,8 +8,7 @@ class LabGroupsController < ApplicationController
   end
 
   def show
-    @labs = @lab_group.labs.where(given_course: @course)
-    respond_with(@lab_group)
+    @lab_group = current_role.lab_groups.where(given_course_id: params[:course_id]).first
   end
 
   def new
