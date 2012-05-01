@@ -145,6 +145,7 @@ describe "WaterGrackAuth" do
     it "redirect to correct repo throughout courses" do
       repository_2 = create(:repo_with_data) 
       given_course_2 = create(:given_course)
+      given_course_2.register_student(student)
       lab_2 = create(:active_lab, given_course: given_course_2)
       lab_has_group_2 = create(
           :lab_has_group,
