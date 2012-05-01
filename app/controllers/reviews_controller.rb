@@ -9,7 +9,7 @@ class ReviewsController < ApplicationController
 	      @submission.lab_has_group.update_attribute(:grade,params[:grade])
       end
 	  end
-    redirect_to :controller => 'labs', :action => 'submissions'
+    redirect_to labs_path, notice: "Grade was change on submission"
  	end
 
   def state
