@@ -104,7 +104,19 @@ describe "WaterGrackAuth" do
     end
 
     it "gives students in different groups different repos" do
-      # true.should be_false
+      repository_2 = create(:repo_with_data) 
+      lab_has_group_2 = create(:lab_has_group, { repository: repository_2, lab: lab }) 
+      lab_group_2 = lab_has_group_2.lab_group
+      lab_group_2.add_student(student_2)
+      Dir.chdir(repository.full_repository_path) do
+        `echo "ref: refs/heads/my_branch" > HEAD`
+      end
+      auth user
+      get "#{url}/HEAD"
+      r.body.should =~ /my_branch/
+      auth student_2.user
+      get "#{url}/HEAD"
+      r.body.should =~ /master/
     end
   end
 end
