@@ -24,7 +24,13 @@ class SubmissionsController < ApplicationController
     if submission.save
       flash[:notice] = "Submission successful"
     else
-      flash[:error] = "Submissions failed"
+      # Is there a better way to generate this flash message?
+      # Example output:
+      #  Submissions failed
+      #  A pending submission already exists
+      flash[:alert] = (
+        "Submissions failed</br>%s" % submission.errors.values.flatten.map(&:strip).join(", ")
+      ).html_safe
     end
 
     redirect_to(
@@ -42,9 +48,9 @@ class SubmissionsController < ApplicationController
     @course_id = params[:course_id]
     @lab_id = params[:lab_id]
     @lhg = @group.lab_has_groups.where(lab_id: params[:lab_id]).first
-    @commit_hash = @lhg.repository.last_commit.to_s
+    @commit = @lhg.repository.last_commit
 
-    unless @commit_hash == params[:commit]
+    unless @commit.to_s == params[:commit]
       # TODO: Add a link in flash message to new commit hash
       flash.now.alert = "This isn't the latest commit"
     end
