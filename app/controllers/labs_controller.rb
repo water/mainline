@@ -32,21 +32,36 @@ class LabsController < ApplicationController
     end
     
     # Logic should be moved into the lab model
-    @lab = Lab.
-      includes(:submissions, {
-        lab_groups: { 
-          lab_has_groups: :repository 
-        }
-      }).
-      where({
-        lab_groups: { id: params[:lab_group_id] }
-      }).
-      find(params[:id])
-    @lhg = @lab.lab_has_groups.where(lab_group_id: @lab_group.id).first
-    @repository = @lhg.repository
+    if current_role.class == Student
+        @lab = Lab.
+          includes(:submissions, {
+            lab_groups: { 
+              lab_has_groups: :repository 
+            }
+          }).
+          where({
+            lab_groups: { id: params[:lab_group_id] }
+          }).
+          find(params[:id])
+        @lab_group_id = params[:lab_group_id]
+        @course_id = params[:course_id]
+        @lhg = @lab.lab_has_groups.where(lab_group_id: @lab_group_id).first
+        @repository = @lab.lab_has_groups.first.repository
+
+        add_data_to_gon
+        respond_with(@lab)
+    end
     
-    add_data_to_gon
-    respond_with(@lab)
+  end
+  
+  def submissions
+    if current_role == Assistant
+        @course_id = params[:course_id]
+        @lab_id = params[:lab_id]
+        @submissions = Lab.find(@lab_id).lab_has_groups.each{ |lhg| lhg.submissions }
+        add_data_to_gon
+        respond_with(@submissions)
+    end
   end
   
   # /courses/:course_id/labs/1/edit

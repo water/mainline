@@ -11,6 +11,11 @@ class CoursesController < ApplicationController
     if current_role.class == Student
       @labs = current_role.labs.where(given_course_id: @course.id)
     end
+
+    if current_role.class == Assistant
+      @labs = @course.labs
+    end
+
     respond_with(@course)
   end
   

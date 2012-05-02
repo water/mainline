@@ -21,6 +21,7 @@ gem "restful-authentication", "1.2.1"
 gem "acts_as_list"
 gem "thin"
 gem "state_machine"
+gem "ancestry"
 
 # Authentication
 gem "rack-openid"
@@ -44,6 +45,7 @@ gem "rails-backbone"
 gem "eco"
 gem "pygments.rb"
 gem "simple_form"
+gem "quiet_assets"
 
 # Git
 gem "grit", git: "git://github.com/water/grit.git"

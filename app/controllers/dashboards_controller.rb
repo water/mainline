@@ -6,6 +6,7 @@ class DashboardsController < ApplicationController
   end
 
   def index
+    @courses = current_role.given_courses
   end
 
   def update

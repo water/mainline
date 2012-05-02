@@ -79,12 +79,9 @@
         %i.icon-folder-open
         Create a directory
 .well
-  =render "upload"
+  = render "upload"
   - if @lhg.submission_allowed?
-    %a.btn.btn-large.btn-danger{href:  new_course_lab_group_lab_submission_path(current_role_name, 
-      @course_id, 
-      @lab_group, 
-      @lab)}
+    %a.btn.btn-large.btn-danger{href:  new_commit_course_lab_group_lab_submissions_path(current_role_name, @course_id, @lab_group, @lab, @lhg.repository.last_commit.to_s)}
       %i.icon-ok.icon-white
       Submit!
   - elsif @lhg.update_allowed?
