@@ -4,22 +4,25 @@ class ReviewsController < ApplicationController
 
 
   def review
-    result = params[:result]
-    submission = Submission.find(params[:id])
+    @submission = Submission.find(params[:id])
 
-    if result[:grade]
+    if @grade = params[:grade]
       if can?(:grade, @submission)
-        @submission.lab_has_group.update_attribute(:grade,result[:grade])
+        @submission.lab_has_group.update_attribute(:grade, @grade)
       end
      redirect_to labs_path, notice: "Grade was changed on submission"
     end
 
-    if result[:state]
+    if @state = params[:state]
       if can?(:state, @submission)
-        Submission.find(submission).lab_has_group.send("#{result[:state]}!")
+        @submission.lab_has_group.send("#{@state}!")
+        redirect_to course_lab_group_lab_submission_path(
+          current_role_name, 
+          params[:course_id], 
+          params[:lab_group_id], 
+          @submission), 
+          notice: "State was changed on submission"
       end
-    end  
-
-    respond_with(@submission)
+    end
   end
 end
