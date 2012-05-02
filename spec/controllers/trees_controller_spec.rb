@@ -1,6 +1,6 @@
 describe TreesController do
   render_views
-  let(:repository) { Factory.create(:repo_with_data) }
+  let(:repository) { FactoryGirl.create(:repo_with_data) }
   
   describe "GET tree root" do
     it "displays a table" do

@@ -43,29 +43,29 @@ describe User do
   
   describe "dependent destroy" do
     it "should not be possible for a student to exist without a user" do
-      user = Factory.create(:user)
-      s = Factory.create(:student, user: user)
+      user = FactoryGirl.create(:user)
+      s = FactoryGirl.create(:student, user: user)
       user.destroy
       lambda{s.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "should not be possible for a examiner to exist without a user" do
-      user = Factory.create(:user)
-      exa = Factory.create(:examiner, user: user)
+      user = FactoryGirl.create(:user)
+      exa = FactoryGirl.create(:examiner, user: user)
       user.destroy
       lambda{exa.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "should not be possible for a assistant to exist without a user" do
-      user = Factory.create(:user)
-      assistant = Factory.create(:assistant, user: user)
+      user = FactoryGirl.create(:user)
+      assistant = FactoryGirl.create(:assistant, user: user)
       user.destroy
       lambda{assistant.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "should not be possible for a administrator to exist without a user" do
-      user = Factory.create(:user)
-      admin = Factory.create(:administrator, user: user)
+      user = FactoryGirl.create(:user)
+      admin = FactoryGirl.create(:administrator, user: user)
       user.destroy
       lambda{admin.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end

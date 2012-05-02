@@ -10,6 +10,6 @@
   %thead
     %th Lab title
   %tbody
-    - @labs.each do |lab|
+    - @lab_group.labs.each do |lab|
       %tr
         %td= link_to lab.title, course_lab_group_lab_path(current_role.class.name.downcase, @course, @lab_group, lab)

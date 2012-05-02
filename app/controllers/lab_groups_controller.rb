@@ -1,17 +1,14 @@
 class LabGroupsController < ApplicationController
   layout "water"
   respond_to :html
-  before_filter :verify_course_and_lab_group, :only => [:show, :join]
+  before_filter :setup_and_verify_course_and_lab_group, :only => [:show]
   def index
     @lab_groups = current_role.lab_groups.where(given_course_id: params[:course_id])
     respond_with(@lab_groups) 
   end
 
   def show
-    @lab_group = LabGroup.find(params[:id])
-    @course = GivenCourse.find(params[:course_id])
-    @labs = @lab_group.labs.where(given_course_id: params[:course_id])
-    respond_with(@lab_group)
+    @lab_group = current_role.lab_groups.where(given_course_id: params[:course_id]).first
   end
 
   def new
@@ -41,10 +38,10 @@ class LabGroupsController < ApplicationController
   def edit
   end
   
-  def verify_course_and_lab_group
-    course = GivenCourse.find(params[:given_course_id]) 
-    lab_group = LabGroup.find(params[:lab_group_id])
-    if course != lab_group.given_course
+  def setup_and_verify_course_and_lab_group
+    @course = GivenCourse.find(params[:course_id]) 
+    @lab_group = LabGroup.find(params[:id])
+    if @course != @lab_group.given_course
       flash[:error] = "Lab group not registered for course"
       redirect_to root_path
     end

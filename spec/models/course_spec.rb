@@ -1,18 +1,18 @@
 describe Course do
   describe "validation" do
     it "should have at least one course code" do
-      Factory.build(:course, course_codes: []).should_not be_valid
-      Factory.create(:course_with_course_code).should_not be_nil
+      build(:course, course_codes: []).should_not be_valid
+      create(:course_with_course_code).should_not be_nil
     end
   end
 
   describe "relations" do
     it "should not be valid" do
-      Factory.build(:course_without_department).should_not be_valid
+      build(:course_without_department).should_not be_valid
     end
 
     it "should have a department" do
-      att = Factory.attributes_for(:course_without_department)
+      att = attributes_for(:course_without_department)
       Course.create!({
         department_attributes: { name: "IT" }
       }.merge(att)).should_not be_nil
@@ -32,8 +32,8 @@ describe Course do
 
   describe "dependent destroy" do
     it "should no be possible for a given_course to exist without a course" do
-      c = Factory.create(:course_with_course_code)
-      gc = Factory.create(:given_course, course: c)
+      c = create(:course_with_course_code)
+      gc = create(:given_course, course: c)
       c.destroy
       lambda{gc.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end

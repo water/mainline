@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user do
-    login { Factory.next(:login) }
-    email { Factory.next(:email) }
+    login { FactoryGirl.generate(:login) }
+    email { FactoryGirl.generate(:email) }
     terms_of_use "1"
     password "password"
     password_confirmation { password }
@@ -43,13 +43,13 @@ FactoryGirl.define do
         gc ||= lab.try(:given_course)
       end
 
-      gc ||= Factory.create(:given_course)
+      gc ||= FactoryGirl.create(:given_course)
 
-      lhg.lab ||= Factory.create(:active_lab, {
+      lhg.lab ||= FactoryGirl.create(:active_lab, {
         given_course: gc
       })
 
-      lhg.lab_group  ||= Factory.create(:lab_group, {
+      lhg.lab_group  ||= FactoryGirl.create(:lab_group, {
         given_course: gc
       })
     end
@@ -63,7 +63,7 @@ FactoryGirl.define do
     end
 
     default_deadlines_attributes do 
-      [Factory.attributes_for(:default_deadline_without_lab)]
+      [FactoryGirl.attributes_for(:default_deadline_without_lab)]
     end
   end
 
@@ -101,16 +101,16 @@ FactoryGirl.define do
   end
 
   factory :given_course do
-    course { Factory.create(:course_with_course_code) }
-    examiners { [Factory.create(:examiner)] }
+    course { FactoryGirl.create(:course_with_course_code) }
+    examiners { [FactoryGirl.create(:examiner)] }
     association(:study_period)
   end
 
   factory :assistant do
     user
-    given_courses { [Factory.create(:given_course)] }
-    lab_groups { [Factory.create(:lab_group)] }
-    all_lab_groups { [Factory.create(:lab_group)] }
+    given_courses { [FactoryGirl.create(:given_course)] }
+    lab_groups { [FactoryGirl.create(:lab_group)] }
+    all_lab_groups { [FactoryGirl.create(:lab_group)] }
   end
 
   factory :examiner do
@@ -126,11 +126,11 @@ FactoryGirl.define do
   end
 
   factory :course_without_department, class: Course do
-    course_codes { [Factory.create(:course_code)] }
+    course_codes { [FactoryGirl.create(:course_code)] }
   end
 
   factory :course_with_course_code, class: Course do
-    course_codes { [Factory.create(:course_code)] }
+    course_codes { [FactoryGirl.create(:course_code)] }
     department
   end
 
@@ -165,7 +165,7 @@ FactoryGirl.define do
 
   factory :group do
     sequence(:name) { |n| "b-team_#{n}" }
-    creator { Factory.create(:user) }
+    creator { FactoryGirl.create(:user) }
   end
 
   factory :membership do
@@ -174,8 +174,8 @@ FactoryGirl.define do
   end
 
   factory :message do
-    sender { Factory.create(:user) }
-    recipient { Factory.create(:user) }
+    sender { FactoryGirl.create(:user) }
+    recipient { FactoryGirl.create(:user) }
     subject "Hello"
     body "Just called to say hi"
   end
@@ -187,7 +187,7 @@ FactoryGirl.define do
 
     factory :user_project do
       user
-      owner { Factory.create(:user) }
+      owner { FactoryGirl.create(:user) }
     end
   end
 
@@ -197,7 +197,7 @@ FactoryGirl.define do
 
   factory :ssh_key do
     user
-    sequence(:key) { Factory.next(:key) }
+    sequence(:key) { FactoryGirl.generate(:key) }
     ready true
   end
 

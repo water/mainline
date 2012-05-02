@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "~> 3.2"
+gem "rails", "~> 3.2.3"
 gem "chronic"
 gem "geoip"
 gem "hoe", :require => false
@@ -44,6 +44,7 @@ gem "rails-backbone"
 gem "eco"
 gem "pygments.rb"
 gem "simple_form"
+gem "quiet_assets"
 
 # Git
 gem "grit", git: "git://github.com/water/grit.git"

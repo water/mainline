@@ -1,3 +1,7 @@
+#
+# Constructs a TreeViewer module,
+# complete with fetcher, tree_view, breadcrumb set and breadcrumb view.
+#
 class Water.TreeViewer
   constructor: () ->
     @fetcher = new Water.TreeFetcher(repository_path: gon.repository_path, ref: gon.ref)
