@@ -16,11 +16,13 @@
           - pending = lab.lab_has_groups.where(state: "pending")
           %tr{:class => cycle("odd", "even")}
             %td
-              = lab.id  
+              %h4
+                = lab.id  
             %td
-              %a{:class => "accordion-toggle", :"data-toggle" => "collapse",
-              :href => "#submission", :"data-target" => "#submission"+lab.id.to_s}
-                = pending.count.to_s + " submissions"
+              %h4
+                %a{:class => "accordion-toggle", :"data-toggle" => "collapse",
+                  :href => "#submission", :"data-target" => "#submission"+lab.id.to_s}
+                  = pending.count.to_s + " submissions"
                 .icon.icon-chevron-down
               .accordion-body.collapse{:id => "submission"+lab.id.to_s}
                 .accordion-inner
@@ -40,7 +42,7 @@
                           %td
                             = submission.created_at
                           %td
-                            %a.btn.btn-success#keep_open
+                            %a.btn.btn-success
                               Download submission
             %td
               %a.btn.btn-primary{href: "#"}
