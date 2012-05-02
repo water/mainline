@@ -123,11 +123,6 @@
 - Administrator
   - En lista med alla submissions av en grupp
 
-### POST /submissions/:id/notes
-
-- Assistant
-  - param[:notes] ska innehålla handledarens anteckningar
-
 ## Uploads
 
 ### GET /courses/:course_id/groups/:group_id/labs/:lab_id/uploads
@@ -145,3 +140,35 @@
 
 ##Comments
 
+### GET /comments/:id
+
+ - Visar ett träd med :id som root kommentar
+
+### GET /comments/:id/edit
+ - Visar en form för att redigera en kommentar 
+
+### GET /comments/new
+ - Visar en form för att skapa en ny kommentar
+
+### PUT /comments/:id
+
+ - Updaterar en kommentar med :id
+
+### POST /comments/:id
+ - Skapar en ny kommentar
+
+### DELETE /comments/:id
+ - Tar bort en kommentar med :id
+ 
+### GET /comments
+ - Visar alla kommentarer
+
+## Reviews
+
+### PUT /labs/:id/submissions/:id/reviews/:result
+
+- Assistant
+  - Uppdaterar grade och/eller state i lab_has_group som äger denna submission
+
+- Examiner
+  - Uppdaterar grade och/eller state i lab_has_group som äger denna submission

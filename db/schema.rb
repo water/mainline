@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120427144506) do
+ActiveRecord::Schema.define(:version => 20120502120059) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -527,6 +527,7 @@ ActiveRecord::Schema.define(:version => 20120427144506) do
     t.integer  "lab_has_group_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.integer  "comment_id"
   end
 
   create_table "taggings", :force => true do |t|
