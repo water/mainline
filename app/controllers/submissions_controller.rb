@@ -12,21 +12,29 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-    lhg = LabHasGroup.where(
+    lhg = LabHasGroup.where({
       lab_id: params[:lab_id], 
-      lab_group_id: params[:lab_group_id])
-      .includes(:repository)
-      .first
-    if Submission.create_at_latest_commit!(lab_has_group: lhg)
+      lab_group_id: params[:lab_group_id]
+    }).first
+
+    submission = lhg.submissions.build({
+      commit_hash: params[:commit]
+    })
+
+    if submission.save
       flash[:notice] = "Submission successful"
     else
       flash[:error] = "Submissions failed"
     end
-    redirect_to course_lab_group_lab_path(
-      current_role_name, 
-      params[:course_id], 
-      params[:lab_group_id], 
-      params[:lab_id])
+
+    redirect_to(
+      course_lab_group_lab_path(
+        current_role_name, 
+        params[:course_id], 
+        params[:lab_group_id], 
+        params[:lab_id]
+      )
+    )
   end
 
   def new
@@ -34,6 +42,13 @@ class SubmissionsController < ApplicationController
     @course_id = params[:course_id]
     @lab_id = params[:lab_id]
     @lhg = @group.lab_has_groups.where(lab_id: params[:lab_id]).first
+    @commit_hash = @lhg.repository.last_commit.to_s
+
+    unless @commit_hash == params[:commit]
+      # TODO: Add a link in flash message to new commit hash
+      flash.now.alert = "This isn't the latest commit"
+    end
+
     unless @lhg.submission_allowed?
       flash[:alert] = "You can't submit at this time."
       redirect_to course_lab_group_lab_path(

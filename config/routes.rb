@@ -14,7 +14,12 @@ Gitorious::Application.routes.draw do
           post "create" => "lab_groups#create"
         end
         resources :labs, only: [:index, :show] do
-          resources :submissions, only: [:create, :new, :show]
+          resources :submissions, only: [:create, :show] do
+            collection do
+              match ":commit/new" => "submissions#new", via: :get, as: :new_commit
+              match ":commit" => "submissions#create", via: :post, as: :create_commit
+            end
+          end
         end
       end
     end
