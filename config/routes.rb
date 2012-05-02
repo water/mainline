@@ -21,7 +21,7 @@ Gitorious::Application.routes.draw do
               match ":commit" => "submissions#create", via: :post, as: :create_commit
             end
             member do
-              put "/review/:result" => "reviews#review"
+              put "/review" => "reviews#review", as: :review
             end
           end
         end
