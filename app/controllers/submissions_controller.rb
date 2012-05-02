@@ -1,14 +1,21 @@
 class SubmissionsController < ApplicationController
   layout "water"
   
+  before_filter :get_submission_group_and_repo, only: [:show, :edit]
+  
   def index
   end
 
   def show
-    @submission = Submission.find(params[:id])
-    @group = LabGroup.includes(:lab_has_groups).find(params[:lab_group_id])
-    @repository = @submission.lab_has_group.repository
-    setup_gon_for_tree_view(ref: @submission.commit_hash)
+  end
+  
+  def edit
+    @lab_id = params[:lab_id]
+    @course_id = params[:course_id]
+  end
+  
+  def update
+    # TODO
   end
 
   def create
@@ -45,5 +52,14 @@ class SubmissionsController < ApplicationController
     end
     @repository = @lhg.repository
     setup_gon_for_tree_view(ref: @repository.head_candidate.commit)
+  end
+  
+  private 
+  
+  def get_submission_group_and_repo
+    @submission = Submission.find(params[:id])
+    @group = LabGroup.includes(:lab_has_groups).find(params[:lab_group_id])
+    @repository = @submission.lab_has_group.repository
+    setup_gon_for_tree_view(ref: @submission.commit_hash)
   end
 end
