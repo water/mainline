@@ -339,7 +339,7 @@ class User < ActiveRecord::Base
           }
         }).
         first
-    return true if role == :assistent and 
+    return true if role == :assistant and 
       AssistantRegisteredToGivenCourse.
         select("1").
         where(given_course_id: given_course.id).
