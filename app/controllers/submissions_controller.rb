@@ -79,6 +79,8 @@ class SubmissionsController < ApplicationController
   
   def get_submission_group_and_repo
     @submission = Submission.find(params[:id])
+    @course = params[:course_id]
+    @lab = params[:lab_id]
     @group = LabGroup.includes(:lab_has_groups).find(params[:lab_group_id])
     @repository = @submission.lab_has_group.repository
     setup_gon_for_tree_view(ref: @submission.commit_hash)
