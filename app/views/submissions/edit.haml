@@ -1,0 +1,24 @@
+.hero-unit
+  %h1 Edit submission
+  %h2 
+    Submitting for Group
+    = @group.number
+  %h2 Students:
+  - @group.students.each do |student|
+    %p= student.user.email
+  %br
+  
+.well
+  %h1 The state that will be submitted
+  .breadcrumbs
+  #tree-view
+  .breadcrumbs
+  
+.well
+  =link_to "Update!", 
+    course_lab_group_lab_submission_path(current_role_name, 
+    @course_id, 
+    @group, 
+    @lab_id),
+    method: :post,
+    class: "btn btn-large btn-danger"
