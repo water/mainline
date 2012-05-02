@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
 
   def review
     result = params[:result]
-    submission = Submission.find(result[:id])
+    submission = Submission.find(params[:id])
 
     if result[:grade]
       if can?(:grade, @submission)
