@@ -6,9 +6,14 @@ class CommentsController < ApplicationController
   end
 
   # POST /comments/create
+  # params[:comment] = {
+  #     user_id: integer,
+  #     type: string,
+  #     body: text
+  # }
   def create
-    @comment = comment.new(params[:message])
-    if @message.save
+    @comment = comment.new(params[:comment])
+    if @comment.save
       flash.notice = "Comment created"
     end
 
