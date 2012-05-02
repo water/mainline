@@ -16,8 +16,6 @@ Gitorious::Application.routes.draw do
         resources :labs, only: [:index, :show] do
           resources :submissions, only: [:create, :new, :show] do
             member do
-              #put "/state/:state" => "reviews#state"
-              #put "/grade/:grade" => "reviews#grade"
               put "/review/:result" => "reviews#review"
             end
           end

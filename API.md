@@ -167,6 +167,11 @@
 
 ### PUT /labs/:id/submissions/:id/reviews/:result
 
+ :result = {
+   grade: string,
+   state: string
+}
+
 - Assistant
   - Uppdaterar grade och/eller state i lab_has_group som äger denna submission
 
