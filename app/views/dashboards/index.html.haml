@@ -4,19 +4,7 @@
     = link_to(current_user.login)
   %br 
 
-  - unless @registered_courses.nil?
-    - @registered_courses.each do |registered_course|
-      .well
-        %h4 CourseName
-        %br
-        %table.table
-          %tr
-            %th Submissions
-            %th Status
-            %th Deadline
-       
-  - else
-    %br
-      .well
-        You are currently not registered to any course
-
+-if current_role.class == Student
+  = render :partial => 'student'
+-elsif current_role.class == Assistant
+  = render :partial => 'assistant'
