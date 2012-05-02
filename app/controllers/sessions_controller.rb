@@ -7,6 +7,7 @@ require "yadis"
 class SessionsController < ApplicationController
   layout "water"
   skip_before_filter :public_and_logged_in
+  before_filter :remove_navbar
   # renders_in_site_specific_context
   force_ssl only: [:new, :create, :destroy]
   
@@ -35,6 +36,11 @@ class SessionsController < ApplicationController
   end
 
   protected
+
+  # Prevents the navbar from being rendered
+  def remove_navbar
+    @no_navbar = true
+  end
 
   # if user doesn't exist, it gets created and activated,
   # else if the user already exists with same identity_url, it just logs in
