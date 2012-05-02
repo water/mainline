@@ -57,7 +57,7 @@
           = link_to "Submission #{index + 1}", 
             course_lab_group_lab_submission_path(current_role_name,
               @course_id,
-              @lab_group_id,
+              @lab_group,
               @lab,
               submission)
         %td
@@ -83,14 +83,14 @@
   - if @lhg.submission_allowed?
     %a.btn.btn-large.btn-danger{href:  new_course_lab_group_lab_submission_path(current_role_name, 
       @course_id, 
-      @lab_group_id, 
+      @lab_group, 
       @lab)}
       %i.icon-ok.icon-white
       Submit!
   - else
     %a.btn.btn-large.btn-danger.disabled.has-tooltip{href:  new_course_lab_group_lab_submission_path(current_role_name, 
       @course_id, 
-      @lab_group_id, 
+      @lab_group, 
       @lab),
       title: "Submission is closed for the time being"}
       %i.icon-ok.icon-white
