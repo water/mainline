@@ -1,0 +1,51 @@
+.well
+  .form-inline
+    %button.btn
+      %i.icon-download-alt
+      Download as .zip
+    .input-prepend
+      %span.add-on
+        Git clone url:
+      %input.input-large{type: "text", placeholder: "git://water.com:/apa/bepa.git"}
+
+.well
+  .breadcrumbs
+  #tree-view
+  .breadcrumbs
+
+.well
+  .comment-box
+    %h1 Notes
+    %p
+      Enter your own notes below.
+    %p
+      The notes are private - the students will not be able to see them.
+    %form.form-vertical
+      %textarea.input-xlarge.span8.block{placeholder: "Sucketi sucks.", rows: 10}
+      %button.btn.btn-primary
+        Save
+
+.well
+  %h1 Comments / Feedback
+  %p
+    Enter comments or feedback about the lab here.
+  %p
+    Your comment will not be visible to the group until you submit you review.
+  %p
+    So feel free to enter and save comments as they come to you. Just submit when you're done.
+  %form.form-vertical
+    %textarea.input-xlarge.span8.block{placeholder: "Sucketi sucks.", rows: 10}
+    %button.btn.btn-primary
+      Save
+.well
+  %h1 Submit review
+  .form-inline.input-append
+    %select
+      %option
+        Select an outcome...
+      %option
+        Accepted
+      %option
+        Rejected
+    %button.btn.btn-large.add-on
+      Submit Review!
