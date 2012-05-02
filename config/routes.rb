@@ -18,7 +18,7 @@ Gitorious::Application.routes.draw do
             member do
               #put "/state/:state" => "reviews#state"
               #put "/grade/:grade" => "reviews#grade"
-              post "/review/:result" => "reviews#review"
+              put "/review/:result" => "reviews#review"
             end
           end
         end
