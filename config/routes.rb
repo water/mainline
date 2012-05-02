@@ -36,7 +36,7 @@ Gitorious::Application.routes.draw do
     end
   end
 
-  resources :comments
+  resources :comments, only: [:show, :create, :new, :destroy, :edit]
 
   resources :submissions, only: [:index, :show, :create, :new]
   
