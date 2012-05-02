@@ -100,14 +100,18 @@ describe "WaterGrackAuth" do
       r.body
     end
 
+    def mutate_head!
+      Dir.chdir(repository.full_repository_path) do
+        `echo "ref: refs/heads/my_branch" > HEAD`
+      end
+    end
+
     it "allows collaboration in same group" do
       lab_group.add_student(student_2)
       head_for(user).should =~ /master/
       head_for(student_2.user).should =~ /master/
 
-      Dir.chdir(repository.full_repository_path) do
-        `echo "ref: refs/heads/my_branch" > HEAD`
-      end
+      mutate_head!
       head_for(user).should =~ /my_branch/
       head_for(student_2.user).should =~ /my_branch/
     end
@@ -119,9 +123,7 @@ describe "WaterGrackAuth" do
                                lab: lab ) 
       lab_group_2 = lab_has_group_2.lab_group
       lab_group_2.add_student(student_2)
-      Dir.chdir(repository.full_repository_path) do
-        `echo "ref: refs/heads/my_branch" > HEAD`
-      end
+      mutate_head!
       head_for(user).should =~ /my_branch/
       head_for(student_2.user).should =~ /master/
     end
@@ -135,9 +137,7 @@ describe "WaterGrackAuth" do
           lab: lab_2,
           lab_group: lab_group 
         ) 
-      Dir.chdir(repository.full_repository_path) do
-        `echo "ref: refs/heads/my_branch" > HEAD`
-      end
+      mutate_head!
       head_at(make_url(given_course, lab)).should =~ /my_branch/
       head_at(make_url(given_course, lab_2)).should =~ /master/
     end
@@ -154,13 +154,12 @@ describe "WaterGrackAuth" do
         ) 
       lab_group_2 = lab_has_group_2.lab_group
       lab_group_2.add_student(student)
-      Dir.chdir(repository.full_repository_path) do
-        `echo "ref: refs/heads/my_branch" > HEAD`
-      end
+      mutate_head!
       head_at(make_url(given_course, lab)).should =~ /my_branch/
       head_at(make_url(given_course_2, lab_2)).should =~ /master/
     end
 
   end
 end
+
 
