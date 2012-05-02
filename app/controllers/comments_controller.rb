@@ -18,6 +18,10 @@ class CommentsController < ApplicationController
 
   def edit
     @comment = Comment.find(params[:id])
+  end
+
+  def update
+    @comment = Comment.find(params[:id])
 
     if @comment.update_attributes(params[:body])
       flash.notice = "You updated the comment"
@@ -26,7 +30,7 @@ class CommentsController < ApplicationController
   end
 
   def show
-    @comment = comment.find(params[:id])
+    @comment = Comment.find(params[:id])
   end
 
   def destroy
