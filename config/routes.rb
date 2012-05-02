@@ -15,7 +15,11 @@ Gitorious::Application.routes.draw do
           post "create" => "lab_groups#create"
         end
         resources :labs, only: [:index, :show] do
-          resources :submissions, only: [:create, :new, :show]
+          resources :submissions, only: [:create, :new, :show] do
+            member do
+              put "/review/:result" => "reviews#review"
+            end
+          end
         end
       end
     end
@@ -30,6 +34,8 @@ Gitorious::Application.routes.draw do
       resources :submissions, only: [:index, :show]
     end
   end
+
+  resources :comments, only: [:show, :create, :new, :destroy, :edit, :update]
 
   resources :submissions, only: [:index, :show, :create, :new]
   

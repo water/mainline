@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
+rescue_from StateMachine::InvalidTransition do |exception|
+  redirect_to root_url, error: "WTF?!"
+end
+
   def rescue_action(exception)
     return super if Rails.env != "production"
     
