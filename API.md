@@ -141,3 +141,7 @@
 
 - Student
   - Studenten skickar en commit-hash till en repo som är kopplad till en lab och grupp som studenten tillhör. 
+
+
+##Comments
+
