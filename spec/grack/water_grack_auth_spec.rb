@@ -34,7 +34,7 @@ describe "WaterGrackAuth" do
 
   def make_url(given_course, lab)
     %W{courses/#{given_course.id}/
-                 labs/#{lab.number}/.git
+                 labs/#{lab.number}.git
     }.join ""
   end
 
