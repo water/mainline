@@ -2,18 +2,6 @@
 
 oldrev, newrev, refname = gets.split
 
-if refname.split("/").last != "master"
-  puts "You did not push to master, so water doesn't process your commits"
-  exit 0
-end
-
-commits = `git rev-list #{oldrev}..#{newrev}`.split("\n")
-submit_hash = nil
-commits.each { |commit_hash|
-  msg = `git show --format=format:"%s" #{commit_hash}`.split("\n").first
-  submit_hash ||= commit_hash if msg.include? "#submit"
-}
-
 # I made this banner using the unix `banner` command
 puts %Q{
 
@@ -26,6 +14,18 @@ puts %Q{
        #    #  #    #     #    ######  #    #
 
 
+}
+
+if refname.split("/").last != "master"
+  puts "You did not push to master, so water doesn't process your commits"
+  exit 0
+end
+
+commits = `git rev-list #{oldrev}..#{newrev}`.split("\n")
+submit_hash = nil
+commits.each { |commit_hash|
+  msg = `git show --format=format:"%s" #{commit_hash}`.split("\n").first
+  submit_hash ||= commit_hash if msg.include? "#submit"
 }
 
 unless submit_hash
