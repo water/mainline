@@ -40,7 +40,11 @@ class LabHasGroup < ActiveRecord::Base
   end
   
   def submission_allowed?
-    ["initialized", "pending", "rejected"].include? self.state
+    ["initialized", "rejected"].include? self.state
+  end
+  
+  def update_allowed?
+    self.pending?
   end
   
   private  
