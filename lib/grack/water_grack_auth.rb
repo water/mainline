@@ -93,22 +93,5 @@ class WaterGrackAuth < Rack::Auth::Basic
     Request.new(@env)
   end
 
-  # Could be useful
-  # TODO: Remove unless neccesary
-  def get_project
-    paths = ["(.*?)/git-upload-pack$", "(.*?)/git-receive-pack$", "(.*?)/info/refs$", "(.*?)/HEAD$", "(.*?)/objects" ]
-
-    paths.each {|re|
-      if m = Regexp.new(re).match(@req.path)
-        projPath = m[1];
-        dir  = projPath.gsub(/^.*\//, "")
-        identifier = dir.gsub(/\.git$/, "")
-        return (identifier == '' ? nil : identifier)
-      end
-    }
-
-    return nil
-  end
-
 end
 
