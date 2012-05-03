@@ -10,19 +10,22 @@ class ReviewsController < ApplicationController
       if can?(:review, submission)
         submission.lab_has_group.update_attribute(:grade, grade)
       end
-     redirect_to labs_path, notice: "Grade was changed on submission"
+     path = labs_path
     end
 
     if state = params[:state]
       if can?(:review, submission)
-        submission.lab_has_group.send("#{@state}!")
-        redirect_to course_lab_group_lab_submission_path(
+        submission.lab_has_group.send("#{state}!")
+        path = course_lab_group_lab_submission_path(
           current_role_name, 
           params[:course_id], 
           params[:lab_group_id], 
-          submission), 
-          notice: "State was changed on submission"
+          submission
+        )
       end
     end
+
+    # TODO: Add messages from statements above
+    redirect_to (path || root_path), notice: "Request was made"
   end
 end
