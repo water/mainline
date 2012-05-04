@@ -71,13 +71,6 @@ describe "WaterGrackAuth" do
 
   end
 
-  describe "git operations" do
-    let(:repository) { create(:repo_with_data) }
-    it "can clone a repo" do
-      # true.should be_false
-    end
-  end
-
   describe "course with many students" do
     let(:repository) { create(:repo_with_data) }
     let(:student_2) { create(:student) }
