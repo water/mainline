@@ -74,13 +74,6 @@ class WaterGrackAuth < Rack::Auth::Basic
     @app.call(env)
   end
 
-  def self.pushed!(c)
-    @@jobs.keys.each do |key|
-      @@jobs[key].call
-      puts "--------------".red
-    end
-  end
-
   #
   # @return User
   #
