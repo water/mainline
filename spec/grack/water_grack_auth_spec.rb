@@ -30,11 +30,13 @@ describe "WaterGrackAuth" do
   let(:student) { create(:student) }
   let(:user) { student.user }
   let(:given_course) { lab_group.given_course }
-  let(:url) { make_url(given_course, lab) }
+  let(:url) { make_url(given_course, lab, lab_group) }
 
-  def make_url(given_course, lab)
+  def make_url(given_course, lab, lab_group)
     %W{courses/#{given_course.id}/
-                 labs/#{lab.number}.git
+       labs/#{lab.number}/
+       lab_groups/#{lab_group.number}
+       .git
     }.join ""
   end
 
@@ -118,7 +120,7 @@ describe "WaterGrackAuth" do
       lab_group_2.add_student(student_2)
       mutate_head!
       head_for(user).should =~ /my_branch/
-      head_for(student_2.user).should =~ /master/
+      head_general(student_2.user, make_url(given_course, lab, lab_group_2)).should =~ /master/
     end
 
     it "redirects to correct repo when there are many labs" do
@@ -131,8 +133,8 @@ describe "WaterGrackAuth" do
           lab_group: lab_group 
         ) 
       mutate_head!
-      head_at(make_url(given_course, lab)).should =~ /my_branch/
-      head_at(make_url(given_course, lab_2)).should =~ /master/
+      head_at(make_url(given_course, lab, lab_group)).should =~ /my_branch/
+      head_at(make_url(given_course, lab_2, lab_group)).should =~ /master/
     end
 
     it "redirect to correct repo throughout courses" do
@@ -148,8 +150,8 @@ describe "WaterGrackAuth" do
       lab_group_2 = lab_has_group_2.lab_group
       lab_group_2.add_student(student)
       mutate_head!
-      head_at(make_url(given_course, lab)).should =~ /my_branch/
-      head_at(make_url(given_course_2, lab_2)).should =~ /master/
+      head_at(make_url(given_course, lab, lab_group)).should =~ /my_branch/
+      head_at(make_url(given_course_2, lab_2, lab_group_2)).should =~ /master/
     end
 
   end
