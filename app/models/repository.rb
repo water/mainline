@@ -111,7 +111,7 @@ class Repository < ActiveRecord::Base
   end
 
   def url_path
-      File.join(owner.to_param_with_prefix,  name)
+    File.join(owner.to_param_with_prefix,  name)
   end
 
   def real_gitdir

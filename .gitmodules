@@ -1,3 +1,6 @@
 [submodule "spec/fixtures/git-repo"]
 	path = spec/fixtures/git-repo
 	url = git://github.com/blueimp/jQuery-File-Upload.git
+[submodule "vendor/grack"]
+	path = vendor/grack
+	url = git://github.com/water/grack.git
