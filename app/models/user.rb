@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password, :current_password
 
-  attr_protected :login, :is_admin
+  attr_protected :login
 
   # For new users we are a little more strict than for existing ones.
   unless defined?(USERNAME_FORMAT)
