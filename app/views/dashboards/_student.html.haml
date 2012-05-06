@@ -28,5 +28,5 @@
             %td
               = group.submissions.find(group.submissions.length).updated_at if group.submissions
             %td
-              = lab.default_deadlines.where("at > ?", Time.now).order("at asc").first.at
+              = lab.default_deadlines.last.at
               
