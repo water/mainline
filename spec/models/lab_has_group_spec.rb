@@ -201,5 +201,25 @@ describe LabHasGroup do
       end
     end
   end
+
+  # Note: These tests requires foreman to have started grack
+  describe "clone urls" do
+    let(:student) { create(:student) }
+    let(:user) { student.user }
+    let(:given_course) { lab_group.given_course }
+    let(:lab_has_group) { create(:lab_has_group, repository: repository) }
+    let(:repository) { create(:repo_with_data) }
+
+    before(:each) do
+      lab_has_group.lab.given_course.register_student(student)
+      lab_has_group.lab_group.add_student(student)
+    end
+
+    it "provides working clone_uri" do
+      uri = lab_has_group.http_clone_uri
+      uri.userinfo = "#{user.login}:#{user.password}"
+      `curl #{uri}/HEAD`.should =~ /master/
+    end
+  end
 end
 
