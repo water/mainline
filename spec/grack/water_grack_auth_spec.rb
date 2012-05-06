@@ -32,6 +32,7 @@ describe "WaterGrackAuth" do
   let(:given_course) { lab_group.given_course }
   let(:url) { make_url(given_course, lab, lab_group) }
 
+  # TODO: use definition from LabHasGroup model
   def make_url(given_course, lab, lab_group)
     %W{courses/#{given_course.id}/
        labs/#{lab.number}/
