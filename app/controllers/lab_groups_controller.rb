@@ -60,9 +60,11 @@ class LabGroupsController < ApplicationController
   end
 
   def register
-    @lab_group = LabGroup.find(params[:id])
-    lab = Lab.find(params[:lab_id])
-    lab.lab_groups << lab_group
-    redirect_to(@lab_group) 
+    @repository = Repository.create!()
+    lhg = LabHasGroup.new(lab_group_id: params[:id], lab_id: params[:lab_id], repository_id: @repository.id)
+    if lhg.save
+      redirect_to root_url, notice: "Ok"; return
+    end
+    redirect_back alert: "Oops, something went wrong"
   end
 end
