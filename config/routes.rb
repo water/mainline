@@ -13,6 +13,7 @@ Gitorious::Application.routes.draw do
         collection do
           post "join" => "lab_groups#join"
           post "create" => "lab_groups#create"
+          post "/:lab_id/register" => "lab_groups@register"
         end
         resources :labs, only: [:index, :show] do
           resources :submissions, only: [:create, :new, :show, :edit, :update] do
