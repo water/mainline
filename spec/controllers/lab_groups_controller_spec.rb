@@ -35,4 +35,14 @@ describe LabGroupsController do
       page.should have_link('Create a Lab Group')
     end
   end
+
+  describe "PUT /register" do
+    it "should be possible to register for a lab" do
+      gc = FactoryGirl.create(:given_course)
+      lg = FactoryGirl.create(:lab_group, given_course: gc)
+      lab = FactoryGirl.create(:lab, given_course: gc, active: true)
+      put :register, id: lg.id, lab_id: lab.id
+      LabHasGroup.find_by_lab_id_and_lab_group_id(lab.id, lg.id).lab_id.should eq(lab.id)
+    end
+  end
 end
