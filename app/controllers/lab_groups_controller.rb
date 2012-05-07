@@ -61,7 +61,8 @@ class LabGroupsController < ApplicationController
 
   def register
     @lab_group = LabGroup.find(params[:id])
-    @lab = Lab.find(params[:lab_id])
-    lab.lab_groups << @lab_group
+    lab = Lab.find(params[:lab_id])
+    lab.lab_groups << lab_group
+    redirect_to(@lab_group) 
   end
 end
