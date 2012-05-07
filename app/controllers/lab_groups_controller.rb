@@ -57,6 +57,11 @@ class LabGroupsController < ApplicationController
       flash[:error] = "Lab group does not exist"
       redirect_to new_course_lab_group_path("student", params[:given_course_id])
     end
-    
+  end
+
+  def register
+    @lab_group = LabGroup.find(params[:id])
+    @lab = Lab.find(params[:lab_id])
+    lab.lab_groups << @lab_group
   end
 end
