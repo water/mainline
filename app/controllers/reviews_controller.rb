@@ -23,8 +23,8 @@ class ReviewsController < ApplicationController
         begin
           submission.lab_has_group.send("#{state}!")
           flash[:notice] << "Changed lab state to #{params[:state]}"
-        rescue StateMachine::InvalidTransition: error
-          errors << error
+        rescue StateMachine::InvalidTransition
+          # TODO: to something
         end
         path = course_lab_group_lab_submission_path(
           current_role_name, 
