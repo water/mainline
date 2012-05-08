@@ -8,14 +8,14 @@ class CoursesController < ApplicationController
 
   def show
     @course = GivenCourse.find(params[:id])
-    if current_role.class == Student
-      @labs = current_role.labs.where(given_course_id: @course.id)
+    @labs = @course.labs
+    if current_role.is_a? Student
+      @lab_has_groups = 
+        current_role
+        .lab_has_groups
+        .joins(:lab)
+        .where(labs: {given_course_id: @course.id})
     end
-
-    if current_role.class == Assistant
-      @labs = @course.labs
-    end
-
     respond_with(@course)
   end
   
