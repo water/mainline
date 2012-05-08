@@ -1,4 +1,4 @@
-describe RegistrationController do
+describe RegistrationsController do
 
 	describe "register" do
 		it "should be possible to use method register" do
