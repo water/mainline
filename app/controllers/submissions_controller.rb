@@ -21,6 +21,20 @@ class SubmissionsController < ApplicationController
     # TODO
   end
 
+  def initial_comment
+    submission = Submission.find(params[:id])
+    comment = Comment.new(
+      user_id: current_user, 
+      type: "submission", body: params[:input],
+      parent_id: nil
+    )
+    if comment.save!
+      submission.update_column(:comment_id,  comment.id)
+      redirect_back notice: "Comment created"; return
+    end
+    redirect_back notice: "Something went wrong"
+  end
+
   def create
     lhg = LabHasGroup.where({
       lab_id: params[:lab_id], 
