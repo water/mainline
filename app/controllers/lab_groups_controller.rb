@@ -8,7 +8,8 @@ class LabGroupsController < ApplicationController
   end
 
   def show
-    @lab_group = current_role.lab_groups.where(given_course_id: params[:course_id]).first
+    @lab_group = current_role.lab_groups.where(given_course_id: params[:course_id], id: params[:id]).first
+    respond_with @lab_group
   end
 
   def new
@@ -20,9 +21,13 @@ class LabGroupsController < ApplicationController
   end
 
   def create
-    @lab_group = LabGroup.new(given_course_id: params[:course_id])
+    ActiveRecord::Base.transaction do
+      @lab_group = LabGroup.new(given_course_id: params[:course_id])
+      @lab_group.add_student(current_role)
+      @lab_group.save!
+    end
     respond_to do |format|
-      if @lab_group.save
+      if @lab_group.persisted?
         format.html { redirect_to(course_lab_group_path("student", params[:course_id], @lab_group), 
           :notice => "Lab Group was successfully created") }
         format.json { render :json => @lab_group, 
@@ -48,14 +53,19 @@ class LabGroupsController < ApplicationController
   end
 
   def join
-    @lab_group = LabGroup.find(params[:lab_group][:id])
+    @lab_group = LabGroup.find_by_token(params[:lab_group][:hidden_token])
     if current_role.is_a? Student
-      @lab_group.add_student(current_role)
-      flash[:notice] = "Student added to lab group"
-      redirect_to course_lab_group_path("student", params[:course_id], @lab_group)
+      if @lab_group
+        @lab_group.add_student(current_role)
+        flash[:notice] = "Student added to lab group"
+        redirect_to course_lab_group_path("student", params[:course_id], @lab_group)
+      else
+        flash[:error] = "Invalid invite code"
+        redirect_to new_course_lab_group_path("student", params[:course_id])
+      end
     else
-      flash[:error] = "Lab group does not exist"
-      redirect_to new_course_lab_group_path("student", params[:given_course_id])
+      flash[:error] = "Only students can join lab groups"
+      redirect_to new_course_lab_group_path("student", params[:course_id])
     end
   end
 
