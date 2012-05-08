@@ -60,6 +60,7 @@ class LabGroupsController < ApplicationController
   end
 
   def register
+    #Gör som en transaction
     @repository = Repository.create!()
     lhg = LabHasGroup.new(lab_group_id: params[:id], lab_id: params[:lab_id], repository_id: @repository.id)
     if lhg.save
