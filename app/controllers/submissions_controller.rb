@@ -24,12 +24,12 @@ class SubmissionsController < ApplicationController
   def initial_comment
     submission = Submission.find(params[:id])
     comment = Comment.new(
-      user_id: Assistant.first.id, 
+      user_id: current_user, 
       type: "submission", body: params[:input],
       parent_id: nil
     )
     if comment.save!
-      submission.update_attributes!(comment_id: comment.id)
+      submission.update_column(:comment_id,  comment.id)
       redirect_back notice: "Comment created"; return
     end
     redirect_back notice: "Something went wrong"
