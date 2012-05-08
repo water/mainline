@@ -3,7 +3,8 @@ class LabGroupsController < ApplicationController
   respond_to :html
   before_filter :setup_and_verify_course_and_lab_group, :only => [:show]
   def index
-    @lab_groups = current_role.lab_groups.where(given_course_id: params[:course_id])
+    @course = GivenCourse.includes(course: :course_codes).find(params[:course_id])
+    @lab_groups = current_role.lab_groups.where(given_course_id: @course.id)
     respond_with(@lab_groups) 
   end
 
@@ -53,8 +54,8 @@ class LabGroupsController < ApplicationController
   end
 
   def join
-    @lab_group = LabGroup.find_by_token(params[:lab_group][:hidden_token])
     if current_role.is_a? Student
+      @lab_group = LabGroup.find_by_token(params[:lab_group][:hidden_token])
       if @lab_group
         @lab_group.add_student(current_role)
         flash[:notice] = "Student added to lab group"
