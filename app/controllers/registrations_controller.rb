@@ -9,7 +9,7 @@ class RegistrationsController < ApplicationController
 
 	def register
 		ActiveRecord::Base.transaction do
-			lab_group = LabGroup.create!(
+			@lab_group = LabGroup.create!(
 				given_course_id: params[:course_id],
 				students: [current_user]
 			)
@@ -19,10 +19,10 @@ class RegistrationsController < ApplicationController
 			LabHasGroup.create!(
 				repository: repository, 
 				lab_id: params[:lab_id],
-				lab_group: lab_group
+				lab_group_id: @lab_group
 			)
 	  end
-	  if LabGroup.exists?(lab_group)
+	  if LabGroup.exists?(@lab_group)
 	  	redirect_back notice: "You have joined a lab and lab group"
 	  else
 	  	redirect_back notice: "Something went wrong"
