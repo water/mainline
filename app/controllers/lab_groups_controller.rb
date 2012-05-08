@@ -57,6 +57,14 @@ class LabGroupsController < ApplicationController
       flash[:error] = "Lab group does not exist"
       redirect_to new_course_lab_group_path("student", params[:given_course_id])
     end
-    
+  end
+
+  def register
+    @repository = Repository.create!()
+    lhg = LabHasGroup.new(lab_group_id: params[:id], lab_id: params[:lab_id], repository_id: @repository.id)
+    if lhg.save
+      redirect_to root_url, notice: "Ok"; return
+    end
+    redirect_back alert: "Oops, something went wrong"
   end
 end

@@ -63,6 +63,9 @@ end
       before_filter :redirect_to_current_site_subdomain, options
     end
     
+    def redirect_back(*args)
+      redirect_to :back, *args rescue redirect_to root_url, *args
+    end
     # Sets the before_filters needed to make sure the requests are rendered
     # in the "global" (eg without any Site specific layouts + subdomains).
     # +options+ is the options for the before_filter
