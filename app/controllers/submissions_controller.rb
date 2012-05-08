@@ -7,6 +7,9 @@ class SubmissionsController < ApplicationController
   end
 
   def show
+    if current_role.is_a? Assistant and @lhg.pending?
+      @lhg.reviewing!
+    end
   end
   
   def edit
@@ -82,7 +85,8 @@ class SubmissionsController < ApplicationController
     @course = params[:course_id]
     @lab = params[:lab_id]
     @group = LabGroup.includes(:lab_has_groups).find(params[:lab_group_id])
-    @repository = @submission.lab_has_group.repository
+    @lhg = @submission.lab_has_group
+    @repository = @lhg.repository
     setup_gon_for_tree_view(ref: @submission.commit_hash)
   end
 end
