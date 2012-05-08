@@ -22,6 +22,6 @@
         = form_for(@lab_group, 
           url: join_course_lab_groups_path("student", params[:course_id]), 
           html: {class: "form form-horizontal"}) do |group|
-          = group.text_field :id, :placeholder => 'Enter group code'
+          = group.text_field :hidden_token, :placeholder => 'Enter group code'
           = group.submit 'Join', class: 'btn btn-primary'
         

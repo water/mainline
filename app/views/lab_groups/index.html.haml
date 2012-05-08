@@ -1,2 +1,18 @@
-%h1 LabGroups#index
-%p Find me in app/views/lab_groups/index.html.haml
+.hero-unit
+  %h1 Lab Groups
+
+%table.table-striped
+  %thead
+    %th
+      Group number
+    %th
+      Labs
+  %tbody
+    - @lab_groups.each do |group|
+      %td= group.number
+      %td
+        %ul
+          - group.labs.each do |lab|
+            %li= link_to lab.number, course_lab_group_lab_path(current_role_name, params[:course_id], group, lab)
+
+  

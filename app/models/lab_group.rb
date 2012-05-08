@@ -26,6 +26,10 @@ class LabGroup < ActiveRecord::Base
     # Digest::SHA1.hexdigest(APP_CONFIG["salt"] || self.id.to_s)
   end
   
+  def name
+    "Group #{self.number}"
+  end
+  
   #
   # Adds a student to a lab group.
   # Checks that the student is registered to the correct course.
