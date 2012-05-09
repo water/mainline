@@ -5,8 +5,8 @@ Gitorious::Application.routes.draw do
   resources :lab_deadlines, :study_periods, :course_codes
 
   scope ":role", constraints: { role: /examiner|student|administrator|assistant|/ } do
+    resource :dashboard, only: [:show]
     resources :labs
-    resources :dashboards, only: [:index]
     resources :courses do
       resources :labs, only: [:show]
       post "/courses/:course_id/upload" => "uploads#upload"
