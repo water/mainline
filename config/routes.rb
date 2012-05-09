@@ -9,7 +9,7 @@ Gitorious::Application.routes.draw do
       post "/courses/:course_id/labs/:lab_id/register" => "registrations#register"
     end
     resources :labs
-    resources :dashboards, only: [:index]
+    resource :dashboard, only: [:show]
     resources :courses do
       resources :labs, only: [:show]
       post "/courses/:course_id/upload" => "uploads#upload"
@@ -59,7 +59,7 @@ Gitorious::Application.routes.draw do
   
   extend Gitorious::RepositoryRoutes
   
-  root :to => "dashboards#index"
+  root :to => "dashboards#show"
   
   resources :merge_requests
   

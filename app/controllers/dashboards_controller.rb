@@ -3,10 +3,10 @@ class DashboardsController < ApplicationController
   layout "water"
 
   def show
+    @courses = current_role.given_courses
   end
 
   def index
-    @courses = current_role.given_courses
   end
 
   def update

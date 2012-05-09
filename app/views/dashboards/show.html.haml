@@ -1,2 +1,10 @@
-%h1 Dashboards#show
-%p Find me in app/views/dashboards/show.html.haml
+-if logged_in?
+  %h1 
+    Welcome 
+    = link_to(current_user.login)
+  %br 
+
+-if current_role.class == Student
+  = render :partial => 'student'
+-elsif current_role.class == Assistant
+  = render :partial => 'assistant'
