@@ -8,6 +8,7 @@ Gitorious::Application.routes.draw do
     resources :labs
     resources :dashboards
     resources :courses do
+      resources :labs
       post "/courses/:course_id/upload" => "uploads#upload"
       resources :lab_groups do
         collection do
