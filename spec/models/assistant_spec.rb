@@ -54,7 +54,7 @@ describe Assistant do
       create(:assistant_registered_to_given_course, {
         assistant: @a, 
         given_course: @lhg.lab.given_course,
-        lab_has_group: @lhg
+        lab_has_groups: [@lhg]
       })
       
       @ability = Ability.new(@a.user)
