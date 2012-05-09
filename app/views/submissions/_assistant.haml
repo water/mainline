@@ -8,6 +8,10 @@
         Git clone url:
       %input.input-large{type: "text", value: "git://water.com:/apa/bepa.git"}
 
+- if @submission.lab_has_group.state == "accepted" || @submission.lab_has_group.state == "rejected"
+  .well
+    = nested_comments(@comment.arrange(:order => :created_at))
+
 .well
   .breadcrumbs
   #tree-view
