@@ -37,6 +37,14 @@ class ReviewsController < ApplicationController
       end
     end
 
+    if comment = params[:comment]
+      if can?(:review, submission)
+        begin
+          assistant_comment = Comment.create(user_id: current_user, body: comment, parent_id: nil, type: "submission")
+          submission.update_column(comment_id: assistant_comment.id)
+        end
+      end
+    end
     # TODO: Add messages from statements above
     redirect_to (path || root_path), notice: ["Request was made"].concat(errors).join("<br>")
   end

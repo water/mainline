@@ -26,6 +26,7 @@ Gitorious::Application.routes.draw do
             end
             member do
               put "/review" => "reviews#review", as: :review
+              post "/review" => "reviews#review", as: :review_and_comment
             end
           end
         end
