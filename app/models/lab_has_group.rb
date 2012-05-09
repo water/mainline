@@ -48,6 +48,10 @@ class LabHasGroup < ActiveRecord::Base
   def update_allowed?
     self.pending?
   end
+  
+  def reviewed?
+    ["accepted", "rejected"].include? self.state
+  end
 
   # The url that should be used by students and assistants to work on their repo
   # @return uri of class URI
