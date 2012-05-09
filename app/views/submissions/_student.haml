@@ -1,4 +1,4 @@
-- if @submission.lab_has_group.state == "accepted" || @submission.lab_has_group.state == "rejected"
+- if @comment and @submission.lab_has_group.reviewed?
   .well
     = nested_comments(@comment.arrange(:order => :created_at))
 
