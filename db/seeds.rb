@@ -123,6 +123,7 @@ labs.each_with_index do |lab, index|
   FactoryGirl.create(:submission, {
     commit_hash: commits[index],
     lab_has_group: lhg
+    #comment: FactoryGirl.create(:comment)
   })
 end
 
