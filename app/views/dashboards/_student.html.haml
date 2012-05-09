@@ -38,4 +38,4 @@
                   = link_to "start lab", course_lab_path("student", course, lab)
               %td
             %td
-              = lab.default_deadlines.where("at > ?", Time.now).order("at asc").first.at
+              = lab.default_deadlines.last.at

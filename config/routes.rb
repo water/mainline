@@ -5,10 +5,13 @@ Gitorious::Application.routes.draw do
   resources :lab_deadlines, :study_periods, :course_codes
 
   scope ":role", constraints: { role: /examiner|student|administrator|assistant|/ } do
+    resources :registration, only: [:new, :create, :destroy] do
+      post "/courses/:course_id/labs/:lab_id/register" => "registrations#register"
+    end
     resources :labs
-    resources :dashboards
+    resources :dashboards, only: [:index]
     resources :courses do
-      resources :labs
+      resources :labs, only: [:show]
       post "/courses/:course_id/upload" => "uploads#upload"
       resources :lab_groups do
         collection do
@@ -16,7 +19,15 @@ Gitorious::Application.routes.draw do
           post "create" => "lab_groups#create"
         end
         resources :labs, only: [:index, :show] do
-          resources :submissions, only: [:create, :new, :show]
+          resources :submissions, only: [:create, :new, :show, :edit, :update] do
+            collection do
+              match ":commit/new" => "submissions#new", via: :get, as: :new_commit
+              match ":commit" => "submissions#create", via: :post, as: :create_commit
+            end
+            member do
+              put "/review" => "reviews#review", as: :review
+            end
+          end
         end
       end
     end
@@ -31,6 +42,8 @@ Gitorious::Application.routes.draw do
       resources :submissions, only: [:index, :show]
     end
   end
+
+  resources :comments, only: [:show, :create, :new, :destroy, :edit, :update]
 
   resources :submissions, only: [:index, :show, :create, :new]
   

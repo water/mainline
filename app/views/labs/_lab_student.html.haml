@@ -1,3 +1,102 @@
-%tr
-  %td= lab.name
-  %td= lab.description
+- content_for :post_css do
+  / Generic page styles
+  / Bootstrap CSS fixes for IE6
+  /[if lt IE 7] <link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css">
+  / CSS to style the file input field as button and adjust the Bootstrap progress bars
+  = stylesheet_link_tag "jqupload/jquery.fileupload-ui_css"
+  
+- content_for :post_js do
+  / / The Templates plugin is included to render the upload/download listings
+  %script{:src => "http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"}
+  / The Load Image plugin is included for the preview images and image resizing functionality
+  %script{:src => "http://blueimp.github.com/JavaScript-Load-Image/load-image.min.js"}
+  / The Canvas to Blob plugin is included for image resizing functionality
+  %script{:src => "http://blueimp.github.com/JavaScript-Canvas-to-Blob/canvas-to-blob.min.js"}
+  = javascript_include_tag "jqupload/jquery.iframe-transport.js", "jqupload/jquery.fileupload.js", "jqupload/jquery.fileupload-ip.js"
+  = javascript_include_tag "jqupload/jquery.fileupload-ui.js", "jqupload/locale.js"
+  %script{type: "text/x-tmpl"}
+    #commit-request-dialog.well
+      %h1 Sending commit request...
+
+// ###################### HEADER ENDS ########################
+
+.hero-unit{class: @lhg.state}
+  %h1
+    Lab title:
+    = @lab.title
+  %h1
+    Status:
+    %span{class: @lhg.state}= @lhg.state
+    
+  %p 
+    This is the current state of your lab
+    %br
+    Upload files to specific folders by navigating to them in the tree view.
+    %br
+    When you are satisfied with the submission, click the submit button to submit it.
+  %p
+    %a.btn.btn-primary.btn-large#scroll_to_uploads{href: "#"}
+      %i.icon-upload.icon-white
+      Upload files
+
+.well
+  %h1
+    Submissions
+  %table.table.table-striped.table-bordered
+    %thead
+      %tr
+        %th
+          Name
+        %th
+          Submission commit hash
+        %th
+          Submission time
+    - @lab.submissions.each_with_index do |submission, index|
+      %tr
+        %td
+          = link_to "Submission #{index + 1}", 
+            course_lab_group_lab_submission_path(current_role_name,
+              @course_id,
+              @lab_group,
+              @lab,
+              submission)
+        %td
+          = submission.commit_hash[0..6]
+        %td
+          = submission.created_at
+
+.well
+  %h1 Current state of the lab
+  %br
+  .breadcrumbs
+  #tree-view
+  .breadcrumbs
+  .breadcrumb
+    %form.form-inline
+      %input#mkdir-input{type: "text"}
+      %a.btn.has-tooltip{href: "#mkdir",
+        title: "Click this button to create a folder at the current location in the tree"}
+        %i.icon-folder-open
+        Create a directory
+.well
+  = render "upload"
+  - if @lhg.submission_allowed?
+    %a.btn.btn-large.btn-danger{href:  new_commit_course_lab_group_lab_submissions_path(current_role_name, @course_id, @lab_group, @lab, @lhg.repository.last_commit.to_s)}
+      %i.icon-ok.icon-white
+      Submit!
+  - elsif @lhg.update_allowed?
+    %a.btn.btn-large.btn-danger{href:  edit_course_lab_group_lab_submission_path(current_role_name, 
+      @course_id, 
+      @lab_group, 
+      @lab,
+      @lhg.submissions.last)}
+      %i.icon-ok.icon-white
+      Update!
+  - else
+    %a.btn.btn-large.btn-danger.disabled.has-tooltip{href:  new_course_lab_group_lab_submission_path(current_role_name, 
+      @course_id, 
+      @lab_group, 
+      @lab),
+      title: "Submission is closed for the time being"}
+      %i.icon-ok.icon-white
+      Submit!

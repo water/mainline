@@ -1,6 +1,9 @@
 %tr
+  %td
+    = lab_has_group.lab.number
   %td= link_to lab_has_group.lab.title, course_lab_group_lab_path(current_role_name,
     lab_has_group.lab.given_course,
     lab_has_group.lab_group,
     lab_has_group.lab)
   %td= lab_has_group.lab.description
+  %td= lab_has_group.state

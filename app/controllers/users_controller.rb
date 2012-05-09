@@ -44,10 +44,11 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
-    @user.login = params[:user][:login]
+    @user = User.new
+    @user.login = params[:user].delete(:login)
+    @user.assign_attributes(params[:user])
     @user.save!
-    redirect_to :action => "pending_activation"
+    redirect_to root_path
   rescue ActiveRecord::RecordInvalid
     render :action => 'new'
   end

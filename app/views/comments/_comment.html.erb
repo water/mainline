@@ -1,47 +1,9 @@
-<%
-%>
-
-<a name="<%= dom_id(comment) -%>"></a>
-<% comment_block(comment) do -%>
-  <%- if comment.state_change -%>
-  <p class="meta_body">
-    &#x2192; State changed <%- if comment.state_changed_from -%>from
-    <span class="changed"><%=h comment.state_changed_from %></span><%- end -%> to
-    <span class="changed"><%=h comment.state_changed_to %></span>
-  </p>
-  <%- end -%>
-  <div class="body">
-    <% unless comment.context.blank? -%>
-      <blockquote>
-        <pre class="diff-comment-context"><code><%= comment.context %></code></pre>
-      </blockquote>
-    <% end %>
-    <%= render_markdown(comment.body, :auto_link) -%>
+<div class="comment">
+  <div class="created_at"><%= comment.created_at.strftime("%B %d, %Y") %></div>
+  <div class="content">
+    <%= comment.body %>
   </div>
-  <p class="byline">
-    <span class="avatar">
-      <%= link_to(avatar(comment.user, { :size => 16 }), user_path(comment.user)) %>
-    </span>
-    <%= link_to(h(comment.user.title), comment.user) -%> |
-    <span class="permalink">
-      <%= link_to time_ago(comment.created_at), "##{dom_id(comment)}" -%>
-    </span>
-    <% if comment.applies_to_line_numbers? -%>
-      <span class="inline_comment_link">
-        on <%= link_to h(comment.path), "##{dom_id(comment,'inline')}" -%>
-      </span>
-      <span class="link-spinner" id="loading_comment_<%= comment.to_param -%>">
-        <%= image_tag("spinner.gif") -%>
-      </span>
-    <% end -%>
-    <%- if comment.editable_by?(current_user) -%>
-      <span class="edit_link">
-        <%= link_to "Edit comment", "##{dom_id(comment)}",
-              "gts:url" => url_for([:edit, @project, @repository, comment]) -%>
-      </span>
-      <span class="link-spinner" id="loading_comment_editing_<%= comment.to_param -%>">
-        <%= image_tag("spinner.gif") -%>
-      </span>
-    <%- end -%>
-  </p>
-<% end -%>
+  <div class="actions">
+    <%= link_to "Reply", new_comment_path(:parent_id => message) %> 
+  </div>
+</div>

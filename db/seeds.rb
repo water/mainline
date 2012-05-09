@@ -6,7 +6,7 @@ require "rspec"
 
 #
 # Urls that works
-# http://localhost:3000/student/courses/1/lab_groups/3/labs/1
+# http://localhost:3000/student/courses/4/lab_groups/3/labs/1
 #
 
 if ENV["CLEAR"]
@@ -31,7 +31,8 @@ commits = %w{
 #### User
 user = FactoryGirl.create(:user, {
   email: "admin@popfizzle.com",
-  password: "abc123"
+  password: "abc123",
+  login: "pelle"
 })
 
 #### Administrator
@@ -134,3 +135,4 @@ labs.each do |lab|
     })
   end
 end
+

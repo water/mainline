@@ -1,17 +1,6 @@
-.hero-unit
-  %h1 Show submission
-  %h2 
-    Submission
-    = @submission.number
-  %h2
-    Group
-    = @group.number
-  %h2 Students:
-  - @group.students.each do |student|
-    %p= student.user.email
-  %br
-  
-.well
-  .breadcrumbs
-  #tree-view
-  .breadcrumbs
+= render "header"
+
+- if current_role.is_a? Student
+  = render "student"
+- if current_role.is_a? Assistant
+  = render "assistant"
