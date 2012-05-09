@@ -10,6 +10,7 @@ class SubmissionsController < ApplicationController
     if current_role.is_a? Assistant and @lhg.pending?
       @lhg.reviewing!
     end
+  @comment = Comment.find(@submission.comment_id).subtree
   end
   
   def edit
@@ -25,7 +26,7 @@ class SubmissionsController < ApplicationController
     submission = Submission.find(params[:id])
     comment = Comment.new(
       user_id: current_user, 
-      type: "submission", body: params[:input],
+      kind: "submission", body: params[:input],
       parent_id: nil
     )
     if comment.save!

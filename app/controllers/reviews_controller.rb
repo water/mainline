@@ -40,7 +40,7 @@ class ReviewsController < ApplicationController
     if comment = params[:comment]
       if can?(:review, submission)
         begin
-          assistant_comment = Comment.create(user_id: current_user, body: comment, parent_id: nil, type: "submission")
+          assistant_comment = Comment.create(user_id: current_user, body: comment, parent_id: nil, kind: "submission")
           submission.update_column(:comment_id, assistant_comment.id)
         end
       end
