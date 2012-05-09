@@ -10,7 +10,7 @@ class SubmissionsController < ApplicationController
     if current_role.is_a? Assistant and @lhg.pending?
       @lhg.reviewing!
     end
-    if lhg.accepted? or lhg.rejected?
+    if @lhg.accepted? or @lhg.rejected? and @submission.comment_id
       @comment = Comment.find(@submission.comment_id).subtree
     end
   end
