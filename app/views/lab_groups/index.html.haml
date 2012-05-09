@@ -1,2 +1,26 @@
-%h1 LabGroups#index
-%p Find me in app/views/lab_groups/index.html.haml
+.hero-unit
+  %h1 
+    Lab Groups for
+  %h2
+    = @course.all_course_codes
+- unless @lab_groups.empty?
+  .well
+    %table.table-striped
+      %thead
+        %th
+          Group number
+        %th
+          Labs
+      %tbody
+        - @lab_groups.each do |group|
+          %td= group.number
+          %td
+            %ul
+              - group.labs.each do |lab|
+                %li 
+                  = link_to "Lab #{lab.number}: #{lab.title}", 
+                      course_lab_group_lab_path(current_role_name, params[:course_id], group, lab)
+
+.well 
+  %h2
+    You have no lab groups for this course yet.
