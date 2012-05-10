@@ -1,52 +1,55 @@
 //Need to figure out in which order we want to show these
--@assistant_courses.order("study_period_id desc").each do |course|
-  .well
-    %h2
-      = link_to course.course.course_codes.first.code, course_path("assistant", course)
-    %br
-    %table.table.table-bordered.table-striped
-      %thead
-        %tr
-          %th Lab
-          %th Pending submissions
-          %th Download
-          %th Next deadline
-      %tbody
-        - course.labs.each do |lab|
-          - pending = lab.lab_has_groups.where(state: "pending")
-          %tr{:class => cycle("odd", "even")}
-            %td
-              %h4
-                = lab.id  
-            %td
-              %h4
-                %a{:class => "accordion-toggle", :"data-toggle" => "collapse",
-                  :href => "#submission", :"data-target" => "#submission"+lab.id.to_s}
-                  = pending.count.to_s + " submissions"
-                .icon.icon-chevron-down
-              .accordion-body.collapse{:id => "submission"+lab.id.to_s}
-                .accordion-inner
-                  %br
-                  %table.table.table-striped
-                    %thead
-                      %th Group
-                      %th Submitted
-                      %th Download
-                    %tbody
-                      - pending.each do |p|
-                        - submission = p.submissions.order("created_at DESC").first
-                        %tr
-                          %td
-                            = link_to p.lab_group.number.to_s, 
-                              course_lab_group_lab_submission_path("assistant", course, p.lab_group, p.lab, submission)
-                          %td
-                            = submission.created_at
-                          %td
-                            %a.btn.btn-success
-                              Download submission
-            %td
-              %a.btn.btn-primary{href: "#"}
-                Download all
-            %td
-              = lab.default_deadlines.where("at > ?", Time.now).order("at asc").first.at
+.well
+  %h2.grey Assistant dashboard
+  %br
+  -@assistant_courses.order("study_period_id desc").each do |course|
+    .well
+      %h2
+        = link_to course.course.course_codes.first.code, course_path("assistant", course)
+      %br
+      %table.table.table-bordered.table-striped
+        %thead
+          %tr
+            %th Lab
+            %th Pending submissions
+            %th Download
+            %th Next deadline
+        %tbody
+          - course.labs.each do |lab|
+            - pending = lab.lab_has_groups.where(state: "pending")
+            %tr{:class => cycle("odd", "even")}
+              %td
+                %h4
+                  = lab.id  
+              %td
+                %h4
+                  %a{:class => "accordion-toggle", :"data-toggle" => "collapse",
+                    :href => "#submission", :"data-target" => "#submission"+lab.id.to_s}
+                    = pending.count.to_s + " submissions"
+                  .icon.icon-chevron-down
+                .accordion-body.collapse{:id => "submission"+lab.id.to_s}
+                  .accordion-inner
+                    %br
+                    %table.table.table-striped
+                      %thead
+                        %th Group
+                        %th Submitted
+                        %th Download
+                      %tbody
+                        - pending.each do |p|
+                          - submission = p.submissions.order("created_at DESC").first
+                          %tr
+                            %td
+                              = link_to p.lab_group.number.to_s, 
+                                course_lab_group_lab_submission_path("assistant", course, p.lab_group, p.lab, submission)
+                            %td
+                              = submission.created_at
+                            %td
+                              %a.btn.btn-success
+                                Download submission
+              %td
+                %a.btn.btn-primary{href: "#"}
+                  Download all
+              %td
+                = lab.default_deadlines.where("at > ?", Time.now).order("at asc").first.at
 

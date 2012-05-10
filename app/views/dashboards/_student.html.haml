@@ -1,41 +1,44 @@
--@student_courses.each do |course|
-  .well
-    %h2
-      = link_to course.course.course_codes.first.code, course_path("student", course)
-    %table.table.table-bordered.table-striped
-      %thead
-        %tr
-          %th Lab
-          %th Group
-          %th Status
-          %th Latest submisssion
-          %th Next deadline
-      %tbody
-        - course.labs.each do |lab|
-          %tr{:class => cycle("odd", "even")}
-            - if current_user.student.lab_has_groups.joins(:lab).where(lab_id: lab.id).exists?
-              - group = current_user.student.lab_has_groups.joins(:lab).where(lab_id: lab.id).first.lab_group
+.well
+  %h2.grey My courses
+  %br
+  -@student_courses.each do |course|
+    .well
+      %h2
+        = link_to course.course.course_codes.first.code, course_path("student", course)
+      %table.table.table-bordered.table-striped
+        %thead
+          %tr
+            %th Lab
+            %th Group
+            %th Status
+            %th Latest submisssion
+            %th Next deadline
+        %tbody
+          - course.labs.each do |lab|
+            %tr{:class => cycle("odd", "even")}
+              - if current_user.student.lab_has_groups.joins(:lab).where(lab_id: lab.id).exists?
+                - group = current_user.student.lab_has_groups.joins(:lab).where(lab_id: lab.id).first.lab_group
+                %td
+                  %h4
+                    = link_to lab.id, course_lab_group_lab_path("student", course.id, group.id, lab.id)
+                %td
+                  %h4
+                    = link_to group.number, course_lab_group_path("student", course, group.id)
+                %td
+                  %h4
+                    - @state = lab.lab_has_groups.where(lab_group_id: group).first.state
+                  %h4 
+                    %span{class: @state}= @state
+                %td
+                  = group.submissions.find(group.submissions.length).updated_at if group.submissions
+              - else
+                %td
+                  %h4
+                    = lab.id
+                %td
+                %td
+                  %h4
+                    = link_to "start lab", course_lab_path("student", course, lab)
+                %td
               %td
-                %h4
-                  = link_to lab.id, course_lab_group_lab_path("student", course.id, group.id, lab.id)
-              %td
-                %h4
-                  = link_to group.number, course_lab_group_path("student", course, group.id)
-              %td
-                %h4
-                  - @state = lab.lab_has_groups.where(lab_group_id: group).first.state
-                %h4 
-                  %span{class: @state}= @state
-              %td
-                = group.submissions.find(group.submissions.length).updated_at if group.submissions
-            - else
-              %td
-                %h4
-                  = lab.id
-              %td
-              %td
-                %h4
-                  = link_to "start lab", course_lab_path("student", course, lab)
-              %td
-            %td
-              = lab.default_deadlines.last.at
+                = lab.default_deadlines.last.at
