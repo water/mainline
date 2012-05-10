@@ -2,7 +2,7 @@
 
 Gitorious::Application.routes.draw do
   root to: "dashboards#show"
-  resources :registered_courses, :dashboards, :students
+  resources :registered_courses, :students
   resources :lab_deadlines, :study_periods, :course_codes
 
   scope ":role", constraints: { role: /examiner|student|administrator|assistant|/ } do
