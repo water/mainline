@@ -1,4 +1,4 @@
--@courses.each do |course|
+-@student_courses.each do |course|
   .well
     %h2
       = link_to course.course.course_codes.first.code, course_path("student", course)
@@ -13,8 +13,8 @@
       %tbody
         - course.labs.each do |lab|
           %tr{:class => cycle("odd", "even")}
-            - if current_role.lab_has_groups.joins(:lab).where(lab_id: lab.id).exists?
-              - group = current_role.lab_has_groups.joins(:lab).where(lab_id: lab.id).first.lab_group
+            - if current_user.student.lab_has_groups.joins(:lab).where(lab_id: lab.id).exists?
+              - group = current_user.student.lab_has_groups.joins(:lab).where(lab_id: lab.id).first.lab_group
               %td
                 %h4
                   = link_to lab.id, course_lab_group_lab_path("student", course.id, group.id, lab.id)

@@ -1,5 +1,5 @@
 //Need to figure out in which order we want to show these
--@courses.order("study_period_id desc").each do |course|
+-@assistant_courses.order("study_period_id desc").each do |course|
   .well
     %h2
       = link_to course.course.course_codes.first.code, course_path("assistant", course)

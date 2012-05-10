@@ -4,7 +4,7 @@
     = link_to(current_user.login)
   %br 
 
--if current_role.class == Student
+-if current_user.student
   = render :partial => 'student'
--elsif current_role.class == Assistant
+-if current_user.assistant
   = render :partial => 'assistant'
