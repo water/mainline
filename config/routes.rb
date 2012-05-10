@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
+  root to: "dashboards#show"
   resources :registered_courses, :dashboards, :students
   resources :lab_deadlines, :study_periods, :course_codes
 
@@ -59,8 +60,6 @@ Gitorious::Application.routes.draw do
   end
   
   extend Gitorious::RepositoryRoutes
-  
-  root :to => "dashboards#index"
   
   resources :merge_requests
   
