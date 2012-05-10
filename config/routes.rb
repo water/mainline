@@ -61,8 +61,6 @@ Gitorious::Application.routes.draw do
   
   extend Gitorious::RepositoryRoutes
   
-  root :to => "dashboards#show"
-  
   resources :merge_requests
   
   resources :merge_requests do
