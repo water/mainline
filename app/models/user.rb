@@ -107,7 +107,16 @@ class User < ActiveRecord::Base
   #
   def self.authenticate(login, password)
     user = User.find_by_login(login)
+    authenticate_by_user(user, password)
+  end
+  
+  def self.authenticate_by_user(user, password)
     user and user.authenticated?(password) ? user : nil
+  end
+  
+  def self.authenticate_by_email(email, password)
+    user = User.find_by_email(email)
+    authenticate_by_user(user, password)
   end
 
   # Encrypts some data with the salt.

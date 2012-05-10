@@ -70,8 +70,8 @@ class SessionsController < ApplicationController
     redirect_to login_path(:method => 'openid')
   end
 
-  def password_authentication(login, password)
-    self.current_user = User.authenticate(login, password)    
+  def password_authentication(email, password)
+    self.current_user = User.authenticate_by_email(email, password)    
     if logged_in?
       successful_login
     else
@@ -98,7 +98,7 @@ class SessionsController < ApplicationController
         :domain => ".#{GitoriousConfig['gitorious_host']}",
       }
     end
-    check_state_and_redirect('/')
+    check_state_and_redirect(root_path(role: :student))
   end
   
   def check_state_and_redirect(redirection_url)

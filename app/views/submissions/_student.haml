@@ -1,3 +1,7 @@
+- if @comment and @submission.lab_has_group.reviewed?
+  .well
+    = nested_comments(@comment.arrange(:order => :created_at))
+
 .well
   .breadcrumbs
   #tree-view

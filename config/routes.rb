@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
+  root to: "dashboards#show"
   resources :registered_courses, :dashboards, :students
   resources :lab_deadlines, :study_periods, :course_codes
 
@@ -26,6 +27,7 @@ Gitorious::Application.routes.draw do
             end
             member do
               put "/review" => "reviews#review", as: :review
+              post "/review" => "reviews#review", as: :review_and_comment
             end
           end
         end
