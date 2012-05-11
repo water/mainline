@@ -34,7 +34,7 @@
               - else
                 %td
                   %h4
-                    = link_to "Lab " + lab.number, course_lab_path("student", course, lab)
+                    = link_to "Lab " + lab.number.to_s, course_lab_path("student", course, lab)
                 %td
                 %td
                   %h4
