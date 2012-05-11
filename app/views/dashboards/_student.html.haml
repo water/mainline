@@ -14,13 +14,13 @@
             %th Latest submisssion
             %th Next deadline
         %tbody
-          - course.labs.each do |lab|
+          - course.labs.order("number ASC").each do |lab|
             %tr{:class => cycle("odd", "even")}
               - if current_user.student.lab_has_groups.joins(:lab).where(lab_id: lab.id).exists?
                 - group = current_user.student.lab_has_groups.joins(:lab).where(lab_id: lab.id).first.lab_group
                 %td
                   %h4
-                    = link_to "Lab " + lab.id.to_s, course_lab_group_lab_path("student", course.id, group.id, lab.id)
+                    = link_to "Lab " + lab.number.to_s, course_lab_group_lab_path("student", course.id, group.id, lab.id)
                 %td
                   %h4
                     = link_to "Group " + group.number.to_s, course_lab_group_path("student", course, group.id)
@@ -34,7 +34,7 @@
               - else
                 %td
                   %h4
-                    = link_to "Lab " + lab.id, course_lab_path("student", course, lab)
+                    = link_to "Lab " + lab.number, course_lab_path("student", course, lab)
                 %td
                 %td
                   %h4
