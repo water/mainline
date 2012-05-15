@@ -337,16 +337,13 @@ GEM
       shoulda-matchers (~> 1.0.0)
     shoulda-context (1.0.0)
     shoulda-matchers (1.0.0)
-<<<<<<< HEAD
+    simple_form (2.0.1)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     simplecov (0.6.4)
       multi_json (~> 1.0)
       simplecov-html (~> 0.5.3)
     simplecov-html (0.5.3)
-=======
-    simple_form (2.0.1)
-      actionpack (~> 3.0)
-      activemodel (~> 3.0)
->>>>>>> 051e99f4cdcc3b2eb298942ab50c2c5104b7b9f0
     spork (0.9.0)
     sprockets (2.1.2)
       hike (~> 1.2)
@@ -444,11 +441,8 @@ DEPENDENCIES
   secure_faye!
   selenium
   shoulda
-<<<<<<< HEAD
-  simplecov
-=======
   simple_form
->>>>>>> 051e99f4cdcc3b2eb298942ab50c2c5104b7b9f0
+  simplecov
   spork (~> 0.9.0)
   spork-testunit!
   state_machine
