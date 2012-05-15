@@ -10,7 +10,7 @@ Gitorious::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+  config.assets.debug = false
 
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true

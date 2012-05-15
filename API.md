@@ -71,6 +71,8 @@
 - Student
   - Skapar en grupp där studenten som skapade gruppen redan är medlem, såvida att studenten är registrerad på kursen
 
+### GET /courses/:course_id/groups/:id
+
 ### GET /courses/:course_id/groups/:id/join
 
 - Student

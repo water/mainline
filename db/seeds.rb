@@ -6,8 +6,13 @@ require "rspec"
 
 #
 # Urls that works
+# http://localhost:3000/student/courses/1/lab_groups/3/labs/1
+# http://localhost:3000/student/courses/4/groups/1
 # http://localhost:3000/student/courses/4/lab_groups/3/labs/1
 #
+
+# Turn of SQL output
+ActiveRecord::Base.logger.level = Logger::ERROR
 
 if ENV["CLEAR"]
   puts "Are you sure you want to wipe the entire database? [y|n]".red
@@ -20,8 +25,6 @@ Rspec::Mocks::setup Repository
 
 FactoryGirl.reload
 labs = []
-# Nothing special
-# just copied from https://github.com/water/grack/commits
 commits = %w{
   6707a957d6ebe1b3df580343b9d57cc3c758cc9e
   af27fd809ebdbb745c0080fbe3192a3c6bda6aa7
@@ -68,13 +71,6 @@ study_period = FactoryGirl.create(:study_period, {
   year: 2012
 })
 
-#### LabDescription
-ld = Factory(:lab_description, {
-  study_period: study_period,
-  description: "This is my description",
-  title: "My title"
-})
-
 #### GivenCourse
 given_course = FactoryGirl.create(:given_course, {
   course: course, 
@@ -84,11 +80,17 @@ given_course = FactoryGirl.create(:given_course, {
   study_period: study_period
 })
 
+lab_description = Factory(:lab_description, {
+  study_period: study_period,
+  description: "This is my description",
+  title: "My title"
+})
+
 #### Lab
 labs << FactoryGirl.create(:lab, {
   active: true,
   initial_lab_commit: ilc,
-  lab_description: ld,
+  lab_description: lab_description,
   given_course: given_course
 })
 
@@ -136,4 +138,3 @@ labs.each do |lab|
     })
   end
 end
-

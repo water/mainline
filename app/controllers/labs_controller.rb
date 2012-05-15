@@ -82,7 +82,7 @@ class LabsController < ApplicationController
   def join
     @group = LabGroup.find(params[:lab_group_id])
     @lab = Lab.find(params[:lab_id])
-    @lab.add_group(@group)
+    @lab.add_group!(@group)
     respond_with(@group)
   end
 

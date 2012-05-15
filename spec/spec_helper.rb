@@ -14,8 +14,10 @@ Spork.prefork do
   require "rspec/autorun"
   require "capybara/rails"
   require "database_cleaner"
+  require "simplecov"
   require "cancan/matchers"
   
+  SimpleCov.start "rails"
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
   RSpec.configure do |config|
