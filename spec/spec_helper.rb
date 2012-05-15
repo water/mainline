@@ -17,7 +17,8 @@ Spork.prefork do
   require "simplecov"
   require "cancan/matchers"
   
-  SimpleCov.start "rails"
+  # SimpleCov.start "rails"
+  
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
   RSpec.configure do |config|
