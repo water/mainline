@@ -39,7 +39,7 @@ end
 # TODO: Implement actual submission request
 puts %Q{
 Ok, water tries to submit #{submit_hash}
-for you.  A mail will be sent to you shortly wheter if the submission was sent
+for you.  A mail will be sent to you shortly if the submission was sent
 sucessfully.
 }
 
@@ -49,10 +49,6 @@ hashed_path = s[-47..-6]
 require "pg"
 require "time"
 require "yaml"
-
-database_config_file = "TODO: fix"
-p database_config_file
-
 
 begin
 conn = PG.connect({
@@ -79,7 +75,6 @@ conn.exec(sql_find) do |result|
   result.each do |row|
     # LabHashGroup#id
     id = row.values_at("id").first
-    p id
     sql_insert = %Q{
 INSERT INTO "submissions"
 ("commit_hash", "lab_has_group_id", "updated_at", "created_at")
