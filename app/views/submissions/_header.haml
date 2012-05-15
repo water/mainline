@@ -1,4 +1,4 @@
-.hero-unit
+.hero-unit{class: @submission.lab_has_group.state}
   %h1 
     Lab 
     = @submission.lab_has_group.lab.number
@@ -6,12 +6,11 @@
     Submission
     = @submission.number
   %h1
-    State:
-    = @submission.lab_has_group.state
+    Status:
+    %span{class: @lhg.state}= @submission.lab_has_group.state
   %h2
     Group
     = @group.number
   %h2 Students:
   - @group.students.each do |student|
     %p= student.user.email
-  %br

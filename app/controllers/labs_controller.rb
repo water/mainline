@@ -55,7 +55,7 @@ class LabsController < ApplicationController
       end
     else
       @lab_groups = current_role.lab_groups.where(given_course_id: params[:course_id])
-      @lab = current_role.given_courses.find(params[:course_id])
+      @lab = current_role.given_courses.find(params[:course_id]).labs.find(params[:id])
       @start = true
       respond_with @lab
     end
@@ -84,6 +84,7 @@ class LabsController < ApplicationController
     @lab = Lab.find(params[:lab_id])
     @lab.add_group!(@group)
     respond_with(@group)
+    redirect_to course_lab_group_lab_path(current_role_name, params[:course_id], @group, @lab)
   end
 
   def create
