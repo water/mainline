@@ -1,5 +1,5 @@
-beanstalkd: beanstalkd -p 11300
+# beanstalkd: beanstalkd -p 11300
 spork: bundle exec spork
-poller: bundle exec ruby script/poller
-daemon: bundle exec script/git-daemon
-faye: bundle exec rackup faye.ru -s thin -E production -p 9291
+# poller: bundle exec ruby script/poller
+# daemon: bundle exec script/git-daemon
+# faye: bundle exec rackup faye.ru -s thin -E production -p 9291
