@@ -16,7 +16,7 @@
             %th Next deadline
         %tbody
           - course.labs.order("number ASC").each do |lab|
-            - pending = lab.lab_has_groups.where(state: "pending")
+            - pending = lab.lab_has_groups.where(state: ["pending", "reviewing"])
             %tr{:class => cycle("odd", "even")}
               %td
                 %h4
