@@ -116,6 +116,15 @@ lab_group_1_1_3 = FactoryGirl.create(:lab_group, { given_course: given_course_1_
 lab_group_1_1_4 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
 lab_group_1_1_5 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
 
+# Let's create lab has groups for 1,2 and 4
+[[lab_group_1_1_1, lab_1_1_1], [lab_group_1_1_2, lab_1_1_1], [lab_group_1_1_4, lab_1_1_2]].each { |lab_group, lab|
+  lhg = FactoryGirl.create(:lab_has_group, {
+    lab: lab, 
+    lab_group: lab_group,
+    repository: FactoryGirl.create(:repo_with_data)
+  })
+}
+
 class LabGroup
   def add_students(students)
     students.each { |x| self.add_student(x) }
