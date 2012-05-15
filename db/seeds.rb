@@ -11,7 +11,7 @@ require "rspec"
 
 if ENV["CLEAR"]
   puts "Are you sure you want to wipe the entire database? [y|n]".red
-  abort("Abort") unless $stdin.gets =~ /y/
+  abort("Abort") unless (ENV["CLEAR"] == "f" || $stdin.gets =~ /y/)
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.clean
 end
