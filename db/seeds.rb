@@ -59,13 +59,20 @@ initial_lab_commit = FactoryGirl.create(:initial_lab_commit, {
 ###### Interesting course seed ####
 ###################################
 
+firstnames = "Arash Bert Carina David Erika Fredrik Gustav Helge Ivar Jonas".split
+lastnames  = firstnames.map { |x| "#{x}sson" }.shuffle(random: Random.new(123))
+
+$names = firstnames.zip(lastnames).map { |fn, ln| "#{fn} #{ln}" }
+
 def many(num, role)
+  p $names.length
   s = role.to_s
   (1..num).map { |i| FactoryGirl.create(role, user: 
                                                 FactoryGirl.create(:user, {
     email: "#{s}#{i}@chalmers.se",
     password: "password",
-    login: "#{s}#{i}"
+    login: "#{s}#{i}",
+    fullname: $names.pop
     }))
   }
 end
