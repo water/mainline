@@ -3,8 +3,9 @@ class LabGroup < ActiveRecord::Base
   has_many :lab_has_groups, dependent: :destroy
   has_many :labs, through: :lab_has_groups
   has_many :submissions, through: :lab_has_groups
+  has_many :students, through: :student_registered_for_courses
+
   belongs_to :given_course
-  has_many :students, through: :student_registered_for_courses, class_name: "Student"
 
   attr_accessor :hidden_token
   
@@ -31,6 +32,16 @@ class LabGroup < ActiveRecord::Base
   end
   
   #
+  # Creates a link between Lab 
+  # and LabGroup using LabHasGroup
+  #
+  after_create do |group|
+    group.given_course.labs.each do |lab|
+      # lab.add_group!(group)
+    end
+  end
+
+  #
   # Adds a student to a lab group.
   # Checks that the student is registered to the correct course.
   #
@@ -42,5 +53,14 @@ class LabGroup < ActiveRecord::Base
       raise "Registration failed"
     end
   end
-  
+
+  #
+  # @params[:course_id] Integer GivenCourse#id
+  # @params[:group_id] Integer LabGroup#number
+  # @return ActiveRecord::Relation
+  #
+  def self.find_by_course_and_group(params)
+    where("lab_groups.given_course_id = ?", params[:course_id]).
+    where("lab_groups.number = ?", params[:group_id])
+  end
 end

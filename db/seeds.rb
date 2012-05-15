@@ -236,3 +236,4 @@ lab_group_1_1_3.add_students students[0,2]
 lab_group_1_1_4.add_students students[2,4]
 lab_group_1_1_5.add_students students[4,6]
 
+

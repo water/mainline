@@ -1,0 +1,7 @@
+%ul
+  - @group.given_course.labs.each do |lab|
+    %li
+      %span.lab
+        = link_to lab.title, course_lab_path(@group.given_course, lab.number, role: "student")
+      %span.state
+        = ["Rejected", "Accepted", "Pending"].sample
