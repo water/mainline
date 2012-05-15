@@ -8,25 +8,30 @@ class RegistrationsController < ApplicationController
 	end
 
 	def register
+	  begin
 		ActiveRecord::Base.transaction do
+		  @given_course = GivenCourse.find(params[:course_id])
+      @lab = @given_course.labs.find(params[:id])
 			@lab_group = LabGroup.create!(
-				given_course_id: params[:course_id],
-				students: [current_user]
+				given_course: @given_course,
+				students: [current_user.student]
 			)
 
 			repository = Repository.create!()
-
+			
+      # @lab = @given_course.labs.find_by_number(params[:lab_id])
+      
+      logger.info(@lab)
 			LabHasGroup.create!(
 				repository: repository, 
-				lab_id: params[:lab_id],
+				lab: @lab,
 				lab_group_id: @lab_group
 			)
 	  end
-	  if LabGroup.exists?(@lab_group)
-	  	redirect_back notice: "You have joined a lab and lab group"
-	  else
-	  	redirect_back notice: "Something went wrong"
-	  end
+    rescue  
+      logger.info("Shit!: #{$!}")
+    end
+    redirect_to root_path #course_lab_group_lab_path(current_role_name, @given_course, @lab_group, @lab)
 	end
 
 end

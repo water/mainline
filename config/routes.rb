@@ -9,7 +9,12 @@ Gitorious::Application.routes.draw do
     resource :dashboard, only: [:show]
     resources :labs
     resources :courses do
-      resources :labs, only: [:show]
+      resources :labs, only: [:show] do
+        member do 
+          post "/register" => "registrations#register"
+          post "/join" => "labs#join"
+        end
+      end
       post "/courses/:course_id/upload" => "uploads#upload"
       resources :lab_groups do
         collection do
@@ -17,9 +22,6 @@ Gitorious::Application.routes.draw do
           post "create" => "lab_groups#create"
         end
         resources :labs, only: [:index, :show] do
-          member do
-            post "/register" => "registrations#register"
-          end
           resources :submissions, only: [:create, :new, :show, :edit, :update] do
             collection do
               match ":commit/new" => "submissions#new", via: :get, as: :new_commit

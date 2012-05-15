@@ -12,8 +12,11 @@
           %h3 
             Connect an existing lab group
           %br
-          = form_tag "", class: "form form-horizontal" do
-            = select_tag "lab_group", 
+          = form_tag join_course_lab_path(current_role_name, 
+            params[:course_id], params[:id]), 
+            method: :post, 
+            html: {class: "form form-horizontal"} do
+            = select_tag "lab_group_id", 
               options_from_collection_for_select(@lab_groups, 
                 "id", 
                 "name", 
@@ -26,9 +29,7 @@
       .center
         %br
         %h3
-          = link_to 'Create a Lab Group', 
-            course_lab_groups_path("student", params[:course_id]), 
-            method: 'post',
-            class: "btn btn-big btn-primary"
+          = form_tag register_course_lab_path("student", params[:course_id], @lab) do
+            = submit_tag "Create a Lab Group", class: "btn btn-big btn-primary"
         %br
         %h5 A new group will be created and connected to the lab
