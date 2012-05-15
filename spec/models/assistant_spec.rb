@@ -45,10 +45,37 @@ describe Assistant do
     end
   end
 
+  describe "abilities" do
+    before :all do
+      @lhg = create(:lab_has_group)
+      @a = create(:assistant)
+      @submission = create(:submission, lab_has_group: @lhg)
+      
+      create(:assistant_registered_to_given_course, {
+        assistant: @a, 
+        given_course: @lhg.lab.given_course,
+        lab_has_groups: [@lhg]
+      })
+      
+      @ability = Ability.new(@a.user)
+    end
+    
+    it "should be able to grade a valid lab" do
+      @ability.should be_able_to(:review, @submission)
+    end
+    
+    it "should not be able to grade an invalid lab" do
+      lhg2 = create(:lab_has_group)
+      submission2 = create(:submission, lab_has_group: lhg2)
+      
+      @ability.should_not be_able_to(:review, submission2)
+    end
+  end
+
   describe "dependent destroy" do
     it "should no be possible for a assistant_registered_to_given_course to exist without a assistant" do
-      assis = Factory.create(:assistant)
-      ar = Factory.create(:assistant_registered_to_given_course, assistant: assis)
+      assis = FactoryGirl.create(:assistant)
+      ar = FactoryGirl.create(:assistant_registered_to_given_course, assistant: assis)
       assis.destroy
       lambda{ar.reload}.should  raise_error(ActiveRecord::RecordNotFound)
     end

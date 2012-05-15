@@ -7,8 +7,29 @@ class LabGroup < ActiveRecord::Base
 
   belongs_to :given_course
 
+  attr_accessor :hidden_token
+  
   acts_as_list scope: :given_course, column: :number
   accepts_nested_attributes_for :lab_has_groups
+  
+  # @token 40 char SHA1 string
+  # @return User A user
+  #
+  def self.find_by_token(token)
+    self.find_by_sql([
+      "SELECT * FROM lab_groups WHERE ENCODE(DIGEST(? || id, 'sha1'), 'hex') = ? LIMIT 1",
+      APP_CONFIG["salt"], token
+    ]).first
+  end
+  
+  def token
+    LabGroup.find_by_sql(["SELECT id, ENCODE(DIGEST(? || id, 'sha1'), 'hex') FROM lab_groups WHERE id = ?", APP_CONFIG["salt"], self.id.to_s])
+      .first.encode
+  end
+  
+  def name
+    "Group #{self.number}"
+  end
   
   #
   # Creates a link between Lab 
@@ -28,6 +49,8 @@ class LabGroup < ActiveRecord::Base
     @registration = StudentRegisteredForCourse.reg_for_student_and_course(student, self.given_course)
     if @registration
       self.student_registered_for_courses << @registration
+    else
+      raise "Registration failed"
     end
   end
 

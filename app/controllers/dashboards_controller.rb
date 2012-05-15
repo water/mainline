@@ -3,6 +3,8 @@ class DashboardsController < ApplicationController
   layout "water"
 
   def show
+    @student_courses = current_user.student.given_courses
+    @assistant_courses = current_user.assistant.given_courses
   end
 
   def index

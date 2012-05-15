@@ -7,12 +7,13 @@ require "yadis"
 class SessionsController < ApplicationController
   layout "water"
   skip_before_filter :public_and_logged_in
+  before_filter :remove_navbar
   # renders_in_site_specific_context
   force_ssl only: [:new, :create, :destroy]
   
   def new
     if User.find_by_email("admin@popfizzle.com") and params[:force]
-      password_authentication("admin@popfizzle.com", "abc123")
+      password_authentication("pelle", "abc123")
     else
       flash.now.alert = %q{
         Database is not popularise, 
@@ -35,6 +36,11 @@ class SessionsController < ApplicationController
   end
 
   protected
+
+  # Prevents the navbar from being rendered
+  def remove_navbar
+    @no_navbar = true
+  end
 
   # if user doesn't exist, it gets created and activated,
   # else if the user already exists with same identity_url, it just logs in
@@ -65,7 +71,7 @@ class SessionsController < ApplicationController
   end
 
   def password_authentication(email, password)
-    self.current_user = User.authenticate(email, password)    
+    self.current_user = User.authenticate_by_email(email, password)    
     if logged_in?
       successful_login
     else
@@ -92,7 +98,7 @@ class SessionsController < ApplicationController
         :domain => ".#{GitoriousConfig['gitorious_host']}",
       }
     end
-    check_state_and_redirect('/')
+    check_state_and_redirect(root_path(role: :student))
   end
   
   def check_state_and_redirect(redirection_url)

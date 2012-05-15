@@ -1,7 +1,7 @@
 describe CommitRequestProcessor do
   let(:processor) { CommitRequestProcessor.new }
-  let(:user) { Factory.create(:user) }
-  let(:repository) { Factory.create(:repository) }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:repository) { FactoryGirl.create(:repository) }
   let(:example_file) { File.join(Rails.root, "spec/fixtures/git-repo/README.md") }
   def content_for(branch = "master")
     `cd #{@destintation} && git checkout #{branch} --quiet; git show --name-status --format=fuller`
@@ -150,6 +150,24 @@ describe CommitRequestProcessor do
       add_file("file", "content")
       processor.on_message(@options.to_json)
       content_for.should match(%r{D\s+file})
+    end
+  end
+
+  describe "#mkdir" do
+     before(:each) do
+      @options = {
+        command: "mkdir",
+        user: user.id,
+        repository: repository.id,
+        branch: "master",
+        commit_message: "A commit message",
+        path: "this/is/a/dir"
+      }
+    end
+
+    it "should make dir" do
+      processor.on_message(@options.to_json)
+      content_for.should match("this/is/a/dir/.gitkeep")
     end
   end
 

@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   #include ExceptionNotifiable
   
   before_filter :public_and_logged_in
-  before_filter :dummy_login
   
   after_filter :mark_flash_status
 
@@ -26,6 +25,10 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
+rescue_from StateMachine::InvalidTransition do |exception|
+  redirect_to root_url, error: "WTF?!"
+end
+
   def rescue_action(exception)
     return super if Rails.env != "production"
     
@@ -39,9 +42,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def dummy_login
-    current_user ||= User.first
-  end
+  # def dummy_login
+  #   current_user ||= User.first
+  # end
   
   def render(options = {}, extra_options = {}, &block)
     options[:layout] ||= ! params[:bare]
@@ -60,6 +63,9 @@ class ApplicationController < ActionController::Base
       before_filter :redirect_to_current_site_subdomain, options
     end
     
+    def redirect_back(*args)
+      redirect_to :back, *args rescue redirect_to root_url, *args
+    end
     # Sets the before_filters needed to make sure the requests are rendered
     # in the "global" (eg without any Site specific layouts + subdomains).
     # +options+ is the options for the before_filter

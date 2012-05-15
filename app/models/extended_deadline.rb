@@ -7,6 +7,8 @@ class ExtendedDeadline < ActiveRecord::Base
   # What's the minimum time between 
   # each deadline for a given group?
   MINIMUM_TIME_DIFFERENCE = 1.day
+  
+  default_scope order("at ASC")
 
 private
   def time_span

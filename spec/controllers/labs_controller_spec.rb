@@ -2,10 +2,10 @@ describe LabsController do
   render_views
   describe "POST join" do
     it "should test join action" do
-      student = Factory.create(:student)
-      course = Factory.create(:given_course)
-      group = Factory.create(:lab_group, given_course: course)
-      lab = Factory.create(:lab, given_course: course, active: true)
+      student = FactoryGirl.create(:student)
+      course = FactoryGirl.create(:given_course)
+      group = FactoryGirl.create(:lab_group, given_course: course)
+      lab = FactoryGirl.create(:lab, given_course: course, active: true)
       login_as(student)
       post :join, lab_group_id: group.id, lab_id: lab.id
       response.status.should eq(302)
@@ -14,68 +14,77 @@ describe LabsController do
   
   describe "GET /show" do
     describe "student" do
-      let(:student) { Factory.create(:student) }
+      let(:student) { FactoryGirl.create(:student) }
       
-      it "has breadcrumbs" do
-        given_course = Factory.create(:given_course)
-        srfc = Factory.create(:student_registered_for_course, {
+      before :all do 
+        @given_course = Factory.create(:given_course)
+        @srfc = Factory.create(:student_registered_for_course, {
           student: student,
-          given_course: given_course
+          given_course: @given_course
         })
 
-        lab = Factory.create(:active_lab, given_course: given_course)
-        group = Factory.create(:lab_group, given_course: given_course)
+        @lab = Factory.create(:active_lab, given_course: @given_course)
+        @group = Factory.create(:lab_group, given_course: @given_course)
 
         Factory.create(:lab_has_group, {
-          lab: lab,
-          lab_group: group, 
+          lab: @lab,
+          lab_group: @group, 
           grade: nil
         })
 
         login_as(student)
-        visit course_lab_group_lab_path("student", given_course, group, lab)
+      end
+      
+      it "doesn't crash" do
+        visit course_lab_group_lab_path("student", @given_course, @group, @lab)
+        page.status_code.should eq(200)
+      end
+      
+      it "has breadcrumbs" do
+        visit course_lab_group_lab_path("student", @given_course, @group, @lab)
         page.should have_selector('div.breadcrumbs')
       end
-    
-      it "doesn't crash" do
-        login_as(student)
-        page.status_code.should eq(200)
+      
+      it "gives an error if the lab group doesn't exist in the course" do
+        given_course2 = Factory.create(:given_course)
+        visit course_lab_group_lab_path("student", given_course2, @group, @lab)  
+        page.status_code.should eq(404)
       end
     end
   end
 
   describe "GET /labs" do
     describe "student" do
-      let(:student) { Factory.create(:student) }
+      let(:student) { FactoryGirl.create(:student) }
       
       it "should return all non finished labs" do
         login_as(student)
-        given_course = Factory.create(:given_course)
-        srfc = Factory.create(:student_registered_for_course, {
+        given_course = FactoryGirl.create(:given_course)
+        srfc = FactoryGirl.create(:student_registered_for_course, {
           student: student,
           given_course: given_course
         })
 
-        lab_group = Factory.create(:lab_group, given_course: given_course)
+        lab_group = FactoryGirl.create(:lab_group, given_course: given_course)
         labs = []
 
         # Active lab
-        labs << Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 1"),
+        labs << FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 1"),
           active: true,
           given_course: given_course
         })
 
         # Non acitve lab
-        labs << Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 2"),
+        labs << FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 2"),
           active: false,
           given_course: given_course
         })
 
         # Non related lab
-        Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 3"),
+        FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 3"),
           active: true,
           given_course: given_course
         })
@@ -83,7 +92,7 @@ describe LabsController do
         srfc.lab_groups << lab_group
 
         labs.each do |lab|
-          Factory.create(:lab_has_group, {
+          FactoryGirl.create(:lab_has_group, {
             lab: lab,
             lab_group: lab_group
           })
@@ -99,7 +108,7 @@ describe LabsController do
     end
 
     describe "examiner" do
-      let(:examiner) { Factory.create(:examiner) }
+      let(:examiner) { FactoryGirl.create(:examiner) }
 
       it "should return all non finished labs" do
         login_as(examiner)
@@ -112,21 +121,21 @@ describe LabsController do
         labs = []
 
         # Active lab
-        labs << Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 1"),
+        labs << FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 1"),
           active: true,
           given_course: given_course
         })
 
         # Non acitve lab
-        labs << Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 2"),
+        labs << FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 2"),
           active: false,
           given_course: given_course
         })
 
         labs.each do |lab|
-          Factory.create(:lab_has_group, {
+          FactoryGirl.create(:lab_has_group, {
             lab: lab,
             lab_group: group, 
             grade: nil
@@ -142,7 +151,7 @@ describe LabsController do
     end
 
     describe "assistant" do
-      let(:assistant) { Factory.create(:assistant) }
+      let(:assistant) { FactoryGirl.create(:assistant) }
 
       it "should return all non finished labs" do
         login_as(assistant)
@@ -154,21 +163,21 @@ describe LabsController do
         })
 
         # Active lab
-        labs << Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 1"),
+        labs << FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 1"),
           active: true,
           given_course: given_course
         })
 
         # Non acitve lab
-        labs << Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 2"),
+        labs << FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 2"),
           active: false,
           given_course: given_course
         })
 
         labs.each do |lab|
-          Factory.create(:lab_has_group, {
+          FactoryGirl.create(:lab_has_group, {
             lab: lab,
             lab_group: group,
             grade: nil
@@ -184,7 +193,7 @@ describe LabsController do
     end
 
     describe "administrator" do
-      let(:admin) { Factory.create(:administrator) }
+      let(:admin) { FactoryGirl.create(:administrator) }
 
       it "should return all non finished labs" do
         login_as(admin)
@@ -195,21 +204,21 @@ describe LabsController do
         })
 
         # Active lab
-        labs << Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 1"),
+        labs << FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 1"),
           active: true,
           given_course: gc
         })
 
         # Non acitve lab
-        labs << Factory.create(:lab, {
-          lab_description: Factory.create(:lab_description, title: "Lab 2"),
+        labs << FactoryGirl.create(:lab, {
+          lab_description: FactoryGirl.create(:lab_description, title: "Lab 2"),
           active: false,
           given_course: gc
         })
 
         labs.each do |lab|
-          Factory.create(:lab_has_group, {
+          FactoryGirl.create(:lab_has_group, {
             lab: lab,
             lab_group: group,
             grade: nil

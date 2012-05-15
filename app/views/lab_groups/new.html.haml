@@ -1,2 +1,27 @@
-%h1 LabGroups#new
-%p Find me in app/views/lab_groups/new.html.haml
+.hero-unit
+  %h1 
+    Create new Lab Group
+    %br
+    %small To participate in laborations you need to create or join an already existing lab group.
+.row
+  .span6
+    .well.equal-height
+      .center
+        %br
+        %h3
+          = link_to 'Create a Lab Group', course_lab_groups_path("student", params[:course_id]), method: 'post'
+        %br
+        %h5 When created you will be able to share your group code with the classmates you want to collaborate with.
+  .span6
+    .well.equal-height
+      .center
+        %br
+        %h3 
+          Join an existing lab group
+        %br
+        = form_for(@lab_group, 
+          url: join_course_lab_groups_path("student", params[:course_id]), 
+          html: {class: "form form-horizontal"}) do |group|
+          = group.text_field :hidden_token, :placeholder => 'Enter group code'
+          = group.submit 'Join', class: 'btn btn-primary'
+        

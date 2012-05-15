@@ -2,6 +2,11 @@
 
 ## Labs
 
+### PUT /submissions/:id/grade/:grade
+
+- Assistant
+  - Sätter grade på en submission
+
 ### GET /labs
 
 - Student
@@ -133,3 +138,44 @@
 
 - Student
   - Studenten skickar en commit-hash till en repo som är kopplad till en lab och grupp som studenten tillhör. 
+
+
+##Comments
+
+### GET /comments/:id
+
+ - Visar ett träd med :id som root kommentar
+
+### GET /comments/:id/edit
+ - Visar en form för att redigera en kommentar 
+
+### GET /comments/new
+ - Visar en form för att skapa en ny kommentar
+
+### PUT /comments/:id
+
+ - Updaterar en kommentar med :id
+
+### POST /comments/:id
+ - Skapar en ny kommentar
+
+### DELETE /comments/:id
+ - Tar bort en kommentar med :id
+ 
+### GET /comments
+ - Visar alla kommentarer
+
+## Reviews
+
+### PUT /labs/:id/submissions/:id/reviews/:result
+
+ :result = {
+   grade: string,
+   state: string
+}
+
+- Assistant
+  - Uppdaterar grade och/eller state i lab_has_group som äger denna submission
+
+- Examiner
+  - Uppdaterar grade och/eller state i lab_has_group som äger denna submission

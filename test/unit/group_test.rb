@@ -7,15 +7,15 @@ class GroupTest < ActiveSupport::TestCase
   
   context "in general" do
     should "uses the name as to_param" do
-      group = Factory.build(:group)
+      group = build(:group)
       assert_equal group.name, group.to_param
     end
   end
   
   context "members" do
     setup do
-      @johan = Factory.create(:user)
-      @mike = Factory.create(:user)
+      @johan = FactoryGirl.create(:user)
+      @mike = FactoryGirl.create(:user)
       @group = groups(:team_thunderbird)
       @group.add_member(@mike, Role.admin)
     end
@@ -75,38 +75,38 @@ class GroupTest < ActiveSupport::TestCase
   end
   
   should "has to_param_with_prefix" do
-    grp = Factory.build(:group, :name => 'webkit')
+    grp = build(:group, :name => 'webkit')
     assert_equal "+#{grp.to_param}", grp.to_param_with_prefix
   end
   
   should "has no breadcrumb parent" do
-    assert_equal nil, Factory.build(:group).breadcrumb_parent
+    assert_equal nil, build(:group).breadcrumb_parent
   end
   
   context 'Deleting groups' do
     setup do
-      @group = Factory.create(:group)
+      @group = FactoryGirl.create(:group)
     end
 
     should "be possible if 1 member or less" do
-      Factory.create(:membership, :group => @group)
+      FactoryGirl.create(:membership, :group => @group)
       assert_equal 1, @group.members.count
       assert @group.deletable?
-      Factory.create(:membership, :group => @group)
+      FactoryGirl.create(:membership, :group => @group)
       assert !@group.deletable?
     end
 
     should 'not be possible if associated projects exist' do
       assert_equal [], @group.projects
       assert @group.deletable?
-      project = Factory.create(:project, :owner => @group, :user => @group.creator)
+      project = FactoryGirl.create(:project, :owner => @group, :user => @group.creator)
       assert_equal [project], @group.projects.reload
       assert !@group.deletable?
     end
   end
   
   context "validations" do
-    setup {@existing_group = Factory.create(:group)}
+    setup {@existing_group = FactoryGirl.create(:group)}
     
     should " have a unique name" do
       group = Group.new({
@@ -117,7 +117,7 @@ class GroupTest < ActiveSupport::TestCase
     end
     
     should " have a alphanumeric name" do
-      group = Factory.build(:group, :name => "fu bar")
+      group = build(:group, :name => "fu bar")
       assert !group.valid?, 'group.valid? should be false'
       assert_not_nil group.errors.on(:name)
     end
@@ -132,13 +132,13 @@ class GroupTest < ActiveSupport::TestCase
     end
     
     should 'automatically downcase the group name before validation' do
-      g = Factory.create(:group, :name => 'FooWorkers')
+      g = FactoryGirl.create(:group, :name => 'FooWorkers')
       assert_equal('fooworkers', g.name)
     end
   end
   
   context 'Avatars' do
-    setup { @group = Factory.create(:group) }
+    setup { @group = FactoryGirl.create(:group) }
     
     should 'have a default avatar' do
       assert_equal '/images/default_group_avatar.png', @group.avatar.url

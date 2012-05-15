@@ -1,0 +1,34 @@
+.hero-unit
+  %h1 
+    Start working on a lab
+    %br
+    %p Connect a lab group to the lab or create a new lab group.
+.row
+  .span6
+    .well.equal-height
+      .center
+        - if @lab_groups
+          %br
+          %h3 
+            Connect an existing lab group
+          %br
+          = form_tag "", class: "form form-horizontal" do
+            = select_tag "lab_group", 
+              options_from_collection_for_select(@lab_groups, 
+                "id", 
+                "name", 
+                prompt: "Select a group")
+            = submit_tag "Connect", class: "btn btn-primary"
+        - else
+          %h1 You have no lab groups.
+  .span6
+    .well.equal-height
+      .center
+        %br
+        %h3
+          = link_to 'Create a Lab Group', 
+            course_lab_groups_path("student", params[:course_id]), 
+            method: 'post',
+            class: "btn btn-big btn-primary"
+        %br
+        %h5 A new group will be created and connected to the lab

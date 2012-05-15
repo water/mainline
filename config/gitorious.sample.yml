@@ -20,6 +20,12 @@ development:
   # Host the ./script/gitorious script should use:
   gitorious_client_host: localhost
 
+  # Port grack should use:
+  grack_port: 9230
+
+  # Host grack should use:
+  grack_host: localhost
+
   # Host which is serving the gitorious app, eg "gitorious.org"
   gitorious_host: gitorious.test
 
@@ -79,6 +85,12 @@ test:
 
   # Host the ./script/gitorious script should use:
   gitorious_client_host: localhost
+
+  # Port grack should use:
+  grack_port: 9230
+
+  # Host grack should use:
+  grack_host: localhost
 
   # Host which is serving the gitorious app, eg "gitorious.org"
   gitorious_host: gitorious.test

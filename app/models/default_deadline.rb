@@ -3,6 +3,8 @@ class DefaultDeadline < ActiveRecord::Base
 
   validates_presence_of :lab, :at
   validate :time_difference, :time_span
+  
+  default_scope order("at asc")
 
   # What's the minimum time between 
   # each deadline for a given group?
@@ -18,7 +20,7 @@ private
     end
     
     if in_valid
-      errors[:at] << "a bit to similar to some another deadline"
+      errors[:at] << "a bit too similar to some another deadline"
     end
   end
 

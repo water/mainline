@@ -2,14 +2,22 @@
   %h1
     Group
     = @lab_group.number
-  %p
-    A list of your labs for this course
-
-
+.well
+  .form-inline
+    .input-prepend
+      %span.add-on
+        Invite code for this group
+      %input.input-large{type: "text", value: @lab_group.token}
+%h1
+  Labs
 %table.table.table-bordered.table-striped
   %thead
     %th Lab title
   %tbody
-    - @labs.each do |lab|
+    - @lab_group.labs.each do |lab|
       %tr
-        %td= link_to lab.title, course_lab_group_lab_path(current_role.class.name.downcase, @course, @lab_group, lab)
+        %td= link_to lab.title, 
+          course_lab_group_lab_path(current_role.class.name.downcase, 
+            @course, 
+            @lab_group, 
+            lab)

@@ -42,7 +42,7 @@ class Water.CommitRequest extends Backbone.Model
         files: @processedfiles
       @send(request)
       
-  # Triggered when all files have been uploaded, sends the commit_request
+  # Sends a commit_request
   send: (request) =>
     @trigger("sending_commit_request")
     $.ajax gon.commit_request_path, 
@@ -53,16 +53,48 @@ class Water.CommitRequest extends Backbone.Model
         console.log("Error: ", jqXHR, textStatus, errorThrown)
       
   # Triggered when the commit request has been received.
-  # TODO: handle errors
+  # The request is being processed and the client will wait
+  # for confirmation via Faye.
+  # Empties the variables used for file upload verification.
   request_success: (data) =>
     @pendingFiles = []
     @processedfiles = []
     @errorFiles = []
     @trigger("commit_request_process_started")
-    
+  
+  #
+  # Removes a file
+  #
+  remove: (file_path) =>
+    console.log "Remove!"
+    if @pendingFiles.length isnt 0
+      return
+    request = 
+      {
+        command: "remove",
+        branch: gon.ref,
+        commit_message: null,
+        records: [
+          file_path
+        ]
+      }
+    @send(request)
+  
+  #
+  # Creates a directory
+  #
+  mkdir: (path, dirname) =>
+    console.log("mkdir: ", [path, dirname].join("/"))
+    path = if path.length == 0 then dirname else [path, dirname].join("/")
+    request =
+      {
+        command: "mkdir",
+        branch: gon.ref,
+        commit_message: null,
+        path: path
+      }
+    @send(request)
+  
   commit_request_completed: () =>
-    @trigger("commit_request_completed")
-    
-  requestCompleted: () =>
     @trigger("commit_request_completed")
   

@@ -1,0 +1,10 @@
+.hero-unit
+  %h1
+    Sign in to Water
+= form_tag sessions_path, class: "login-form form-inline" do
+  = text_field_tag 'email', params[:email], placeholder: "Email", class: "input-small"
+  = password_field_tag 'password', '', placeholder: "Password", class: "input-small"
+  %label.checkbox{:for => "remember_me"}
+    = check_box_tag 'remember_me'
+    = t("views.sessions.remember")
+  = submit_tag t("views.sessions.submit"), class: "btn" 

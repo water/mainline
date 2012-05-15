@@ -1,12 +1,12 @@
 class CommitRequest 
   include ActiveAttr::Model
   include ActiveMessaging::MessageSender
-  attr_accessor :user, :command, :repository, :branch,:files,  :records
+  attr_accessor :user, :command, :repository, :branch,:files, :records
   attr_writer :commit_message, :files
 
   validates_presence_of :user, :command, :repository, :branch, :commit_message
   validates_numericality_of :user, :repository
-  validates_inclusion_of :command, in: %w( move add remove ), message: "%s is not an acceptable command" 
+  validates_inclusion_of :command, in: %w( move add remove mkdir), message: "Is not an acceptable command" 
   validate :existence_of_user, :existence_of_repository, :commit_access , :correct_branch, :path_names
 
   publishes_to :commit
@@ -53,6 +53,14 @@ class CommitRequest
   #   ]
   # }
   #
+  # @mkdir {
+  #   command: "mkdir",
+  #   user: 1,
+  #   repository: 123,
+  #   branch: "master",
+  #   commit_message: "Antagligen inget meddelande tills vidare",
+  #   path: "path/to/dir"
+  # }
 
   #
   # @return String Commit message provided by frontend
@@ -88,6 +96,12 @@ class CommitRequest
       files: @files
     }
 
+    if @command == "remove"
+      @options.merge!({
+        records: @records
+      })
+    end
+
     @@cache[@options.to_s] ||= publish :commit, @options.merge({
       callback: {
         class: "CommitRequest",
@@ -104,7 +118,7 @@ class CommitRequest
     config = APP_CONFIG["faye"]
     token = User.find(options["user"]).token
     SecureFaye::Connect.new.
-      message({status: 200}.to_json).
+      message({status: 200, options: options}.to_json).
       token(config["token"]).
       server("http://0.0.0.0:#{config["port"]}/faye").
       channel("/users/#{token}").

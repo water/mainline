@@ -100,10 +100,23 @@ class User < ActiveRecord::Base
     I18n.t("activerecord.models.user")
   end
 
-  # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
-  def self.authenticate(email, password)
-    u = find :first, :conditions => ['email = ? and activated_at IS NOT NULL and suspended_at IS NULL', email] # need to get the salt
-    u && u.authenticated?(password) ? u : nil
+  #
+  # @login String User#login
+  # @password String Password in plain text
+  # @return User or nil
+  #
+  def self.authenticate(login, password)
+    user = User.find_by_login(login)
+    authenticate_by_user(user, password)
+  end
+  
+  def self.authenticate_by_user(user, password)
+    user and user.authenticated?(password) ? user : nil
+  end
+  
+  def self.authenticate_by_email(email, password)
+    user = User.find_by_email(email)
+    authenticate_by_user(user, password)
   end
 
   # Encrypts some data with the salt.
@@ -339,7 +352,7 @@ class User < ActiveRecord::Base
           }
         }).
         first
-    return true if role == :assistent and 
+    return true if role == :assistant and 
       AssistantRegisteredToGivenCourse.
         select("1").
         where(given_course_id: given_course.id).

@@ -1,16 +1,35 @@
 # encoding: utf-8
 
 Gitorious::Application.routes.draw do
-  resources :registered_courses, :dashboards, :students
+  root to: "dashboards#show"
+  resources :registered_courses, :students
   resources :lab_deadlines, :study_periods, :course_codes
 
   scope ":role", constraints: { role: /examiner|student|administrator|assistant|/ } do
+    resource :dashboard, only: [:show]
     resources :labs
     resources :courses do
+      resources :labs, only: [:show]
       post "/courses/:course_id/upload" => "uploads#upload"
       resources :lab_groups do
+        collection do
+          post "join" => "lab_groups#join"
+          post "create" => "lab_groups#create"
+        end
         resources :labs, only: [:index, :show] do
-          resources :submissions, only: [:create, :new, :show]
+          member do
+            post "/register" => "registrations#register"
+          end
+          resources :submissions, only: [:create, :new, :show, :edit, :update] do
+            collection do
+              match ":commit/new" => "submissions#new", via: :get, as: :new_commit
+              match ":commit" => "submissions#create", via: :post, as: :create_commit
+            end
+            member do
+              put "/review" => "reviews#review", as: :review
+              post "/review" => "reviews#review", as: :review_and_comment
+            end
+          end
         end
       end
 
@@ -18,7 +37,7 @@ Gitorious::Application.routes.draw do
       resources :groups
     end
   end
-  
+ 
   post "upload" => "uploads#upload"
 
   # /lab_groups/:group_id/labs/:lab_id/submissions/new
@@ -28,6 +47,8 @@ Gitorious::Application.routes.draw do
       resources :submissions, only: [:index, :show]
     end
   end
+
+  resources :comments, only: [:show, :create, :new, :destroy, :edit, :update]
 
   resources :submissions, only: [:index, :show, :create, :new]
   
@@ -42,8 +63,6 @@ Gitorious::Application.routes.draw do
   end
   
   extend Gitorious::RepositoryRoutes
-  
-  root :to => "dashboards#index"
   
   resources :merge_requests
   
