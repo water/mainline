@@ -15,19 +15,20 @@
             %th Download
             %th Next deadline
         %tbody
-          - course.labs.each do |lab|
+          - course.labs.order("number ASC").each do |lab|
             - pending = lab.lab_has_groups.where(state: ["pending", "reviewing"])
             %tr{:class => cycle("odd", "even")}
               %td
                 %h4
-                  = lab.id  
+                  Lab
+                  = lab.number 
               %td
                 %h4
                   %a{:class => "accordion-toggle", :"data-toggle" => "collapse",
-                    :href => "#submission", :"data-target" => "#submission"+lab.id.to_s}
+                    :href => "#submission", :"data-target" => "#submission"+lab.number.to_s}
                     = pending.count.to_s + " submissions"
                   .icon.icon-chevron-down
-                .accordion-body.collapse{:id => "submission"+lab.id.to_s}
+                .accordion-body.collapse{:id => "submission"+lab.number.to_s}
                   .accordion-inner
                     %br
                     %table.table.table-striped
@@ -51,5 +52,5 @@
                 %a.btn.btn-primary{href: "#"}
                   Download all
               %td
-                = lab.default_deadlines.order("at asc").first.at
+                = lab.default_deadlines.last.at
 

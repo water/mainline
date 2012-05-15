@@ -27,13 +27,22 @@ class Lab < ActiveRecord::Base
   # Adds a lab-group to the lab
   # Creates lab_has_group and repository
   #
-  def add_group(lab_group)
-    @repository = Repository.create!()
-    @lab_has_group = LabHasGroup.create!(
-      lab_group: lab_group, 
+  # @group LabGroup Group to be added to {self}
+  #
+  def add_group!(group)
+    # We do not want to create a 
+    # LabHasGroup if one already exists.
+    return if group.
+      lab_has_groups.
+      where(lab_id: id).
+      exists?
+
+    repository = Repository.create!
+    LabHasGroup.create!({
+      lab_group: group, 
       lab: self, 
-      repository: @repository
-    )
+      repository: repository
+    })
   end
 
   #

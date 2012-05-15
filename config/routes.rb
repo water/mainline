@@ -34,6 +34,9 @@ Gitorious::Application.routes.draw do
           end
         end
       end
+
+      resources :labs
+      resources :groups
     end
   end
  

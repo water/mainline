@@ -3,8 +3,12 @@ class DashboardsController < ApplicationController
   layout "water"
 
   def show
-    @student_courses = current_user.student.given_courses
-    @assistant_courses = current_user.assistant.given_courses
+    # Fetches all courses for all roles for the given user
+    ["student", "assistant"].each do |r|
+      if role = current_user.send(r)
+        instance_variable_set("@#{r}_courses", role.given_courses)
+      end
+    end
   end
 
   def index
