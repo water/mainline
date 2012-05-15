@@ -80,31 +80,19 @@ given_course = FactoryGirl.create(:given_course, {
   study_period: study_period
 })
 
-#### Lab
-<<<<<<< HEAD
-3.times do |n|
-  #### LabDescription
-  ld = Factory(:lab_description, {
-    study_period: study_period,
-    description: "Lab description #{n}",
-    title: "Lab title #{n}"
-  })
+lab_description = Factory(:lab_description, {
+  study_period: study_period,
+  description: "This is my description",
+  title: "My title"
+})
 
-  labs << Factory.create(:lab, {
-    active: true,
-    initial_lab_commit: ilc,
-    lab_description: ld,
-    given_course: given_course
-  })
-end
-=======
+#### Lab
 labs << FactoryGirl.create(:lab, {
   active: true,
   initial_lab_commit: ilc,
-  lab_description: ld,
+  lab_description: lab_description,
   given_course: given_course
 })
->>>>>>> 051e99f4cdcc3b2eb298942ab50c2c5104b7b9f0
 
 labs << FactoryGirl.create(:lab, {
   active: false,
@@ -139,15 +127,8 @@ labs.each_with_index do |lab, index|
     lab_has_group: lhg
     #comment: FactoryGirl.create(:comment)
   })
-
-<<<<<<< HEAD
-  #### ExtendedDeadline
-  Factory.create(:extended_deadline, {
-    lab_has_group: lhg,
-    at: ((index + 1) * 5).days.from_now
-  })
 end
-=======
+
 #### ExtendedDeadline
 labs.each do |lab|
   lab.lab_has_groups.each_with_index do |lhg, i|
@@ -157,5 +138,3 @@ labs.each do |lab|
     })
   end
 end
-
->>>>>>> 051e99f4cdcc3b2eb298942ab50c2c5104b7b9f0
