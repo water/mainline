@@ -11,7 +11,7 @@ require "rspec"
 
 if ENV["CLEAR"]
   puts "Are you sure you want to wipe the entire database? [y|n]".red
-  abort("Abort") unless $stdin.gets =~ /y/
+  abort("Abort") unless (ENV["CLEAR"] == "f" || $stdin.gets =~ /y/)
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.clean
 end
@@ -54,79 +54,6 @@ initial_lab_commit = FactoryGirl.create(:initial_lab_commit, {
   commit_hash: commits.first,
   repository: repository
 })
-
-###################################
-###### Interesting course seed ####
-###################################
-
-def many(num, role)
-  s = role.to_s
-  (1..num).map { |i| FactoryGirl.create(role, user: 
-                                                FactoryGirl.create(:user, {
-    email: "#{s}#{i}@chalmers.se",
-    password: "password",
-    login: "#{s}#{i}"
-    }))
-  }
-end
-
-students = many(6, :student)
-assistants = many(2, :assistant)
-examiners = many(1, :examiner)
-
-course_1 = FactoryGirl.create(:course, {
-  department_attributes: { name: "IT" },
-  course_codes_attributes: [{ code: "TDA124" }, { code: "EDA330" }]
-})
-
-course_2 = FactoryGirl.create(:course, {
-  department_attributes: { name: "D" },
-  course_codes_attributes: [{ code: "TDA999" }, { code: "EDA888" }]
-})
-
-given_course_1_1 = FactoryGirl.create(:given_course, {
-  course: course_1, 
-  examiners: examiners,
-  assistants: assistants,
-  students: students,
-  study_period: study_period
-})
-
-(lab_1_1_1 = FactoryGirl.create(:lab, {
-  active: true,
-  initial_lab_commit: initial_lab_commit,
-  lab_description: Factory(:lab_description, {
-    study_period: study_period,
-    description: "This is my description",
-    title: "My title"  
-  }),
-  given_course: given_course_1_1
-}))
-
-(lab_1_1_2 = FactoryGirl.create(:lab, {
-  active: true,
-  initial_lab_commit: initial_lab_commit,
-  lab_description: lab_description,
-  given_course: given_course_1_1
-}))
-
-lab_group_1_1_1 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
-lab_group_1_1_2 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
-lab_group_1_1_3 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
-lab_group_1_1_4 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
-lab_group_1_1_5 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
-
-class LabGroup
-  def add_students(students)
-    students.each { |x| self.add_student(x) }
-  end
-end
-
-lab_group_1_1_1.add_students students[0,3]
-lab_group_1_1_2.add_students students[3,6]
-lab_group_1_1_3.add_students students[0,2]
-lab_group_1_1_4.add_students students[2,4]
-lab_group_1_1_5.add_students students[4,6]
 
 ###################################
 ###### Old seeds ##################
@@ -202,10 +129,6 @@ labs.each_with_index do |lab, index|
   })
 end
 
-########################################
-##### Commongood finalizings ###########
-########################################
-
 ### DefaultDeadline
 labs.each_with_index do |lab, i|
   FactoryGirl.create(:default_deadline, {
@@ -223,4 +146,93 @@ labs.each do |lab|
     })
   end
 end
+
+###################################
+###### Interesting course seed ####
+###################################
+
+firstnames = "Arash Bert Carina David Erika Fredrik Gustav Helge Ivar Jonas".split
+lastnames  = firstnames.map { |x| "#{x}sson" }.shuffle(random: Random.new(123))
+
+$names = firstnames.zip(lastnames).map { |fn, ln| "#{fn} #{ln}" }
+
+def many(num, role)
+  p $names.length
+  s = role.to_s
+  (1..num).map { |i| FactoryGirl.create(role, user: 
+                                                FactoryGirl.create(:user, {
+    email: "#{s}#{i}@chalmers.se",
+    password: "password",
+    login: "#{s}#{i}",
+    fullname: $names.pop
+    }))
+  }
+end
+
+students = many(6, :student)
+assistants = many(2, :assistant)
+examiners = many(1, :examiner)
+
+course_1 = FactoryGirl.create(:course, {
+  department_attributes: { name: "IT" },
+  course_codes_attributes: [{ code: "TDA124" }, { code: "EDA330" }]
+})
+
+course_2 = FactoryGirl.create(:course, {
+  department_attributes: { name: "D" },
+  course_codes_attributes: [{ code: "TDA999" }, { code: "EDA888" }]
+})
+
+given_course_1_1 = FactoryGirl.create(:given_course, {
+  course: course_1, 
+  examiners: examiners,
+  assistants: assistants,
+  students: students,
+  study_period: study_period
+})
+
+(lab_1_1_1 = FactoryGirl.create(:lab, {
+  active: true,
+  initial_lab_commit: initial_lab_commit,
+  lab_description: Factory(:lab_description, {
+    study_period: study_period,
+    description: "This is my description",
+    title: "My title"  
+  }),
+  given_course: given_course_1_1
+}))
+
+(lab_1_1_2 = FactoryGirl.create(:lab, {
+  active: true,
+  initial_lab_commit: initial_lab_commit,
+  lab_description: lab_description,
+  given_course: given_course_1_1
+}))
+
+lab_group_1_1_1 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
+lab_group_1_1_2 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
+lab_group_1_1_3 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
+lab_group_1_1_4 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
+lab_group_1_1_5 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
+
+# Let's create lab has groups for 1,2 and 4
+[[lab_group_1_1_1, lab_1_1_1], [lab_group_1_1_2, lab_1_1_1], [lab_group_1_1_4, lab_1_1_2]].each { |lab_group, lab|
+  lhg = FactoryGirl.create(:lab_has_group, {
+    lab: lab, 
+    lab_group: lab_group,
+    repository: FactoryGirl.create(:repo_with_data)
+  })
+}
+
+class LabGroup
+  def add_students(students)
+    students.each { |x| self.add_student(x) }
+  end
+end
+
+lab_group_1_1_1.add_students students[0,3]
+lab_group_1_1_2.add_students students[3,6]
+lab_group_1_1_3.add_students students[0,2]
+lab_group_1_1_4.add_students students[2,4]
+lab_group_1_1_5.add_students students[4,6]
 
