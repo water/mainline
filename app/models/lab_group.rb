@@ -23,7 +23,7 @@ class LabGroup < ActiveRecord::Base
   
   def token
     LabGroup.find_by_sql(["SELECT id, ENCODE(DIGEST(? || id, 'sha1'), 'hex') FROM lab_groups WHERE id = ?", APP_CONFIG["salt"], self.id.to_s])
-    # Digest::SHA1.hexdigest(APP_CONFIG["salt"] || self.id.to_s)
+      .first.encode
   end
   
   def name
