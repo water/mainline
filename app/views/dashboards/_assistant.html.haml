@@ -24,8 +24,8 @@
                   = lab.number 
               %td
                 %h4
-                  %a{class: "accordion-toggle", :"data-toggle" => "collapse",
-                    href: "#submission", :"data-target" => "#submission"+lab.number.to_s}
+                  %a{class: "accordion-toggle", "data-toggle" => "collapse",
+                    href: "#submission", "data-target" => "#submission#{lab.number}"}
                     = pending.count.to_s + " submissions"
                   .icon.icon-chevron-down
                 .accordion-body.collapse{id: "submission"+lab.number.to_s}
