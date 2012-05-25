@@ -50,13 +50,22 @@ require "pg"
 require "time"
 require "yaml"
 
+db_config_path = ENV['BUNDLE_GEMFILE'][0..-8]+"config/database.yml"
+env = ENV['RACK_ENV']
+db_config = YAML.load_file(db_config_path)[env]
+
+unless db_config["adapter"] == "postgresql"
+  puts "Fatal water error! Must use postgres as database backend!"
+  exit 0
+end
+
 begin
 conn = PG.connect({
-  dbname: "water-development",
-  user: "username",
-  password: "password",
-  host: "127.0.0.1",
-  port: 5433
+  dbname: db_config["database"],
+  user: db_config["username"],
+  password: db_config["password"],
+  host: db_config["host"],
+  port: db_config["port"]
 })
 rescue
   p $!
