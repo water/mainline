@@ -1,7 +1,7 @@
 - if logged_in?
   %h1 
     Welcome 
-    = link_to(current_user.login)
+    = current_user.fullname ? current_user.fullname : current_user.login
   %br
 - if @student_courses
   = render partial: "student"
