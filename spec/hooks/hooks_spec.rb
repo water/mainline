@@ -6,7 +6,10 @@ describe "Git hooks" do
   let(:student) { create(:student) }
   let(:user) { student.user }
   let(:given_course) { lab_group.given_course }
-  let(:url) { repository.full_repository_path }
+  let(:url) { URI::HTTP.build(lab_has_group.uri_build_components.merge(
+    userinfo: "#{user.login}:#{user.password}"
+    ))
+  }
   let(:repository) { create(:repo_with_data) }
 
   before(:each) do
