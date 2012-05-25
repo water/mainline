@@ -31,10 +31,8 @@ describe "Git hooks" do
   end
 
   it "can submit a repo" do
-    p url
-    p Dir.pwd
     mutate_and_add!
-    `git commit -m 'I want to #submit'"`
+    `git commit -m 'I want to #submit'`
     Submission.first.should be_nil
     push "master"
     Submission.first.should_not be_nil
