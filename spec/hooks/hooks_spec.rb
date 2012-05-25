@@ -25,6 +25,11 @@ describe "Git hooks" do
     `git push origin #{branch}`
   end
 
+  it "exists in server side repository" do
+    # TODO: This shouldn't require the before(:each)!
+    Dir.exists?(File.join(repository.full_repository_path, "hooks")).should be_true
+  end
+
   it "can submit a repo" do
     p url
     p Dir.pwd
