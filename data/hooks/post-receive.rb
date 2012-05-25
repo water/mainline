@@ -39,7 +39,7 @@ end
 # TODO: Implement actual submission request
 puts %Q{
 Ok, water tries to submit #{submit_hash}
-for you.  A mail will be sent to you shortly wheter if the submission was sent
+for you.  A mail will be sent to you shortly if the submission was sent
 sucessfully.
 }
 
@@ -50,17 +50,22 @@ require "pg"
 require "time"
 require "yaml"
 
-database_config_file = "TODO: fix"
-p database_config_file
+db_config_path = ENV['BUNDLE_GEMFILE'][0..-8]+"config/database.yml"
+env = ENV['RACK_ENV']
+db_config = YAML.load_file(db_config_path)[env]
 
+unless db_config["adapter"] == "postgresql"
+  puts "Fatal water error! Must use postgres as database backend!"
+  exit 0
+end
 
 begin
 conn = PG.connect({
-  dbname: "water-development",
-  user: "username",
-  password: "password",
-  host: "127.0.0.1",
-  port: 5433
+  dbname: db_config["database"],
+  user: db_config["username"],
+  password: db_config["password"],
+  host: db_config["host"],
+  port: db_config["port"]
 })
 rescue
   p $!
@@ -79,7 +84,6 @@ conn.exec(sql_find) do |result|
   result.each do |row|
     # LabHashGroup#id
     id = row.values_at("id").first
-    p id
     sql_insert = %Q{
 INSERT INTO "submissions"
 ("commit_hash", "lab_has_group_id", "updated_at", "created_at")

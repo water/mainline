@@ -6,7 +6,10 @@ describe "Git hooks" do
   let(:student) { create(:student) }
   let(:user) { student.user }
   let(:given_course) { lab_group.given_course }
-  let(:url) { repository.full_repository_path }
+  let(:url) { URI::HTTP.build(lab_has_group.uri_build_components.merge(
+    userinfo: "#{user.login}:#{user.password}"
+    ))
+  }
   let(:repository) { create(:repo_with_data) }
 
   before(:each) do
@@ -25,11 +28,14 @@ describe "Git hooks" do
     `git push origin #{branch}`
   end
 
+  it "exists in server side repository" do
+    # TODO: This shouldn't require the before(:each)!
+    Dir.exists?(File.join(repository.full_repository_path, "hooks")).should be_true
+  end
+
   it "can submit a repo" do
-    p url
-    p Dir.pwd
     mutate_and_add!
-    `git commit -m 'I want to #submit'"`
+    `git commit -m 'I want to #submit'`
     Submission.first.should be_nil
     push "master"
     Submission.first.should_not be_nil
