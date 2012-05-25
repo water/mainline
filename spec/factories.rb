@@ -95,7 +95,6 @@ FactoryGirl.define do
     factory :repo_with_data do
       ready true
       after_create do |r|
-        Repository.should_receive(:create_hooks)
         Repository.create_git_repository(r.real_gitdir)
         dir = File.join(Rails.root, "spec/fixtures/git-repo")
         Dir.chdir(dir) do
