@@ -152,7 +152,7 @@ end
 ###################################
 
 firstnames = "Arash Bert Carina David Erika Fredrik Gustav Helge Ivar Jonas".split
-lastnames  = firstnames.map { |x| "#{x}sson" }.shuffle(random: Random.new(123))
+lastnames  = firstnames.map { |x| "#{x}sson" }.shuffle
 
 $names = firstnames.zip(lastnames).map { |fn, ln| "#{fn} #{ln}" }
 

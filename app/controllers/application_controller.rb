@@ -14,12 +14,14 @@ class ApplicationController < ActionController::Base
   layout "water"
   
   helper_method :repo_owner_path
-
-  rescue_from ActiveRecord::RecordNotFound, :with => :render_not_found
-  rescue_from ActionController::UnknownController, :with => :render_not_found
-  rescue_from AbstractController::ActionNotFound, :with => :render_not_found
-  rescue_from Grit::GitRuby::Repository::NoSuchPath, :with => :render_not_found
-  rescue_from Grit::Git::GitTimeout, :with => :render_git_timeout
+  
+  if Rails.env.production?
+    rescue_from ActiveRecord::RecordNotFound, :with => :render_not_found
+    rescue_from ActionController::UnknownController, :with => :render_not_found
+    rescue_from AbstractController::ActionNotFound, :with => :render_not_found
+    rescue_from Grit::GitRuby::Repository::NoSuchPath, :with => :render_not_found
+    rescue_from Grit::Git::GitTimeout, :with => :render_git_timeout
+  end
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = "Access denied."
     redirect_to root_url
