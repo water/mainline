@@ -23,7 +23,8 @@ module DiffHelper
       diffs.map do |file|
         out = %Q{<a name="#{h(force_utf8(file.a_path))}"></a>}
         out << "<h4>"
-        out << link_to(h(file.a_path), file_path(@repository, file.a_path, @commit.id))
+        url_to_file = "" # TODO: Fix, LabHasGroup might provide some helper
+        out << link_to(h(file.a_path), url_to_file)
         out << "</h4>"
         out << force_utf8(render_diff(file.diff))
         out
@@ -43,7 +44,7 @@ module DiffHelper
       out << %Q{<div class="header round-top-10 #{state == :closed ? 'closed' : 'open'}">}
       out << %Q{<span class="title"><span class="icon"></span>#{h(file.a_path)}</span>}
       out << %Q{<div class="diff-stats">}
-      out << render_compact_diff_stats(diff_renderer.stats)
+      # out << render_compact_diff_stats(diff_renderer.stats) # TODO
       out << "</div></div>"
       out << %Q{<div class="diff-hunks" #{state == :closed ? 'style="display:none"' : ''}>}
 
