@@ -21,7 +21,7 @@ class Lab < ActiveRecord::Base
 
   acts_as_list scope: :given_course, column: :number
 
-  default_scope where("labs.active = ?", true)
+  # default_scope where("labs.active = ?", true)
   
   #
   # Adds a lab-group to the lab
