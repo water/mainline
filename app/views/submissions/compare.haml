@@ -1,0 +1,6 @@
+= stylesheet_link_tag "diffs"
+
+= render :partial => "compare_diffs"
+= render_diff_stats(@commit.stats) if sidebyside_diff?
+= render_diffmode_selector
+= render :partial => "commits/diffs"
