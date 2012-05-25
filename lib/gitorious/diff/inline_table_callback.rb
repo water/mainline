@@ -16,6 +16,7 @@ module Gitorious
       end
       
       def addline(line)
+        line.define_singleton_method(:offsets) { [] } # TODO
         %Q{<tr data-line-num-tuple="#{line.offsets.join('-')}"
                class="changes line-#{line.new_number}">} +
         render_comment_count(line) +
@@ -26,6 +27,7 @@ module Gitorious
       end
       
       def remline(line)
+        line.define_singleton_method(:offsets) { [] } # TODO
         %Q{<tr data-line-num-tuple="#{line.offsets.join('-')}"
                class="changes line-#{line.old_number}">} +
         render_comment_count(line) +
@@ -78,6 +80,7 @@ module Gitorious
       end
 
       def render_comments_for(line)
+        line.define_singleton_method(:offsets) { [] } # TODO
         return "" unless @comment_callback
         return "" if @comment_callback.comment_count_ending_on_line(line).zero?
         %Q{<div class="diff-comments"
