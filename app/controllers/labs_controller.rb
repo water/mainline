@@ -34,7 +34,7 @@ class LabsController < ApplicationController
       end
 
       # Logic should be moved into the lab model
-      if current_role.class == Student
+      if current_role.is_a? Student
           @lab = Lab.
             includes(:submissions, {
               lab_groups: { 
@@ -48,7 +48,8 @@ class LabsController < ApplicationController
           @lab_group_id = params[:lab_group_id]
           @course_id = params[:course_id]
           @lhg = @lab.lab_has_groups.where(lab_group_id: @lab_group_id).first
-          @repository = @lab.lab_has_groups.first.repository
+          @repository = @lhg.repository
+          logger.info(@repository)
 
           add_data_to_gon
           respond_with(@lab)
@@ -81,9 +82,8 @@ class LabsController < ApplicationController
   # /lab_groups/:group_id/labs/1/join
   def join
     @group = LabGroup.find(params[:lab_group_id])
-    @lab = Lab.find(params[:lab_id])
+    @lab = Lab.find(params[:id])
     @lab.add_group!(@group)
-    respond_with(@group)
     redirect_to course_lab_group_lab_path(current_role_name, params[:course_id], @group, @lab)
   end
 
