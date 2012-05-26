@@ -9,7 +9,7 @@ describe User do
 
     user.role_for_given_course?(:examiner, given_course).should be_true
     user.role_for_given_course?(:student, given_course).should be_false
-    user.role_for_given_course?(:assistent, given_course).should be_true
+    user.role_for_given_course?(:assistant, given_course).should be_true
   end
   
   it "should validate against a given course" do
