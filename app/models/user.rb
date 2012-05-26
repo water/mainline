@@ -368,6 +368,10 @@ class User < ActiveRecord::Base
     false
   end
   
+  def name_or_email
+    self.fullname if self.fullname else self.email
+  end
+  
   protected
     # before filter
     def encrypt_password
