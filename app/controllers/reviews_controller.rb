@@ -6,25 +6,25 @@ class ReviewsController < ApplicationController
   def review  
     submission = Submission.find(params[:id])
     
-    notice = ""
+    notices = []
 
     if state = params[:state]
-#      if can?(:review, submission)
+      if can?(:review, submission)
         begin
           submission.lab_has_group.send("#{state}!")
-            notice = "Changed lab state from #{submission.lab_has_group.state} to #{state}"
+            notices << "Changed lab state from #{submission.lab_has_group.state} to #{state}"
         rescue StateMachine::InvalidTransition
-            notice = "Invalid transition from #{submission.lab_has_group.state} to #{state}"
+            notices << "Invalid transition from #{submission.lab_has_group.state} to #{state}"
         end
-#      else
-#        notices << "You aren't permitted to review this submission."
-#      end
+     else
+       notices << "You aren't permitted to review this submission."
+     end
     end
 
     if grade = params[:grade]
 #      if can?(:review, submission)
         submission.lab_has_group.update_column(:grade, grade)
-        notice = "Changed lab grade to #{params[:grade]}"
+        notices << "Changed lab grade to #{params[:grade]}"
 #      else
 #       notices << "You aren't permitted to grade this submission."
 #     end
@@ -38,6 +38,6 @@ class ReviewsController < ApplicationController
         end
 #      end
     end
-    redirect_back notice: notice
+    redirect_back notice: notices.join("\n")
   end
 end
