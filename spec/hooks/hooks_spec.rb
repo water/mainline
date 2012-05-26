@@ -47,6 +47,7 @@ describe "Git hooks" do
   describe "communication from client's side" do
 
     before(:each) do
+      Submission.delete_all
       given_course.register_student(student)
       lab_group.add_student(student)
       Dir.chdir(Dir.mktmpdir)
