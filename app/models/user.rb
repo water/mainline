@@ -369,7 +369,7 @@ class User < ActiveRecord::Base
   end
   
   def name_or_email
-    self.fullname if self.fullname else self.email
+    self.fullname || self.email
   end
   
   protected
