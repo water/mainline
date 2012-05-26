@@ -16,8 +16,21 @@ describe "Git hooks" do
     `echo a >> a && git add a`
   end
 
+  def commit(message="My commit message")
+    `git commit -m '#{message}'`
+  end
+
+  def new_commit(message="My commit message")
+    mutate_and_add!
+    commit(message)
+  end
+
   def push(branch)
     `git push origin #{branch}`
+  end
+
+  def submissions
+    Submission.count
   end
 
   it "exists in server side repository" do
@@ -35,11 +48,10 @@ describe "Git hooks" do
     end
 
     it "can submit a repo" do
-      mutate_and_add!
-      `git commit -m 'I want to #submit'`
-      Submission.first.should be_nil
+      submissions.should eq 0
+      new_commit "Do a #submit please"
       push "master"
-      Submission.first.should_not be_nil
+      submissions.should eq 1
     end
 
   end
