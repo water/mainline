@@ -104,6 +104,7 @@ describe "Git hooks" do
 
     it "allows a second submission after rejection" do
       push_new_commit "#submit"
+      lab_has_group.reviewing!
       lab_has_group.rejected!
       push_new_commit "#submit"
       submissions.should eq 2
@@ -111,14 +112,15 @@ describe "Git hooks" do
 
     it "doesn't allow submissions when it's accepted" do
       push_new_commit "#submit"
+      lab_has_group.reviewing!
       lab_has_group.accepted!
       push_new_commit "#submit"
       submissions.should eq 1
     end
 
-    it "doesn't allow resubmit when status is pending" do
+    it "doesn't allow resubmit when status is reviewing" do
       push_new_commit "#submit"
-      lab_has_group.pending!
+      lab_has_group.reviewing!
       push_new_commit "#resubmit"
       submissions.should eq 1
     end
