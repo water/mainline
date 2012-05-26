@@ -14,11 +14,6 @@ class SessionsController < ApplicationController
   def new
     if User.find_by_email("admin@popfizzle.com") and params[:force]
       password_authentication("pelle", "abc123")
-    else
-      flash.now.alert = %q{
-        Database is not popularise, 
-        run seed script using CLEAR=1 rake db:seed
-      }
     end
   end
 
