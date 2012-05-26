@@ -1,7 +1,7 @@
 class SubmissionsController < ApplicationController
   layout "water"
   
-  before_filter :get_submission_group_and_repo, only: [:show, :edit]
+  before_filter :get_submission_group_and_repo, only: [:show, :edit, :compare]
   
   def index
   end
@@ -22,6 +22,16 @@ class SubmissionsController < ApplicationController
   
   def update
     # TODO
+  end
+
+  def compare
+    submission_since = Submission.find(params[:id_since])
+    submission_until = Submission.find(params[:id])
+    @commit = @repository.git.commit(submission_until.commit_hash)
+    @diffmode = params[:diffmode] == "sidebyside" ? "sidebyside" : "inline"
+    @diffs = Grit::Commit.diff(@repository.git,
+                               submission_since.commit_hash,
+                               submission_until.commit_hash)
   end
 
   def initial_comment

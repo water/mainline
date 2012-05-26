@@ -30,6 +30,7 @@ Gitorious::Application.routes.draw do
             member do
               put "/review" => "reviews#review", as: :review
               post "/review" => "reviews#review", as: :review_and_comment
+              get "/diffs/:id_since" => "submissions#compare", via: :get
             end
           end
         end

@@ -23,15 +23,16 @@ module DiffHelper
       diffs.map do |file|
         out = %Q{<a name="#{h(force_utf8(file.a_path))}"></a>}
         out << "<h4>"
-        out << link_to(h(file.a_path), file_path(@repository, file.a_path, @commit.id))
+        url_to_file = "" # TODO: Fix, LabHasGroup might provide some helper
+        out << link_to(h(file.a_path), url_to_file)
         out << "</h4>"
         out << force_utf8(render_diff(file.diff))
         out
-      end.join("\n")
+      end.join("\n").html_safe
     else
-      '<div class="clear"></div><div id="commit-diff-container">' +
+      ('<div class="clear"></div><div id="commit-diff-container">' +
         render_inline_diffs_controls("commits") +
-        render_inline_diffs_with_stats(diffs, :open) + "</div>"
+        render_inline_diffs_with_stats(diffs, :open) + "</div>").html_safe
     end
   end
 
@@ -43,7 +44,7 @@ module DiffHelper
       out << %Q{<div class="header round-top-10 #{state == :closed ? 'closed' : 'open'}">}
       out << %Q{<span class="title"><span class="icon"></span>#{h(file.a_path)}</span>}
       out << %Q{<div class="diff-stats">}
-      out << render_compact_diff_stats(diff_renderer.stats)
+      # out << render_compact_diff_stats(diff_renderer.stats) # TODO
       out << "</div></div>"
       out << %Q{<div class="diff-hunks" #{state == :closed ? 'style="display:none"' : ''}>}
 
@@ -58,7 +59,7 @@ module DiffHelper
       end
       out << "</div></div>"
       out
-    end.join("\n")
+    end.join("\n").html_safe
   end
 
   def render_inline_diffs_controls(cookie_prefix)
@@ -86,7 +87,7 @@ module DiffHelper
       out << differ.render(Gitorious::Diff::InlineTableCallback.new)
     end
     out << "</table>"
-    out
+    out.html_safe
   end
 
   def render_sidebyside_diff(udiff)
@@ -112,7 +113,7 @@ module DiffHelper
       out << %Q{<li><a href="?diffmode=sidebyside">side by side</a></li>}
     end
     out << "</ul>"
-    out
+    out.html_safe
   end
 
   def render_diff_stats(stats)
@@ -124,7 +125,7 @@ module DiffHelper
       out << %Q{</li>}
     end
     out << "</ul>\n"
-    out
+    out.html_safe
   end
 
   def render_compact_diff_stats(stats)
