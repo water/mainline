@@ -62,6 +62,71 @@ describe "Git hooks" do
       submissions.should eq 1
     end
 
+    it "doesn't submit without #submit" do
+      new_commit "Don't submit!"
+      push "master"
+      submissions.should eq 0
+    end
+
+    it "doesn't submit when not pushing to master" do
+      `git checkout -b new_branch`
+      new_commit "I wanna #submit but can't from this branch!"
+      push "new_branch"
+      submissions.should eq 0
+    end
+
+    it "doesn't resubmit unless it already has a submit" do
+      push_new_commit "It's to early for #resubmit syntax"
+      submissions.should eq 0
+    end
+
+    it "disallows to submit twice" do
+      hash_orig = push_new_commit "Let's #submit"
+      Submission.first.commit_hash.should eq hash_orig
+
+      push_new_commit "Let's #submit again"
+      Submission.first.commit_hash.should eq hash_orig
+      submissions.should eq 1
+    end
+
+    it "allows resubmit" do
+      push_new_commit "Let's #submit"
+      new_hash = push_new_commit "Let's #resubmit"
+      Submission.first.commit_hash.should eq new_hash
+      submissions.should eq 1
+    end
+
+    it "puts's lab has group in pending" do
+      lab_has_group.should be_initialized
+      push_new_commit "#submit"
+      lab_has_group.should be_pending
+    end
+
+    it "allows a second submission after rejection" do
+      push_new_commit "#submit"
+      lab_has_group.rejected!
+      push_new_commit "#submit"
+      submissions.should eq 2
+    end
+
+    it "doesn't allow submissions when it's accepted" do
+      push_new_commit "#submit"
+      lab_has_group.accepted!
+      push_new_commit "#submit"
+      submissions.should eq 1
+    end
+
+    it "doesn't allow resubmit when status is pending" do
+      push_new_commit "#submit"
+      lab_has_group.pending!
+      push_new_commit "#resubmit"
+      submissions.should eq 1
+    end
+
+    it "blocks submissions past deadline" do
+      # TODO how to implement this test?
+      true.should be_false
+    end
   end
 end
 
