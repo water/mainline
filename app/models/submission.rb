@@ -49,7 +49,7 @@ class Submission < ActiveRecord::Base
     #
     def lab_access
       if lab and not lab.active?
-        errors[:lab_access]  << "failed, lab not accessible"
+        errors[:lab_access]  << "failed, lab not active"
       end
     end
 
