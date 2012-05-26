@@ -44,7 +44,7 @@ describe "Git hooks" do
     Dir.exists?(File.join(repository.full_repository_path, "hooks")).should be_true
   end
 
-  describe "communication from client's side" do
+  describe "Hooks" do
 
     before(:each) do
       Submission.delete_all
