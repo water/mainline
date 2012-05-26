@@ -16,17 +16,24 @@ describe "Git hooks" do
     `echo a >> a && git add a`
   end
 
-  def commit(message="My commit message")
+  def commit(message)
     `git commit -m '#{message}'`
+    `git rev-parse HEAD`.strip
   end
 
-  def new_commit(message="My commit message")
+  def new_commit(message)
     mutate_and_add!
     commit(message)
   end
 
   def push(branch)
     `git push origin #{branch}`
+  end
+
+  def push_new_commit(message)
+    hash = new_commit(message)
+    push "master"
+    hash
   end
 
   def submissions
