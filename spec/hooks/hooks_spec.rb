@@ -12,14 +12,6 @@ describe "Git hooks" do
   }
   let(:repository) { create(:repo_with_data) }
 
-  before(:each) do
-    given_course.register_student(student)
-    lab_group.add_student(student)
-    Dir.chdir(Dir.mktmpdir)
-    `git clone #{url} dir`
-    Dir.chdir "dir"
-  end
-
   def mutate_and_add!
     `echo a >> a && git add a`
   end
@@ -29,18 +21,28 @@ describe "Git hooks" do
   end
 
   it "exists in server side repository" do
-    # TODO: This shouldn't require the before(:each)!
     Dir.exists?(File.join(repository.full_repository_path, "hooks")).should be_true
   end
 
-  it "can submit a repo" do
-    mutate_and_add!
-    `git commit -m 'I want to #submit'`
-    Submission.first.should be_nil
-    push "master"
-    Submission.first.should_not be_nil
-  end
+  describe "communication from client's side" do
 
+    before(:each) do
+      given_course.register_student(student)
+      lab_group.add_student(student)
+      Dir.chdir(Dir.mktmpdir)
+      `git clone #{url} dir`
+      Dir.chdir "dir"
+    end
+
+    it "can submit a repo" do
+      mutate_and_add!
+      `git commit -m 'I want to #submit'`
+      Submission.first.should be_nil
+      push "master"
+      Submission.first.should_not be_nil
+    end
+
+  end
 end
 
 
