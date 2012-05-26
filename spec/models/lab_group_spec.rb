@@ -7,7 +7,7 @@ describe LabGroup do
     end
 
     it "should have a list of submissions" do
-      lab = create(:lab, {given_course: group.given_course})
+      lab = create(:lab, {given_course: group.given_course, active: true})
       lhg = create(:lab_has_group, {
         lab_group: group,
         lab: lab
