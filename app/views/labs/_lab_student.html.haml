@@ -38,6 +38,12 @@
     %a.btn.btn-primary.btn-large#scroll_to_uploads{href: "#"}
       %i.icon-upload.icon-white
       Upload files
+  %p
+  .form-inline
+    .input-prepend
+      %span.add-on
+        Git url:
+      %input.input-large{type: "text", value: @lhg.http_clone_uri}
 
 .well
   %h1
