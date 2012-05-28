@@ -65,6 +65,13 @@ describe "WaterGrackAuth" do
       r.status.should_not == 401
     end
 
+    it "accepts correct credentials, even with messed up ids" do 
+      create(:lab) # To create assymetry
+      authorize user.login, user.password
+      get url
+      r.status.should_not == 401
+    end
+
     it "checks privileges of single user" do 
       user = create(:user)
       authorize user.login, user.password
