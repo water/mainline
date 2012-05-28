@@ -125,6 +125,21 @@ describe "Git hooks" do
       submissions.should eq 1
     end
 
+    it "picks the last #submit hash when there are multiple" do
+      hash_1 = new_commit "Lets #submit"
+      hash_2 = new_commit "Whoups, #submit this instead please!!"
+      push "master"
+      Submission.first.commit_hash.should eq hash_2
+    end
+
+    it "handles pushes to many branches simultenously" do
+      new_commit "What I want to #submit"
+      `git checkout -b 'aaa'`
+      `git checkout -b 'zzz'`
+      `git push --all origin`
+      submissions.should eq 1
+    end
+
     it "blocks submissions past deadline" do
       # TODO how to implement this test?
       true.should be_false
