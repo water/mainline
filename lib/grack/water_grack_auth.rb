@@ -90,7 +90,7 @@ class WaterGrackAuth < Rack::Auth::Basic
   #
   def current_user
     login, password = auth.credentials[0,2]
-    User.authenticate(login, password)
+    @user ||= User.authenticate(login, password)
   end
 
   def auth
