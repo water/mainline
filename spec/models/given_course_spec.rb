@@ -77,12 +77,20 @@ describe GivenCourse do
     end
   end
 
-  describe "#register_student" do
+  describe "Helper methods" do
     let(:student) { create(:student) }
+    let(:assistant) { create(:assistant) }
     let(:given_course) { create(:given_course) }
-    it "should have a list of students" do
+
+    it "can register a student" do
       given_course.register_student(student)
       given_course.should have(1).students
+    end
+   
+    let(:given_course) { create(:given_course) }
+    it "can register an assistant" do
+      given_course.register_assistant(assistant)
+      given_course.should have(1).assistants
     end
   end
 end
