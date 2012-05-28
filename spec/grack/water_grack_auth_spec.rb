@@ -72,6 +72,16 @@ describe "WaterGrackAuth" do
       r.status.should == 401
     end
 
+    it "only queries login credentials once" do 
+      User.should_receive(:authenticate).
+        with(user.login, user.password).
+        once.
+        and_return(user)
+      authorize user.login, user.password
+      get url
+      r.status.should_not == 401
+    end
+
   end
 
   describe "course with many students" do
