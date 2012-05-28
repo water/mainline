@@ -18,6 +18,10 @@ class GivenCourse < ActiveRecord::Base
   def register_student(student)
     StudentRegisteredForCourse.create!(student: student, given_course: self)
   end
+
+  def register_assistant(assistant)
+    AssistantRegisteredToGivenCourse.create!(assistant: assistant, given_course: self)
+  end
   
   # @return String: All the course codes associated with the course
   def all_course_codes
