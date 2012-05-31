@@ -21,7 +21,7 @@ describe LabHasGroup do
     end
 
     it "should have one assistant" do
-      artgc = create(:assistant_registered_to_given_course)
+      artgc = create(:assistant_registered_for_course)
       create(:lab_has_group, assistant_registered_to_given_course: artgc).assistant.should_not be_nil
     end
   end

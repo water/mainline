@@ -142,7 +142,7 @@ FactoryGirl.define do
     department
   end
 
-  factory :assistant_registered_to_given_course do |c|
+  factory :assistant_registered_for_course do |c|
     assistant
     can_change_deadline true
     given_course

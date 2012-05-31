@@ -5,9 +5,9 @@ class LabHasGroup < ActiveRecord::Base
   belongs_to :lab_group
   belongs_to :repository
   has_many :submissions
-  has_one :assistant_registered_to_given_course_has_lab_has_group
-  has_one :assistant_registered_to_given_course, through: :assistant_registered_to_given_course_has_lab_has_group
-  has_one :assistant, through: :assistant_registered_to_given_course
+  has_one :assistant_registered_for_course_has_lab_has_group
+  has_one :assistant_registered_for_course, through: :assistant_registered_for_course_has_lab_has_group
+  has_one :assistant, through: :assistant_registered_for_course
   has_many :extended_deadlines, dependent: :destroy
 
   validates_presence_of :lab, :lab_group, :repository

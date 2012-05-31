@@ -33,7 +33,7 @@ describe GivenCourse do
     end
     
     it "should have a list of assistents" do
-      artgc = create(:assistant_registered_to_given_course, assistant: assistant, given_course: given_course)
+      artgc = create(:assistant_registered_for_course, assistant: assistant, given_course: given_course)
       given_course.should have(1).assistants
       given_course.assistants.should include(assistant)
     end
@@ -64,7 +64,7 @@ describe GivenCourse do
 
     it "should not be possible for a assistant_registered_to_given_course to exist without a given_course" do
       gc = FactoryGirl.create(:given_course)
-      argc = FactoryGirl.create(:assistant_registered_to_given_course, given_course: gc)
+      argc = FactoryGirl.create(:assistant_registered_for_course, given_course: gc)
       gc.destroy
       lambda{argc.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
