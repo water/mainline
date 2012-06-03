@@ -72,7 +72,7 @@ describe "WaterGrackAuth" do
       r.status.should_not == 401
     end
 
-    it "checks privileges of single user" do 
+    it "checks privileges of student user" do 
       user = create(:user)
       authorize user.login, user.password
       get url
