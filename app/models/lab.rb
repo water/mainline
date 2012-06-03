@@ -15,6 +15,7 @@ class Lab < ActiveRecord::Base
   validates_uniqueness_of :lab_description_id, scope: :given_course_id
   scope :not_finished, joins(:lab_has_groups).where("lab_has_groups.grade IS NULL")
   scope :finished, joins(:lab_has_groups).where("lab_has_groups.grade IS NOT NULL")
+  scope :active, where("labs.active = ?", true)
   
   accepts_nested_attributes_for :default_deadlines
   validates_presence_of :default_deadlines
