@@ -18,7 +18,7 @@ describe AssistantRegisteredForCourse do
       
       it "relates to 'lab has group'" do
         artgc.lab_has_groups << lhg
-        artgc.assistant.should eq(lhg.assistant_registered_to_given_course.assistant)
+        artgc.assistant.should eq(lhg.assistant_registered_for_course.assistant)
       end
     
       it "isn't possible to relate two artgc to one lab has group" do
