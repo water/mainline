@@ -1,5 +1,5 @@
 describe User do
-  it "should respond to both examiner and assistent" do
+  it "should respond to both examiner and assistant" do
     DatabaseCleaner.clean
     examiner = create(:examiner)
     given_course = create(:given_course, examiners: [examiner])

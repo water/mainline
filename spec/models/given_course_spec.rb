@@ -32,7 +32,7 @@ describe GivenCourse do
       given_course.should have_at_least(1).examiners
     end
     
-    it "should have a list of assistents" do
+    it "should have a list of assistants" do
       artgc = create(:assistant_registered_for_course, assistant: assistant, given_course: given_course)
       given_course.should have(1).assistants
       given_course.assistants.should include(assistant)
