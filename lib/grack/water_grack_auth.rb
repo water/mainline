@@ -64,9 +64,7 @@ class WaterGrackAuth < Rack::Auth::Basic
       return bad_request
     end
 
-# TODO: Fix most inefficient query ever
-    lab_has_groups = lab_group.lab_has_groups & lab.lab_has_groups
-    lab_has_group = lab_has_groups.first
+    lab_has_group = LabHasGroup.find_by_lab_group_id_and_lab_id(lab_group.id, lab.id)
 
     unless lab_has_group 
       halt("Lab has group not found")
@@ -90,7 +88,7 @@ class WaterGrackAuth < Rack::Auth::Basic
   #
   def current_user
     login, password = auth.credentials[0,2]
-    User.authenticate(login, password)
+    @user ||= User.authenticate(login, password)
   end
 
   def auth

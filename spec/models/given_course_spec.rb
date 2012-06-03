@@ -33,7 +33,7 @@ describe GivenCourse do
     end
     
     it "should have a list of assistents" do
-      artgc = create(:assistant_registered_to_given_course, assistant: assistant, given_course: given_course)
+      artgc = create(:assistant_registered_for_course, assistant: assistant, given_course: given_course)
       given_course.should have(1).assistants
       given_course.assistants.should include(assistant)
     end
@@ -44,15 +44,6 @@ describe GivenCourse do
 
     it "should have a list of labs" do
       create(:given_course, labs: [create(:lab)]).should have_at_least(1).labs      
-    end
-  end
-  
-  describe "#register_student" do
-    let(:student) { create(:student) }
-    let(:given_course) { create(:given_course) }
-    it "should have a list of students" do
-      given_course.register_student(student)
-      given_course.should have(1).students
     end
   end
 
@@ -73,7 +64,7 @@ describe GivenCourse do
 
     it "should not be possible for a assistant_registered_to_given_course to exist without a given_course" do
       gc = FactoryGirl.create(:given_course)
-      argc = FactoryGirl.create(:assistant_registered_to_given_course, given_course: gc)
+      argc = FactoryGirl.create(:assistant_registered_for_course, given_course: gc)
       gc.destroy
       lambda{argc.reload}.should raise_error(ActiveRecord::RecordNotFound)
     end
@@ -86,12 +77,20 @@ describe GivenCourse do
     end
   end
 
-  describe "#register_student" do
+  describe "Helper methods" do
     let(:student) { create(:student) }
+    let(:assistant) { create(:assistant) }
     let(:given_course) { create(:given_course) }
-    it "should have a list of students" do
+
+    it "can register a student" do
       given_course.register_student(student)
       given_course.should have(1).students
+    end
+   
+    let(:given_course) { create(:given_course) }
+    it "can register an assistant" do
+      given_course.register_assistant(assistant)
+      given_course.should have(1).assistants
     end
   end
 end

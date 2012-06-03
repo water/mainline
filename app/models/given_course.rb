@@ -7,8 +7,8 @@ class GivenCourse < ActiveRecord::Base
   has_many :student_registered_for_courses, dependent: :destroy
   has_many :students, through: :student_registered_for_courses
 
-  has_many :assistant_registered_to_given_courses, dependent: :destroy
-  has_many :assistants, through: :assistant_registered_to_given_courses
+  has_many :assistant_registered_for_courses, dependent: :destroy
+  has_many :assistants, through: :assistant_registered_for_courses
   
   has_many :lab_groups, dependent: :destroy
   has_many :labs, dependent: :destroy
@@ -17,6 +17,10 @@ class GivenCourse < ActiveRecord::Base
   
   def register_student(student)
     StudentRegisteredForCourse.create!(student: student, given_course: self)
+  end
+
+  def register_assistant(assistant)
+    AssistantRegisteredForCourse.create!(assistant: assistant, given_course: self)
   end
   
   # @return String: All the course codes associated with the course

@@ -5,7 +5,7 @@ describe User do
     given_course = create(:given_course, examiners: [examiner])
     user = examiner.user
     assistant = create(:assistant, user: user)
-    create(:assistant_registered_to_given_course, assistant: assistant, given_course: given_course)
+    create(:assistant_registered_for_course, assistant: assistant, given_course: given_course)
 
     user.role_for_given_course?(:examiner, given_course).should be_true
     user.role_for_given_course?(:student, given_course).should be_false

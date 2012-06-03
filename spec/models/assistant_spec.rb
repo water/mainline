@@ -33,7 +33,7 @@ describe Assistant do
       lhg = create(:lab_has_group)
       s = create(:submission, lab_has_group: lhg)
 
-      create(:assistant_registered_to_given_course, {
+      create(:assistant_registered_for_course, {
         assistant: a, 
         given_course: lhg.lab.given_course
       })
@@ -51,7 +51,7 @@ describe Assistant do
       @a = create(:assistant)
       @submission = create(:submission, lab_has_group: @lhg)
       
-      create(:assistant_registered_to_given_course, {
+      create(:assistant_registered_for_course, {
         assistant: @a, 
         given_course: @lhg.lab.given_course,
         lab_has_groups: [@lhg]
@@ -75,7 +75,7 @@ describe Assistant do
   describe "dependent destroy" do
     it "should no be possible for a assistant_registered_to_given_course to exist without a assistant" do
       assis = FactoryGirl.create(:assistant)
-      ar = FactoryGirl.create(:assistant_registered_to_given_course, assistant: assis)
+      ar = FactoryGirl.create(:assistant_registered_for_course, assistant: assis)
       assis.destroy
       lambda{ar.reload}.should  raise_error(ActiveRecord::RecordNotFound)
     end
