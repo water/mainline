@@ -21,7 +21,14 @@ class SubmissionsController < ApplicationController
   end
   
   def update
-    # TODO
+    # TODO This is a quick and dirty naïve solution - plz fix
+    @submission = Submission.find(params[:id])
+    @submission.update_attributes!(commit_hash: @submission.repository.head.commit)
+    flash[:notice] = "Updated submission!"
+    redirect_to course_lab_group_lab_path(current_role_name, 
+        params[:course_id], 
+        params[:lab_group_id], 
+        params[:lab_id])
   end
 
   def compare
@@ -114,6 +121,11 @@ class SubmissionsController < ApplicationController
     @group = LabGroup.includes(:lab_has_groups).find(params[:lab_group_id])
     @lhg = @submission.lab_has_group
     @repository = @lhg.repository
-    setup_gon_for_tree_view(ref: @submission.commit_hash)
+    if params[:action] == "edit"
+      ref = @repository.git.head.commit
+    else
+      ref = @submission.commit_hash
+    end
+    setup_gon_for_tree_view(ref: ref)
   end
 end
