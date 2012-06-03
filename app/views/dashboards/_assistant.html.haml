@@ -44,7 +44,7 @@
                               = link_to p.lab_group.number.to_s, 
                                 course_lab_group_lab_submission_path("assistant", course, p.lab_group, p.lab, submission)
                             %td
-                              = submission.created_at
+                              = submission.updated_at
                             %td
                               %a.btn.btn-success
                                 Download submission
