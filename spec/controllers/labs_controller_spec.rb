@@ -23,21 +23,23 @@ describe LabsController do
       let(:student) { FactoryGirl.create(:student) }
       
       before :all do 
-        @given_course = Factory.create(:given_course)
-        @srfc = Factory.create(:student_registered_for_course, {
+        @given_course = FactoryGirl.create(:given_course)
+        @srfc = FactoryGirl.create(:student_registered_for_course, {
           student: student,
           given_course: @given_course
         })
 
-        @lab = Factory.create(:active_lab, given_course: @given_course)
-        @group = Factory.create(:lab_group, given_course: @given_course)
+        @lab = FactoryGirl.create(:active_lab, given_course: @given_course)
+        @group = FactoryGirl.create(:lab_group, given_course: @given_course)
 
-        Factory.create(:lab_has_group, {
+        FactoryGirl.create(:lab_has_group, {
           lab: @lab,
           lab_group: @group, 
           grade: nil
         })
-
+      end
+      
+      before :each do
         login_as(student)
       end
       
@@ -52,8 +54,8 @@ describe LabsController do
       end
       
       it "gives an error if the lab group doesn't exist in the course" do
-        given_course2 = Factory.create(:given_course)
-        visit course_lab_group_lab_path("student", given_course2, @group, @lab)  
+        given_course2 = FactoryGirl.create(:given_course)
+        visit course_lab_group_lab_path("student", given_course2, @group, @lab)
         page.status_code.should eq(404)
       end
     end
