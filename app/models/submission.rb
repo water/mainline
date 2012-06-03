@@ -80,10 +80,6 @@ class Submission < ActiveRecord::Base
         errors.add(:lab_has_group, %q{
           The corresponding lab is being reviewed
         })
-      elsif lab_has_group.pending?
-        errors.add(:lab_has_group, %q{
-          A pending submission already exists
-        })
       end
     end
 end
