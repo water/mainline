@@ -1,14 +1,20 @@
 describe LabsController do
   render_views
   describe "POST join" do
-    it "should test join action" do
+    it "should be possible to join a lab group to a lab" do
+      gc = FactoryGirl.create(:given_course)
+      lg = FactoryGirl.create(:lab_group, given_course: gc)
+      lab = FactoryGirl.create(:lab, given_course: gc, active: true)
       student = FactoryGirl.create(:student)
-      course = FactoryGirl.create(:given_course)
-      group = FactoryGirl.create(:lab_group, given_course: course)
-      lab = FactoryGirl.create(:lab, given_course: course, active: true)
+      gc.register_student(student)
+      lg.add_student(student)
+      
       login_as(student)
-      post :join, lab_group_id: group.id, lab_id: lab.id
-      response.status.should eq(302)
+      
+      visit course_lab_path "student", gc, lab
+      click_button "Connect"
+      
+      LabHasGroup.find_by_lab_id_and_lab_group_id(lab.id, lg.id).should_not be_nil
     end
   end
   
