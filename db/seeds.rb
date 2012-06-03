@@ -95,6 +95,7 @@ given_course = FactoryGirl.create(:given_course, {
 })
 
 #### Lab
+puts "Creating labs".green
 labs << FactoryGirl.create(:lab, {
   active: true,
   initial_lab_commit: initial_lab_commit,
@@ -121,12 +122,13 @@ labs.each_with_index do |lab, index|
     lab_group: lab_group,
     repository: FactoryGirl.create(:repo_with_data)
   })
-
-  FactoryGirl.create(:submission, {
-    commit_hash: commits[index],
-    lab_has_group: lhg
-    #comment: FactoryGirl.create(:comment)
-  })
+  if lab.active
+    FactoryGirl.create(:submission, {
+      commit_hash: commits[index],
+      lab_has_group: lhg
+      #comment: FactoryGirl.create(:comment)
+    })
+  end
 end
 
 ### DefaultDeadline
@@ -209,11 +211,15 @@ given_course_1_1 = FactoryGirl.create(:given_course, {
   given_course: given_course_1_1
 }))
 
+puts "Creating lab groups".green
+
 lab_group_1_1_1 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
 lab_group_1_1_2 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
 lab_group_1_1_3 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
 lab_group_1_1_4 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
 lab_group_1_1_5 = FactoryGirl.create(:lab_group, { given_course: given_course_1_1 })
+
+puts "Creating lab lab has groups".green
 
 # Let's create lab has groups for 1,2 and 4
 [[lab_group_1_1_1, lab_1_1_1], [lab_group_1_1_2, lab_1_1_1], [lab_group_1_1_4, lab_1_1_2]].each { |lab_group, lab|
@@ -229,6 +235,8 @@ class LabGroup
     students.each { |x| self.add_student(x) }
   end
 end
+
+puts "Adding students".green
 
 lab_group_1_1_1.add_students students[0,3]
 lab_group_1_1_2.add_students students[3,6]
