@@ -89,6 +89,14 @@ describe "WaterGrackAuth" do
       r.status.should_not == 401
     end
 
+    it "also permits assistants" do 
+      assistant = create(:assistant)
+      user = assistant.user
+      given_course.register_assistant(assistant)
+      authorize user.login, user.password
+      get url
+      r.status.should_not == 401
+    end
   end
 
   describe "course with many students" do
