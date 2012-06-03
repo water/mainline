@@ -15,6 +15,13 @@ class TreesController < ApplicationController
   def show
     @repository = Repository.find(params[:repository_id])
     @git = @repository.git
+    
+    if @git.branches.empty?
+      @lhg = LabHasGroup.where(repository_id: @repository.id).first
+      render partial: "empty"
+      return
+    end
+    
     @ref, @path = branch_and_path(params[:branch_and_path], @git)
     unless @commit = @git.commit(@ref)
       handle_missing_tree_sha and return
