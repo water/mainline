@@ -10,7 +10,8 @@ class Submission < ActiveRecord::Base
   validates_presence_of :commit_hash, :lab_has_group
   validate :lab_access
   validate :existence_of_commit_hash
-  validate :lab_has_group_state
+  validate :lab_has_group_can_be_created, on: :create
+  validate :lab_has_group_can_be_updated, on: :update
   before_validation :fetch_commit
 
   #
@@ -69,7 +70,7 @@ class Submission < ActiveRecord::Base
     # - reviewing
     # - pending
     #
-    def lab_has_group_state
+    def lab_has_group_can_be_created
       return unless lab_has_group
 
       if lab_has_group.accepted?
@@ -83,6 +84,19 @@ class Submission < ActiveRecord::Base
       elsif lab_has_group.pending?
         errors.add(:lab_has_group, %q{
           A pending submission already exists
+        })
+      end
+    end
+    
+    #
+    # Submissions can only be updated if the corresponding LabHasGroup is pending review
+    #
+    def lab_has_group_can_be_updated
+      return unless lab_has_group
+      
+      unless lab_has_group.pending?
+        errors.add(:lab_has_group, %q{
+          Submissions can only be updated when the lab is pending review.
         })
       end
     end
