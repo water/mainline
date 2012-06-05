@@ -28,7 +28,7 @@ describe DashboardsController do
     end
     
     it "shows a lab" do
-      page.should have_content(@lab.name)
+      page.should have_content(@lab.numbered_name)
     end
   end
   
