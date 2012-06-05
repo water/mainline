@@ -56,4 +56,11 @@ class Lab < ActiveRecord::Base
 
     super
   end
+  
+  # 
+  # Fancy numbered name
+  #
+  def numbered_name
+    "Lab #{number}"
+  end
 end
