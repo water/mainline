@@ -16,7 +16,7 @@ class Water.TreeFetcher extends Backbone.Model
     @trigger "start_fetch"
     $.ajax
       url: @url
-      data: bare: 1
+      data: {bare: 1, enable_delete: gon.enable_delete}
       success: (data) => @data_did_fetch(data)
       error: (hdr, status, error) => @error(hdr, status, error)
       dataType: "html"

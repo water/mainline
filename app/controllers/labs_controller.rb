@@ -49,7 +49,6 @@ class LabsController < ApplicationController
           @course_id = params[:course_id]
           @lhg = @lab.lab_has_groups.where(lab_group_id: @lab_group_id).first
           @repository = @lhg.repository
-          logger.info(@repository)
 
           add_data_to_gon
           respond_with(@lab)
@@ -106,5 +105,6 @@ class LabsController < ApplicationController
     setup_gon_for_tree_view(ref: "master")
     gon.faye_port = APP_CONFIG["faye"]["port"]
     gon.user_token = current_user.token
+    gon.delete = true
   end
 end
