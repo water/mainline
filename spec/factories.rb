@@ -172,11 +172,6 @@ FactoryGirl.define do
     creator { FactoryGirl.create(:user) }
   end
 
-  factory :membership do
-    role_id Role::KIND_MEMBER
-    association(:user)
-  end
-
   factory :message do
     sender { FactoryGirl.create(:user) }
     recipient { FactoryGirl.create(:user) }
