@@ -3,7 +3,6 @@
 class BlobsController < ApplicationController
   before_filter :setup
   before_filter :check_repository_for_commits
-  renders_in_site_specific_context
 
   def setup
     @repository = Repository.find(params[:repository_id])

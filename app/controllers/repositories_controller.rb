@@ -3,14 +3,10 @@
 class RepositoriesController < ApplicationController
   before_filter :login_required,
     :except => [:index, :show, :writable_by, :configure, :search_clones]
-  # before_filter :find_repository_owner
-  # before_filter :require_owner_adminship, :only => [:new, :create]
   before_filter :find_and_require_repository_adminship,
     :only => [:edit, :update, :confirm_delete, :destroy]
   before_filter :require_user_has_ssh_keys, :only => [:clone, :create_clone]
-  # before_filter :only_projects_can_add_new_repositories, :only => [:new, :create]
   skip_before_filter :public_and_logged_in, :only => [:writable_by, :configure]
-  renders_in_site_specific_context :except => [:writable_by, :configure]
 
   def index
     if term = params[:filter]
