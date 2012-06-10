@@ -6,10 +6,7 @@ describe "Git hooks" do
   let(:student) { create(:student) }
   let(:user) { student.user }
   let(:given_course) { lab_group.given_course }
-  let(:url) { URI::HTTP.build(lab_has_group.uri_build_components.merge(
-    userinfo: "#{user.login}:#{user.password}"
-    ))
-  }
+  let(:url) { repository.full_repository_path }
   let(:repository) { create(:repo_with_data) }
 
   def mutate_and_add!
@@ -48,6 +45,8 @@ describe "Git hooks" do
 
     before(:each) do
       Submission.delete_all
+      ENV['HOOK_ENV'] = Rails.env
+      ENV['HOOK_DB_CONFIG'] = "#{Rails.root}/config/database.yml"
       given_course.register_student(student)
       lab_group.add_student(student)
       Dir.chdir(Dir.mktmpdir)
