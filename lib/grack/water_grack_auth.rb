@@ -5,19 +5,6 @@ require "colorize"
 require File.expand_path("../../../config/environment", __FILE__)
 
 class WaterGrackAuth < Rack::Auth::Basic
-  #
-  # @lhg LabHasGroup
-  # @return Boolean Does the user exists 
-  #   and can one push to the given repository
-  #
-  def authorized?(lab_has_group)
-    return false unless current_user
-    return lab_has_group.
-      lab_group.
-      students.
-      map(&:user).
-      include?(current_user)
-  end
 
   #
   # @message String Message to be send to user 
@@ -27,44 +14,38 @@ class WaterGrackAuth < Rack::Auth::Basic
   end
 
   def call(env)
-    @env = env
+    auth = Request.new(env)
 
-# We want to do auth things first
-    @req = Rack::Request.new(env)
-
+    # We want to do auth things first
     return unauthorized unless auth.provided?
     return bad_request unless auth.basic?
 
-    path_info = env["PATH_INFO"]
-    values = {}
     # /courses/1/lab_groups/3/labs/2 => {:courses=>1, :labs=>2, :lab_groups=>3}
-    path_info.scan(%r{\w+/\d+}) do |match|
-      res = match.split("/")
-      values.merge!(res.first.to_sym => res.last.to_i)
-    end
+    params = Hash[env["PATH_INFO"].scan(%r{\w+/\d+}).map { |x| x.split("/") }]
 
-    lab = Lab.
-      includes({
-        lab_has_groups: :repository
-      }).
-      where("labs.given_course_id = ?", values[:courses]).
-      find_by_number(values[:labs])
+    given_course_id, lab_number, lab_group_number = params.values_at("courses",
+                                                                     "labs",
+                                                                     "lab_groups")
+
+    given_course = GivenCourse.find(given_course_id)
+
+    lab = Lab.find_by_given_course_id_and_number(given_course_id, lab_number)
 
     unless lab
       halt("Lab not found")
       return bad_request
     end
 
-    lab_group = LabGroup.
-      where("lab_groups.given_course_id = ?", values[:courses]).
-      find_by_number(values[:lab_groups])
+    lab_group = LabGroup.find_by_given_course_id_and_number(given_course_id,
+                                                            lab_group_number)
 
     unless lab_group
       halt("Lab group not found")
       return bad_request
     end
 
-    lab_has_group = LabHasGroup.find_by_lab_group_id_and_lab_id(lab_group.id, lab.id)
+    lab_has_group = LabHasGroup.find_by_lab_group_id_and_lab_id(lab_group.id,
+                                                                lab.id)
 
     unless lab_has_group 
       halt("Lab has group not found")
@@ -76,24 +57,24 @@ class WaterGrackAuth < Rack::Auth::Basic
       return bad_request
     end
 
-    env["PATH_INFO"] = path_info.gsub(/^.*\.git/, "/" + repository.hashed_path + ".git")
+    login, password = auth.credentials[0,2]
+    user = User.authenticate(login, password)
 
-    return unauthorized unless authorized?(lab_has_group)
+    authorized_as_student = lab_group.
+                              students.
+                              map(&:user).
+                              include?(user)
+    authorized_as_assistant = given_course.
+                                assistants.
+                                map(&:user).
+                                include?(user)
 
+    return unauthorized unless authorized_as_student or authorized_as_assistant
+
+    #TODO: Implement so assistants don't have write permissions
+
+    env["PATH_INFO"].gsub!(/^.*\.git/, "/" + repository.hashed_path + ".git")
     @app.call(env)
   end
 
-  #
-  # @return User
-  #
-  def current_user
-    login, password = auth.credentials[0,2]
-    @user ||= User.authenticate(login, password)
-  end
-
-  def auth
-    Request.new(@env)
-  end
-
 end
-
