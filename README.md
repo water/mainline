@@ -20,7 +20,7 @@ Water is system for managing the hand-in and reviewing of programming assignment
 2. Install [beanstalkd](http://kr.github.com/beanstalkd/), used for internal messaging.
 3. Install and start PostgreSQL.
 4. Install [foreman](http://railscasts.com/episodes/281-foreman) using `gem install foreman`
-5. Make sure you have some kind of ```sshd``` installed
+5. Make sure you have some kind of `sshd` installed
 
 ### Installation
 
@@ -29,7 +29,7 @@ Water is system for managing the hand-in and reviewing of programming assignment
 3. Navigate to the *config* folder, create a file called `database.yml` with the your postgresql credentials. [Example credentials](https://gist.github.com/c748f0b78d35c3298efd)
 4. Install all dependencies using `bundle install`
 5. Create two empty log files, just in case rails complains about it, `touch log/development.log log/test.log`
-6. Rename ```gitorious.sample.yml``` to ```gitorious.yml``` and change hosts and usernames to suit your system
+6. Rename `gitorious.sample.yml` to `gitorious.yml` and change hosts and usernames to suit your system
 7. Create the db and migrate it `bundle exec rake db:create db:migrate`.
 8. Start [poller](https://github.com/water/mainline/blob/master/script/poller), git-daemon beanstalkd and [spork](http://railscasts.com/episodes/285-spork) by running `foreman start`
 9. Seed the db `CLEAR=1 bundle exec rake db:seed`
