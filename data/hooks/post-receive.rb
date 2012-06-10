@@ -43,6 +43,10 @@ for you.  A mail will be sent to you shortly if the submission was sent
 sucessfully.
 }
 
+# In the code below we extract the repo-hash from $PWD like this:
+#
+# "/tmp/git-repos/6cf/4a4/bd6392293577efe9875b6f13842bba2b9d.git\n"[-47..-6] =>
+#                "6cf/4a4/bd6392293577efe9875b6f13842bba2b9d"
 s = `echo $PWD`
 hashed_path = s[-47..-6]
 
