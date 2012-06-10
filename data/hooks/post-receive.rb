@@ -50,8 +50,8 @@ require "pg"
 require "time"
 require "yaml"
 
-db_config_path = ENV['BUNDLE_GEMFILE'][0..-8]+"config/database.yml"
-env = ENV['RACK_ENV']
+db_config_path = ENV['HOOK_DB_CONFIG']
+env = ENV['HOOK_ENV']
 db_config = YAML.load_file(db_config_path)[env]
 
 unless db_config["adapter"] == "postgresql"
