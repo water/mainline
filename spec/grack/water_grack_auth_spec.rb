@@ -94,7 +94,7 @@ describe "WaterGrackAuth" do
     end
   end
 
-  describe "course with many students" do
+  describe "repository resolving" do
     let(:repository) { create(:repo_with_data) }
     let(:student_2) { create(:student) }
 
@@ -158,7 +158,7 @@ describe "WaterGrackAuth" do
       head_at(make_url(given_course, lab_2, lab_group)).should =~ /master/
     end
 
-    it "redirect to correct repo throughout courses" do
+    it "redirects to correct repo throughout courses" do
       repository_2 = create(:repo_with_data) 
       given_course_2 = create(:given_course)
       given_course_2.register_student(student)
