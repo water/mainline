@@ -10,7 +10,7 @@ describe "WaterGrackAuth" do
 
   def app
     config = {
-      :project_root => "/tmp/git-repos",
+      :project_root => GitoriousConfig["repository_base_path"],
       :upload_pack => true,
       :receive_pack => true,
     }
