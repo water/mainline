@@ -10,9 +10,9 @@ describe "WaterGrackAuth" do
 
   def app
     config = {
-      :project_root => GitoriousConfig["repository_base_path"],
-      :upload_pack => true,
-      :receive_pack => true,
+      project_root: GitoriousConfig["repository_base_path"],
+      upload_pack: true,
+      receive_pack: true,
     }
     Rack::Builder.new {
       use WaterGrackAuth
