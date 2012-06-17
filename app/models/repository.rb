@@ -21,14 +21,12 @@ class Repository < ActiveRecord::Base
   after_destroy :post_repo_deletion_message
   before_create :set_repository_hash
 
-#  scope :by_users,  :conditions => { :kind => KIND_USER_REPO } do
   scope :by_users do
     def fresh(limit = 10)
       find(:all, :order => "last_pushed_at DESC", :limit => limit)
     end
   end
 
-#  scope :by_groups, :conditions => { :kind => KIND_TEAM_REPO } do
 # TODO: This shall be removed and replaced by lab_groups
   scope :by_groups do
     def fresh(limit=10)
