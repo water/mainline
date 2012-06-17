@@ -6,12 +6,7 @@ class Repository < ActiveRecord::Base
 
   NAME_FORMAT = /[a-z0-9_\-]+/i.freeze
 
-  has_many    :committerships, :dependent => :destroy
-  belongs_to  :parent, :class_name => "Repository"
-  has_many    :clones, :class_name => "Repository", :foreign_key => "parent_id", :dependent => :nullify
   has_many    :comments, :as => :target, :dependent => :destroy
-  has_many    :cloners, :dependent => :destroy
-  has_many    :events, :as => :target, :dependent => :destroy
   has_many :hooks, :dependent => :destroy
   belongs_to :lab_has_group
 
@@ -30,37 +25,8 @@ class Repository < ActiveRecord::Base
 # TODO: This shall be removed and replaced by lab_groups
   scope :by_groups do
     def fresh(limit=10)
-      find(:all, :order => "last_pushed_at DESC", :limit => limit)
+      find(:all, :limit => limit)
     end
-  end
-
-  def self.human_name
-    I18n.t("activerecord.models.repository")
-  end
-
-  def self.new_by_cloning(other, username=nil)
-    suggested_name = username ? "#{username}s-#{other.name}" : nil
-    new(:parent => other,  :name => suggested_name)
-  end
-
-  def self.find_by_path(path)
-    base_path = path.gsub(/^#{Regexp.escape(GitoriousConfig['repository_base_path'])}/, "")
-    path_components = base_path.split("/").reject{|p| p.blank? }
-    repo_name, owner_name = [path_components.pop, path_components.shift]
-    repo_name.sub!(/\.git/, "")
-
-    owner = case owner_name[0].chr
-      when "+"
-        Group.find_by_name!(owner_name.sub(/^\+/, ""))
-      else
-     end
-
-    Repository.where({
-      name: repo_name
-    }.merge({
-      owner_type: owner.class.name, 
-      owner_id: owner.id 
-    })).first
   end
 
   #
@@ -85,16 +51,6 @@ class Repository < ActiveRecord::Base
     git_backend.delete!(full_path_from_partial_path(path))
   end
 
-  def self.most_active_clones(limit = 10)
-    Rails.cache.fetch("repository:most_active_clones:#{limit}", :expires_in => 2.hours) do
-      find(:all, :limit => limit,
-        :select => 'distinct repositories.id, repositories.*, count(events.id) as event_count',
-        :order => "event_count desc", :group => "repositories.id",
-        :conditions => ["events.created_at > ?", 7.days.ago],
-        :joins => :events)
-      end
-  end
-
   # TODO: describe
   def self.all_due_for_gc(batch_size = 25)
     # TODO: implement some smart water definition of this. Perhaps when a
@@ -107,28 +63,8 @@ class Repository < ActiveRecord::Base
     "#{url_path}.git"
   end
 
-  def url_path
-    File.join(owner.to_param_with_prefix,  name)
-  end
-
   def real_gitdir
     "#{self.full_hashed_path}.git"
-  end
-
-  def clone_url
-    "git://#{GitoriousConfig['gitorious_host']}/#{gitdir}"
-  end
-
-  def http_clone_url
-    "http://git.#{GitoriousConfig['gitorious_host']}/#{gitdir}"
-  end
-
-  def http_cloning?
-    !GitoriousConfig["hide_http_clone_urls"]
-  end
-
-  def push_url
-    "#{GitoriousConfig['gitorious_user']}@#{GitoriousConfig['gitorious_host']}:#{gitdir}"
   end
 
   def full_repository_path
@@ -152,10 +88,6 @@ class Repository < ActiveRecord::Base
     GitBackend
   end
 
-#  def to_param
-#    name
-#  end
-
   def to_xml(opts = {})
     info_proc = Proc.new do |options|
       builder = options[:builder]
@@ -165,7 +97,7 @@ class Repository < ActiveRecord::Base
     super({
       :procs => [info_proc],
       :only => [:name, :created_at, :ready, :description, :last_pushed_at],
-      :methods => [:clone_url, :push_url, :parent]
+      :methods => [:clone_url, :push_url]
     }.merge(opts))
   end
 
@@ -205,14 +137,10 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def can_be_deleted_by?(candidate)
-    admin?(candidate)
-  end
-
   def post_repo_creation_message
     options = {:target_class => self.class.name, :target_id => self.id}
-    options[:command] = parent ? 'clone_git_repository' : 'create_git_repository'
-    options[:arguments] = parent ? [real_gitdir, parent.real_gitdir] : [real_gitdir]
+    options[:command] = 'create_git_repository'
+    options[:arguments] = [real_gitdir]
     publish :create_repo, options.to_json
   end
 
@@ -317,45 +245,6 @@ class Repository < ActiveRecord::Base
     users_by_email
   end
 
-  def cloned_from(ip, country_code = "--", country_name = nil, protocol = 'git')
-    cloners.create(:ip => ip, :date => Time.now.utc, :country_code => country_code, :country => country_name, :protocol => protocol)
-  end
-
-  # returns an array of users who have commit bits to this repository either
-  # directly through the owner, or "indirectly" through the associated groups
-  def committers
-    committerships.committers.map{|c| c.members }.flatten.compact.uniq
-  end
-
-  # Returns a list of Users who can review things (as per their Committership)
-  def reviewers
-    committerships.reviewers.map{|c| c.members }.flatten.compact.uniq
-  end
-
-  # The list of users who can admin this repo, either directly as
-  # committerships or indirectly as members of a group
-  def administrators
-    committerships.admins.map{|c| c.members }.flatten.compact.uniq
-  end
-
-  def committer?(a_user)
-    a_user.is_a?(User) ? self.committers.include?(a_user) : false
-  end
-
-  def reviewer?(a_user)
-    a_user.is_a?(User) ? self.reviewers.include?(a_user) : false
-  end
-
-  def admin?(a_user)
-    a_user.is_a?(User) ? self.administrators.include?(a_user) : false
-  end
-
-  # Is this repo writable by +a_user+, eg. does he have push permissions here
-  # NOTE: this may be context-sensitive depending on the kind of repo
-  def writable_by?(a_user)
-    committers.include?(a_user)
-  end
-
   def full_hashed_path
     hashed_path || set_repository_hash
   end
@@ -402,20 +291,11 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  # Runs git-gc on this repository, and updates the last_gc_at attribute
+  # Runs git-gc on this repository
   def gc!
     Grit::Git.with_timeout(nil) do
-      if self.git.gc_auto
-        self.last_gc_at = Time.now
-        self.push_count_since_gc = 0
-        return save
-      end
+      self.git.gc_auto
     end
-  end
-
-  def register_push
-    self.last_pushed_at = Time.now.utc
-    self.push_count_since_gc = push_count_since_gc.to_i + 1
   end
   
   def update_disk_usage
@@ -424,45 +304,6 @@ class Repository < ActiveRecord::Base
 
   def calculate_disk_usage
     @calculated_disk_usage ||= `du -sb #{full_repository_path} 2>/dev/null`.chomp.to_i
-  end
-
-  def matches_regexp?(term)
-    return user.login =~ term ||
-      name =~ term ||
-      description =~ term
-  end
-
-  def search_clones(term)
-    self.class.title_search(term, "parent_id", id)
-  end
-
-  # Searches for term in
-  # - title
-  # - description
-  # - owner name/login
-  #
-  # Scoped to column +key+ having +value+
-  #
-  # Example:
-  #   title_search("foo", "parent_id", 1) #  will find clones of Repo with id 1
-  #                                          matching 'foo'
-  #
-  #   title_search("foo", "project_id", 1) # will find repositories in Project#1
-  #                                          matching 'foo'
-  def self.title_search(term, key, value)
-    sql = "SELECT repositories.* FROM repositories
-      INNER JOIN users on repositories.user_id=users.id
-      INNER JOIN groups on repositories.owner_id=groups.id
-      WHERE repositories.#{key}=#{value}
-      AND (repositories.name LIKE :q OR repositories.description LIKE :q OR groups.name LIKE :q)
-      AND repositories.owner_type='Group'
-      UNION ALL
-      SELECT repositories.* from repositories
-      INNER JOIN users on repositories.user_id=users.id
-      INNER JOIN users owners on repositories.owner_id=owners.id
-      WHERE repositories.#{key}=#{value}
-      AND (repositories.name LIKE :q OR repositories.description LIKE :q OR owners.login LIKE :q)
-      AND repositories.owner_type='User'"
   end
 
   protected
