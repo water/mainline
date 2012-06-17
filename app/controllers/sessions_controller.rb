@@ -8,7 +8,6 @@ class SessionsController < ApplicationController
   layout "water"
   skip_before_filter :public_and_logged_in
   before_filter :remove_navbar
-  # renders_in_site_specific_context
   force_ssl only: [:new, :create, :destroy]
   
   def new

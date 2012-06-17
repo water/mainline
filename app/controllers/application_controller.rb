@@ -5,7 +5,6 @@
 
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
-  #include ExceptionNotifiable
   
   before_filter :public_and_logged_in
   
@@ -27,9 +26,9 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
-rescue_from StateMachine::InvalidTransition do |exception|
-  redirect_to root_url, error: "WTF?!"
-end
+  rescue_from StateMachine::InvalidTransition do |exception|
+    redirect_to root_url, error: "WTF?!"
+  end
 
   def rescue_action(exception)
     return super if Rails.env != "production"
@@ -43,27 +42,13 @@ end
       super
     end
   end
-
-  # def dummy_login
-  #   current_user ||= User.first
-  # end
   
   def render(options = {}, extra_options = {}, &block)
     options[:layout] ||= ! params[:bare]
     super(options, extra_options, &block)
   end
   
-  def current_site
-    @current_site || Site.default
-  end
-  
   protected
-    # Sets the before_filters needed to be able to render in a Site specific
-    # context. +options+ is the options for the before_filters
-    def self.renders_in_site_specific_context(options = {})
-      before_filter :find_current_site, options
-      before_filter :redirect_to_current_site_subdomain, options
-    end
     
     def redirect_back(*args)
       redirect_to :back, *args rescue redirect_to root_url, *args
@@ -106,38 +91,6 @@ end
     def require_not_logged_in
       redirect_to root_path if logged_in?
     end
-    
-    
-    def find_repository_owner
-      if params[:user_id]
-        @owner = User.find_by_login!(params[:user_id])
-      #  @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
-      elsif params[:group_id]
-        @owner = Group.find_by_name!(params[:group_id])
-     #   @containing_project = Project.find_by_slug!(params[:project_id]) if params[:project_id]
-    #  elsif params[:project_id]
-     ##   @owner = Project.find_by_slug!(params[:project_id])
-     #   @project = @owner
-      else
-        raise ActiveRecord::RecordNotFound
-      end
-    end
-    
-    def find_repository_owner_and_repository
-      find_repository_owner
-      @owner.repositories.find_by_name!(params[:id])
-    end
-    
- #   def find_project
- #     @project = Project.find_by_slug!(params[:project_id])
-#    end
-    
-#    def find_project_and_repository
-#      @project = Project.find_by_slug!(params[:project_id])
-      # We want to look in all repositories that's somehow within this project
-      # realm, not just @project.repositories
-#      @repository = Repository.find_by_name_and_project_id!(params[:repository_id], @project.id)
-#    end
     
     def check_repository_for_commits
       unless @repository.has_commits?
@@ -209,56 +162,10 @@ end
     
     def find_current_site
       @current_site ||= begin
-    #    if @project
-    #      @project.site
-    #    else
-          if !subdomain_without_common.blank?
-            Site.find_by_subdomain(subdomain_without_common)
-          end
-      #  end
-      end
-    end
-    
-    def pick_layout_based_on_site
-      if current_site && current_site.subdomain
-        current_site.subdomain
-      else
-        "application"
-      end
-    end
-    
-    def subdomain_without_common
-      tld_length = GitoriousConfig["gitorious_host"].split(".").length - 1
-      request.subdomains(tld_length).select{|s| s !~ /^(ww.|secure)$/}.first
-    end
-    
-    def redirect_to_current_site_subdomain
-      return unless request.get?
-      if !current_site.subdomain.blank?
-        if subdomain_without_common != current_site.subdomain
-          url_parameters = {:only_path => false, :host => "#{current_site.subdomain}.#{GitoriousConfig["gitorious_host"]}#{request.port_string}"}.merge(params)
-          redirect_to url_parameters
+        if !subdomain_without_common.blank?
+          Site.find_by_subdomain(subdomain_without_common)
         end
-      elsif !subdomain_without_common.blank?
-        redirect_to_top_domain
       end
-    end
-    
-    def require_global_site_context
-      unless subdomain_without_common.blank?
-        redirect_to_top_domain
-      end
-    end
-    
-    def redirect_to_top_domain
-      host_without_subdomain = {
-        :only_path => false, 
-        :host => GitoriousConfig["gitorious_host"]
-      }
-      if ![80, 443].include?(request.port)
-        host_without_subdomain[:host] << ":#{request.port}"
-      end
-      redirect_to host_without_subdomain
     end
     
     # A wrapper around ActionPack's #stale?, that always returns true

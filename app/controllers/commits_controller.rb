@@ -10,7 +10,6 @@ class CommitsController < ApplicationController
     end
   end
   
-  renders_in_site_specific_context
   
   def index
     if params[:branch].blank?
