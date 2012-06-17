@@ -95,13 +95,12 @@ class Repository < ActiveRecord::Base
       end
   end
 
-  # Finds all repositories that might be due for a gc, starting with
-  # the ones who've been pushed to recently
+  # TODO: describe
   def self.all_due_for_gc(batch_size = 25)
-    find(:all,
-      :order => "push_count_since_gc desc",
-      :conditions => "push_count_since_gc > 0",
-      :limit => batch_size)
+    # TODO: implement some smart water definition of this. Perhaps when a
+    # course has been finished? Implementation of garbage collection must see
+    # so that that Submission-pointers will still work after gc!
+    []
   end
 
   def gitdir
