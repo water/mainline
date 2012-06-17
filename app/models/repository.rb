@@ -405,9 +405,6 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  # Fallback when the real sequence number is taken
-
-
   # Runs git-gc on this repository, and updates the last_gc_at attribute
   def gc!
     Grit::Git.with_timeout(nil) do
