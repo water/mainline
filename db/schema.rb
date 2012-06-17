@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120605180148) do
+ActiveRecord::Schema.define(:version => 20120617122643) do
 
   create_table "administrators", :force => true do |t|
     t.integer  "user_id"
@@ -291,31 +291,24 @@ ActiveRecord::Schema.define(:version => 20120605180148) do
     t.string  "salt",       :null => false
   end
 
+  create_table "queue_classic_jobs", :force => true do |t|
+    t.string   "q_name"
+    t.string   "method"
+    t.text     "args"
+    t.datetime "locked_at"
+  end
+
+  add_index "queue_classic_jobs", ["q_name", "id"], :name => "idx_qc_on_name_only_unlocked"
+
   create_table "repositories", :force => true do |t|
-    t.integer  "project_id"
-    t.datetime "created_at",                                                :null => false
-    t.datetime "updated_at",                                                :null => false
-    t.integer  "parent_id"
-    t.boolean  "ready",                                  :default => false
-    t.integer  "kind",                                   :default => 0
-    t.string   "owner_type"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.boolean  "ready",       :default => false
     t.string   "hashed_path"
-    t.text     "description"
-    t.datetime "last_pushed_at"
-    t.integer  "wiki_permissions",                       :default => 0
-    t.boolean  "deny_force_pushing",                     :default => false
-    t.boolean  "notify_committers_on_new_merge_request", :default => true
-    t.datetime "last_gc_at"
-    t.boolean  "merge_requests_enabled",                 :default => true
     t.integer  "disk_usage"
-    t.integer  "push_count_since_gc"
   end
 
   add_index "repositories", ["hashed_path"], :name => "index_repositories_on_hashed_path", :unique => true
-  add_index "repositories", ["kind"], :name => "index_repositories_on_kind"
-  add_index "repositories", ["parent_id"], :name => "index_repositories_on_parent_id"
-  add_index "repositories", ["project_id", "kind"], :name => "index_repositories_on_project_id_and_kind"
-  add_index "repositories", ["project_id"], :name => "index_repositories_on_project_id"
   add_index "repositories", ["ready"], :name => "index_repositories_on_ready"
 
   create_table "roles", :force => true do |t|
