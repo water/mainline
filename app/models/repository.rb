@@ -297,7 +297,7 @@ class Repository < ActiveRecord::Base
       self.git.gc_auto
     end
   end
-  
+
   def update_disk_usage
     self.disk_usage = calculate_disk_usage
   end
@@ -317,11 +317,11 @@ class Repository < ActiveRecord::Base
     def self.full_path_from_partial_path(path)
       File.expand_path(File.join(GitoriousConfig["repository_base_path"], path))
     end
-    
+
     # TODO: this method is a stub!!!
     #
     # @args,  a hash containing a group object and a lab object
-    #         or to normal arguments - group_id and lab_id 
+    #         or to normal arguments - group_id and lab_id
     # returns the repo associated with a particular lab and group.
     def self.find_by_group_and_lab(*args)
       if args.one? and args.first.is_a? Hash
@@ -333,7 +333,7 @@ class Repository < ActiveRecord::Base
       # Stub return
       self.last
     end
-      
+
 
   private
   def self.create_hooks(path)
