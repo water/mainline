@@ -9,11 +9,6 @@ class User < ActiveRecord::Base
   has_one :student, dependent: :destroy
   has_one :administrator, dependent: :destroy
   has_many :student_registered_for_courses, through: :students
-  has_many :memberships, :dependent => :destroy
-  has_many :groups, :through => :memberships
-  has_many :committerships, :as => :committer, :dependent => :destroy
-  has_many :commit_repositories, :through => :committerships, :source => :repository
-  has_many :ssh_keys, :order => "id desc", :dependent => :destroy
   has_many :comments
   has_many :email_aliases, :class_name => "Email", :dependent => :destroy
   # Virtual attribute for the unencrypted password
