@@ -1,0 +1,2 @@
+#!/bin/sh
+RAILS_ENV=test script/git-hook-listener

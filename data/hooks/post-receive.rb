@@ -22,25 +22,28 @@ if refname.split("/").last != "master"
 end
 
 commits = `git rev-list #{oldrev}..#{newrev}`.split("\n")
-submit_hash = nil
+$command = nil
+$submit_hash = nil
 commits.each { |commit_hash|
   msg = `git show --format=format:"%s" #{commit_hash}`.split("\n").first
-  submit_hash ||= commit_hash if msg.include? "#submit"
+  p msg
+  matches = msg.match(/#(submit|update)/) || []
+  $command = matches[0]
+  $submit_hash = commit_hash if $command
+  break if $command
 }
 
-unless submit_hash
+unless $submit_hash
   puts %Q{
 We see that you didn't want to submit your code, so we don't. To submit include
-the token #submit in your commit message
+the token #submit in your commit message.\n
   }
   exit 0
 end
 
 # TODO: Implement actual submission request
 puts %Q{
-Ok, water tries to submit #{submit_hash}
-for you.  A mail will be sent to you shortly if the submission was sent
-sucessfully.
+Ok, water tries to submit #{$submit_hash} for you...\n
 }
 
 # In the code below we extract the repo-hash from $PWD like this:
@@ -48,52 +51,37 @@ sucessfully.
 # "/tmp/git-repos/6cf/4a4/bd6392293577efe9875b6f13842bba2b9d.git\n"[-47..-6] =>
 #                "6cf/4a4/bd6392293577efe9875b6f13842bba2b9d"
 s = `echo $PWD`
-hashed_path = s[-47..-6]
+$hashed_path = s[-47..-6]
 
-require "pg"
-require "time"
-require "yaml"
+require 'eventmachine'
 
-db_config_path = ENV['HOOK_DB_CONFIG']
-env = ENV['HOOK_ENV']
-db_config = YAML.load_file(db_config_path)[env]
+class Submitter < EventMachine::Connection
+  def post_init
+    send_data "#{$command} #{$submit_hash} #{$hashed_path}"
+  end
 
-unless db_config["adapter"] == "postgresql"
-  puts "Fatal water error! Must use postgres as database backend!"
-  exit 0
-end
-
-begin
-conn = PG.connect({
-  dbname: db_config["database"],
-  user: db_config["username"],
-  password: db_config["password"],
-  host: db_config["host"],
-  port: db_config["port"]
-})
-rescue
-  p $!
-end
-
-sql_find = %Q{
-SELECT "lab_has_groups".*
-FROM "lab_has_groups"
-INNER JOIN "repositories" ON "repositories"."id" = "lab_has_groups"."repository_id"
-WHERE (repositories.hashed_path = '#{hashed_path}') LIMIT 1
-}
-
-time = Time.now.iso8601
-
-conn.exec(sql_find) do |result|
-  result.each do |row|
-    # LabHashGroup#id
-    id = row.values_at("id").first
-    sql_insert = %Q{
-INSERT INTO "submissions"
-("commit_hash", "lab_has_group_id", "updated_at", "created_at")
-VALUES ('#{submit_hash}', #{id}, '#{time}', '#{time}')
-}
-
-    conn.exec(sql_insert)
+  def receive_data(reply)
+    puts ""
+    puts reply
+    EventMachine.stop
   end
 end
+
+EventMachine.run {
+  port = ENV['HOOK_PORT']
+  puts "Trying to connect on port #{port}"
+  EventMachine.connect '127.0.0.1', port, Submitter
+  MAX = 3
+  0.upto(MAX - 1) do |i|
+    EventMachine.add_timer(i) do
+      print ("\r"*100 + "#{MAX - i} seconds untill timeout")
+      $stdout.flush
+    end
+  end
+  EventMachine.add_timer(MAX) do
+    puts "\n\n"
+    puts "FAILED, please #{$command} through the web interface instead. Sorry!"
+    $stdout.flush
+    EventMachine.stop
+  end
+} if $command

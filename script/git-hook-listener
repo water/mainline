@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+# Load rails environment, including eventmachine
+require File.expand_path("../../config/environment", __FILE__)
+# require 'eventmachine'
+
+# An event machine module that will listen when the git machine wants to submit
+module SubmissionServer
+  def receive_data data
+    p "Server recieved: #{data}"
+    command, commit_hash, hashed_path = data.split
+    repository = Repository.find_by_hashed_path(hashed_path)
+    send_data "[Internal Error] Didn't find repository" && return if repository.nil?
+    lab_has_group = LabHasGroup.find_by_repository_id(repository.id)
+    send_data "[Internal Error] Didn't find lhg" && return if lab_has_group.nil?
+
+    case command
+    when "#submit"
+      submission = Submission.new(lab_has_group: lab_has_group,
+                                  commit_hash: commit_hash)
+      if submission.save
+        send_data "Submission created on #{commit_hash}"
+      else
+        send_data "Submission FAILED: #{submission.errors.full_messages}"
+      end
+    when "#update"
+      submission = lab_has_group.submissions.last
+      if submission.nil?
+        send_data "You have no submission yet, so you can't update it"
+        return
+      end
+      if submission.update_attribute(:commit_hash, commit_hash)
+        send_data "Your submission was updated succesfully to #{commit_hash}"
+      else
+        send_data "Update FAILED: #{submission.errors.full_messages}"
+      end
+    else
+      send_data "[Internal error] Unrecognized command #{command}"
+    end
+  end
+end
+
+EventMachine::run {
+  port = GitoriousConfig['grack_port'] + 2
+  puts "About to start on #{port}"
+  EventMachine::start_server "127.0.0.1", port, SubmissionServer
+  puts "running submission server on #{port}"
+}
+

@@ -47,6 +47,7 @@ describe "Git hooks" do
       Submission.delete_all
       ENV['HOOK_ENV'] = Rails.env
       ENV['HOOK_DB_CONFIG'] = "#{Rails.root}/config/database.yml"
+      ENV['HOOK_PORT'] = (GitoriousConfig['grack_port'].to_i + 2).to_s
       given_course.register_student(student)
       lab_group.add_student(student)
       Dir.chdir(Dir.mktmpdir)

@@ -68,6 +68,7 @@ gem "daemons", :require => false
 gem "beanstalk-client"
 gem "stomp"
 gem "secure_faye", git: "git://github.com/oleander/secure_faye.git"
+gem "eventmachine" # For git hooks
 
 group :development do
   gem "hirb"

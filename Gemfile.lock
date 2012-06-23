@@ -397,6 +397,7 @@ DEPENDENCIES
   dynamic_form (= 1.0.0)
   echoe
   eco
+  eventmachine
   exception_notification!
   factory_girl_rails
   fakefs
