@@ -101,9 +101,18 @@ describe Submission do
       build(:submission, lab_has_group: lhg).should_not be_valid
     end
 
-    it "should change LabHasGroup state from 'initialized' to 'pending'" do
+    it "should change state from 'initialized' to 'pending' on create" do
       lhg = create(:lab_has_group)
       create(:submission, lab_has_group: lhg)
+      lhg.should be_pending
+    end
+
+    it "should keep state 'pending' on update" do
+      lhg = create(:lab_has_group)
+      old_hash = "cc6e8cd7426322681baa4afb6f3708cbff41a697"
+      new_hash = "286e790e4b9244147e2a99e0f1a05ba121fbec88"
+      submission = create(:submission, lab_has_group: lhg, commit_hash: old_hash)
+      submission.update_attribute(:commit_hash, new_hash)
       lhg.should be_pending
     end
 
