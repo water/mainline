@@ -109,8 +109,8 @@ describe Submission do
 
     it "should change LabHasGroup state from 'rejected' to 'pending'" do
       lhg = create(:lab_has_group, state: "rejected")
-      #create(:submission)
-      #lhg.should be_pending
+      create(:submission, lab_has_group: lhg)
+      lhg.should be_pending
     end
 
     it "should not be possible to create a submission when LabHasGroup is in state 'pending'" do
