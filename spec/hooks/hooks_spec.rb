@@ -69,35 +69,35 @@ describe "Git hooks" do
     end
 
     it "doesn't submit without #submit" do
-      new_commit "Don't submit!"
+      new_commit "Dont submit!"
       push "master"
       submissions.should eq 0
     end
 
     it "doesn't submit when not pushing to master" do
       `git checkout -b new_branch`
-      new_commit "I wanna #submit but can't from this branch!"
+      new_commit "I wanna #submit but cant from this branch!"
       push "new_branch"
       submissions.should eq 0
     end
 
-    it "doesn't resubmit unless it already has a submit" do
-      push_new_commit "It's to early for #resubmit syntax"
+    it "doesn't update unless it already has a submit" do
+      push_new_commit "Its to early for #update syntax"
       submissions.should eq 0
     end
 
     it "disallows to submit twice" do
-      hash_orig = push_new_commit "Let's #submit"
+      hash_orig = push_new_commit "Lets #submit"
       Submission.first.commit_hash.should eq hash_orig
 
-      push_new_commit "Let's #submit again"
+      push_new_commit "Lets #submit again"
       Submission.first.commit_hash.should eq hash_orig
       submissions.should eq 1
     end
 
-    it "allows resubmit" do
-      push_new_commit "Let's #submit"
-      new_hash = push_new_commit "Let's #resubmit"
+    it "allows update" do
+      push_new_commit "Lets #submit"
+      new_hash = push_new_commit "Lets #update"
       Submission.first.commit_hash.should eq new_hash
       submissions.should eq 1
     end
@@ -124,10 +124,10 @@ describe "Git hooks" do
       submissions.should eq 1
     end
 
-    it "doesn't allow resubmit when status is reviewing" do
+    it "doesn't allow update when status is reviewing" do
       push_new_commit "#submit"
       lab_has_group.reviewing!
-      push_new_commit "#resubmit"
+      push_new_commit "#update"
       submissions.should eq 1
     end
 
