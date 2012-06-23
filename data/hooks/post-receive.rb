@@ -25,8 +25,7 @@ commits = `git rev-list #{oldrev}..#{newrev}`.split("\n")
 $command = nil
 $submit_hash = nil
 commits.each { |commit_hash|
-  msg = `git show --format=format:"%s" #{commit_hash}`.split("\n").first
-  p msg
+  msg = `git show -s --format=format:'%s %b' #{commit_hash}`
   matches = msg.match(/#(submit|update)/) || []
   $command = matches[0]
   $submit_hash = commit_hash if $command
