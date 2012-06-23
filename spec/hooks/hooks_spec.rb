@@ -61,6 +61,13 @@ describe "Git hooks" do
       submissions.should eq 1
     end
 
+    it "can detect submit tag in commit message body" do
+      submissions.should eq 0
+      new_commit "A short description\n\nLonger description with #submit."
+      push "master"
+      submissions.should eq 1
+    end
+
     it "doesn't submit without #submit" do
       new_commit "Don't submit!"
       push "master"
