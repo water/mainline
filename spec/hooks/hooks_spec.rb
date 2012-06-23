@@ -103,7 +103,7 @@ describe "Git hooks" do
       submissions.should eq 1
     end
 
-    it "puts's lab has group in pending" do
+    it "puts lab has group in pending" do
       lab_has_group.should be_initialized
       push_new_commit "#submit"
       lab_has_group.should be_pending
