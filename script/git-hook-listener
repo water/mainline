@@ -5,6 +5,7 @@ require File.expand_path("../../config/environment", __FILE__)
 # require 'eventmachine'
 
 # An event machine module that will listen when the git machine wants to submit
+# A module that will listen to #submits from the post-receive hook
 module SubmissionServer
   def receive_data data
     p "Server recieved: #{data}"
