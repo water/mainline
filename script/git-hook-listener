@@ -2,9 +2,12 @@
 
 # Load rails environment, including eventmachine
 require File.expand_path("../../config/environment", __FILE__)
-# require 'eventmachine'
 
-# An event machine module that will listen when the git machine wants to submit
+# Make sure stdout and stderr write out without delay for using with daemon
+# like scripts
+STDOUT.sync = true; STDOUT.flush
+STDERR.sync = true; STDERR.flush
+
 # A module that will listen to #submits from the post-receive hook
 module SubmissionServer
   def receive_data data
