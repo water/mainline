@@ -28,9 +28,7 @@ module SubmissionServer
       submission = lab_has_group.submissions.last
       if submission.nil?
         send_data "You have no submission yet, so you can't update it"
-        return
-      end
-      if submission.update_attribute(:commit_hash, commit_hash)
+      elsif submission.update_attribute(:commit_hash, commit_hash)
         send_data "Your submission was updated succesfully to #{commit_hash}"
       else
         send_data "Update FAILED: #{submission.errors.full_messages}"
