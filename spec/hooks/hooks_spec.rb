@@ -127,10 +127,11 @@ describe "Git hooks" do
     end
 
     it "doesn't allow update when status is reviewing" do
-      push_new_commit "#submit"
+      first_hash = push_new_commit "#submit"
       lab_has_group.reviewing!
       push_new_commit "#update"
       submissions.should eq 1
+      Submission.first.commit_hash.should eq first_hash
     end
 
     it "picks the last #submit hash when there are multiple" do
