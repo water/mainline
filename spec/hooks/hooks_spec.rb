@@ -25,6 +25,7 @@ describe "Git hooks" do
 
   def push(branch)
     `git push origin #{branch}`
+    lab_has_group.reload
   end
 
   def push_new_commit(message)
@@ -106,13 +107,11 @@ describe "Git hooks" do
     it "puts lab has group in pending" do
       lab_has_group.should be_initialized
       push_new_commit "#submit"
-      lab_has_group.reload
       lab_has_group.should be_pending
     end
 
     it "allows a second submission after rejection" do
       push_new_commit "#submit"
-      lab_has_group.reload
       lab_has_group.reviewing!
       lab_has_group.rejected!
       push_new_commit "#submit"
@@ -121,7 +120,6 @@ describe "Git hooks" do
 
     it "doesn't allow submissions when it's accepted" do
       push_new_commit "#submit"
-      lab_has_group.reload
       lab_has_group.reviewing!
       lab_has_group.accepted!
       push_new_commit "#submit"
@@ -130,7 +128,6 @@ describe "Git hooks" do
 
     it "doesn't allow update when status is reviewing" do
       push_new_commit "#submit"
-      lab_has_group.reload
       lab_has_group.reviewing!
       push_new_commit "#update"
       submissions.should eq 1
