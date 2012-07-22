@@ -149,6 +149,18 @@ describe "Git hooks" do
       submissions.should eq 1
     end
 
+    it "allows force pushing submissions too" do
+      hash = new_commit "divergepoint"
+      push_new_commit "first without submit"
+      `git checkout #{hash}` # We must leave master so we can delete it
+      `git branch -D master` # delete master branch
+      `git checkout -b master #{hash}` # create new master at divergepoint
+      push_new_commit "second with #submit"
+      submissions.should eq 0 # Git server will deny, we must use force
+      `git push --force origin master`
+      submissions.should eq 1 # It should have gotten through
+    end
+
     it "blocks submissions past deadline" do
       # TODO how to implement this test?
       true.should be_false
