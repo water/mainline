@@ -161,9 +161,39 @@ describe "Git hooks" do
       submissions.should eq 1 # It should have gotten through
     end
 
-    it "blocks submissions past deadline" do
-      # TODO how to implement this test?
-      true.should be_false
+    describe "handling deadlines" do
+
+      it "respects first deadline" do
+        default_deadline = lab.default_deadlines.first
+
+        default_deadline.update_attribute(:at, 3.days.ago)
+        push_new_commit "failing #submit"
+        submissions.should eq 0
+
+        default_deadline.update_attribute(:at, 3.days.from_now)
+        hash = push_new_commit "succesful #submit"
+        submissions.should eq 1
+
+        default_deadline.update_attribute(:at, 3.days.ago)
+        push_new_commit "failing #update"
+        Submission.first.commit_hash.should eq hash
+
+        default_deadline.update_attribute(:at, 3.days.from_now)
+        new_hash = push_new_commit "successful #update"
+        Submission.first.commit_hash.should eq new_hash
+        # TODO: refactor for test below
+      end
+
+      it "respects second deadline" do
+        true.should be_false
+        # TODO: implement
+      end
+
+      it "respects extended deadline" do
+        true.should be_false
+        # TODO: implement
+      end
+
     end
   end
 end
