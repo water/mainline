@@ -70,6 +70,19 @@ describe DefaultDeadline do
     end
   end
 
+  describe "ordering" do
+    it "should order ascendingly" do
+      DatabaseCleaner.clean
+      DefaultDeadline.count.should be 0
+      dd_3 = create(:default_deadline, at: 30.days.from_now)
+      dd_1 = create(:default_deadline, at: 10.days.from_now)
+      dd_2 = create(:default_deadline, at: 20.days.from_now)
+      DefaultDeadline.count.should be 3
+      DefaultDeadline.first.should eq dd_1
+      DefaultDeadline.all.should eq [dd_1, dd_2, dd_3]
+    end
+  end
+
   describe "relations" do
     it "should have a lab" do
       create(:default_deadline).lab.should_not be_nil
