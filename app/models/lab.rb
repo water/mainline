@@ -63,4 +63,10 @@ class Lab < ActiveRecord::Base
   def numbered_name
     "Lab #{number}"
   end
+
+  # Return all deadlines in ascending order
+  def ordered_deadlines
+    # So far we rely on the dd model to have default scope
+    default_deadlines.all
+  end
 end

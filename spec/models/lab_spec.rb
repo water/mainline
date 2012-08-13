@@ -96,6 +96,15 @@ describe Lab do
     it "should have a list of deadlines" do
       build(:lab, default_deadlines: [create(:default_deadline)]).should have(1).default_deadlines
     end
+
+    it "should have a ascending list of deadlines" do
+      snd = build(:default_deadline_without_lab, at: 50.days.from_now)
+      fst = build(:default_deadline_without_lab, at: 20.days.from_now)
+
+      lab = create(:lab, default_deadlines: [snd, fst])
+      lab.should have(2).default_deadlines
+      lab.ordered_deadlines.first.should eq fst
+    end
   end
 
   describe "#active" do
