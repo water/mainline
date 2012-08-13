@@ -44,6 +44,13 @@ describe Lab do
     end
   end
 
+  describe "fixture" do
+    it "should have a properly connected default deadline" do
+      lab = FactoryGirl.build(:lab)
+      lab.should eq lab.default_deadlines.first.lab
+    end
+  end
+
   describe "relations" do
     it "should have one initial lab commit" do
       build(:lab, initial_lab_commit: create(:initial_lab_commit)).initial_lab_commit.should_not be_nil

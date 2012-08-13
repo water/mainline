@@ -50,6 +50,26 @@ describe DefaultDeadline do
     end
   end
 
+  describe "factories" do
+    it "should be itselfs labs default deadline" do
+      dd = create(:default_deadline)
+      dd.lab.default_deadlines.should eq [dd]
+    end
+
+    it "should create only one default_deadline upon creation" do
+      DatabaseCleaner.clean
+      dd = create(:default_deadline)
+      DefaultDeadline.count.should eq 1
+    end
+
+    it "can create many default deadlines" do
+      default_deadline = create(:default_deadline)
+      lab = default_deadline.lab
+      create(:default_deadline, lab: lab)
+      lab.should have(2).default_deadlines
+    end
+  end
+
   describe "relations" do
     it "should have a lab" do
       create(:default_deadline).lab.should_not be_nil

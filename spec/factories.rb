@@ -76,7 +76,21 @@ FactoryGirl.define do
     sequence(:at) { |n| ((n + 1)*2).days.from_now }
     description "Lorem ipsum dolor sit amet"
     factory :default_deadline do
-      lab
+      lab do
+        lab = FactoryGirl.create(:lab)
+        lab.define_singleton_method :temp_fg_hack, lambda {}
+        lab
+      end
+
+      after_create do |default_deadline, evaluator|
+        if evaluator.lab.respond_to?(:temp_fg_hack)
+          evaluator.lab.default_deadlines = [default_deadline]
+          class << evaluator.lab
+            remove_method(:temp_fg_hack)
+          end
+        end
+        evaluator.lab.reload
+      end
     end
   end
 
