@@ -161,35 +161,45 @@ describe "Git hooks" do
 
     describe "handling deadlines" do
 
-      it "respects first deadline" do
-        default_deadline = lab.default_deadlines.first
+      def check_honoring_of(deadline)
+        n0 = submissions
 
-        default_deadline.update_attribute(:at, 3.days.ago)
+        deadline.update_attribute(:at, 3.days.ago)
         push_new_commit "failing #submit"
-        submissions.should eq 0
+        submissions.should eq n0
 
-        default_deadline.update_attribute(:at, 3.days.from_now)
+        deadline.update_attribute(:at, 3.days.from_now)
         hash = push_new_commit "succesful #submit"
-        submissions.should eq 1
+        submissions.should eq (n0 + 1)
 
-        default_deadline.update_attribute(:at, 3.days.ago)
+        deadline.update_attribute(:at, 3.days.ago)
         push_new_commit "failing #update"
-        Submission.first.commit_hash.should eq hash
+        Submission.last.commit_hash.should eq hash
 
-        default_deadline.update_attribute(:at, 3.days.from_now)
+        deadline.update_attribute(:at, 3.days.from_now)
         new_hash = push_new_commit "successful #update"
-        Submission.first.commit_hash.should eq new_hash
-        # TODO: refactor for test below
+        Submission.last.commit_hash.should eq new_hash
+
+      end
+
+      it "respects first deadline" do
+        deadline = lab.default_deadlines.first
+        check_honoring_of deadline
       end
 
       it "respects second deadline" do
-        true.should be_false
-        # TODO: implement
+        push_new_commit "#submit: make the second deadline the active one"
+        lab_has_group.reviewing!
+        lab_has_group.rejected!
+        lab.default_deadlines.first.update_attribute(:at, 100.years.ago)
+        deadline = create(:default_deadline, lab: lab, at: 10.days.from_now)
+        check_honoring_of deadline
       end
 
       it "respects extended deadline" do
-        true.should be_false
-        # TODO: implement
+        lab.default_deadlines.first.update_attribute(:at, 100.years.ago)
+        deadline = create(:extended_deadline, lab_has_group: lab_has_group, at: 3.days.from_now)
+        check_honoring_of deadline
       end
 
     end
