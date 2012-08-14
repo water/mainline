@@ -21,6 +21,59 @@ describe Submission do
         lab_has_group: lhg
       }).should_not be_valid
     end
+
+    describe "deadlines" do
+      let(:lab_has_group) { build(:lab_has_group) }
+      let(:lab) { lab_has_group.lab }
+
+      it "should reject late deadlines" do
+        default_deadline = lab.ordered_deadlines.first
+        default_deadline.update_attribute(:at, 10.days.ago)
+        build(:submission, lab_has_group: lab_has_group).should_not be_valid
+        create(:default_deadline, lab: lab)
+        build(:submission, lab_has_group: lab_has_group).should_not be_valid
+      end
+
+      it "should check against not only first deadline" do
+        default_deadline = lab.ordered_deadlines.first
+        create(:submission, lab_has_group: lab_has_group).should be_valid
+        lab_has_group.update_attribute(:state, :rejected)
+        default_deadline.update_attribute(:at, 10.days.ago)
+        build(:submission, lab_has_group: lab_has_group).should_not be_valid
+        create(:default_deadline, lab: lab, at: 10.days.from_now)
+        build(:submission, lab_has_group: lab_has_group).should be_valid
+      end
+
+      it "eventually uses the last deadline indefinetly" do
+        first_deadline = lab.ordered_deadlines.first
+        create(:submission, lab_has_group: lab_has_group).should be_valid
+        lab_has_group.update_attribute(:state, :rejected)
+        first_deadline.update_attribute(:at, 100.days.ago)
+        last_deadline = create(:default_deadline, lab: lab)
+        5.times do # "indefinetly"
+          last_deadline.update_attribute(:at, 10.days.ago)
+          build(:submission, lab_has_group: lab_has_group).should_not be_valid
+          last_deadline.update_attribute(:at, 10.days.from_now)
+          build(:submission, lab_has_group: lab_has_group).should be_valid
+        end
+      end
+
+      it "prioritizes the extended deadline" do
+        default_deadline = lab.ordered_deadlines.first
+        default_deadline.update_attribute(:at, 100.days.ago)
+        build(:submission, lab_has_group: lab_has_group).should_not be_valid
+        create(:extended_deadline, lab_has_group: lab_has_group)
+        lab_has_group.reload
+        build(:submission, lab_has_group: lab_has_group).should be_valid
+     end
+
+      it "allows submission, regardless of extended when default allows" do
+        ed = create(:extended_deadline, lab_has_group: lab_has_group)
+        ed.update_attribute(:at, 100.days.ago) # skip validations
+        lab_has_group.reload
+        build(:submission, lab_has_group: lab_has_group).should be_valid
+      end
+    end
   end
 
   describe "relations" do

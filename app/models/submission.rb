@@ -10,6 +10,7 @@ class Submission < ActiveRecord::Base
   validates_presence_of :commit_hash, :lab_has_group
   validate :lab_access
   validate :existence_of_commit_hash
+  validate :deadline_not_passed
   validate :submission_can_be_created, on: :create
   validate :submission_can_be_updated, on: :update
   before_validation :fetch_commit
@@ -99,5 +100,18 @@ class Submission < ActiveRecord::Base
           Submissions can only be updated when the lab is pending review.
         })
       end
+    end
+
+    def deadline_not_passed
+      return unless lab_has_group
+
+      submission_number = lab_has_group.submissions.count + 1
+      deadlines = lab_has_group.lab.ordered_deadlines.take(submission_number) +
+                  lab_has_group.extended_deadlines
+
+      if deadlines.map(&:at).none?(&:future?)
+        errors.add(:lab_has_group, "The deadline has passed")
+      end
+
     end
 end
